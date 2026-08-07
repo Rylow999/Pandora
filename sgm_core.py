@@ -170,7 +170,7 @@ class SGMAgent:
         """
         clave = (a, b)
         if clave not in self.conn_type:
-            self.conn_type[clave] = {"count": 0, "tipo": 0}
+            self.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 1.0, "age": 0}
         self.conn_type[clave]["count"] += 1
         # Si la transicion es muy frecuente, etiquetar como Causal
         c = self.conn_type[clave]["count"]
@@ -178,6 +178,9 @@ class SGMAgent:
             self.conn_type[clave]["tipo"] = 1  # Causal
         elif c > 2:
             self.conn_type[clave]["tipo"] = 0  # Functional
+        # Refrescar: la arista usada recupera strength y resetea age
+        self.conn_type[clave]["strength"] = min(1.0, self.conn_type[clave]["strength"] + 0.2)
+        self.conn_type[clave]["age"] = 0
         # Si no hay conexion en el grafo, crearla
         if b not in self.edges.get(a, []):
             if a < len(self.edges):
@@ -187,11 +190,12 @@ class SGMAgent:
     def _aff(self, i, k):
         # Afinidad base: cos * vitalidad
         afinidad_base = self.hrr.cos(self.omega[i], self.omega[k]) * self.vitalidad[k]
-        # Modulacion por conn_type aprendido
-        tipo = self.conn_type.get((i, k), {}).get("tipo", 0)
-        # Causal (1) tiene boost 1.5 sobre Functional (0)
-        if tipo == 1:
-            afinidad_base *= 1.5
+        # Modulacion por conn_type aprendido (strength continuo)
+        conn = self.conn_type.get((i, k))
+        if conn:
+            afinidad_base *= conn.get("strength", 1.0)
+            if conn.get("tipo") == 1:  # Causal boost
+                afinidad_base *= 1.5
         return afinidad_base
 
     def tick(self, n=1):
@@ -203,6 +207,19 @@ class SGMAgent:
             # La raiz (nodo 0) tiene piso 0.5 para persistencia de identidad
             if self.vitalidad[0] < 0.5:
                 self.vitalidad[0] = 0.5
+            # Poda de aristas: las conexiones no usadas se debilitan
+            poda = []
+            for clave, conn in self.conn_type.items():
+                conn["age"] = conn.get("age", 0) + 1
+                # Decaer strength si no se usa (ritmo lento: gamma, no gamma*2)
+                conn["strength"] = conn.get("strength", 1.0) * math.exp(-self.gamma)
+                if conn["strength"] < 0.05:
+                    poda.append(clave)
+            for clave in poda:
+                a, b = clave
+                self.conn_type.pop(clave, None)
+                if b in self.edges.get(a, []):
+                    self.edges[a].remove(b)
 
     def set_edges(self, edges):
         self.edges = {i: list(edges.get(i, [])) for i in range(len(self.omega))}
@@ -254,7 +271,7 @@ class SGMAgent:
         self.conteo_repeticion = 0
         self.historial_acciones = []
         for i in range(1, len(self.vitalidad)):
-            self.vitalidad[i] = max(0.3, self.vitalidad[i])
+            self.vitalidad[i] = max(0.7, self.vitalidad[i])
 
     def step(self, state_semantic, valid_actions):
         om_r = self.hdc.project(state_semantic)

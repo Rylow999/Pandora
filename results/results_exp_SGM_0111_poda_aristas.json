@@ -1,0 +1,82 @@
+{
+  "experiment_id": "exp_SGM_0111",
+  "experiment_name": "poda_aristas_reset_episodio",
+  "phase": "Auditoria \u2014 poda de aristas + reset entre vidas",
+  "date": "2026-08-06",
+  "hypothesis": "Con poda de aristas (strength decae, se eliminan si <0.05), la persistencia de omega entre vidas deja de ser toxica y el agente mejora o mantiene su exploracion entre vidas.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_vidas": 3,
+    "poda": true,
+    "gamma": 0.01
+  },
+  "result": {
+    "persistente_poda": [
+      {
+        "vida": 0,
+        "pasos": 162,
+        "tiles": 7,
+        "noop": 3.1,
+        "variedad": 5,
+        "conn": 5,
+        "vivas": 5
+      },
+      {
+        "vida": 1,
+        "pasos": 192,
+        "tiles": 15,
+        "noop": 62.0,
+        "variedad": 4,
+        "conn": 8,
+        "vivas": 8
+      },
+      {
+        "vida": 2,
+        "pasos": 166,
+        "tiles": 7,
+        "noop": 94.6,
+        "variedad": 7,
+        "conn": 13,
+        "vivas": 13
+      }
+    ],
+    "reiniciado": [
+      {
+        "vida": 0,
+        "pasos": 152,
+        "tiles": 16,
+        "noop": 0.0,
+        "variedad": 5,
+        "conn": 5
+      },
+      {
+        "vida": 1,
+        "pasos": 209,
+        "tiles": 15,
+        "noop": 2.4,
+        "variedad": 5,
+        "conn": 4
+      },
+      {
+        "vida": 2,
+        "pasos": 166,
+        "tiles": 5,
+        "noop": 16.3,
+        "variedad": 5,
+        "conn": 6
+      }
+    ],
+    "mejora_tiles_poda": 0,
+    "mejora_tiles_reiniciado": -11,
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0111_poda_aristas.py",
+  "results_file": "results/results_exp_SGM_0111_poda_aristas.json",
+  "variant_of": "exp_SGM_0109",
+  "lit_refs": [
+    "Synaptic pruning \u2014 unused connections weaken (Hebbian reversal)"
+  ],
+  "notes": "Aristas con strength continuo que decae con gamma*2. Si strength<0.05 se eliminan. Refrescar al usar (+0.2). Comparacion A/B: persistente con poda vs reiniciado.",
+  "notes_criollo": "Las conexiones que el agente no usa se debilitan solas, como un camino que se tapa si nadie lo transita. Si nadie lo usa por suficiente tiempo, desaparece. Esto deberia hacer que la memoria entre vidas ya no sea toxica \u2014 el agente recuerda lo que sirve y olvida lo que no."
+}

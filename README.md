@@ -411,6 +411,12 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - **PASS técnico: False** (noop subió 1.1%). **PASS funcional: True** — el decoder rompió el atractor (12 tiles vs 1, 6 acciones vs 4). El loop detection disparó 2 veces y forzó cambio de comportamiento.
 - **Hallazgo:** El decoder como interfaz consciente funciona. Detecta loops en el comportamiento inconsciente (PPR) y fuerza exploración. El incremento de noop es marginal (1 punto) y forma parte de la transición entre acciones.
 - **Conclusión:** El decoder L2 es el mecanismo que conecta el inconsciente (PPR) con la conciencia (detección deliberada de patrones). Es la primera vez que un mecanismo "consciente" mejora la exploración del sistema.
+
+### exp_SGM_0111 — Poda de aristas + reset entre vidas
+- **1ra corrida (poda gamma*2):** FAIL. Poda demasiado agresiva, eliminó todas las aristas. Vida 2: 100% noop, 0 vivas.
+- **2da corrida (poda gamma + vitalidad 0.7):** Mejor pero sigue FAIL. Vida 2: 94.6% noop vs 99.6% en 0109. La poda ayudó pero el problema es más profundo.
+- **Hallazgo:** El aprendizaje TD del `reward()` modifica todos los omegas en cada tick. Ese ruido acumulado entre vidas intoxica al agente. La poda de aristas no es suficiente — el omega mismo se contamina.
+- **Conclusion:** reset_episodio con persistencia de omega NO funciona, ni con poda. El agente reiniciado (sin memoria entre vidas) se comporta significativamente mejor. La memoria entre vidas requiere un mecanismo de consolidación más cuidadoso (futuro). **Para ahora, usar agente sin persistencia entre vidas.**
 - El **PPR + vitalidad + aristas aprendidas** constituyen el sistema implícito/inconsciente: operan por debajo del umbral de reportabilidad, son automáticos y asociativos.
 - El **decoder L2** (bigrama) es el candidato natural para ser la interfaz consciente: puede tomar patrones del comportamiento implícito y convertirlos en señales reportables.
 - El **ω_root** (sin bonus) es el "yo" que observa — no decide, pero recibe el estado global.
