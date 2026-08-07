@@ -381,3 +381,26 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - Auto-narrativa real (cuando el agente genere variedad)
 - Valencia afectiva — generalización por estructura HRR
 - Consciencia fenomenal: NO se toca (espera datos EEG de DSCN-BIO)
+
+---
+
+## Estado 2026-08-06 — Auditoría parte por parte (experimentos 0106-0108)
+
+### exp_SGM_0106_rev2 — Core mínimo (baseline verificado)
+- **Resultado:** 0% noop, 6 tiles explorados. PASS. El core mínimo (vitalidad + duda + contradicción + reward por novedad) produce un agente que se mueve y explora.
+- **Confirmación:** los mecanismos extra que interferían eran el bonus de raíz y la interocepción con modificación de omega_root.
+
+### exp_SGM_0107 — ω_root sin bonus
+- **Resultado:** 3.7% noop, 11 tiles explorados. PASS. ω_root con piso 0.5 pero SIN bonus de afinidad no interfiere con la exploración.
+- **Hallazgo:** la identidad puede coexistir con la exploración sin boost artificial.
+
+### exp_SGM_0108 — Aristas emergentes del uso
+- **Resultado (1ra corrida):** 0% noop, 9 tiles, pero 0 conexiones aprendidas (bug).
+- **Bug detectado:** `aprender_conexion()` comparaba `best != self.ultima_accion` DESPUÉS de que `self.ultima_accion = best` ya se había ejecutado. Siempre daba False. Corregido.
+- **2da corrida:** en progreso.
+
+### Hallazgo teórico — Inconsciente y consciente en SGM
+- El **PPR + vitalidad + aristas aprendidas** constituyen el sistema implícito/inconsciente: operan por debajo del umbral de reportabilidad, son automáticos y asociativos.
+- El **decoder L2** (bigrama) es el candidato natural para ser la interfaz consciente: puede tomar patrones del comportamiento implícito y convertirlos en señales reportables.
+- El **ω_root** (sin bonus) es el "yo" que observa — no decide, pero recibe el estado global.
+- La **duda** (check_stagnation) es la emoción que traduce una señal inconsciente (baja novedad) en un cambio de comportamiento explícito.

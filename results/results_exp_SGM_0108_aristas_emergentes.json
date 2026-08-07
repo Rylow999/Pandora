@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp_SGM_0108",
+  "experiment_name": "aristas_emergentes_uso",
+  "phase": "Auditoria \u2014 aristas tipadas por co-ocurrencia",
+  "date": "2026-08-06",
+  "hypothesis": "Las aristas tipadas que emergen del uso (co-ocurrencia de acciones) no interfieren con la exploracion y permiten que el PPR favorezca transiciones frecuentes.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "aristas_emergentes": true
+  },
+  "result": {
+    "pasos": 179,
+    "tiles": 9,
+    "noop_pct": 3.9,
+    "conexiones_aprendidas": 4,
+    "causales": 0,
+    "accion_dominante": [
+      "make_stone_sword",
+      130
+    ],
+    "status": "CONTRADICTORIA",
+    "duda": 3,
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0108_aristas_emergentes.py",
+  "results_file": "results/results_exp_SGM_0108_aristas_emergentes.json",
+  "variant_of": "exp_SGM_0107",
+  "lit_refs": [],
+  "notes": "Aristas tipadas aprendidas por co-ocurrencia. Cada vez que el agente hace una transicion A->B, se refuerza la conexion. Si ocurre >5 veces, se vuelve Causal (boost 1.5).",
+  "notes_criollo": "Las conexiones entre acciones ahora se aprenden del uso, no se asignan al azar. Si el agente siempre hace A y despues B, esa conexion se refuerza y el PPR la favorece. Es como aprender que 'si mueves la mano izquierda, luego la derecha' \u2014 no es una regla, es un patron que el sistema descubre solo."
+}

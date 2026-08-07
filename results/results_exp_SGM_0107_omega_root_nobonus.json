@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp_SGM_0107",
+  "experiment_name": "omega_root_sin_bonus",
+  "phase": "Auditoria \u2014 omega_root",
+  "date": "2026-08-06",
+  "hypothesis": "omega_root con piso de vitalidad 0.5 pero SIN bonus de afinidad no interfiere con el comportamiento exploratorio del agente.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "omega_root": true,
+    "bonus_afinidad": 0.0,
+    "piso_raiz": 0.5
+  },
+  "result": {
+    "pasos": 162,
+    "tiles": 11,
+    "noop_pct": 3.7,
+    "accion_dominante": [
+      "make_stone_sword",
+      126
+    ],
+    "status": "CONTRADICTORIA",
+    "duda": 3,
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0107_omega_root_nobonus.py",
+  "results_file": "results/results_exp_SGM_0107_omega_root_nobonus.json",
+  "variant_of": "exp_SGM_0106_rev2",
+  "lit_refs": [],
+  "notes": "omega_root agregado SIN bonus de afinidad. Solo piso de vitalidad 0.5. Si el agente se comporta igual que sin omega_root, la raiz sin bonus no interfiere.",
+  "notes_criollo": "Le pusimos un yo al sistema, pero sin darle ventaja. El yo solo existe, no empuja la balanza. Si el agente sigue moviendose como antes, significa que la identidad puede coexistir con la exploracion sin necesidad de un boost artificial."
+}

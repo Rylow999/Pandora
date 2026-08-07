@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0106",
+  "experiment_name": "baseline_limpio_sin_raiz_sin_modos",
+  "phase": "Crafter \u2014 Auditoria parte por parte",
+  "date": "2026-08-06",
+  "hypothesis": "Sin omega_root bonus, sin modos, sin conn_type al azar, el agente vuelve a tener el comportamiento de la v2 original (noop bajo, el agente se mueve).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "omega_root": false,
+    "modos": false,
+    "conn_type": false,
+    "bonus_raiz": false
+  },
+  "result": {
+    "pasos": 110,
+    "tiles_explorados": 1,
+    "noop_pct": 99.1,
+    "accion_dominante": [
+      "noop",
+      109
+    ],
+    "status_final": "CONTRADICTORIA",
+    "duda": 3,
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0106_baseline_limpio.py",
+  "results_file": "results/results_exp_SGM_0106_baseline_limpio.json",
+  "test_target": "Crafter \u2014 baseline sin mecanismos complejos",
+  "variant_of": "exp_SGM_0096",
+  "lit_refs": [],
+  "notes": "Primer paso de la auditoria. Sin omega_root bonus, sin modos, sin conn_type, sin bonus de raiz. Solo vitalidad + duda + contradiccion + reward por novedad.",
+  "notes_criollo": "Le sacamos al agente todo lo que le pusimos encima: el yo con bonus, la personalidad, los tipos de conexion. Lo dejamos como estaba en la version que funcionaba (v2, con solo duda y vitalidad). Si vuelve a moverse, el problema eran los mecanismos complejos interfiriendo. Si sigue clavado en noop, el problema es mas basico."
+}
