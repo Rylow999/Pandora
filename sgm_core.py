@@ -284,9 +284,8 @@ class SGMAgent:
                 self.estado_nodo[indice_nodo] = "HIBERNADO"
 
     def reset_episodio(self):
-        """Reset suave entre episodios: mantiene omega, resetea estado afectivo.
-        Los nodos hibernados se reactivan si su vitalidad recupera el umbral.
-        """
+        """Reset suave entre episodios: mantiene omega y modo, resetea estado afectivo."""
+        modo = self.modo_actual  # preservar modo
         self.E_acumulado = 0.0
         self.E = 0.0
         self.status = "ACTIVA"
@@ -295,13 +294,11 @@ class SGMAgent:
         self.stagnation_ticks = 0
         self.conteo_repeticion = 0
         self.historial_acciones = []
-        # La raiz se conserva intacta
-        # La vitalidad se restaura parcialmente (el sistema arranca fresco pero con memoria)
         for i in range(1, len(self.vitalidad)):
             self.vitalidad[i] = max(0.3, self.vitalidad[i])
-            # Si el nodo estaba hibernado y recupero vitalidad, reactivar
             if self.estado_nodo[i] == "HIBERNADO" and self.vitalidad[i] >= 0.3:
                 self.estado_nodo[i] = "ACTIVO"
+        self.modo_actual = modo  # restaurar modo
 
     def check_stagnation(self):
         """§2.3.2: detecta estancamiento por novedad.
