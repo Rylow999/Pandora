@@ -337,5 +337,5 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
   - **exp_SGM_0097_crafter_persistencia_vidas:** depresión aprendida. E_acumulado se arrastra entre episodios.
   - **exp_SGM_0098_omega_root:** nodo 0 como identidad persistente. Vitalidad protegida (piso 0.5). Interocepción. Bonus de afinidad en PPR.
   - **exp_SGM_0099_reset_episodio:** reset suave mantiene omega, resetea estado afectivo.
-- **sgm_core.py actualizado:** 426 líneas. Mecanismos completados: check_stagnation, handle_doubt, contradicción (θ_refut=2.0), ω_root + interocepción, reset_episodio, hibernación (θ_hibernation=0.15), trauma (κ_trauma=0.50).
-- **Próximo paso:** modos cognitivos tipados (§1.1).
+- **sgm_core.py actualizado:** 483 líneas. Mecanismos: HDC, HRR, PPR, vitalidad (γ=0.01), check_stagnation, handle_doubt, contradicción (θ_refut=2.0), ω_root + interocepción, reset_episodio, hibernación (θ_hibernation=0.15), trauma (κ_trauma=0.50), modos cognitivos tipados (SENSORIAL/RAZONAMIENTO/PLAN con boost_edges por conn_type).
+- **Próximo paso:** definir experimento de integración completa para verificar que todos los mecanismos conviven establemente.
