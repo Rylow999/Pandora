@@ -417,6 +417,13 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - **2da corrida (poda gamma + vitalidad 0.7):** Mejor pero sigue FAIL. Vida 2: 94.6% noop vs 99.6% en 0109. La poda ayudó pero el problema es más profundo.
 - **Hallazgo:** El aprendizaje TD del `reward()` modifica todos los omegas en cada tick. Ese ruido acumulado entre vidas intoxica al agente. La poda de aristas no es suficiente — el omega mismo se contamina.
 - **Conclusion:** reset_episodio con persistencia de omega NO funciona, ni con poda. El agente reiniciado (sin memoria entre vidas) se comporta significativamente mejor. La memoria entre vidas requiere un mecanismo de consolidación más cuidadoso (futuro). **Para ahora, usar agente sin persistencia entre vidas.**
+
+### exp_SGM_0112 — Decoder L2 como modelo del mundo (forward model)
+- **Episodio 1 (recolección):** 193 pasos, 11 tiles, 8 entradas en el modelo, 4 estados cuantizados. Accuracy 0.99 pero NC también 0.99 — no hay suficiente variedad para diferenciar del azar.
+- **Episodio 2 (evaluación):** 0 predicciones hechas — el agente arranca en CONTRADICTORIA (E_acum=3.28) y hace acciones distintas al episodio 1. El modelo no tiene entradas para esas transiciones.
+- **FAIL.** El modelo del mundo funciona mecánicamente pero no es útil porque: (1) pocos estados cuantizados → NC también predice bien, (2) el segundo episodio del mismo agente se comporta distinto al primero (omega contaminado por TD).
+- **Hallazgo:** el problema no es el bigrama como modelo del mundo — es que el agente no genera suficiente variedad para que el modelo tenga algo interesante que predecir. La contaminación del omega por TD entre episodios impide que el modelo del segundo episodio coincida con el primero.
+- **Conclusión:** El decoder como detector de loops (0110) funciona mejor que como modelo del mundo predictivo (0112). La diferencia: el detector de loops no necesita predecir el estado, solo detectar repetición. El modelo del mundo requiere más variedad y consistencia entre episodios.
 - El **PPR + vitalidad + aristas aprendidas** constituyen el sistema implícito/inconsciente: operan por debajo del umbral de reportabilidad, son automáticos y asociativos.
 - El **decoder L2** (bigrama) es el candidato natural para ser la interfaz consciente: puede tomar patrones del comportamiento implícito y convertirlos en señales reportables.
 - El **ω_root** (sin bonus) es el "yo" que observa — no decide, pero recibe el estado global.

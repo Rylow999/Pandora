@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_SGM_0112",
+  "experiment_name": "decoder_l2_modelo_mundo",
+  "phase": "Decoder L2 \u2014 forward model",
+  "date": "2026-08-06",
+  "hypothesis": "El decoder bigrama puede aprender transiciones (pos,accion)->pos_siguiente y predecir mejor que azar. La sorpresa (error de prediccion) genera una senal de aprendizaje.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "grid_cuant": 8,
+    "ep1_pasos": 300,
+    "ep2_pasos": 200
+  },
+  "result": {
+    "ep1": {
+      "pasos": 193,
+      "tiles": 11,
+      "transiciones": 193,
+      "modelo_entradas": 8,
+      "estados_unicos": 4,
+      "accuracy": 0.99,
+      "accuracy_nc": 0.99
+    },
+    "ep2": {
+      "pasos": 148,
+      "tiles": 1,
+      "predicciones": 0,
+      "correctas": 0,
+      "accuracy": 0.0,
+      "sorpresas": 0,
+      "pass": false
+    }
+  },
+  "script": "experiments/exp_SGM_0112_modelo_mundo.py",
+  "results_file": "results/results_exp_SGM_0112_modelo_mundo.json",
+  "variant_of": "exp_SGM_0110",
+  "lit_refs": [
+    "Forward model predicts next state (Robot Learning Part 5)",
+    "WorldCycle: world model consistency over action sequences (2026)"
+  ],
+  "notes": "Bigrama que en vez de predecir siguiente accion, predice siguiente posicion cuantizada dado (pos_actual, accion). NC: shuffle de transiciones. Episodio 2 usa el modelo para predecir y la sorpresa genera senal.",
+  "notes_criollo": "Al agente le ensenamos a imaginar. En el primer episodio recolecta lo que pasa cuando hace cada accion en cada lugar. Despues arma un modelo mental: 'si estoy aca y me muevo para abajo, voy a llegar alla'. En el segundo episodio, antes de moverse intenta predecir a donde va a llegar. Si se equivoca, se sorprende, y esa sorpresa es una senal de que ahi hay algo nuevo para aprender."
+}
