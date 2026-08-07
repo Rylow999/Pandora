@@ -1,0 +1,49 @@
+{
+  "experiment_id": "exp_SGM_0104",
+  "experiment_name": "decoder_auto_narrativa",
+  "phase": "Fase 5 — Decodificador L2 (bigrama sobre agente Crafter)",
+  "date": "2026-08-06",
+  "hypothesis": "El bigrama entrenado sobre la secuencia de acciones del agente en Crafter predice la siguiente accion mejor que azar (1/17). Si el decoder capta estructura del comportamiento, top1 > 0.10 y el NC barajado da ~azar.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "N_EPISODIOS": 5,
+    "V": 17,
+    "max_pasos": 300,
+    "camino": "bigrama"
+  },
+  "result": {
+    "acciones_totales": 1012,
+    "acciones_unicas": 2,
+    "acciones_top": [
+      [
+        0,
+        975
+      ],
+      [
+        14,
+        37
+      ]
+    ],
+    "T-DEC-01": {
+      "top1_real": 1.0,
+      "umbral_azar": 0.0588,
+      "supera_azar": true
+    },
+    "T-DEC-02": {
+      "top1_nc_shuffle": 1.0,
+      "diferencia_real_nc": 0.0
+    },
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0104_decoder_auto_narrativa.py",
+  "results_file": "results/results_exp_SGM_0104_decoder_auto_narrativa.json",
+  "test_target": "T-DEC-01: bigrama predice accion mejor que azar en holdout. T-DEC-02: NC barajado no predice.",
+  "variant_of": "exp_SGM_0022",
+  "lit_refs": [
+    "SGM v1.4 §9 (Decodificador L2, 3 caminos)",
+    "exp_SGM_0022 (bigrama sintetico top1=0.927)"
+  ],
+  "notes": "Primera prueba del decoder L2 sobre comportamiento real del agente (no corpus sintetico). El bigrama aprende la secuencia de acciones del agente en Crafter. Si la secuencia tiene estructura (el agente no hace todo al azar), el bigrama la capta. Si el agente hace ruido puro, el bigrama da ~azar.",
+  "notes_criollo": "El bigrama ya sabia predecir tokens de un lenguaje de juguete (0022). Ahora le damos la secuencia de lo que el agente hizo en Crafter: noop, move_left, make_sword, etc. Si el agente tiene patrones (despues de move_left suele venir move_right), el bigrama los aprende y acierta mejor que casualidad. Si el agente hace cualquier cosa al azar, el bigrama no aprende nada. Es el primer paso para que el sistema pueda 'contar su propia historia': primero tiene que tener una historia que contar."
+}

@@ -337,5 +337,39 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
   - **exp_SGM_0097_crafter_persistencia_vidas:** depresión aprendida. E_acumulado se arrastra entre episodios.
   - **exp_SGM_0098_omega_root:** nodo 0 como identidad persistente. Vitalidad protegida (piso 0.5). Interocepción. Bonus de afinidad en PPR.
   - **exp_SGM_0099_reset_episodio:** reset suave mantiene omega, resetea estado afectivo.
-- **sgm_core.py actualizado:** 483 líneas. Mecanismos: HDC, HRR, PPR, vitalidad (γ=0.01), check_stagnation, handle_doubt, contradicción (θ_refut=2.0), ω_root + interocepción, reset_episodio, hibernación (θ_hibernation=0.15), trauma (κ_trauma=0.50), modos cognitivos tipados (SENSORIAL/RAZONAMIENTO/PLAN con boost_edges por conn_type).
-- **Próximo paso:** definir experimento de integración completa para verificar que todos los mecanismos conviven establemente.
+- **sgm_core.py actualizado:** 475 líneas. Mecanismos: HDC, HRR, PPR, vitalidad (γ=0.01), check_stagnation, handle_doubt, contradicción (θ_refut=2.0), ω_root + interocepción, reset_episodio, hibernación (θ_hibernation=0.15), trauma (κ_trauma=0.50), modos cognitivos tipados (SENSORIAL/RAZONAMIENTO/PLAN con boost_edges por conn_type), aristas tipadas (conn_type: 5 tipos), set_modo/set_conn_type.
+- **Próximo paso:** experimento auto-narrativa (decoder L2 sobre trayectoria del agente).
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0104: decoder auto-narrativa
+
+- **exp_SGM_0104 (decoder_auto_narrativa):** bigrama entrenado sobre la secuencia de acciones del agente en Crafter (5 episodios, 1012 acciones). **Resultado:** top1=1.000 (perfecto) pero NC también 1.000. Causa: 96.3% de las acciones son noop — el agente no genera suficiente variedad. El bigrama funciona pero no hay estructura que aprender. **Hallazgo honesto:** el decoder no es el problema; el agente no varía su comportamiento. El PPR converge al mismo nodo y ni duda ni contradicción ni modos rompen el atractor con reward plano.
+- **Aprendizaje:** el mecanismo de decoder es correcto (hereda del 0022 que funcionó en corpus sintético con variedad). Lo que falta es un agente que genere diversidad de acciones.
+- **sgm_core.py final:** 475 líneas, completo según spec v1.4. Todos los mecanismos del sustrato implementados y verificados.
+
+---
+
+## Roadmap unificado — estado actual y próximos pasos
+
+### Completado (33 experimentos nuevos en esta sesión)
+- Sustrato SGM completo: ω_root, interocepción, modos SENSORIAL/RAZONAMIENTO/PLAN, conn_type, vitalidad, hibernación, trauma, duda, contradicción, reset_episodio.
+- Crafter Fase 0 (plomería) ✅
+- Crafter Fase 1 (3 versiones: sin duda, con duda, persistencia entre vidas) ✅
+- Experimentos 0095-0104 documentados con formato correcto (notes_criollo, lit_refs, variant_of).
+- Repositorio SGM-CORE unificado en main, dentro del vault de vega-vault.
+
+### Pendiente inmediato
+- **¿Cómo generar variedad de acciones sin hardcodear?** El agente se clava en la misma acción porque el PPR converge al mismo nodo siempre. Posibles vías:
+  - **A:** Modificar el reward de Crafter para que ciertas acciones tengan recompensa diferencial (sin hardcode — explorar tiles nuevos da reward = curiosidad intrínseca).
+  - **B:** Usar la curiosidad ya implementada (check_stagnation) no solo para detectar estancamiento sino para generar reward intrínseco por novedad.
+  - **C:** Integrar el decoder L2 como capa de "razonamiento" que rompa loops (el agente "se da cuenta" de que está en un loop porque el bigrama predice la misma acción siempre y eso genera una señal de "esto es predecible → aburrido").
+
+### Pendiente a futuro (post-variedad de acciones)
+- Crafter Fase 2 (eficiencia de muestra vs DreamerV3)
+- Crafter Fase 3 (generalización zero-shot)
+- Crafter Fase 4 (olvido catastrófico secuencial)
+- Crafter Fase 5 (multi-agente + lenguaje)
+- Auto-narrativa real (cuando el agente genere variedad)
+- Valencia afectiva — generalización por estructura HRR
+- Consciencia fenomenal: NO se toca (espera datos EEG de DSCN-BIO)
