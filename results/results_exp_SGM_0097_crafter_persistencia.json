@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp_SGM_0097",
+  "experiment_name": "crafter_persistencia_vidas",
+  "phase": "Crafter Fase 1 — Persistencia entre vidas",
+  "date": "2026-08-06",
+  "hypothesis": "Si el agente conserva omega (memoria) entre episodios en lugar de resetearse, deberia aprender de sus errores pasados y mejorar su desempeno con cada vida.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "gamma": 0.01,
+    "n_vidas": 5,
+    "max_pasos_por_vida": 300,
+    "persistencia": "omega, vitalidad, E_acumulado, status, doubt_count se conservan entre vidas",
+    "reset_mundo": "env.reset() entre vidas (mundo nuevo, agente viejo)"
+  },
+  "result": {
+    "vida_0": {"pasos": 160, "reward": -0.90, "health": 2, "variedad": 9, "status": "CONTRADICTORIA"},
+    "vida_1": {"pasos": 38, "reward": -0.90, "health": 2, "variedad": 7, "status": "CONTRADICTORIA"},
+    "vida_2": {"pasos": 219, "reward": -0.90, "health": 2, "variedad": 7, "status": "CONTRADICTORIA"},
+    "vida_3": {"pasos": 209, "reward": -0.90, "health": 1, "variedad": 1, "status": "CONTRADICTORIA"},
+    "vida_4": {"pasos": 203, "reward": -0.90, "health": 1, "variedad": 1, "status": "CONTRADICTORIA"},
+    "tendencia": "empeora — variedad cae de 9 a 1, se clava en noop",
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0098_crafter_persistencia.py",
+  "results_file": "results/results_multiples_vidas.json",
+  "test_target": "Crafter — persistencia de memoria entre episodios",
+  "variant_of": "exp_SGM_0096",
+  "lit_refs": ["Seligman 1972, Learned Helplessness", "SGM v1.4 §4.3 (hibernacion)"],
+  "notes": "La persistencia entre vidas EMPEORA al agente. E_acumulado alto de la vida anterior envenena la siguiente: el agente arranca cada vida ya convencido de que todo duele, y elige noop. Es depresion aprendida (learned helplessness). Solucion: reset suave entre vidas (E_acum=0, status=ACTIVA, doubt_count=0) manteniendo omega.",
+  "notes_criollo": "El agente se deprimio. Aprendio que haga lo que haga, se muere. Y esa leccion la arrastra a la vida siguiente. Es como si un bebe naciera con el trauma de su vida pasada intacto. No puede aprender porque ya esta convencido de que no hay salida. La solucion no es borrarle la memoria, es permitirle arrancar fresco pero con conocimiento: recordar lo que funciono, no lo que doliO."
+}

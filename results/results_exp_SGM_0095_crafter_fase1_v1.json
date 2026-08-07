@@ -1,0 +1,36 @@
+{
+  "experiment_id": "exp_SGM_0095",
+  "experiment_name": "crafter_fase1_v1_baseline",
+  "phase": "Crafter Fase 1 — Baseline (sin duda/contradiccion)",
+  "date": "2026-08-06",
+  "hypothesis": "El agente SGMAgent con PPR + vitalidad gamma=0.01 (sin check_stagnation ni handle_doubt) mostrara comportamiento exploratorio en Crafter, sin quedarse clavado en una sola accion.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "gamma": 0.01,
+    "check_stagnation": false,
+    "handle_doubt": false,
+    "theta_novelty": null,
+    "theta_refut": null,
+    "n_episodios": 10,
+    "max_pasos_por_vida": 300,
+    "entorno": "Crafter 1.8.3"
+  },
+  "result": {
+    "steps_promedio": 171.6,
+    "reward_promedio": -0.89,
+    "health_final_promedio": 0.1,
+    "episodios_con_logros": 0,
+    "accion_dominante": "noop 78.5%",
+    "segunda_accion": "move_down 14.6%",
+    "patron_observado": "agente clavado en noop, no explora, no come, no crafting significativo",
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0095_crafter_fase1_v1.py",
+  "results_file": "results/results_fase1.json",
+  "test_target": "Crafter Fase 1 — baseline de comportamiento",
+  "variant_of": null,
+  "lit_refs": ["Hafner 2021, Crafter benchmark"],
+  "notes": "Primera corrida de SGMAgent (sin duda) en Crafter. El agente se clava en noop (78.5% de las acciones). No hay mecanismo de estancamiento que lo empuje a explorar.",
+  "notes_criollo": "El agente se queda mirando la pared. Hace noop una y otra vez porque el PPR converge al mismo nodo y no hay nada que lo mueva. Sin duda ni dolor acumulado, no tiene por que cambiar de opinion. Es como estar en una habitacion y no aburrirse nunca."
+}

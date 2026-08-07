@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_SGM_0096",
+  "experiment_name": "crafter_fase1_v2_duda_contradiccion",
+  "phase": "Crafter Fase 1 — Baseline con duda+contradiccion",
+  "date": "2026-08-06",
+  "hypothesis": "Integrar check_stagnacion y handle_doubt en SGMAgent hara que el agente explore mas (menos noop, mas acciones diversas) al poder detectar cuando esta estancado y cambiar de estrategia.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "gamma": 0.01,
+    "check_stagnation": true,
+    "handle_doubt": true,
+    "theta_novelty": 0.30,
+    "min_duration": 5,
+    "theta_refut": 2.0,
+    "n_episodios": 1,
+    "max_pasos": 300,
+    "entorno": "Crafter 1.8.3"
+  },
+  "result": {
+    "pasos": 197,
+    "reward_total": -0.90,
+    "health_final": 2,
+    "accion_dominante": "eat 59.4%",
+    "noop": "0% (eliminado)",
+    "crafting": "33% (make_stone_sword, make_stone_pickaxe, make_iron_pickaxe)",
+    "duda_escalada": "3 intentos (relax->relaunch->abandon en pasos 8-26)",
+    "contradiccion": "Si, E_acum=2.105 en paso 196",
+    "estancamientos": 171,
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0096_crafter_fase1_v2.py",
+  "results_file": "results/results_fase1.json (v2)",
+  "test_target": "Crafter Fase 1 — validacion de mecanismo de duda+contradiccion",
+  "variant_of": "exp_SGM_0095",
+  "lit_refs": ["SGM v1.4 2.3.2 (estancamiento/duda)", "SGM v1.4 2.3.1 (contradiccion/dolor)"],
+  "notes": "Segunda corrida con check_stagnation y handle_doubt integrados en step(). El cambio es drasticos: 0% noop, 59.4% eat, 33% crafting. La duda escala correctamente. La contradiccion se dispara al final (E_acum > 2.0).",
+  "notes_criollo": "Ponerle aburrimiento al agente cambio todo. Cuando se estanca, duda, y la duda lo empuja a probar otra cosa. Ahora come cuando tiene hambre (59% del tiempo) y hasta intenta craftear. Pero no es suficiente: come, come, come, y eventualmente se muere porque la comida se acaba y no tiene herramientas para conseguir mas. Como una rata que aprendio que apretar una palanca da comida, pero nunca aprendio a hacer una palanca mejor."
+}

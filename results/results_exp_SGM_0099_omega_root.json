@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_SGM_0099",
+  "experiment_name": "omega_root",
+  "phase": "Sustrato — Identidad persistente",
+  "date": "2026-08-06",
+  "hypothesis": "Un nodo raiz (indice 0) con vitalidad protegida y actualizacion por interocepcion (health, food, energia -> omega_root_intero) provee una identidad persistente que no se pierde entre resets de episodio.",
+  "config": {
+    "D": 64,
+    "N_NODES": 8,
+    "gamma": 0.01,
+    "piso_vitalidad_raiz": 0.5,
+    "bonus_afinidad_raiz": 0.7
+  },
+  "result": {
+    "vitalidad_raiz_tras_500_ticks": 0.5,
+    "vitalidad_nodo_normal_tras_500_ticks": 0.05,
+    "omega_root_modificado_por_interocepcion": true,
+    "omega_root_intero_poblado": "55/64 valores no-cero",
+    "reset_episodio_mantiene_omega": true,
+    "step_con_raiz_funciona": true,
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0099_omega_root.py",
+  "results_file": null,
+  "test_target": "§3.2 — ω_root persistente + interocepcion",
+  "variant_of": null,
+  "lit_refs": ["SGM v1.4 §3.2 (interocepcion)", "SGM v1.4 §4.3 (identidad persistente)"],
+  "notes": "La raiz (nodo 0) tiene piso de vitalidad 0.5, no hiberna jamas, y se actualiza con interocepcion (health, food, energia -> omega_root_intero). El reset entre episodios mantiene omega intacto. La afinidad de la raiz tiene un bonus de 30% en el calculo del seed del PPR, haciendo que el sistema prefiera mantenerse coherente consigo mismo.",
+  "notes_criollo": "El sistema ahora tiene un yo. Un nucleo que no se muere aunque los nodos de accion se apaguen. La raiz es como la conciencia de uno mismo: cambia con el estado del cuerpo (si tengo hambre, me siento distinto) pero no desaparece cuando me duermo. El bonus de afinidad hace que el sistema tienda a actuar de forma coherente con quien es, no a saltar de personalidad en cada paso."
+}

@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp_SGM_0102",
+  "experiment_name": "hibernacion_trauma",
+  "phase": "Sustrato — Hibernacion por vitalidad baja",
+  "date": "2026-08-06",
+  "hypothesis": "Nodos con vitalidad por debajo de theta_hibernation (0.15) deben hibernar (dejar de participar en PPR) sin ser eliminados. Trauma (fracaso de plan) debe reducir vitalidad en kappa_trauma=0.50 y poder llevar a hibernacion. Nodos hibernados deben poder reactivarse si su vitalidad se recupera.",
+  "config": {
+    "D": 64,
+    "N_NODES": 8,
+    "gamma": 0.01,
+    "theta_hibernation": 0.15,
+    "kappa_trauma": 0.50,
+    "umbral_reactivacion": 0.3
+  },
+  "result": {
+    "hibernacion_por_decaimiento": true,
+    "nodos_hibernados_tras_200_ticks": 7,
+    "raiz_nunca_hiberna": true,
+    "afinidad_nodo_hibernado": 0.0,
+    "trauma_reduce_vitalidad": true,
+    "trauma_repetido_lleva_a_hibernacion": true,
+    "reset_reactiva_hibernados": true,
+    "step_con_hibernados_no_rompe": true,
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0102_hibernacion.py",
+  "results_file": null,
+  "test_target": "§4.3 — Hibernacion traumatica + reactivacion condicional",
+  "variant_of": null,
+  "lit_refs": ["SGM v1.4 §4.3 (hibernacion)", "SGM v1.4 §4.1 (trauma por fracaso de plan)"],
+  "notes": "Hibernacion implementada: nodos con V < theta_hibernation=0.15 se marcan HIBERNADOS y su afinidad en PPR es 0. Trauma (aplicar_trauma) reduce V *= (1-0.50) = V*0.5. La raiz nunca hiberna (piso 0.5). Reset_episodio reactiva hibernados cuya vitalidad se recupera a >= 0.3.",
+  "notes_criollo": "Los nodos ahora pueden 'morirse de cansancio' en vez de desaparecer. Si un concepto no se usa nunca, su vitalidad baja hasta que hiberna: no molesta, no participa, pero sigue ahi. Si despues se vuelve relevante, se reactiva. Es como una memoria vieja: no la perdes, solo dejas de usarla. El trauma es mas brusco: si un plan falla feo, el nodo pierde la mitad de su vitalidad de golpe. Es un golpe duro, pero no lo mata — lo deja knockeado, recuperable."
+}
