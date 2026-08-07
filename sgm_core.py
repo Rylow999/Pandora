@@ -187,6 +187,23 @@ class SGMAgent:
         self.estado_nodo = ["ACTIVO" for _ in range(n_nodes)]
         self.theta_hibernation = 0.15  # θ_hibernation: por debajo de esto, el nodo hiberna
         self.kappa_trauma = 0.50       # κ_trauma: fraccion de vitalidad perdida por trauma
+        # Modos cognitivos tipados (§1.1): vector de sesgos que modifica afinidad
+        # sin cambiar la estructura del grafo
+        self.modo_actual = "DEFAULT"  # DEFAULT, SENSORIAL, RAZONAMIENTO, PLAN
+        self.modo_params = {
+            "SENSORIAL": {
+                "boost": 2.0, "K": 5, "W_base": 8, "lam": 2.0, "theta_interf": 0.60, "alpha_eff": 8.0, "D_eff": 64, "T_reason": 10
+            },
+            "RAZONAMIENTO": {
+                "boost": 2.0, "K": 20, "W_base": 50, "lam": 5.0, "theta_interf": 0.85, "alpha_eff": 5.0, "D_eff": 384, "T_reason": 50
+            },
+            "PLAN": {
+                "boost": 2.0, "K": 10, "W_base": 100, "lam": 3.0, "theta_interf": 0.75, "alpha_eff": 4.0, "D_eff": 1536, "T_reason": 100
+            }
+        }
+        # conn_type: por defecto, todas las aristas son "Functional"
+        # 0=Functional, 1=Causal, 2=Temporal, 3=Cognitive, 4=Terminal
+        self.conn_type = {}  # {(i,k): tipo}
 
     def actualizar_interocepcion(self, health, food, energia=0.5):
         """§3.2: ω_root_intero codifica el estado interno del sistema.
@@ -217,7 +234,21 @@ class SGMAgent:
         # Nodos hibernados no participan en el PPR (afinidad 0)
         if self.estado_nodo[k] == "HIBERNADO":
             return 0.0
-        return self.hrr.cos(self.omega[i], self.omega[k]) * self.vitalidad[k]
+        # Boost por conn_type segun modo activo (§1.1)
+        boost = 1.0
+        if self.modo_actual != "DEFAULT":
+            tipo = self.conn_type.get((i, k), 0)  # 0=Functional por defecto
+            modo = self.modo_actual
+            params = self.modo_params.get(modo, {})
+            # Mapeo de conn_type a boost segun tabla §1.2
+            # 0=Functional, 1=Causal, 2=Temporal, 3=Cognitive, 4=Terminal
+            boost_map = {
+                "SENSORIAL": {0: 1.0, 1: 0.8, 2: 1.0, 3: 0.8, 4: 2.0},
+                "RAZONAMIENTO": {0: 1.5, 1: 2.0, 2: 1.2, 3: 2.0, 4: 0.8},
+                "PLAN": {0: 2.0, 1: 1.2, 2: 2.0, 3: 1.0, 4: 0.8},
+            }
+            boost = boost_map.get(modo, {}).get(tipo, 1.0)
+        return self.hrr.cos(self.omega[i], self.omega[k]) * self.vitalidad[k] * boost
 
     def tick(self, n=1):
         """Avanza n ticks: decaimiento de vitalidad + hibernacion."""
@@ -332,8 +363,26 @@ class SGMAgent:
     def set_edges(self, edges):
         self.edges = {i: list(edges.get(i, [])) for i in range(len(self.omega))}
         self.rel = self.hrr.relational_memory(self.edges, self.omega)
+        # Inicializar conn_type como Functional (0) para todas las aristas
+        for i in self.edges:
+            for k in self.edges[i]:
+                self.conn_type[(i, k)] = 0
 
-    def step(self, state_semantic, valid_actions, mode="hrr"):
+    def set_conn_type(self, i, k, tipo):
+        """Asigna tipo de conexion entre nodos i y k.
+        0=Functional, 1=Causal, 2=Temporal, 3=Cognitive, 4=Terminal"""
+        self.conn_type[(i, k)] = tipo
+
+    def set_modo(self, modo):
+        """Cambia el modo cognitivo activo: DEFAULT, SENSORIAL, RAZONAMIENTO, PLAN"""
+        if modo in ("DEFAULT", "SENSORIAL", "RAZONAMIENTO", "PLAN"):
+            self.modo_actual = modo
+
+    def step(self, state_semantic, valid_actions, modo="DEFAULT"):
+        # Establecer modo para esta llamada
+        if modo in ("DEFAULT", "SENSORIAL", "RAZONAMIENTO", "PLAN"):
+            self.modo_actual = modo
+        
         om_r = self.hdc.project(state_semantic)
         
         # El seed del PPR ahora se calcula considerando TAMBIEN la raiz
