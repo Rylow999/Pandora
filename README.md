@@ -359,7 +359,15 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - Experimentos 0095-0104 documentados con formato correcto (notes_criollo, lit_refs, variant_of).
 - Repositorio SGM-CORE unificado en main, dentro del vault de vega-vault.
 
-### Pendiente inmediato
+### Pendiente inmediato — Auditoría parte por parte
+- **Hallazgo crítico (post-literatura 2026):** El bonus de ω_root (30%) es hardcode, no emerge del sustrato. Las aristas tipadas al azar no tienen significado (el tipo de conexión debe emerger del binding HRR, no asignarse). Ambos mecanismos están interfiriendo con el comportamiento básico del agente.
+- **Plan de acción:** Volver al baseline que funcionaba (sin ω_root, sin conn_type, sin bonus de raíz) y agregar mecanismos de a uno, con NC, midiendo si mejoran o empeoran.
+  - **exp_SGM_0106:** Baseline limpio — solo vitalidad + duda + contradicción + reward por novedad. Sin ω_root, sin modos, sin conn_type, sin bonus.
+  - **exp_SGM_0107:** Agregar ω_root (SIN bonus de afinidad). ¿Mejora o empeora?
+  - **exp_SGM_0108:** Agregar modos con aristas reales (no al azar — aristas definidas por binding HRR entre nodos).
+  - **exp_SGM_0109:** Agregar reset_episodio con persistencia de omega entre vidas.
+  - **exp_SGM_0110:** Agregar decoder L2 como detector de loops.
+- **Cada experimento:** un cambio por vez, un episodio, documentación con notes_criollo, NC explícito.
 - **¿Cómo generar variedad de acciones sin hardcodear?** El agente se clava en la misma acción porque el PPR converge al mismo nodo siempre. Posibles vías:
   - **A:** Modificar el reward de Crafter para que ciertas acciones tengan recompensa diferencial (sin hardcode — explorar tiles nuevos da reward = curiosidad intrínseca).
   - **B:** Usar la curiosidad ya implementada (check_stagnation) no solo para detectar estancamiento sino para generar reward intrínseco por novedad.

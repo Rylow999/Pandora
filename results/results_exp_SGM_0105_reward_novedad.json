@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_SGM_0105",
+  "experiment_name": "reward_novedad_decoder_antiloop",
+  "phase": "Crafter \u2014 Reward intrinseco + decoder anti-loop",
+  "date": "2026-08-06",
+  "hypothesis": "Reward intrinseco por tiles nuevos + decoder que detecta loops y baja vitalidad del nodo repetido rompe el comportamiento monotono (noop) y genera exploracion.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "ventana_decoder": 50,
+    "tope_loop": 5
+  },
+  "result": {
+    "pasos": 187,
+    "tiles_explorados": 1,
+    "accion_dominante": [
+      "noop",
+      150
+    ],
+    "variedad_acciones": 2,
+    "loops_detectados": 2,
+    "recompensas_novedad": 1,
+    "status_final": "CONTRADICTORIA"
+  },
+  "script": "experiments/exp_SGM_0105_reward_novedad.py",
+  "results_file": "results/results_exp_SGM_0105_reward_novedad.json",
+  "test_target": "Crafter \u2014 variedad de acciones con reward intrinseco + decoder anti-loop",
+  "notes": "Reward intrinseco por tiles nuevos + decoder bigrama que detecta cuando el agente se repite y baja la vitalidad del nodo actual para forzar exploracion.",
+  "notes_criollo": "Le dimos dos herramientas al agente para que no se clave: (1) descubrir un lugar nuevo da una pequena recompensa, como la curiosidad de un nino que explora porque es divertido, no porque tenga que hacerlo. (2) Un modelo interno (decoder) que se da cuenta cuando esta haciendo siempre lo mismo y le baja las pilas a esa accion para que pruebe otra. Es como aburrirte de estar sentado y levantarte a hacer otra cosa."
+}
