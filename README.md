@@ -397,7 +397,13 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 ### exp_SGM_0108 — Aristas emergentes del uso
 - **Resultado (1ra corrida):** 0% noop, 9 tiles, pero 0 conexiones aprendidas (bug).
 - **Bug detectado:** `aprender_conexion()` comparaba `best != self.ultima_accion` DESPUÉS de que `self.ultima_accion = best` ya se había ejecutado. Siempre daba False. Corregido.
-- **2da corrida:** en progreso.
+- **2da corrida (bug corregido):** 3.9% noop, 9 tiles, 4 conexiones aprendidas (todas Functional, ninguna Causal todavía). 8.9% eat — el agente está comiendo. PASS.
+
+### exp_SGM_0109 — Reset episodio (persistencia entre vidas)
+- **Resultado:** El agente persistente EMPEORA con cada vida (12.2% → 99.6% noop). El agente reiniciado se mantiene estable (0% → 25.8% noop). FAIL.
+- **Hallazgo:** La persistencia de omega acumula conexiones (8 → 12) que refuerzan un atractor y paralizan al agente. Sin poda de conexiones, el aprendizaje acumulado es tóxico.
+- **NC:** El agente reiniciado (sin memoria entre vidas) se comporta mejor que el persistente. La memoria, sin mecanismo de decaimiento de aristas, perjudica.
+- **Conclusión:** reset_episodio necesita poda de conexiones (aristas no usadas se debilitan como la vitalidad). A implementar en futuro.
 
 ### Hallazgo teórico — Inconsciente y consciente en SGM
 - El **PPR + vitalidad + aristas aprendidas** constituyen el sistema implícito/inconsciente: operan por debajo del umbral de reportabilidad, son automáticos y asociativos.

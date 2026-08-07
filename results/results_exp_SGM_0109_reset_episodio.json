@@ -1,0 +1,165 @@
+{
+  "experiment_id": "exp_SGM_0109",
+  "experiment_name": "reset_episodio_persistencia",
+  "phase": "Auditoria \u2014 reset_episodio entre vidas",
+  "date": "2026-08-06",
+  "hypothesis": "El agente con reset_episodio (omega persistente) acumula conexiones aprendidas entre vidas y explora mas que el agente reiniciado.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "n_vidas": 3
+  },
+  "result": {
+    "persistente": [
+      {
+        "vida": 0,
+        "pasos": 238,
+        "tiles": 6,
+        "noop_pct": 12.2,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "E_acum": 5.95,
+        "conexiones": 8,
+        "top3": [
+          [
+            "move_left",
+            178
+          ],
+          [
+            "noop",
+            29
+          ],
+          [
+            "make_stone_pickaxe",
+            18
+          ]
+        ]
+      },
+      {
+        "vida": 1,
+        "pasos": 144,
+        "tiles": 1,
+        "noop_pct": 41.7,
+        "status": "INCONCLUSA",
+        "duda": 3,
+        "E_acum": 1.375,
+        "conexiones": 10,
+        "top3": [
+          [
+            "make_stone_sword",
+            84
+          ],
+          [
+            "noop",
+            60
+          ]
+        ]
+      },
+      {
+        "vida": 2,
+        "pasos": 272,
+        "tiles": 2,
+        "noop_pct": 99.6,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "E_acum": 7.6,
+        "conexiones": 12,
+        "top3": [
+          [
+            "noop",
+            271
+          ],
+          [
+            "move_down",
+            1
+          ]
+        ]
+      }
+    ],
+    "reiniciado": [
+      {
+        "vida": 0,
+        "pasos": 183,
+        "tiles": 6,
+        "noop_pct": 0.0,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "E_acum": 3.775,
+        "conexiones": 3,
+        "top3": [
+          [
+            "move_down",
+            140
+          ],
+          [
+            "place_table",
+            22
+          ],
+          [
+            "sleep",
+            18
+          ]
+        ]
+      },
+      {
+        "vida": 1,
+        "pasos": 199,
+        "tiles": 7,
+        "noop_pct": 0.0,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "E_acum": 3.18,
+        "conexiones": 3,
+        "top3": [
+          [
+            "place_table",
+            173
+          ],
+          [
+            "place_furnace",
+            10
+          ],
+          [
+            "make_iron_pickaxe",
+            10
+          ]
+        ]
+      },
+      {
+        "vida": 2,
+        "pasos": 236,
+        "tiles": 3,
+        "noop_pct": 25.8,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "E_acum": 4.3,
+        "conexiones": 3,
+        "top3": [
+          [
+            "place_furnace",
+            173
+          ],
+          [
+            "noop",
+            61
+          ],
+          [
+            "move_down",
+            2
+          ]
+        ]
+      }
+    ],
+    "mejora_tiles_persistente": -4,
+    "mejora_tiles_reiniciado": -3
+  },
+  "script": "experiments/exp_SGM_0109_reset_episodio.py",
+  "results_file": "results/results_exp_SGM_0109_reset_episodio.json",
+  "variant_of": "exp_SGM_0108",
+  "lit_refs": [
+    "Implicit memory \u2014 procedural memory persists across episodes (Wikipedia)"
+  ],
+  "notes": "Comparacion A/B: agente con omega persistente vs agente reiniciado. 3 vidas cada uno.",
+  "notes_criollo": "Le dimos 3 vidas al agente. En unas mantiene la memoria entre vidas (como recordar lo que aprendiste ayer) y en otras arranca de cero cada vez. Si la memoria ayuda, deberia explorar mas y aprender mas conexiones con cada vida."
+}
