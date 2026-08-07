@@ -185,25 +185,16 @@ class SGMAgent:
         self.omega_root_intero = [0.0] * D
         # Estado por nodo: "ACTIVO", "HIBERNADO"
         self.estado_nodo = ["ACTIVO" for _ in range(n_nodes)]
-        self.theta_hibernation = 0.15  # θ_hibernation: por debajo de esto, el nodo hiberna
-        self.kappa_trauma = 0.50       # κ_trauma: fraccion de vitalidad perdida por trauma
-        # Modos cognitivos tipados (§1.1): vector de sesgos que modifica afinidad
-        # sin cambiar la estructura del grafo
-        self.modo_actual = "DEFAULT"  # DEFAULT, SENSORIAL, RAZONAMIENTO, PLAN
+        self.theta_hibernation = 0.15
+        self.kappa_trauma = 0.50
+        # Modos cognitivos tipados
+        self.modo_actual = "DEFAULT"
         self.modo_params = {
-            "SENSORIAL": {
-                "boost": 2.0, "K": 5, "W_base": 8, "lam": 2.0, "theta_interf": 0.60, "alpha_eff": 8.0, "D_eff": 64, "T_reason": 10
-            },
-            "RAZONAMIENTO": {
-                "boost": 2.0, "K": 20, "W_base": 50, "lam": 5.0, "theta_interf": 0.85, "alpha_eff": 5.0, "D_eff": 384, "T_reason": 50
-            },
-            "PLAN": {
-                "boost": 2.0, "K": 10, "W_base": 100, "lam": 3.0, "theta_interf": 0.75, "alpha_eff": 4.0, "D_eff": 1536, "T_reason": 100
-            }
+            "SENSORIAL": {"boost": 2.0, "K": 5, "W_base": 8, "lam": 2.0, "theta_interf": 0.60, "alpha_eff": 8.0, "D_eff": 64, "T_reason": 10},
+            "RAZONAMIENTO": {"boost": 2.0, "K": 20, "W_base": 50, "lam": 5.0, "theta_interf": 0.85, "alpha_eff": 5.0, "D_eff": 384, "T_reason": 50},
+            "PLAN": {"boost": 2.0, "K": 10, "W_base": 100, "lam": 3.0, "theta_interf": 0.75, "alpha_eff": 4.0, "D_eff": 1536, "T_reason": 100}
         }
-        # conn_type: por defecto, todas las aristas son "Functional"
-        # 0=Functional, 1=Causal, 2=Temporal, 3=Cognitive, 4=Terminal
-        self.conn_type = {}  # {(i,k): tipo}
+        self.conn_type = {}
 
     def actualizar_interocepcion(self, health, food, energia=0.5):
         """§3.2: ω_root_intero codifica el estado interno del sistema.
