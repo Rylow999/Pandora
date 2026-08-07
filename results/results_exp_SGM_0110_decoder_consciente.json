@@ -1,0 +1,42 @@
+{
+  "experiment_id": "exp_SGM_0110",
+  "experiment_name": "decoder_l2_interfaz_consciente",
+  "phase": "Auditoria \u2014 decoder como interfaz consciente",
+  "date": "2026-08-06",
+  "hypothesis": "El decoder bigrama detecta loops en el comportamiento del agente y genera una seal que rompe el atractor, aumentando la variedad de acciones comparado con un agente sin decoder.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "reward_novedad": 0.1,
+    "ventana_decoder": 50,
+    "check_cada": 10,
+    "tope_loop": 5
+  },
+  "result": {
+    "con_decoder": {
+      "pasos": 161,
+      "tiles": 12,
+      "noop_pct": 5.0,
+      "variedad": 6,
+      "loops": 2,
+      "status": "CONTRADICTORIA"
+    },
+    "sin_decoder_nc": {
+      "pasos": 152,
+      "tiles": 1,
+      "noop_pct": 3.9,
+      "variedad": 4,
+      "status": "CONTRADICTORIA"
+    },
+    "pass": false
+  },
+  "script": "experiments/exp_SGM_0110_decoder_consciente.py",
+  "results_file": "results/results_exp_SGM_0110_decoder_consciente.json",
+  "variant_of": "exp_SGM_0108",
+  "lit_refs": [
+    "CLARION dual-level: implicit/explicit cognition",
+    "Unconscious cognition - implicit processing Wikipedia"
+  ],
+  "notes": "Decoder bigrama como capa explicita (consciente) que observa el comportamiento implicito (PPR) y detecta loops. Al detectar loop, baja vitalidad del nodo repetido.",
+  "notes_criollo": "El decoder es como el consciente mirando lo que hace el inconsciente. Si el inconsciente se queda pegado haciendo siempre lo mismo (loop), el consciente se da cuenta y lo sacude bajandole las pilas a esa accion. Es como aburrirte de rascarte la cabeza y decidir hacer otra cosa."
+}

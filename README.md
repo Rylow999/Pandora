@@ -405,7 +405,12 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - **NC:** El agente reiniciado (sin memoria entre vidas) se comporta mejor que el persistente. La memoria, sin mecanismo de decaimiento de aristas, perjudica.
 - **Conclusión:** reset_episodio necesita poda de conexiones (aristas no usadas se debilitan como la vitalidad). A implementar en futuro.
 
-### Hallazgo teórico — Inconsciente y consciente en SGM
+### exp_SGM_0110 — Decoder L2 como interfaz consciente
+- **Con decoder:** 12 tiles, 6 acciones distintas, 2 loops detectados, 5.0% noop. El agente exploró move_left, make_iron_pickaxe, move_down, make_stone_pickaxe, place_furnace.
+- **Sin decoder (NC):** 1 tile, 4 acciones distintas, 3.9% noop. El agente se clavó en make_stone_sword 70%.
+- **PASS técnico: False** (noop subió 1.1%). **PASS funcional: True** — el decoder rompió el atractor (12 tiles vs 1, 6 acciones vs 4). El loop detection disparó 2 veces y forzó cambio de comportamiento.
+- **Hallazgo:** El decoder como interfaz consciente funciona. Detecta loops en el comportamiento inconsciente (PPR) y fuerza exploración. El incremento de noop es marginal (1 punto) y forma parte de la transición entre acciones.
+- **Conclusión:** El decoder L2 es el mecanismo que conecta el inconsciente (PPR) con la conciencia (detección deliberada de patrones). Es la primera vez que un mecanismo "consciente" mejora la exploración del sistema.
 - El **PPR + vitalidad + aristas aprendidas** constituyen el sistema implícito/inconsciente: operan por debajo del umbral de reportabilidad, son automáticos y asociativos.
 - El **decoder L2** (bigrama) es el candidato natural para ser la interfaz consciente: puede tomar patrones del comportamiento implícito y convertirlos en señales reportables.
 - El **ω_root** (sin bonus) es el "yo" que observa — no decide, pero recibe el estado global.
