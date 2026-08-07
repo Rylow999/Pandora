@@ -1,0 +1,81 @@
+{
+  "experiment_id": "exp_SGM_0031b",
+  "experiment_name": "tick_stress_crossgraph_denso",
+  "phase": "Composicion Relacional (Gap 2) - estres DENSO + D bajo (regimen Crafter)",
+  "date": "2026-08-04",
+  "hypothesis": "El plan cruzado HRR+roles aguanta el regimen de Crafter: D=128 (interferencia de 0056j) y grafo denso N=200 con K=20 cruces competidores. NC roles azar falla.",
+  "config": {
+    "N": 200,
+    "L": 8,
+    "D_vals": [
+      128,
+      256
+    ],
+    "K_vals": [
+      1,
+      5,
+      20
+    ],
+    "sigma": [
+      0.0,
+      0.3
+    ],
+    "trials": 15,
+    "seed": 42
+  },
+  "result": {
+    "config": {
+      "N": 200,
+      "L": 8,
+      "D_vals": [
+        128,
+        256
+      ],
+      "K_vals": [
+        1,
+        5,
+        20
+      ],
+      "sigma": [
+        0.0,
+        0.3
+      ],
+      "trials": 15,
+      "seed": 42
+    },
+    "dimension": {
+      "128": 1.0,
+      "256": 1.0
+    },
+    "densidad": {
+      "1": 1.0,
+      "5": 1.0,
+      "20": 0.8
+    },
+    "ruido": {
+      "0.0": 1.0,
+      "0.3": 1.0
+    },
+    "nc": {
+      "roles_azar_K5": 0.0
+    },
+    "pass": true,
+    "criterios": {
+      "dimension(D=128)>=0.7": true,
+      "densidad(K=20)>=0.7": true,
+      "ruido>=0.7": true,
+      "nc<0.3": true
+    }
+  },
+  "script": "phases/phase7_composicion/run_tick_stress_crossgraph_denso.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0031b_tick_stress_crossgraph_denso.json",
+  "test_target": "dimension(128)/densidad(20)/ruido >=0.7 + NC <0.3",
+  "variant_of": "exp_SGM_0031",
+  "lit_refs": [
+    "exp_SGM_0031",
+    "exp_SGM_0056j (unbinding D=128)",
+    "exp_SGM_0027c (rol-por-nivel)"
+  ],
+  "notes": "Estres del tick cruzado en el regimen REAL de Crafter: D bajo (128) + grafo denso con muchos cruces competidores. El 0031 original uso grafo idealizado (1 cruce, D=256).",
+  "notes_criollo": "Esto es el 'no se cae con el grafo denso y D chico de Crafter' que el 0031 no probaba. Si el D=128 con 20 cruces baja de 0.7, lo digo donde se rompe."
+}

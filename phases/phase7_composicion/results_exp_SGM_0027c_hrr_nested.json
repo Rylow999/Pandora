@@ -1,0 +1,68 @@
+{
+  "experiment_id": "exp_SGM_0027c",
+  "experiment_name": "hrr_nested",
+  "phase": "Composicion Relacional (Gap 2) - anidamiento orden N",
+  "date": "2026-08-02",
+  "hypothesis": "HRR + rol independiente por nivel (role_vecs[k], Plate 1995/VSA survey p.8-9) resuelve el anidamiento profundo: tasa de acierto del clean-up alta a d=5, donde XOR y HRR planos caen.",
+  "config": {
+    "D": 128,
+    "M": 200,
+    "depths": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "trials": 25,
+    "seed": 42,
+    "refs": [
+      "exp_SGM_0027 (HRR)",
+      "Plate 1995",
+      "vsa_survey_2022 p.8-9"
+    ]
+  },
+  "result": {
+    "tasa_acierto_anidamiento": {
+      "xor_plano": [
+        0.5,
+        0.3333,
+        0.25,
+        0.2
+      ],
+      "hrr_plano": [
+        0.5,
+        0.3333,
+        0.25,
+        0.2
+      ],
+      "hrr_perm": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "profundidades": [
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "negative_control_random": 0.0064,
+    "T-REL-NEST-01": true,
+    "T-REL-NEST-02": true,
+    "T-REL-NEST-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_hrr_nested.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0027c_hrr_nested.json",
+  "test_target": "T-REL-NEST-01 (HRR+perm recupera a d=5) + T-REL-NEST-02 (supera planos) + NC",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0027_hrr_binding.json",
+    "vsa_survey_2022_2111.06077.pdf",
+    "plate_tensor_product_2003_cs0308022.pdf"
+  ],
+  "notes": "Cierra el Gap 2 (binding). Anidamiento de orden N resuelto con rol INDEPENDIENTE por nivel (role_vecs[k], no cyclic shift del mismo rol, que bajo HRR no aisla niveles). HRR plano y XOR plano caen a d>=3 (intermediate no es item de memoria); HRR+rol independiente mantiene canal por nivel y el clean-up acierta.",
+  "notes_criollo": "El 0027 mostro que meter una relacion adentro de otra se desarmaba (orden 3+). Aca cada nivel de la relacion lleva su PROPIO rol (un vector distinto e independiente, no un shift del mismo): el nivel 1 usa rol_1, el 2 usa rol_2, etc. Al destapar, cada nivel se reconoce por su rol y el crosstalk de los otros niveles queda bajo porque roles distintos son casi ortogonales bajo la convolution circular. Asi SGM puede componer relaciones de CUALQUIER orden (grafos de grafos), no solo de a pares. NOTA: probe cyclic shift primero y NO aislo bajo HRR (la correlacion circular de shifts da autocorr desplazada); por eso uso roles independientes, que si aislan."
+}

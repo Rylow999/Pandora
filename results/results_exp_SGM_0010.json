@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_SGM_0010",
+  "experiment_name": "abduce_xor_phase_bias",
+  "phase": "Fase 2 \u2014 Inferencia simb\u00f3lica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "La fase din\u00e1mica como sesgo relacional (no multiplicador del binding) mejora la abducci\u00f3n XOR. KoPE modula atenci\u00f3n (softmax), no valores. SGM debe seguir el mismo patr\u00f3n.",
+  "result": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "phase_params": {
+      "alpha_phase": 0.5,
+      "omega_0": 1.0,
+      "k_coupling": 1.0,
+      "num_ticks": 2000
+    },
+    "bias_params": {
+      "lambda_phase": 0.5,
+      "sigma_phase": 0.7853981633974483,
+      "phase_binding": "sesgo relacional (no multiplicador)"
+    },
+    "correct_pairs": 0,
+    "correct_top1": 1,
+    "pair_accuracy": 0.0,
+    "top1_accuracy": 0.1,
+    "avg_final_score": 0.2654134998745673,
+    "avg_binding_score": 0.17804885179622193,
+    "avg_phase_affinity": 0.9867796965662246,
+    "avg_top1_score": 0.38710508663593574,
+    "correct_noisy": 1,
+    "noisy_accuracy": 0.1,
+    "avg_noisy_score": 0.44197200845849405,
+    "noise_degradation": -0.17655850858392674,
+    "avg_sync_diff_all": 0.1220108398999897,
+    "avg_sync_diff_correct": 0.10744552505824949,
+    "phase_convergence_all": 0.9611627434382456,
+    "phase_convergence_correct": 0.965799027147751,
+    "elapsed_seconds": 0.2
+  },
+  "config": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "seed": 42,
+    "num_ticks": 2000,
+    "alpha_phase": 0.5,
+    "omega_0": 1.0,
+    "k_coupling": 1.0,
+    "lambda_phase": 0.5,
+    "sigma_phase": 0.7853981633974483
+  },
+  "script": "phases/phase2_inferencia/run_abduce_phase_bias.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0010_abduce_phase_bias.json",
+  "test_target": "T-INF-03 (abducci\u00f3n XOR con sesgo relacional de fase KoPE-inspired v3)",
+  "baseline_for": [],
+  "variant_of": "exp_SGM_0005",
+  "lit_refs": [
+    "KoPE arXiv 2604.07904 (Xiao et al., Microsoft Research Asia, April 2026)",
+    "Kanerva 1988 Sparse Distributed Memory",
+    "HippoRAG NeurIPS 2024 (arxiv 2404.10501)"
+  ],
+  "notes": "Resultado pendiente de ejecuci\u00f3n. La hip\u00f3tesis es que el sesgo relacional de fase (gaussiano sobre \u0394\u03c6) mejora el score de abducci\u00f3n sin anular el binding.",
+  "notes_criollo": "Si el sesgo de fase mejora el score, confirma que KoPE tiene raz\u00f3n: la fase debe modular la atenci\u00f3n, no el binding. Si no mejora, puede que necesitemos combinar D mayor + fase, o que el mecanismo de fase necesita un redise\u00f1o m\u00e1s profundo."
+}

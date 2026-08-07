@@ -1,0 +1,24 @@
+{
+  "experiment_id": "exp_SGM_0046",
+  "name": "decoder_l2_relational_corpus_real",
+  "status": "HALLAZGO",
+  "marco": "1904.09447 + 2512.14709 + 2306.08302",
+  "diseno": "grafo omega ruteado por HRR (hrr_core+tick_relational_core). Bigrama por transito de 1 paso sobre rel_mem con bias de rol. Corpus: Don Quijote real (top-400 vocab, ventana 3).",
+  "result": "top1 relacional (1 paso HRR, bias rol) = 0.020 ; top1 plano (0026, conteo) = 0.333 ; top1 unigram = 0.140. El ruteo HRR de UN PASO EMPEORA el top1 (16x peor que plano). HALLAZGO: el HRR con D=256 y grado 8 tiene crosstalk tal que no distingue el sucesor entre los vecinos top-K; elige ~azar. El bigrama plano (conteo de frecuencias) es superior para predecir el siguiente token. Esto es coherente con 0045b: el rol HRR sirve para COMPOSICION ANIDADA (0027-0031), NO para bigrama superficial. El test T-DEC-R1 (top1 relacional>plano) estaba mal planteado: el rol HRR no compite en top1 de bigrama, compite en DESAMBIGUACION de polisemia (T-DEC-R2). SIGUIENTE: 0046b (decoder HIBRIDO: grafo ruteado da SEMILLA relacional, bigrama plano predice sobre semilla restringida).",
+  "tests": {
+    "T-DEC-R1_top1_relacional": 0.02,
+    "T-DEC-R1_top1_plano_0026": 0.333,
+    "T-DEC-R1_top1_unigram": 0.14,
+    "pass": false,
+    "meta": "Bigrama sobre grafo ruteado supera plano (NO se cumplio: 0.020 << 0.333)"
+  },
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 256,
+    "K": 8,
+    "SEED": 20260803,
+    "corpus_tokens": 333440
+  },
+  "verified": false
+}

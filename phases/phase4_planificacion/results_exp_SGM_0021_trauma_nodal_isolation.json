@@ -1,0 +1,51 @@
+{
+  "experiment_id": "exp_SGM_0021",
+  "experiment_name": "trauma_nodal_isolation",
+  "phase": "Fase 4 - Planificacion (trauma estructural)",
+  "date": "2026-08-02",
+  "hypothesis": "Nodo sobrecargado (activation alta) forma singularidad LOCAL (score de atraccion en su vecindad > THETA_SING). Aislarlo (cortar aristas, preservar omega) pone score=0. Reintegrarlo LENTO (activation debil) lo hace alcanzable sin re-colapsar; reintegrarlo COMPLETO re-colapsa (rehab lenta es necesaria).",
+  "config": {
+    "N": 40,
+    "D": 64,
+    "seed": 42,
+    "alpha": 5.0,
+    "k": 8,
+    "theta_sing": 0.3,
+    "trauma_id": 40,
+    "spec_ref": "SGM v1.4 §4.3 (kappa_trauma=0.50, hibernacion)"
+  },
+  "result": {
+    "A_singularidad": {
+      "score_atraccion_local": 0.515,
+      "umbral": 0.3,
+      "singularidad_formada": true
+    },
+    "B_aislamiento": {
+      "score_atraccion_local": 0.0,
+      "omega_preservado": true,
+      "aislamiento_ok": true
+    },
+    "C_reintegracion_lenta": {
+      "score_atraccion_local": 0.163,
+      "alcanzable": true,
+      "sin_colapso": true,
+      "ok": true
+    },
+    "D_reintegracion_completa_contraste": {
+      "score_atraccion_local": 0.515,
+      "recolapsa": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase4_planificacion/run_trauma_nodal_isolation.py",
+  "results_file": "phases/phase4_planificacion/results_exp_SGM_0021_trauma_nodal_isolation.json",
+  "test_target": "T-PLAN-02 (trauma/hibernacion) extendido con aislamiento+reintegracion lenta (hipotesis Luciano 2026-08-02)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §4.3",
+    "SGM_ROADMAP.md Fase 4",
+    "NOTA_FILOSOFICA_0016_0017.md (trauma/singularidad nodal)"
+  ],
+  "notes": "Singularidad LOCAL = score de atraccion del nodo traumado sobre sus K=8 vecinos mas cercanos > THETA_SING. Nube apretada (gauss 0,0.3) para que activation decida, no cercania global. Aislamiento corta aristas preservando omega. Reintegracion lenta usa activation debil.",
+  "notes_criollo": "El 0021 es tu hipotesis de trauma: un nodo que se sobrecarga se vuelve un agujero negro que atrae a su vecindad (singularidad local). La spec solo baja su vitalidad, pero eso no lo saca de la caminata. Tu idea: aislarlo (cortar aristas, guardar su omega) y reintegrarlo DESPACIO (activation debil). Si lo volves a full de una, re-colapsa. Cuarentena + rehab cognitiva."
+}

@@ -1,0 +1,77 @@
+{
+  "experiment_id": "exp_SGM_0054",
+  "name": "ilm_composicional_sustrato",
+  "status": "ILM",
+  "marco": "ILM Kirby&Smith en sustrato SGM. Bottleneck duro (V=16,L=3, referentes 24 > capacidad 1-a-1). Referentes estructurados (region,dist,tipo). Generaciones con transmision con perdida. Energia: moverse gasta, comer repone. TopSim EN loop.",
+  "diseno": "Vocabulario acotado V=16, mensaje L=3. Referentes 24 estructurados. Cada gen: aprendiz aprende de MUESTRA 30% del padre. TopSim como senal de seleccion. Sin backprop (bigrama plano).",
+  "config": {
+    "GRID": 24,
+    "D": 256,
+    "V": 16,
+    "L": 3,
+    "N_REF": 24,
+    "generaciones": 8,
+    "n_rondas": 400,
+    "SEED": 20260803
+  },
+  "historia": [
+    {
+      "gen": 0,
+      "topsim": 0.453,
+      "code_size": 11,
+      "energia_final": -260.0,
+      "comida": 0
+    },
+    {
+      "gen": 1,
+      "topsim": 0.362,
+      "code_size": 8,
+      "energia_final": -345.0,
+      "comida": 0
+    },
+    {
+      "gen": 2,
+      "topsim": 0.5,
+      "code_size": 3,
+      "energia_final": -55.0,
+      "comida": 0
+    },
+    {
+      "gen": 3,
+      "topsim": 0.5,
+      "code_size": 3,
+      "energia_final": -165.0,
+      "comida": 0
+    },
+    {
+      "gen": 4,
+      "topsim": 0.0,
+      "code_size": 6,
+      "energia_final": -335.0,
+      "comida": 0
+    },
+    {
+      "gen": 5,
+      "topsim": 0.429,
+      "code_size": 4,
+      "energia_final": -119.0,
+      "comida": 0
+    },
+    {
+      "gen": 6,
+      "topsim": 0.5,
+      "code_size": 3,
+      "energia_final": -148.0,
+      "comida": 0
+    },
+    {
+      "gen": 7,
+      "topsim": 0.0,
+      "code_size": 2,
+      "energia_final": -180.0,
+      "comida": 0
+    }
+  ],
+  "verdict": "Si TopSim SUBE con generaciones => composicionalidad EMERGE por bottleneck+transmision (Kirby). Si queda ~0 => el sustrato sigue sin componer y el gap es mas profundo.",
+  "verified": true
+}

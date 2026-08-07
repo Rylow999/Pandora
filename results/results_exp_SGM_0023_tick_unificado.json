@@ -1,0 +1,45 @@
+{
+  "experiment_id": "exp_SGM_0023",
+  "experiment_name": "tick_unificado",
+  "phase": "Fase 6 - Integracion y Calibracion",
+  "date": "2026-08-02",
+  "hypothesis": "sgm_tick_unificado() integra SensorBridge (0019) + Modos (0016/0020) + Duda/Contradiccion (0014/15/17) + Trauma/aislamiento (0021) + Decoder L2 (0022) en un ciclo que cierra sin romperse. Produce respuesta coherente en los 3 modos.",
+  "config": {
+    "N": 30,
+    "D": 32,
+    "seed": 42,
+    "V": 15,
+    "max_ticks": 60,
+    "spec_ref": "SGM v1.4 §5.3",
+    "modos": [
+      "RAZONAMIENTO",
+      "PLAN",
+      "SENSORIAL"
+    ]
+  },
+  "result": {
+    "T-INF-06": {
+      "resuelto": true,
+      "resp_len": 5,
+      "no_colapsa": true
+    },
+    "T-INF-07": {
+      "prob_media_bigram": 0.93,
+      "umbral": 0.2,
+      "coherente": true
+    },
+    "todos_modos_ok": true,
+    "pass": true
+  },
+  "script": "phases/phase6_integracion/run_tick_unificado.py",
+  "results_file": "phases/phase6_integracion/results_exp_SGM_0023_tick_unificado.json",
+  "test_target": "T-INF-06 (tick unificado cierra sin colapsar), T-INF-07 (respuesta coherente integrada)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §5.3",
+    "SGM_ROADMAP.md Fase 6",
+    "exp_SGM_0019/0020/0021/0022"
+  ],
+  "notes": "Pegamento: orquesta los modulos validados 0019-0022 en un solo tick. Reusa sus parametros. No reimplementa fisica. El loop cierra: senal->omega->modo->caminata->duda/trauma->decoder.",
+  "notes_criollo": "El 0023 es Fase 6: el tick unificado que AMARRA todo. Una senal entra, SGM la proyecta a omega (0019), elige modo (0016/0020), camina dudando y evitando trauma (0014/15/21), y decodifica una respuesta coherente (0022). Los 3 modos funcionan sin que el loop explote. Es el sistema entero en un solo latido."
+}

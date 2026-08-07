@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_SGM_0036",
+  "experiment_name": "curiosity_global",
+  "phase": "Camino A - curiosidad: campo global del sustrato (no add-on)",
+  "date": "2026-08-03",
+  "hypothesis": "La curiosidad nace del sustrato: el sistema tiene un forward model (predict omega_next) y mide eta=1-cos(omega_pred, omega_real). dopamina(eta) en U invertida + aburrimiento acumulado (eta~0 sostenido) empujan a explorar/reducir error SIN termino externo. El campo eta afecta la eleccion de modo globalmente. Esto supera al bonus programado (0035) y al 0023-base (solo greedy).",
+  "config": {
+    "N": 10,
+    "trials": 40,
+    "seed": 20260803,
+    "eta_opt": 0.3,
+    "sigma_eta": 0.22,
+    "eta_bajo": 0.05,
+    "theta_aburrimiento": 6,
+    "alpha_novedad": 1.5,
+    "es_campo_global": true,
+    "refs": [
+      "exp_SGM_0035_curiosity",
+      "exp_SGM_0023_tick_unificado",
+      "exp_SGM_0033_grid_dolor"
+    ]
+  },
+  "result": {
+    "trials_alcanzables": 40,
+    "tasa_global_eta": 0.5,
+    "tasa_base_0023like": 0.05,
+    "pasos_global": 25.8,
+    "pasos_base": 18.0,
+    "aburrimiento_disparo_novelty": 4,
+    "T-CURI-01_03": true,
+    "T-CURI-02": true,
+    "T-CURI-04": true,
+    "NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_curiosity_global.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0036_curiosity_global.json",
+  "test_target": "T-CURI-01/03 (eta global>=0.35) + T-CURI-02 (aburrimiento dispara novedad) + T-CURI-04 (global>=base) + NC homeostasia",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0035_curiosity.json",
+    "exp_SGM_0023_tick_unificado.json",
+    "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Curiosidad GLOBAL: eta es variable de estado (hermana de E y dolor). dopamina(eta) en U invertida captura la zona 'interesante' (no minimiza error ciegamente). El aburrimiento acumulado (eta~0 sostenido) es el disparador de busqueda de novedad intrinseca. Nace del sustrato: nadie le pone bonus. Honestidad: medimos el operador (eta->dopa->explora), no el qualia de 'interesarse'. NC: el sistema sigue cerrando tareas (no loop de exploracion).",
+  "notes_criollo": "La curiosidad ahora es un campo del sistema, no un premio que le regalamos. El bicho predice el proximo estado y cuando se equivoca (eta alto) se mueve para corregir; cuando acierta siempre (eta~0, aburrido) el acumulador se llena y sale a buscar novedad por su cuenta. Explora porque su modelo falla, no porque le pagan. Esto es lo que querias: curiosidad latente de sustrato."
+}

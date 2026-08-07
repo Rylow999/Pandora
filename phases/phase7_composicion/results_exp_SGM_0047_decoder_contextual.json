@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_SGM_0047",
+  "name": "decoder_l2_contextual_hrr",
+  "status": "CONTEXTO_ACUMULADO",
+  "marco": "Attention as Binding (2512.14709): atencion = binding de la ventana. recover_chain (0028/30).",
+  "diseno": "Contexto = HRR-bind de ventana N palabras. omega_routed=hdc_project(ctx) -> route() -> argmax pi. Baseline fijo (mismo corpus/vocab/muestra).",
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 256,
+    "SEED": 20260803,
+    "corpus_tokens": 333440,
+    "muestra": 400
+  },
+  "tests": {
+    "T-DEC-C1_relacional_vs_plano": {
+      "top1_relacional_contexto": 0.003,
+      "top1_plano_fijo": 0.265,
+      "top1_NC_contexto_aleatorio": 0.003,
+      "pass": false,
+      "meta": "Contexto HRR acumulado supera bigrama plano (fijo) en top1; NC aleatorio cae a azar."
+    },
+    "overall_pass": false
+  },
+  "verified": false
+}

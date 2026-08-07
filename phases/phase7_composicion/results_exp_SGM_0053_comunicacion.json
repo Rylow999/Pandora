@@ -1,0 +1,55 @@
+cielo_estrellado | alf 473 | ZS 1.0 NC 0.002 | TopSim 0.002 | commD256 0.017 NC 0.002
+competencia | alf 328 | ZS 1.0 NC 0.003 | TopSim -0.046 | commD256 0.013 NC 0.003
+peligro_compartido | alf 95 | ZS 1.0 NC 0.011 | TopSim -0.067 | commD256 0.053 NC 0.011
+D_escalado_890_D1280 | comm 0.023 NC 0.002
+{
+  "experiment_id": "exp_SGM_0053",
+  "name": "comunicacion_real_vs_memorizacion",
+  "status": "DECISIVO",
+  "marco": "Respuesta a critica 0049d: 1.0 era cleanup de 15 fijos (0029). Tests: zero-shot (generalizacion?), TopSim (composicionalidad), D escalado (resuelve escala abierta?).",
+  "diseno": "Zero-shot: entreno 8/15, testeo 7 nuevas. TopSim: correl dist espacial vs HRR. D escalado: 890 items con D=1280 (ley 0029).",
+  "config": {
+    "GRID": 24,
+    "D": 256,
+    "D_escalado": 1280,
+    "SEED": 20260803
+  },
+  "resultados": [
+    {
+      "clima": "cielo_estrellado",
+      "alfabeto": 473,
+      "zero_shot_acc": 1.0,
+      "zero_shot_NC": 0.002,
+      "topsim": 0.002,
+      "comm_D256_acc": 0.017,
+      "comm_NC": 0.002
+    },
+    {
+      "clima": "competencia",
+      "alfabeto": 328,
+      "zero_shot_acc": 1.0,
+      "zero_shot_NC": 0.003,
+      "topsim": -0.046,
+      "comm_D256_acc": 0.013,
+      "comm_NC": 0.003
+    },
+    {
+      "clima": "peligro_compartido",
+      "alfabeto": 95,
+      "zero_shot_acc": 1.0,
+      "zero_shot_NC": 0.011,
+      "topsim": -0.067,
+      "comm_D256_acc": 0.053,
+      "comm_NC": 0.011
+    },
+    {
+      "clima": "D_escalado_890_D1280",
+      "alfabeto": 473,
+      "comm_D1280_acc": 0.023,
+      "comm_NC": 0.002
+    }
+  ],
+  "verdict": "Si zero_shot ~ NC y TopSim ~0 => MEMORIZACION de 15 fijos (0049d no era lenguaje). Si D escalado sube >> NC => HRR resolvia escala (faltaba D).",
+  "verified": true
+}
+EXIT=0

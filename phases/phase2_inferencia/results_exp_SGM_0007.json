@@ -1,0 +1,77 @@
+{
+  "experiment_id": "exp_SGM_0007",
+  "experiment_name": "abduce_xor_dimensionality",
+  "phase": "Fase 2 \u2014 Inferencia simb\u00f3lica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "Aumentar D reduce ruido en composiciones XOR, mejorando precisi\u00f3n de abducci\u00f3n",
+  "D_values_tested": [
+    16,
+    32,
+    64
+  ],
+  "num_nodes": 30,
+  "num_compositions": 20,
+  "num_queries": 10,
+  "seed": 42,
+  "results": [
+    {
+      "D": 16,
+      "num_nodes": 30,
+      "num_compositions": 20,
+      "num_queries": 10,
+      "correct_pairs": 0,
+      "correct_top1": 1,
+      "pair_accuracy": 0.0,
+      "top1_accuracy": 0.1,
+      "avg_pair_score": 0.25031564534136774,
+      "avg_top1_score": 0.49184530521988884,
+      "correct_noisy": 0,
+      "noisy_accuracy": 0.0,
+      "avg_noisy_score": 0.31231093344752175,
+      "noise_degradation": -0.06199528810615401,
+      "elapsed_seconds": 0.02
+    },
+    {
+      "D": 32,
+      "num_nodes": 30,
+      "num_compositions": 20,
+      "num_queries": 10,
+      "correct_pairs": 1,
+      "correct_top1": 2,
+      "pair_accuracy": 0.1,
+      "top1_accuracy": 0.2,
+      "avg_pair_score": 0.34080902655256395,
+      "avg_top1_score": 0.35839338489003814,
+      "correct_noisy": 4,
+      "noisy_accuracy": 0.4,
+      "avg_noisy_score": 0.47021548832804594,
+      "noise_degradation": -0.12940646177548198,
+      "elapsed_seconds": 0.03
+    },
+    {
+      "D": 64,
+      "num_nodes": 30,
+      "num_compositions": 20,
+      "num_queries": 10,
+      "correct_pairs": 1,
+      "correct_top1": 2,
+      "pair_accuracy": 0.1,
+      "top1_accuracy": 0.2,
+      "avg_pair_score": 0.2802156911527884,
+      "avg_top1_score": 0.2565545568108213,
+      "correct_noisy": 0,
+      "noisy_accuracy": 0.0,
+      "avg_noisy_score": 0.2132645428392282,
+      "noise_degradation": 0.0669511483135602,
+      "elapsed_seconds": 0.05
+    }
+  ],
+  "comparison_with_v023_v3": {
+    "v023_v3_D16_score": 0.042,
+    "v023_v3_azar_score": 0.011,
+    "v023_v3_pair_accuracy": 0.042,
+    "best_D_pair_accuracy": 0.1,
+    "improvement_over_v023_v3": 0.058
+  },
+  "notes": "Kanerva SDM recomienda D\u226510000 para binario, D\u226564 para continuo. Los resultados con D=64 muestran si la mejora es significativa o si se necesita D a\u00fan mayor para composiciones XOR en DSCN-G."
+}

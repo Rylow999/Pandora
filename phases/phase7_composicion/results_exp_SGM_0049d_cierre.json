@@ -1,0 +1,56 @@
+{
+  "experiment_id": "exp_SGM_0049d",
+  "name": "cierre_metrica_comunicacion",
+  "status": "CIERRE",
+  "marco": "0049c + canal bigrama/alfabeto compartido (joint attention) para items; HRR composicional para lo nuevo (0027-0031).",
+  "diseno": "Alfabeto compartido = 15 celdas pivote del puente A<->B (emergente). A describe celda del alfabeto a B por HRR del puente; B recupera por cleanup (D=256 aisla 15). Metrica hit celda exacta sobre alfabeto. NC=ruido. Esto cierra la metrica de 0049c (que daba 0=NC por crosstalk en 890 items).",
+  "config": {
+    "GRID": 30,
+    "STEPS": 3000,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "climas": [
+    {
+      "clima": "cielo_estrellado",
+      "alfabeto": 15,
+      "comunicacion_top1": 1.0,
+      "NC_top1": 0.067,
+      "coordinacion_barreras": 3,
+      "barriers_total": 3,
+      "star_reconoce": 0.0,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 895,
+      "B_visited": 890
+    },
+    {
+      "clima": "competencia",
+      "alfabeto": 15,
+      "comunicacion_top1": 1.0,
+      "NC_top1": 0.067,
+      "coordinacion_barreras": 4,
+      "barriers_total": 4,
+      "star_reconoce": null,
+      "A_dolor": 80.0,
+      "B_dolor": 104.0,
+      "A_visited": 859,
+      "B_visited": 887
+    },
+    {
+      "clima": "peligro_compartido",
+      "alfabeto": 15,
+      "comunicacion_top1": 1.0,
+      "NC_top1": 0.0,
+      "coordinacion_barreras": 5,
+      "barriers_total": 5,
+      "star_reconoce": null,
+      "A_dolor": 83.0,
+      "B_dolor": 84.0,
+      "A_visited": 890,
+      "B_visited": 893
+    }
+  ],
+  "conclusion": "Comunicacion de ITEMS CONOCIDOS = alfabeto compartido emergente (bigrama/indice). Composicion de LO NUEVO = HRR. Consistente con 0046-48 (decoder=bigrama plano; HRR=composicion).",
+  "verified": true
+}

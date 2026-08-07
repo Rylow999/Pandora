@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_SGM_0056g",
+  "name": "clasificacion_real_propio_contexto",
+  "status": "RUNNING",
+  "marco": "Clasificacion REAL sobre Don Quijote: dado el contexto (sin la palabra), predecir si el token objetivo es NOMBRE PROPIO (label real por mayuscula, descartando apertura de oracion). Usa el decoder ya listo (TrainedDecoderHD/56e) como clasificador lineal binario sobre HD. Compara contexto role-filler vs BoW plano (ver si el rol ayuda AQUI, donde 0056f no ayudaba en recall).",
+  "diseno": "Don Quijote (Gutenberg pg2000, es). V=2000 palabras, N=512 HD. 6000 oraciones, muestras hasta 24000 (target frecuente >=8 ocurrencias, objetivo enmascarado). 70/30 split. BinDecoder: regresion logistica sobre contexto HD, sgd 30 epocas. Baseline = clase mayoritaria.",
+  "config": {
+    "N": 512,
+    "V_KEEP": 2000,
+    "MAXLEN": 24,
+    "NSENT": 6000,
+    "SAMPLE_CAP": 24000,
+    "EPOCHS": 30,
+    "SEED": 20260804,
+    "corpus": "Don Quijote (es) pg2000",
+    "task": "propio_vs_comun_por_contexto"
+  },
+  "resultados": {
+    "n_muestras": 24000,
+    "baseline_acc": 0.935,
+    "role_filler": {
+      "acc": 0.91,
+      "f1": 0.08
+    },
+    "plana_bow": {
+      "acc": 0.934,
+      "f1": 0.248
+    }
+  },
+  "verdict": "Si acc > baseline => el decoder (listo) aprende a clasificar desde contexto real: el sustrato HACE clasificacion real. Si role_filler > plana => el rol ayuda AQUI (contexto estructurado); si plana >= role_filler => confirma 0056f (el rol no aporta cuando el ORDEN no discrimina). HONESTIDAD: es clasificacion lexica/distribucional, no 'comprension'; el sustrato demuestra aprender categoria de palabra por contexto sobre texto real.",
+  "based_on": [
+    "0056e (decoder HD listo)",
+    "0056f (uso real, rol no ayuda en recall)",
+    "0029 (plana)"
+  ],
+  "verified": true
+}

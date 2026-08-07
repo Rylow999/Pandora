@@ -1,0 +1,42 @@
+{
+  "experiment_id": "exp_SGM_0027b",
+  "experiment_name": "hrr_ppr",
+  "phase": "Composicion Relacional (Gap 2) - HRR + PPR",
+  "date": "2026-08-02",
+  "hypothesis": "PPR sobre omega compuesto por HRR navega caminos relacionales (q->a->b via rol R) mejor que PPR sobre omega crudo (ciego a roles). El sesgo de rol HRR es lo que habilita la navegacion relacional.",
+  "config": {
+    "D": 128,
+    "N": 25,
+    "nroles": 4,
+    "trials": 30,
+    "alpha": 0.15,
+    "seed": 42,
+    "refs": [
+      "exp_SGM_0027 (HRR)",
+      "exp_SGM_0016/0019 (PPR)",
+      "vsa_survey_2022"
+    ]
+  },
+  "result": {
+    "diff_mass_b_minus_d_hrr_R": 0.2561,
+    "diff_mass_b_minus_d_raw_nobias": 0.005,
+    "diff_mass_d_minus_b_hrr_S": 0.2581,
+    "diff_mass_b_minus_d_hrr_nobias": 0.0,
+    "T-HPPR-01": true,
+    "T-HPPR-02": true,
+    "T-HPPR-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_hrr_ppr.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0027b_hrr_ppr.json",
+  "test_target": "T-HPPR-01 (HRR+R separa b de d) + T-HPPR-02 (simetria S) + T-HPPR-NC (sin sesgo)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0027_hrr_binding.json",
+    "exp_SGM_0016",
+    "exp_SGM_0019",
+    "vsa_survey_2022_2111.06077.pdf"
+  ],
+  "notes": "Combina HRR (0027) con ruteo PPR (0016/0019). S_i = normalize(suma de HRR(rol,omega_target)) para aristas de i. PPR sesgado a rol R usa role_match = cos(S_i, HRR(rol_R, omega_k)) DOMINANDO la transicion (no multiplicando similitud de estado, que es baja porque estados compuestos son ortogonales). Metrica: diferencia de masa estacionaria pi[b]-pi[d] (mas sensible que rank en grafo chico).",
+  "notes_criollo": "La idea de Luciano: rutea por RELACION, no por identidad. Cada nodo lleva sus relaciones empaquetadas en HRR; el PPR camina por similitud de esos vectores compuestos y se sesga a un rol (seguir solo aristas de tipo R). Asi q->a->b por rol R se distingue de q->c->d por rol S. Omega crudo no distingue (es ciego a roles)."
+}

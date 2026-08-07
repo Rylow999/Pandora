@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_SGM_0047b",
+  "name": "decoder_l2_contextual_hrr_v2",
+  "status": "ESPACIO_COHERENTE",
+  "marco": "HRR coherente: omega=rel_mem (sentido=nube relacional). Cleanup en mismo espacio.",
+  "diseno": "omega[i]=rel_mem[i] (nube de HRR(rol,emb) de vecinos). Contexto=bind de rel_mem ventana. Cleanup contra rel_mem. Sin hdc_project (espacios distintos).",
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 256,
+    "SEED": 20260803,
+    "muestra": 400
+  },
+  "tests": {
+    "T-DEC-C2_relacional_v2": {
+      "top1_relacional_relmem": 0.018,
+      "top1_plano_fijo": 0.18,
+      "top1_NC_aleatorio": 0.015,
+      "pass": false,
+      "meta": "Contexto HRR en espacio coherente supera plano; NC aleatorio cae."
+    }
+  },
+  "overall_pass": false,
+  "verified": false
+}

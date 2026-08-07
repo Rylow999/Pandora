@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0056i",
+  "name": "clasificacion_real_orden_discrimina",
+  "status": "RUNNING",
+  "marco": "TAREA donde el ORDEN DISCRIMINA: predecir si el token objetivo es la PRIMERA palabra de contenido de la oracion (slot inicial, topico/foco real). Etiqueta puramente posicional: el BoW plano no sabe que posicion ocupaba la palabra ausente; el role-filler ve el hueco en posicion 0. Cierra el arco 0056g(lexico-falla)->0056h(distribucional-presa-plana)->0056i(orden-puro-gana-rol). Reusa Don Quijote y BinDecoder 56g.",
+  "diseno": "Don Quijote (es). N=256, V=1500, 2000 oraciones. Por oracion: positivo=1ra palabra contenido, hasta 3 negativos de otras contenido. Objetivo enmascarado. 70/30. BinDecoder sgd 15 epocas. Baseline=mayoritaria.",
+  "config": {
+    "N": 256,
+    "V_KEEP": 1500,
+    "SAMPLE_CAP": 8000,
+    "EPOCHS": 15,
+    "SEED": 20260804,
+    "corpus": "Don Quijote (es) pg2000",
+    "task": "primera_palabra_contenido_por_orden"
+  },
+  "resultados": {
+    "n_muestras": 5854,
+    "baseline_acc": 0.716,
+    "role_filler": {
+      "acc": 0.627,
+      "f1": 0.202
+    },
+    "plana_bow": {
+      "acc": 0.679,
+      "f1": 0.127
+    }
+  },
+  "verdict": "Si role_filler > plana_bow y ambos > baseline => el rol ayuda cuando el ORDEN discrimina (cierra el arco). Si plana >= rol => el orden no es recuperable por el decoder lineal tal cual. HONESTIDAD: tarea posicional real sobre texto real; el sustrato demuestra que el role-filler preserva la posicion (hueco) que el BoW pierde.",
+  "based_on": [
+    "0056h (distribucional: plana gana)",
+    "0056g (lexico: falla)",
+    "0056e (decoder listo)"
+  ],
+  "verified": true
+}

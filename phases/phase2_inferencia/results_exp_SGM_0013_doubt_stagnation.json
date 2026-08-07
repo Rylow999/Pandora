@@ -1,0 +1,75 @@
+{
+  "experiment_id": "exp_SGM_0013_doubt_stagnation",
+  "experiment_name": "doubt_stagnation_mechanism",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "check_stagnation detecta cadenas atrapadas y handle_doubt escala relax->relaunch->abandon como INCONCLUSA.",
+  "config": {
+    "W_base": 50,
+    "theta_novelty": 0.3,
+    "theta_window_frac": 0.5,
+    "min_duration": 5,
+    "contracted_window": 20,
+    "trap_nodes": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "outside_nodes": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "result": {
+    "trap_chain": {
+      "detected": true,
+      "detected_at_tick": 24,
+      "novelty_avg": 0.25,
+      "stagnation_ticks": 5
+    },
+    "negative_control": {
+      "detected": false,
+      "novelty_avg": 0.5
+    },
+    "escalation": [
+      {
+        "doubt_count": 1,
+        "action": "relax",
+        "lambda_eff": 3.0,
+        "alpha_eff": 4.0
+      },
+      {
+        "doubt_count": 2,
+        "action": "relaunch",
+        "alt_seed": 5
+      },
+      {
+        "doubt_count": 3,
+        "action": "abandon",
+        "final_mode": "DEFAULT",
+        "final_status": "INCONCLUSA"
+      }
+    ],
+    "final_status": "INCONCLUSA",
+    "final_mode": "DEFAULT",
+    "pass_stagnation": true,
+    "pass_escalation": true,
+    "pass": true
+  },
+  "script": "phases/phase2_inferencia/run_doubt_stagnation.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0013_doubt_stagnation.json",
+  "test_target": "T-INF-04 (deteccion de estancamiento + respuesta escalonada de duda)",
+  "baseline_for": [],
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 2.3.2 (duda/estancamiento)",
+    "Kirkpatrick et al. PNAS 2017 (EWC)"
+  ],
+  "notes": "Testea el mecanismo de duda separado de contradiccion. check_stagnation usa metrica de conteo (novelty = nodos unicos / ventana).",
+  "notes_criollo": "Prueba que SGM duda cuando se estanca. La cadena atrapada (novelty 0.25) dispara la duda tras 5 ticks. La que explora (novelty 0.50) no dispara nada. La duda escala: relaja, prueba otra semilla, y si nada funciona abandona como INCONCLUSA."
+}

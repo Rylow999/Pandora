@@ -1,0 +1,41 @@
+{
+  "experiment_id": "exp_SGM_0028",
+  "experiment_name": "tick_relational",
+  "phase": "Composicion Relacional (Gap 2) - HRR+roles en tick unificado 0023",
+  "date": "2026-08-02",
+  "hypothesis": "Enchufar HRR+roles (0027/0027c) al tick unificado (0023) permite al sistema representar y recuperar relaciones anidadas (grafo de grafos) que el tick plano no puede. El tick sigue cerrando (trauma/duda/decoder).",
+  "config": {
+    "D": 128,
+    "N": 30,
+    "nroles_por_nodo": 30,
+    "trials": 25,
+    "seed": 42,
+    "refs": [
+      "exp_SGM_0023 (tick)",
+      "exp_SGM_0027 (HRR)",
+      "exp_SGM_0027c (anidamiento)",
+      "exp_SGM_0027b (HRR+PPR)"
+    ]
+  },
+  "result": {
+    "acierto_recuperar_anidado_tick_HRR": 1.0,
+    "acierto_recuperar_anidado_tick_plano": 0.0,
+    "acierto_recuperar_anidado_HRR_rol_fijo_NC": 0.0,
+    "masa_camino_relacional_b_menos_d": 0.0785,
+    "T-INT-01": true,
+    "T-INT-02": true,
+    "T-INT-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_tick_relational.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0028_tick_relational.json",
+  "test_target": "T-INT-01 (tick HRR recupera anidado) + T-INT-02 (camino relacional + tick cierra) + NC",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0023_tick_unificado.json",
+    "exp_SGM_0027_hrr_binding.json",
+    "exp_SGM_0027c_hrr_nested.json"
+  ],
+  "notes": "Enchufa HRR+roles al tick 0023. El grafo ahora guarda aristas como HRR(rol,omega_target). Test de grafo de grafos: Y R2 X donde X=(A R1 B). El tick HRR desanida por rol; el plano no puede (lo trata como nodo).",
+  "notes_criollo": "El tick de 0023 era orden 2 (nodo a nodo). Le agregue memoria relacional HRR: cada arista se guarda como HRR(rol, omega_destino). Asi un nodo puede SER una relacion completa (grafo de grafos) y el tick la desanida por rol. El tick plano eso no lo hace. Esto es literalmente el sustrato que dijiste que daria la mejora impresionante: el sistema ya no solo LINKEA, sino que COMPOSE relaciones dentro de relaciones."
+}

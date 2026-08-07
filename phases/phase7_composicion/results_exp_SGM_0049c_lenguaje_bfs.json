@@ -1,0 +1,68 @@
+{
+  "experiment_id": "exp_SGM_0049c",
+  "name": "nacimiento_lenguaje_pathfinding",
+  "status": "LARGO_BFS",
+  "marco": "Tomasello joint attention sostenida, Schultz RPE, 0018 dolor Eq.6, 0044 motor + BFS (cuerpo).",
+  "diseno": "BFS real: agente siempre tiene meta y calcula camino. Fase1 explorar (800t). Fase2 JUNTOS (2200t) persiguen claves de barrera (coordinacion: ambos en clave abre). Veneno en camino -> dolor. Belleza=cielo estrellado denso. Metrica=hit celda exacta (NC~1/N).",
+  "config": {
+    "GRID": 30,
+    "STEPS": 3000,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "climas": [
+    {
+      "clima": "cielo_estrellado",
+      "puente": 15,
+      "comunicacion_top1": 0.0,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "coordinacion_barreras": 3,
+      "barriers_total": 3,
+      "esteticas_estrellas": 442,
+      "star_reconoce": 0.125,
+      "A_food": 28,
+      "B_food": 42,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 894,
+      "B_visited": 890
+    },
+    {
+      "clima": "competencia",
+      "puente": 15,
+      "comunicacion_top1": 0.0,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "coordinacion_barreras": 4,
+      "barriers_total": 4,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 13,
+      "B_food": 12,
+      "A_dolor": 83.0,
+      "B_dolor": 92.0,
+      "A_visited": 871,
+      "B_visited": 890
+    },
+    {
+      "clima": "peligro_compartido",
+      "puente": 15,
+      "comunicacion_top1": 0.0,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "coordinacion_barreras": 5,
+      "barriers_total": 5,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 18,
+      "B_food": 18,
+      "A_dolor": 67.0,
+      "B_dolor": 78.0,
+      "A_visited": 892,
+      "B_visited": 891
+    }
+  ],
+  "belleza_inferencia": "star_reconoce>0 en cielo_estrellado => belleza = coordinacion estetica emergente bajo presion baja sostenida.",
+  "verified": false
+}

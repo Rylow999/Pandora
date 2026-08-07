@@ -1,0 +1,41 @@
+{
+  "experiment_id": "exp_SGM_0035",
+  "experiment_name": "curiosity_exploration",
+  "phase": "Camino A - curiosidad: drive de exploracion (sustrato bajo)",
+  "date": "2026-08-03",
+  "hypothesis": "Curiosidad como bonus de novedad (evitar celdas ya visitadas) saca al agente de callejones sin salida donde el GREEDY (sin memoria de visitas) se traba. El CURIOSO llega mas que el GREEDY y que RW (que no focaliza). Esto es sustrato de exploracion, NO deseo emergente.",
+  "config": {
+    "N": 10,
+    "trials": 40,
+    "seed": 20260803,
+    "alpha_curiosity": 1.5,
+    "max_ticks": 200,
+    "nivel": "ESTRATO BAJO: drive programado, no eleccion latente del agente",
+    "refs": [
+      "exp_SGM_0032_grid_agent",
+      "exp_SGM_0034_identity"
+    ]
+  },
+  "result": {
+    "trials_alcanzables": 40,
+    "tasa_llegada_greedy": 0.075,
+    "tasa_llegada_curioso": 0.35,
+    "tasa_llegada_rw_NC": 0.15,
+    "pasos_medio_greedy": 18.0,
+    "pasos_medio_curioso": 21.7,
+    "T-CUR-01": true,
+    "T-CUR-02": true,
+    "NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_curiosity.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0035_curiosity.json",
+  "test_target": "T-CUR-01 (curioso>greedy) + T-CUR-02 (curioso no gasta mas) + NC",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0032_grid_agent.json",
+    "exp_SGM_0034_identity.json"
+  ],
+  "notes": "Curiosidad = memoria de visitas como bonus de novedad en el costo de movimiento. El greedy sin esa memoria rebota en callejones; el curioso no repite y encuentra la salida. ESTRATO BAJO: el bonus es programado, el agente no 'elige' explorar. El salto a curiosidad latente (que el agente decida por su cuenta) requiere modelo predictivo de error->valencia o modo EXPLORAR metacontrolado (ver experimentos 0036+).",
+  "notes_criollo": "Curiosidad version 1: el agente evita lo que ya piso. En un laberinto, el que va directo a la meta sin acordarse de donde estuvo rebota en callejones ciegos; el curioso (que suma 'bonus' por ir a lugar nuevo) prueba otros caminos y llega. Ojo: esto es un empujon programado, no que el bicho 'quiera' explorar. Eso (el deseo latente) es un estrato mas arriba: cuando el error de prediccion genere valencia, o haya un modo EXPLORAR que el sistema se auto-active. Lo dejamos anotado para 0036+."
+}

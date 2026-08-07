@@ -1,0 +1,458 @@
+seed 20260803 | TS_full g0 0.861 g19 0.732
+seed 20261803 | TS_full g0 1.000 g19 1.000
+seed 20262803 | TS_full g0 1.000 g19 1.000
+{
+  "experiment_id": "exp_SGM_0056",
+  "name": "ilm_inferencia_reglas",
+  "status": "ILM_REGLA",
+  "marco": "0055d mostro estancamiento en ~0.35 (afinidad agrupa pero no infiere reglas). 0056: el aprendiz INFERE el mapeo rasgo->simbolo de la muestra y lo aplica sistematicamente. Testea si la INFERENCIA DE REGLA (no copiar/bigrama) lleva a composicion plena (~0.9).",
+  "diseno": "20 generaciones, 3 seeds, V=16 L=3, 24 referentes. Aprendiz deduce region->pos0, dist->pos1, tipo->pos2 de la muestra vista y aplica a todos.",
+  "config": {
+    "V": 16,
+    "L": 3,
+    "N_REF": 24,
+    "G": 20,
+    "frac": 0.4,
+    "SEED": 20260803
+  },
+  "resultados": [
+    {
+      "seed": 20260803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 0.861,
+          "topSim_seen": 0.346,
+          "topSim_unseen": 0.854,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 0.791,
+          "topSim_seen": 0.848,
+          "topSim_unseen": 0.697,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.854,
+          "topSim_unseen": 0.748,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.832,
+          "topSim_unseen": 0.794,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.709,
+          "topSim_unseen": 0.835,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.796,
+          "topSim_unseen": 0.8,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.819,
+          "topSim_unseen": 0.817,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.761,
+          "topSim_unseen": 0.701,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 0.787,
+          "topSim_seen": 0.903,
+          "topSim_unseen": 0.768,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 0.803,
+          "topSim_seen": 0.908,
+          "topSim_unseen": 0.703,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 0.79,
+          "topSim_seen": 0.827,
+          "topSim_unseen": 0.775,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 0.79,
+          "topSim_seen": 0.867,
+          "topSim_unseen": 0.753,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 0.79,
+          "topSim_seen": 0.841,
+          "topSim_unseen": 0.792,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 0.79,
+          "topSim_seen": 0.84,
+          "topSim_unseen": 0.789,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 0.737,
+          "topSim_seen": 0.693,
+          "topSim_unseen": 0.666,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 0.732,
+          "topSim_seen": 0.808,
+          "topSim_unseen": 0.706,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 0.732,
+          "topSim_seen": 0.788,
+          "topSim_unseen": 0.767,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 0.732,
+          "topSim_seen": 0.78,
+          "topSim_unseen": 0.711,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 0.732,
+          "topSim_seen": 0.639,
+          "topSim_unseen": 0.738,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 0.732,
+          "topSim_seen": 0.559,
+          "topSim_unseen": 0.753,
+          "n_seen": 9
+        }
+      ]
+    },
+    {
+      "seed": 20261803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 1.0,
+          "topSim_seen": 0.088,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 0.941,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 0.883,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        }
+      ]
+    },
+    {
+      "seed": 20262803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 1.0,
+          "topSim_seen": 0.331,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 0.952,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 0.879,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 1.0,
+          "topSim_seen": 0.938,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 0.951,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 0.884,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 1.0,
+          "topSim_seen": 0.98,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 1.0,
+          "topSim_seen": 1.0,
+          "topSim_unseen": 1.0,
+          "n_seen": 9
+        }
+      ]
+    }
+  ],
+  "verdict": "Si TS_full SUBE a ~0.9 => el sustrato PUEDE componer pleno con inferencia de regla (no hace falta Gumbel-Softmax). Si se estanca ~0.35 => confirma que HRR/bigrama necesita objetivo de comunicacion/backprop para sistematicidad.",
+  "verified": true
+}
+EXIT=0

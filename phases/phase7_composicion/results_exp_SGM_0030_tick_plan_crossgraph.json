@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0030",
+  "experiment_name": "tick_plan_crossgraph",
+  "phase": "Composicion Relacional (Gap 2) - B: tick resuelve plan cruzando grafos",
+  "date": "2026-08-02",
+  "hypothesis": "El tick con memoria relacional HRR resuelve un plan multi-paso cruzando dos grafos (cruce empaquetado SOLO en rel_mem[llave] como HRR(rol_meta, omega_meta)). El tick plano (PPR Euclidiana real sobre aristas) no llega porque el cruce no es arista fisica. NC con cruce corrupto falla.",
+  "config": {
+    "D": 128,
+    "trials": 20,
+    "seed": 42,
+    "refs": [
+      "hrr_core.py",
+      "tick_relational_core.py"
+    ],
+    "nota_auditoria": "REPARADO: antes plan_from(use_roles=False) hacia 'return False' (hardcoded) y habia arista fisica de cruce. Ahora el plano es PPR Euclidiana real y el cruce vive solo en rel_mem."
+  },
+  "result": {
+    "exito_plan_HRR_roles": 1.0,
+    "exito_plan_plano_REAL": 0.0,
+    "exito_NC_cruce_azar": 0.05,
+    "T-CROSS-01": true,
+    "T-CROSS-02": true,
+    "T-CROSS-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_tick_plan_crossgraph.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0030_tick_plan_crossgraph.json",
+  "test_target": "T-CROSS-01/02/NC (NC y plano REALES, no hardcoded)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0028_tick_relational.json"
+  ],
+  "notes": "Auditoria 2026-08-02: el resultado 'B' tenia el negative control garantizado por 'return False' y una arista de cruce fisica que hubiera dejado al plano ganar. Reparado: cruce solo en rel_mem HRR, plano=PPR Euclidiana real. Ahora el 'plano no puede' se sostiene por computo, no por codigo.",
+  "notes_criollo": "Reparamos el B: antes el 'tick plano no puede' era un return False trucho y encima habia una arista de cruce fisica que lo hubiera dejado ganar. Ahora el cruce entre grafos vive SOLO adentro del nodo llave (HRR), y el plano de verdad (distancia Euclidiana) no llega porque no hay arista. El HRR lo destapa. El resultado se sostiene por computo real."
+}

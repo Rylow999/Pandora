@@ -1,0 +1,55 @@
+{
+  "experiment_id": "exp_SGM_0008",
+  "experiment_name": "abduce_xor_phase_dynamics",
+  "phase": "Fase 2 \u2014 Inferencia simb\u00f3lica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "Incorporar fase din\u00e1mica \u03c9(t) al binding XOR (KoPE-inspired) mejora el score de abducci\u00f3n y la robustez al ruido, superando D=32 est\u00e1tico de exp_SGM_0007.",
+  "result": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "phase_params": {
+      "alpha_phase": 0.15,
+      "omega_0": 1.0,
+      "k_coupling": 0.3,
+      "num_ticks": 500
+    },
+    "correct_pairs": 0,
+    "correct_top1": 0,
+    "pair_accuracy": 0.0,
+    "top1_accuracy": 0.0,
+    "avg_pair_score": 0.276293023995819,
+    "avg_top1_score": 0.35373138435671436,
+    "correct_noisy": 0,
+    "noisy_accuracy": 0.0,
+    "avg_noisy_score": 0.2825496291439996,
+    "noise_degradation": -0.006256605148180605,
+    "avg_sync_diff": 1.7790563409241826,
+    "phase_convergence": 0.4337087786058723,
+    "elapsed_seconds": 0.09
+  },
+  "config": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "seed": 42,
+    "num_ticks": 500,
+    "alpha_phase": 0.15,
+    "omega_0": 1.0,
+    "k_coupling": 0.3
+  },
+  "script": "phases/phase2_inferencia/run_abduce_phase.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0008_abduce_phase.json",
+  "test_target": "T-INF-03 (abducci\u00f3n XOR con fase din\u00e1mica KoPE-inspired)",
+  "baseline_for": [],
+  "variant_of": "exp_SGM_0005",
+  "lit_refs": [
+    "KoPE arXiv 2604.07904 (Xiao et al., Microsoft Research Asia, April 2026)",
+    "Kanerva 1988 Sparse Distributed Memory",
+    "HippoRAG NeurIPS 2024 (arxiv 2404.10501)"
+  ],
+  "notes": "Resultado pendiente de ejecuci\u00f3n. Comparar con exp_SGM_0007 (D=32, sin fase) para verificar si la fase din\u00e1mica mejora la composici\u00f3n XOR.",
+  "notes_criollo": "Si la fase din\u00e1mica mejora el score, confirma que Kuramoto es el camino correcto para SGM. Si no mejora, puede que necesitemos combinar D mayor + fase, o que el mecanismo de fase necesita m\u00e1s ticks de convergencia."
+}

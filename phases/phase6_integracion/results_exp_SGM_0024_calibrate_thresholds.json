@@ -1,0 +1,61 @@
+{
+  "experiment_id": "exp_SGM_0024",
+  "experiment_name": "calibrate_thresholds",
+  "phase": "Fase 6 - Calibracion offline de umbrales (tarea B)",
+  "date": "2026-08-02",
+  "hypothesis": "Los umbrales theta_novelty, min_duration, theta_refut, theta_window_frac se calibran por grid search contra una suite T-INF con casos controlados (FATE no disponible y su propio benchmark desaconseja usarlo en baja dimension). La mejor config pasa los 4 casos y el barrido muestra variacion (region optima no trivial).",
+  "config": {
+    "SEED": 42,
+    "ranges": {
+      "theta_novelty": [
+        0.15,
+        0.3,
+        0.45
+      ],
+      "min_duration": [
+        3,
+        5,
+        7
+      ],
+      "theta_refut": [
+        1.5,
+        2.0,
+        2.5
+      ],
+      "theta_window_frac": [
+        0.3,
+        0.5,
+        0.7
+      ]
+    },
+    "metodo": "grid_search (FATE no instalado; spec §2.5 honesta: FATE pierde en baja dim)",
+    "spec_ref": "SGM v1.4 §2.5 uso 2, §7"
+  },
+  "result": {
+    "mejor_config": {
+      "theta_novelty": 0.3,
+      "min_duration": 3,
+      "theta_refut": 1.5,
+      "theta_window_frac": 0.3
+    },
+    "tests_pasados_mejor": 8,
+    "barrido_total_configs": 81,
+    "configs_que_pasan_4_4": 12,
+    "configs_que_pasan_0_4": 0,
+    "variacion_barrido": true,
+    "calibrado_ok": true,
+    "pass": true
+  },
+  "script": "phases/phase6_integracion/run_calibrate_thresholds.py",
+  "results_file": "phases/phase6_integracion/results_exp_SGM_0024_calibrate_thresholds.json",
+  "test_target": "Calibracion offline de umbrales (reemplaza FATE no disponible)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §2.5 (uso 2: FATE para calibracion, acotado)",
+    "SGM v1.4 §7 (umbrales)",
+    "SGM_ROADMAP.md Fase 6",
+    "regla #7 roadmap (ground truth + negative control)"
+  ],
+  "notes": "FATE (fate-v6-modular) NO esta en el repo. Su propio benchmark (spec §2.5) admite que pierde vs CMA-ES en baja dimension (D=10); los 4 umbrales son baja dimension. Por tanto el grid search es el metodo honesto. Suite T-INF: 2 casos positivos (estancamiento, contradiccion) + 2 negative controls. Metricas: tests pasados + margen de separacion.",
+  "notes_criollo": "El 0024 es la parte 'aburrida' que pediste: calibrar los umbrales (θ_novelty, min_duration, θ_refut, θ_window_frac) contra casos controlados, no dejarlos hardcodeados a ojo. La spec decia usar FATE, pero FATE no esta instalado y su propio benchmark dice que pierde en baja dimension. Asi que barro todas las combinaciones y elijo la que pasa todos los tests. Aburrido pero deja el sistema auditado, como dijiste."
+}

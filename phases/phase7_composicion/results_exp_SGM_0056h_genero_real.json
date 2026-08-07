@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0056h",
+  "name": "clasificacion_real_genero_contexto",
+  "status": "RUNNING",
+  "marco": "CLASIFICACION REAL con etiqueta DISTRIBUCIONAL (repite 0056g donde propio/comun era lexico y fallo). Genero del sustantivo: gold = genero del determinante que lo precede (el/la, fiable en es). La senal vive en el CONTEXTO (determinante + concordancia), no en la palabra. Compara role-filler vs BoW plana. Reusa corpus Don Quijote y BinDecoder 56g.",
+  "diseno": "Don Quijote (es). N=256, V=1500, 2000 oraciones, muestras hasta 8000 (sustantivo con DET frec>=8, objetivo enmascarado). 70/30. BinDecoder sgd 15 epocas. Baseline=mayoritaria.",
+  "config": {
+    "N": 256,
+    "V_KEEP": 1500,
+    "SAMPLE_CAP": 8000,
+    "EPOCHS": 15,
+    "SEED": 20260804,
+    "corpus": "Don Quijote (es) pg2000",
+    "task": "genero_masc_fem_por_contexto_distribucional"
+  },
+  "resultados": {
+    "n_muestras": 1088,
+    "baseline_acc": 0.553,
+    "role_filler": {
+      "acc": 0.673,
+      "f1": 0.718
+    },
+    "plana_bow": {
+      "acc": 0.804,
+      "f1": 0.836
+    }
+  },
+  "verdict": "Si ambos > baseline => el sustrato SI clasifica cuando hay senal distribucional (la leccion de 0056g era la tarea, no el sustrato). Si role_filler >= plana => el rol ayuda porque la posicion del determinante importa. HONESTIDAD: es clasificacion distribucional real sobre texto real; el sustrato demuestra aprender genero por contexto.",
+  "based_on": [
+    "0056g (clasificacion lexica fallo: propio es lexico)",
+    "0056f (uso real)",
+    "0056e (decoder listo)"
+  ],
+  "verified": true
+}

@@ -1,0 +1,520 @@
+{
+  "experiment_id": "exp_SGM_0056d",
+  "name": "ilm_decoder_entrenado",
+  "status": "RUNNING",
+  "marco": "Contraste con 0056 (regla inyectada->1.0, trampa), 0056b (afinidad sola->~0.35), 0056c (presion transmision, decoder por conteo->~0.59). 0056d: MISMO learner (sus codigos, presion de transmision) pero DECODER LINEAL ENTRENADO (backprop stdlib, W_k libre en todas las posiciones -> no asume mapeo pos->rasgo). Testea si el cuello de 0056c era el decoder debil (conteo) y un objetivo entrenado cierra la composicion plena.",
+  "diseno": "20 generaciones, 3 seeds, V=16 L=3, 24 referentes, frac=0.4. Decoder: regresion logistica multinomial por rasgo sobre one-hot de L posiciones, cross-entropy, sgd 60 epocas. Learner ajusta codigos para minimizar error del decoder + unificacion global descubierta del mapeo pos->rasgo.",
+  "config": {
+    "V": 16,
+    "L": 3,
+    "N_REF": 24,
+    "G": 20,
+    "frac": 0.4,
+    "SEED": 20260803,
+    "decoder": "linear_trained_sgd"
+  },
+  "resultados": [
+    {
+      "seed": 20260803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 0.806,
+          "topSim_seen": 0.346,
+          "topSim_unseen": 0.796,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 0.795,
+          "topSim_seen": 0.872,
+          "topSim_unseen": 0.87,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 0.718,
+          "topSim_seen": 0.77,
+          "topSim_unseen": 0.689,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 0.703,
+          "topSim_seen": 0.815,
+          "topSim_unseen": 0.645,
+          "dec_err_seen": 0.333,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 0.866,
+          "topSim_seen": 0.765,
+          "topSim_unseen": 0.852,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 0.699,
+          "topSim_seen": 0.818,
+          "topSim_unseen": 0.698,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 0.586,
+          "topSim_seen": 0.606,
+          "topSim_unseen": 0.466,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 0.547,
+          "topSim_seen": 0.566,
+          "topSim_unseen": 0.549,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 0.755,
+          "topSim_seen": 0.603,
+          "topSim_unseen": 0.771,
+          "dec_err_seen": 0.444,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 0.619,
+          "topSim_seen": 0.727,
+          "topSim_unseen": 0.545,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 0.365,
+          "topSim_seen": 0.572,
+          "topSim_unseen": 0.406,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 0.554,
+          "topSim_seen": 0.323,
+          "topSim_unseen": 0.592,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 0.485,
+          "topSim_seen": 0.453,
+          "topSim_unseen": 0.321,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 0.642,
+          "topSim_seen": 0.752,
+          "topSim_unseen": 0.684,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 0.52,
+          "topSim_seen": 0.713,
+          "topSim_unseen": 0.471,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 0.514,
+          "topSim_seen": 0.627,
+          "topSim_unseen": 0.427,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 0.477,
+          "topSim_seen": 0.531,
+          "topSim_unseen": 0.381,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 0.482,
+          "topSim_seen": 0.325,
+          "topSim_unseen": 0.42,
+          "dec_err_seen": 0.444,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 0.495,
+          "topSim_seen": 0.558,
+          "topSim_unseen": 0.408,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 0.761,
+          "topSim_seen": 0.332,
+          "topSim_unseen": 0.764,
+          "dec_err_seen": 0.333,
+          "n_seen": 9
+        }
+      ]
+    },
+    {
+      "seed": 20261803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 0.648,
+          "topSim_seen": 0.088,
+          "topSim_unseen": 0.668,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 0.698,
+          "topSim_seen": 0.767,
+          "topSim_unseen": 0.718,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 0.581,
+          "topSim_seen": 0.734,
+          "topSim_unseen": 0.531,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 0.613,
+          "topSim_seen": 0.648,
+          "topSim_unseen": 0.577,
+          "dec_err_seen": 0.333,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 0.444,
+          "topSim_seen": 0.373,
+          "topSim_unseen": 0.452,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 0.539,
+          "topSim_seen": 0.511,
+          "topSim_unseen": 0.462,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 0.614,
+          "topSim_seen": 0.605,
+          "topSim_unseen": 0.665,
+          "dec_err_seen": 0.333,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 0.659,
+          "topSim_seen": 0.701,
+          "topSim_unseen": 0.585,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 0.594,
+          "topSim_seen": 0.713,
+          "topSim_unseen": 0.541,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 0.561,
+          "topSim_seen": 0.45,
+          "topSim_unseen": 0.493,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 0.686,
+          "topSim_seen": 0.65,
+          "topSim_unseen": 0.61,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 0.592,
+          "topSim_seen": 0.647,
+          "topSim_unseen": 0.506,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 0.341,
+          "topSim_seen": 0.74,
+          "topSim_unseen": 0.297,
+          "dec_err_seen": 0.333,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 0.679,
+          "topSim_seen": 0.64,
+          "topSim_unseen": 0.662,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 0.52,
+          "topSim_seen": 0.523,
+          "topSim_unseen": 0.613,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 0.615,
+          "topSim_seen": 0.102,
+          "topSim_unseen": 0.55,
+          "dec_err_seen": 0.444,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 0.606,
+          "topSim_seen": 0.726,
+          "topSim_unseen": 0.514,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 0.552,
+          "topSim_seen": 0.66,
+          "topSim_unseen": 0.555,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 0.526,
+          "topSim_seen": 0.513,
+          "topSim_unseen": 0.517,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 0.554,
+          "topSim_seen": 0.545,
+          "topSim_unseen": 0.429,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        }
+      ]
+    },
+    {
+      "seed": 20262803,
+      "traj": [
+        {
+          "gen": 0,
+          "topSim_full": 0.456,
+          "topSim_seen": 0.331,
+          "topSim_unseen": 0.469,
+          "dec_err_seen": 0.0,
+          "n_seen": 9
+        },
+        {
+          "gen": 1,
+          "topSim_full": 0.487,
+          "topSim_seen": 0.39,
+          "topSim_unseen": 0.469,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 2,
+          "topSim_full": 0.552,
+          "topSim_seen": 0.375,
+          "topSim_unseen": 0.397,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 3,
+          "topSim_full": 0.548,
+          "topSim_seen": 0.614,
+          "topSim_unseen": 0.346,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 4,
+          "topSim_full": 0.554,
+          "topSim_seen": 0.501,
+          "topSim_unseen": 0.46,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 5,
+          "topSim_full": 0.555,
+          "topSim_seen": 0.644,
+          "topSim_unseen": 0.567,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 6,
+          "topSim_full": 0.478,
+          "topSim_seen": 0.446,
+          "topSim_unseen": 0.496,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 7,
+          "topSim_full": 0.496,
+          "topSim_seen": 0.43,
+          "topSim_unseen": 0.358,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 8,
+          "topSim_full": 0.389,
+          "topSim_seen": 0.471,
+          "topSim_unseen": 0.27,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 9,
+          "topSim_full": 0.414,
+          "topSim_seen": 0.559,
+          "topSim_unseen": 0.331,
+          "dec_err_seen": 0.444,
+          "n_seen": 9
+        },
+        {
+          "gen": 10,
+          "topSim_full": 0.58,
+          "topSim_seen": 0.185,
+          "topSim_unseen": 0.642,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 11,
+          "topSim_full": 0.609,
+          "topSim_seen": 0.652,
+          "topSim_unseen": 0.628,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 12,
+          "topSim_full": 0.589,
+          "topSim_seen": 0.633,
+          "topSim_unseen": 0.65,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 13,
+          "topSim_full": 0.561,
+          "topSim_seen": 0.651,
+          "topSim_unseen": 0.511,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 14,
+          "topSim_full": 0.584,
+          "topSim_seen": 0.481,
+          "topSim_unseen": 0.583,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 15,
+          "topSim_full": 0.613,
+          "topSim_seen": 0.583,
+          "topSim_unseen": 0.512,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        },
+        {
+          "gen": 16,
+          "topSim_full": 0.505,
+          "topSim_seen": 0.56,
+          "topSim_unseen": 0.382,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 17,
+          "topSim_full": 0.414,
+          "topSim_seen": 0.625,
+          "topSim_unseen": 0.47,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 18,
+          "topSim_full": 0.47,
+          "topSim_seen": 0.417,
+          "topSim_unseen": 0.465,
+          "dec_err_seen": 0.111,
+          "n_seen": 9
+        },
+        {
+          "gen": 19,
+          "topSim_full": 0.529,
+          "topSim_seen": 0.527,
+          "topSim_unseen": 0.452,
+          "dec_err_seen": 0.222,
+          "n_seen": 9
+        }
+      ]
+    }
+  ],
+  "verdict": "Si TS_full SUBE a ~0.9-1.0 => el cuello de 0056c era el decoder debil (conteo) y un OBJETIVO DE COMUNICACION ENTRENADO cierra composicion plena. HONESTIDAD: eso es arquitectura distinta de SGM puro (tiene gradiente); el 1.0 seria del objetivo entrenado, no del sustrato. Si se estanca ~0.59 => el cuello es el CODIGO discreto (L=3,V=16) y el decoder entrenado no alcanza sin mas dimension/independencia.",
+  "based_on": [
+    "0056 (contraste regla inyectada)",
+    "0056b (afinidad sola ~0.35)",
+    "0056c (presion transmision ~0.59)"
+  ],
+  "verified": true
+}

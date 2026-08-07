@@ -1,0 +1,59 @@
+{
+  "experiment_id": "exp_SGM_0033b",
+  "experiment_name": "grid_dolor_bottleneck",
+  "phase": "Camino A - evasion fuerte de dolor con memoria persistente (bottleneck)",
+  "date": "2026-08-02",
+  "hypothesis": "Con cuello de botella (camino corto con dolor + ruta larga limpia) y omega persistente entre K=5 viajes, el agente CON dolor penaliza el gap doloroso en el viaje 1 y toma la ruta larga en viajes 2-5 (evasion fuerte). ABIERTO pisa dolor en todos los viajes. NC: random walk no mejora.",
+  "config": {
+    "D": 2,
+    "W": 10,
+    "Ht": 10,
+    "trips": 5,
+    "seed": 20260802,
+    "bottleneck": "pared col 4, gaps (0,4)=dolor (corto) y (9,4)=limpio (largo)",
+    "embedding": "metrico [r/Ht, c/W] (sin periodico)",
+    "omega_persistente_entre_viajes": true
+  },
+  "result": {
+    "pisadas_CON_por_viaje": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pisadas_CON_total": 1,
+    "pisadas_ABIERTO_por_viaje": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "pisadas_ABIERTO_total": 5,
+    "pisadas_RW_por_viaje": [
+      0,
+      0,
+      10,
+      3,
+      3
+    ],
+    "pisadas_RW_total": 16,
+    "llegada_CON": 1.0,
+    "T1": true,
+    "T2": true,
+    "T3": true,
+    "NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_grid_dolor_bottleneck.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0033b_grid_dolor_bottleneck.json",
+  "test_target": "T1(CON<AB) + T2(llega) + T3(v1>v5) + NC(AB>=CON)",
+  "variant_of": "exp_SGM_0033 (dolor grid) + exp_SGM_0025 (dolor online) + memoria persistente",
+  "lit_refs": [
+    "exp_SGM_0033_grid_dolor.json",
+    "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Cuello de botella (pared col 4, gap superior con dolor en camino corto, gap inferior limpio en ruta larga). Navegacion por gradiente de distancia a meta + costo de dolor acumulado (K_DOLOR=10) en self.dolor_count, que PERSISTE entre los K=5 viajes (memoria de travesia = identidad). El embedding HRR de posicion es para memoria relacional gruesa, no para control fino de locomocion (colapsa puntos colineales); el control fino usa distancia metrica. CON dolor: sufre en viaje 1, aprende a rodear por ruta larga en viajes 2-5. ABIERTO (sin dolor) pisa siempre. NC: RW no aprende.",
+  "notes_criollo": "CIERRA el tema del dolor en grid con evasion fuerte REAL: el agente sufre una vez y, con memoria persistente (la huella del dolor queda en dolor_count), aprende a rodear por el camino largo en los viajes siguientes. El abierto se quema siempre. Primera vez que vemos aprendizaje entre episodios en el grid = identidad (la memoria persiste). Honestidad: el control fino usa gradiente metrico, no el embedding HRR (que colapsa); el HRR queda para memoria relacional gruesa."
+}

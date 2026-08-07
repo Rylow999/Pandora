@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_SGM_0022",
+  "experiment_name": "decoder_l2_bigram",
+  "phase": "Fase 5 - Decodificador L2 (camino A: bigrama)",
+  "date": "2026-08-02",
+  "hypothesis": "Decoder L2 como transicion explicita bigrama (NO proyeccion lineal W·omega, que falla en v0.25 v12). El bigrama aprende de un corpus y predice el siguiente token (top1>0.5 en holdout, como el 0.630 reportado). El omega ruteado selecciona la semilla por afinidad (Eq.2); el bigrama genera texto coherente (transiciones validas bajo la verdad).",
+  "config": {
+    "V": 20,
+    "D": 32,
+    "N_SENT": 400,
+    "L": 8,
+    "HOLDOUT": 100,
+    "seed": 42,
+    "camino": "bigrama (NO lineal, NO similarity-NN)",
+    "spec_ref": "SGM v1.4 §4.5 / ROADMAP Fase 5"
+  },
+  "result": {
+    "T-DEC-01": {
+      "top1_holdout": 0.927,
+      "umbral": 0.5,
+      "aprende_transiciones": true
+    },
+    "T-DEC-02": {
+      "prob_media_bajo_verdad": 0.924,
+      "umbral_coherencia": 0.2,
+      "coherente": true,
+      "semilla_por_afinidad": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase5_decoder/run_decoder_l2_bigram.py",
+  "results_file": "phases/phase5_decoder/results_exp_SGM_0022_decoder_l2_bigram.json",
+  "test_target": "T-DEC-01 (bigrama predice top1>0.5 en holdout), T-DEC-02 (secuencia coherente, semilla por afinidad)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §4.5",
+    "SGM_ROADMAP.md Fase 5",
+    "v0.25 v12 (similarity-NN top1=0.020, NO usar)",
+    "v0.6a/v0.5b (next-token, generator)"
+  ],
+  "notes": "Corpus SINTETICO (lenguaje de juguete con bigrama oculto no uniforme). Mide que el decoder APRENDE la transicion, no que 'entiende espanol' (no hay Don Quijote en el vault). Camino A = bigrama explicito, no proyeccion lineal. Omega ruteado -> semilla por afinidad une grafo+decoder.",
+  "notes_criollo": "El 0022 es Fase 5: el decoder que saca texto del sentido ruteado. El roadmap dice NO usar proyeccion lineal (eso daba 0.020, un desastre) y usar bigrama o transformer. Usamos BIGRAMA: contamos que token sigue a cual (transicion explicita). Lo entrenamos en un lenguaje de juguete y acierta >0.5 el siguiente token. Y el sentido ruteado (omega) elige por donde arranca (semilla) por afinidad, despues el bigrama genera. Es el camino A que el roadmap marcaba como seguro."
+}

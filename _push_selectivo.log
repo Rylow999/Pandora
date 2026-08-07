@@ -1,0 +1,9 @@
+  phases/phase7_composicion/run_identity_tid03.py: 201
+  phases/phase7_composicion/run_identity_tid03b.py: 201
+  phases/phase7_composicion/run_identity_tid03c.py: 409
+  phases/phase7_composicion/results_exp_SGM_0035_identity_trajectory.json: 201
+  phases/phase7_composicion/results_exp_SGM_0035b_identity_trajectory_omega.json: 201
+  phases/phase7_composicion/results_exp_SGM_0035c_identity_trajectory_libro.json: 201
+  results/experiment_registry.json: 409
+  README.md: 409
+PUSH SGM-CORE TERMINADO

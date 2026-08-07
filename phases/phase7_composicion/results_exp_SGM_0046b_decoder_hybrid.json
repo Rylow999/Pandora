@@ -1,0 +1,24 @@
+{
+  "experiment_id": "exp_SGM_0046b",
+  "name": "decoder_l2_hybrid_hrr_filter",
+  "status": "HALLAZGO",
+  "marco": "1904.09447 + 2512.14709 + 2306.08302. Hibrido: HRR filtra por sentido, bigrama plano predice.",
+  "diseno": "HRR filtra top-M vecinos por coherencia de sentido; bigrama plano elige entre ellos. Don Quijote real.",
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 256,
+    "M_FILTER": 4,
+    "K": 8,
+    "SEED": 20260803
+  },
+  "tests": {
+    "T-DEC-H1_hibrido_vs_plano": {
+      "top1_hibrido": 0.17,
+      "top1_plano_0026": 0.333,
+      "pass": false,
+      "meta": "Filtro binario HRR empeora: descarta sucesor correcto por crosstalk."
+    }
+  },
+  "verified": false
+}

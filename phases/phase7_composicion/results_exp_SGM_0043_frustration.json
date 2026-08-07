@@ -1,0 +1,34 @@
+{
+  "experiment_id": "exp_SGM_0043",
+  "name": "frustration_interrupt_exploration",
+  "status": "B_PURO",
+  "marco": "Active Inference (2010.00262): exploracion emerge de minimizar sorpresa. Usa solo abur(0036)+last_pos(0020), sin agregados.",
+  "diseno": "acoplamiento abur->pena de retorno, peso 1.0 (misma moneda del campo). Sin hardcode de umbral, sin bloqueo.",
+  "config": {
+    "GRID": 12,
+    "STEPS": 300,
+    "SEED": 20260803
+  },
+  "tests": {
+    "T-FR-01_explora_con_frustracion": {
+      "celdas_dinamico": 107,
+      "celdas_NC_sin_abur": 5,
+      "pass": true,
+      "meta": "Active Inference: frustracion (abur) emerge exploracion sin modulo de mapa"
+    },
+    "T-FR-02_rompe_retorno": {
+      "retornos_dinamico": 60,
+      "retornos_NC": 296,
+      "abur_final": 0.93,
+      "pass": true,
+      "meta": "Penas de retorno acopladas a abur reducen oscilacion"
+    },
+    "T-FR-03_NC_reproduce_0042": {
+      "celdas_off": 5,
+      "pass": true,
+      "meta": "NC: sin frustracion el agente se estanca (confirma que exploracion emerge del campo)"
+    },
+    "overall_pass": true
+  },
+  "verified": true
+}

@@ -1,0 +1,71 @@
+{
+  "experiment_id": "exp_SGM_0056f",
+  "name": "uso_real_corpus_donquijote",
+  "status": "RUNNING",
+  "marco": "Uso real del sustrato HD (role-filler 0056e / slots 0059g) como MEMORIA DIRECCIONABLE POR CONTENIDO sobre corpus real (Don Quijote, espanol). Responde si el HD role-filler ayuda en datos reales vs superposicion plana (0029).",
+  "diseno": "Descarga Don Quijote (Gutenberg pg2000), tokenizacion manual stdlib, V=3000 palabras, N=512 dims HD. Codifica 4000 oraciones como trazas HD (role-filler posicional y plana BoW). Recall: 20 queries, top-5 vecinos por cosine, metrica Jaccard lexico (sin stopwords).",
+  "config": {
+    "N": 512,
+    "V_KEEP": 3000,
+    "MAXLEN": 24,
+    "NSENT": 4000,
+    "NQ": 20,
+    "KNN": 5,
+    "SEED": 20260804,
+    "corpus": "Don Quijote (es) pg2000"
+  },
+  "resultados": {
+    "jaccard_role_filler": 0.085,
+    "jaccard_plana": 0.105,
+    "n_oraciones": 4000,
+    "n_vocab": 3000,
+    "ejemplos": [
+      {
+        "query": "pues aunque estuviera más gustara caminallas trueco hacer tan buena obra",
+        "rf_neighbors": [
+          "pues qué venimos las comedias divinas",
+          "pues aunque eso sea dijo uno los caballo que habían entrado faltar"
+        ],
+        "flat_neighbors": [
+          "pues qué hacer firma",
+          "caballería andante respondió don quijote que tan buena como poesía aun dos"
+        ],
+        "jr": 0.083,
+        "jf": 0.136
+      },
+      {
+        "query": "sírvate este advertimiento sancho para que discreta bienintencionadamente pongas mis oídos verdad",
+        "rf_neighbors": [
+          "mostró duquesa carta sancho duque que recibió grandísimo contento",
+          "dad gracias dios sancho que que santiguaron con palo hicieron per signum"
+        ],
+        "flat_neighbors": [
+          "que todos los poetas que alaban damas debajo nombre que ellos albedrío",
+          "deja que hombre jui las obras que compo vaya con pies plo"
+        ],
+        "jr": 0.037,
+        "jf": 0.018
+      },
+      {
+        "query": "efecto qué dice teresa",
+        "rf_neighbors": [
+          "preguntó qué hora era respondiéronle que amanecía",
+          "dios ayuso entendemos teresa sabemos que decís"
+        ],
+        "flat_neighbors": [
+          "dijo teresa oyendo carta qué buena qué llana qué humilde señora",
+          "qué cofias diera qué escarpines plata qué calzas damasco qué herreruelos holanda"
+        ],
+        "jr": 0.134,
+        "jf": 0.184
+      }
+    ]
+  },
+  "verdict": "Si jaccard_role_filler > jaccard_plana => el role-filler (que rompio el 0.6 en 0056e) tambien ayuda en datos reales: la memoria direccionable por contenido es mas precisa con estructura de rol. Si son similares => en texto natural el BoW plano ya basta para recall tematico y el rol solo importa cuando el ORDEN es discriminativo. HONESTIDAD: esto es recall lexico, no 'comprension'; el sustrato demuestra memoria por similitud sobre texto real, no razonamiento.",
+  "based_on": [
+    "0056e (HD role-filler rompe techo)",
+    "0059g (slots separados)",
+    "0029 (superposicion plana)"
+  ],
+  "verified": true
+}

@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_SGM_0056j",
+  "name": "decoder_rol_explicito_recupera_hueco",
+  "status": "RUNNING",
+  "marco": "DECODER POR ROL EXPLICITO cierra el arco de 0056i: en vez de clasificador lineal sobre contexto mezclado, hace UNBIND de cada posicion y busca la unica sin palabra limpia (el hueco enmascarado). Con PAD rellenando posiciones libres, el hueco es el argmin de max-cosine vs vocab. Si recupera el hueco => el HD role-filler codifica orden y la tarea de orden se resuelve.",
+  "diseno": "Don Quijote (es). N=1024, V=300, MAXLEN=10, 600 oraciones. Rellena con PAD. Objetivo enmascarado. Decoder SIN entrenamiento: unbind por posicion, argmin max-cosine=gap. Compara vs lineal 0056i y baseline.",
+  "config": {
+    "N": 1024,
+    "V_KEEP": 300,
+    "MAXLEN": 10,
+    "SAMPLE_CAP": 2000,
+    "SEED": 20260804,
+    "corpus": "Don Quijote (es) pg2000",
+    "task": "recuperar_posicion_hueco_por_unbind"
+  },
+  "resultados": {
+    "baseline_acc": 0.662,
+    "rol_explicito_gap_recuperado": 1.0,
+    "rol_explicito_tarea_orden": 0.504,
+    "lineal_role_filler": {
+      "acc": 0.479,
+      "f1": 0.208
+    },
+    "lineal_plana": {
+      "acc": 0.496,
+      "f1": 0.169
+    }
+  },
+  "verdict": "Si rol_explicito_gap_recuperado y tarea_orden > baseline y >> lineales => el orden ES recuperable por decodificacion por rol (el rol codifica posicion), cerrando el arco de 0056i donde el lineal no alcanzaba. HONESTIDAD: el decoder por rol es NO entrenado (unbinding puro), la senal de orden vive en la estructura HD, no en pesos aprendidos.",
+  "based_on": [
+    "0056i (orden: lineal no alcanza)",
+    "0056e (HD role-filler)",
+    "0056g (lexico)",
+    "0056h (distribucional)"
+  ],
+  "verified": true
+}

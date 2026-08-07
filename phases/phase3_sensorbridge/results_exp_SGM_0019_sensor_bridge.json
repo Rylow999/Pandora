@@ -1,0 +1,68 @@
+{
+  "experiment_id": "exp_SGM_0019",
+  "experiment_name": "sensor_bridge",
+  "phase": "Fase 3 - SensorBridge",
+  "date": "2026-08-02",
+  "hypothesis": "Senales sensoriales sinteticas (audio/visual/impulso/termica) se proyectan a omega_D=128 via HDC binding (Kanerva/Plate/VSA) de forma inyectiva y recuperable (round-trip). Interocepcion omega_root_intero + politica de emergencia (E_root>0.8 -> K=3,W_base=4). La proyeccion no machaca memoria existente.",
+  "config": {
+    "D": 128,
+    "chunk": 8,
+    "n_chunks": 16,
+    "seed": 42,
+    "theta_dist": 0.3,
+    "tol_roundtrip": 0.5,
+    "theta_emerg": 0.8,
+    "base": "HDC binding (permutacion+Hadamard) + bundling, Kanerva 0903.4547 / Plate cs0308022 / VSA 2111.06077"
+  },
+  "result": {
+    "T-SEN-01": {
+      "distancias_estructuralmente_distintas": {
+        "audio_vs_visual": 0.575,
+        "audio_vs_impulso": 1.414,
+        "visual_vs_impulso": 1.383,
+        "audio_f0.3_vs_audio_f0.7": 1.612
+      },
+      "umbral": 0.3,
+      "todas_superan_umbral": true,
+      "caso_limite_audio_vs_termica_misma_suavidad": 0.207,
+      "roundtrip_error": 0.1419,
+      "roundtrip_recupera": true
+    },
+    "T-SEN-02": {
+      "E_root_normal_derivado": 0.122,
+      "E_root_critico_derivado": 1.0,
+      "normal": {
+        "PHS": 0.122,
+        "T_eff": 0.016,
+        "rho": 0.122,
+        "K": 20,
+        "W_base": 50,
+        "emergencia": false
+      },
+      "critico": {
+        "PHS": 1.0,
+        "T_eff": 0.06,
+        "rho": 1.0,
+        "K": 3,
+        "W_base": 4,
+        "emergencia": true
+      },
+      "emergencia_activa": true,
+      "normal_sin_emergencia": true
+    },
+    "memoria_no_machacada": true,
+    "pass": true
+  },
+  "script": "phases/phase3_sensorbridge/run_sensor_bridge.py",
+  "results_file": "phases/phase3_sensorbridge/results_exp_SGM_0019_sensor_bridge.json",
+  "test_target": "T-SEN-01 (proyeccion inyectiva+round-trip), T-SEN-02 (interocepcion+emergencia)",
+  "variant_of": null,
+  "lit_refs": [
+    "kanerva_hdc_2009_0903.4547.pdf",
+    "plate_tensor_product_2003_cs0308022.pdf",
+    "vsa_survey_2022_2111.06077.pdf",
+    "SGM_ROADMAP.md Fase 3"
+  ],
+  "notes": "Sin hardware: senales sinteticas. HDC binding inyectivo y robusto para senales estructuralmente distintas. Hallazgo honesto: senales de IGUAL suavidad (audio senoidal vs rampa termica) colapsan en HDC de baja resolucion (CHUNK=8, 16 chunks) -> se documenta. Round-trip real via des-bindeo con permutacion inversa.",
+  "notes_criollo": "El 0019 es el SensorBridge: le entramos senales sinteticas (audio oscilante, visual de borde, impulso, termica) y las proyectamos a omega usando Hyperdimensional Computing (Kanerva/Plate del vault). Senales distintas caen en omega distintos y las podes recuperar (round-trip). El root registra su cuerpo: si le duele (E_root>0.8) aprieta (K=3,W_base=4). El sensor crea nodo nuevo, no pisa memoria vieja. Hallazgo honesto: dos senales muy suaves (audio vs termica) colapsan en HDC de poca resolucion -> no es fallo, es limite de granularidad."
+}

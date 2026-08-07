@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_SGM_0046c",
+  "name": "decoder_l2_hybrid_soft_weight",
+  "status": "HIBRIDO_SUAVE",
+  "marco": "2306.08302 (grafo modula, no reemplaza). HRR pesa el bigrama, no lo filtra.",
+  "diseno": "score_final(k)=freq_bigrama(k)*(1+ALPHA*score_HRR(k)). ALPHA=1.0. Cuando HRR es ruido, se reduce a plano.",
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 256,
+    "ALPHA": 1.0,
+    "K": 8,
+    "SEED": 20260803,
+    "corpus_tokens": 333440
+  },
+  "tests": {
+    "T-DEC-HS1_suave_vs_plano": {
+      "top1_suave_alpha1": 0.315,
+      "top1_plano_NC_alpha0": 0.312,
+      "pass": true,
+      "meta": "Peso suave HRR >= bigrama plano (si HRR aporta senal util). Si igual -> HRR es ruido para vecinos locales."
+    }
+  },
+  "overall_pass": true,
+  "verified": true
+}

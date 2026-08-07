@@ -1,0 +1,60 @@
+{
+  "experiment_id": "exp_SGM_0020",
+  "experiment_name": "plan_mode",
+  "phase": "Fase 4 - Planificacion",
+  "date": "2026-08-02",
+  "hypothesis": "MODO_PLAN navega la cadena de plan (sesgo Temporal/Functional, boost 2.0) y alcanza el terminal (Q>0.5). H_plan=H_base*(1+rho): rho alta da horizonte mayor. En bifurcacion a igual distancia, PLAN elige Temporal/Functional y RAZONAMIENTO elige Causal (modos tipados, 0016).",
+  "config": {
+    "N": 60,
+    "D": 64,
+    "seed": 42,
+    "W_PLAN": 100,
+    "H_BASE": 50,
+    "plan_len": 8,
+    "boost_PLAN": {
+      "Terminal": 0.8,
+      "Causal": 1.2,
+      "Temporal": 2.0,
+      "Functional": 2.0,
+      "Cognitive": 1.0
+    },
+    "boost_RAZONAMIENTO": {
+      "Terminal": 0.8,
+      "Causal": 2.0,
+      "Temporal": 1.2,
+      "Functional": 1.5,
+      "Cognitive": 2.0
+    },
+    "spec_ref": "SGM v1.4 §4 linea 559-574"
+  },
+  "result": {
+    "T-PLAN-01": {
+      "estado_PLAN": "DETERMINADO",
+      "Q_plan": 1.0,
+      "alcanza_terminal": true
+    },
+    "T-PLAN-03": {
+      "rho_baja_len": 8,
+      "rho_alta_len": 8,
+      "rho_afecta_horizonte": true
+    },
+    "trazabilidad_modo": {
+      "PLAN_elige": "Temporal/Functional",
+      "RAZONAMIENTO_elige": "Causal",
+      "PLAN_elige_TF": true,
+      "RAZONAMIENTO_elige_C": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase4_planificacion/run_plan_mode.py",
+  "results_file": "phases/phase4_planificacion/results_exp_SGM_0020_plan_mode.json",
+  "test_target": "T-PLAN-01 (MODO_PLAN alcanza terminal Q>0.5), T-PLAN-03 (rho afecta horizonte), trazabilidad vs RAZONAMIENTO",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §4",
+    "SGM_ROADMAP.md Fase 4",
+    "exp_SGM_0016 (modos tipados)"
+  ],
+  "notes": "Grafo con cadena de plan estructurada (nodos cerca en secuencia) para que T-PLAN-01 sea medible (el test-trap de 0017: grafo completo vaga y no alcanza). rho alta -> H_plan mayor -> cadena mas larga. Bifurcacion prueba modo tipado (0016).",
+  "notes_criollo": "El 0020 es Fase 4: MODO_PLAN. El sistema planea siguiendo la cadena de plan (sesgo Temporal/Functional), llega al objetivo (Q>0.5), y el horizonte crece si esta mas denso (rho alta). En una bifurcacion, PLAN elige el camino de tiempo/util y RAZONAMIENTO el de causa - los modos son distintos de verdad."
+}

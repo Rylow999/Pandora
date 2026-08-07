@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_SGM_0052",
+  "name": "clavos_de_evento_telar",
+  "status": "TELAR_EVENTO",
+  "marco": "Idea Luciano: clavos NO fijos en espacio = EVENTO, no celda. Restriccion ATENCIONAL emerge de Eq.2 (omega de evento atrae). Sin hardcodear.",
+  "diseno": "Agente clava omega por TIPO de evento (food/venom/star). Afinidad inclina a celdas con evento clavado -> repite esos eventos -> ve menos nuevos (EMERGE). V_ser=eventos_clavados*eventos_vistos. PREDICCION: optimo en el medio (ni 'otro' ni jaula atencional). Anti-circulo por frontier de eventos + retorno.",
+  "config": {
+    "GRID": 24,
+    "STEPS": 600,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "curva": [
+    {
+      "clavar_rate": 0.0,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.0,
+      "errores": 0.0,
+      "aciertos": 0.0,
+      "pain": 0.5
+    },
+    {
+      "clavar_rate": 0.1,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.0,
+      "errores": 0.0,
+      "aciertos": 0.0,
+      "pain": 0.5
+    },
+    {
+      "clavar_rate": 0.2,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.0,
+      "errores": 0.333,
+      "aciertos": 0.0,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 0.3,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.167,
+      "errores": 0.333,
+      "aciertos": 0.333,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 0.4,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.5,
+      "errores": 0.667,
+      "aciertos": 0.667,
+      "pain": 1.167
+    },
+    {
+      "clavar_rate": 0.5,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.556,
+      "errores": 0.667,
+      "aciertos": 1.0,
+      "pain": 1.167
+    },
+    {
+      "clavar_rate": 0.6,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.889,
+      "errores": 0.333,
+      "aciertos": 1.333,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 0.7,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.889,
+      "errores": 0.333,
+      "aciertos": 1.333,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 0.8,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.889,
+      "errores": 0.333,
+      "aciertos": 1.667,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 0.9,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.889,
+      "errores": 0.333,
+      "aciertos": 2.0,
+      "pain": 0.833
+    },
+    {
+      "clavar_rate": 1.0,
+      "vitalidad": 0.0,
+      "eventos_clavados": 0.0,
+      "eventos_vistos": 2.667,
+      "tasa_eventos_nuevos": 0.889,
+      "tasa_acierto": 0.889,
+      "errores": 0.333,
+      "aciertos": 2.333,
+      "pain": 0.833
+    }
+  ],
+  "optimo": {
+    "clavar_rate": 0.0,
+    "vitalidad": 0.0
+  },
+  "conclusion": "Si optimo en el medio => el ser 'esta vivo' con TASA MEDIA de clavado de eventos: suficiente identidad (eventos fijos) sin perder proceso (ve eventos nuevos). Confirma el telar SIN hardcodear, con clavos de evento (no territoriales).",
+  "verified": false
+}

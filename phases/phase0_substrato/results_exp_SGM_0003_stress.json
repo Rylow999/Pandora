@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_SGM_0003_nodecore_equiv_teorica",
+  "test": "T-INF-06 STRESS",
+  "config": {
+    "D": 16,
+    "K": 10,
+    "beta": 0.1,
+    "gamma": 0.01,
+    "theta_death": 0.1,
+    "seed": 42,
+    "n_ticks": 5000,
+    "quantization": "f16_real + u16"
+  },
+  "date": "2026-08-02T02:30:00",
+  "stress_test": true,
+  "pass": true,
+  "checks": {
+    "vitality": {
+      "max_delta": 0.001526,
+      "threshold": 0.15,
+      "pass": true,
+      "headroom_100x": true
+    },
+    "phase": {
+      "max_delta": 0.000202,
+      "threshold_rad": 1.0,
+      "pass": true,
+      "headroom_5000x": true
+    },
+    "omega_cos": {
+      "min_cos": 0.999889,
+      "threshold": 0.85,
+      "pass": true,
+      "headroom": true
+    },
+    "n_comparisons": 450,
+    "notes": "f16 REAL (round a 3 d\u00edgitos) + u16 fijo para phi/vitalidad. 5000 ticks, 5x m\u00e1s drift que el baseline. NodeCore soporta cuantizaci\u00f3n sin degradaci\u00f3n funcional."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "experiment_id": "exp_SGM_0038",
+  "experiment_name": "curiosity_vs_pain",
+  "phase": "Camino A - balance curiosidad(dolor): campo global vs riesgo",
+  "date": "2026-08-03",
+  "hypothesis": "La curiosidad global (eta) es realmente global: el agente explora por eta pero EVITA el dolor (no es suicida). El dolor CONOCIDO pesa menos que el DESCONOCIDO (home bias del riesgo). El sistema mantiene un balance dinamico: explora donde no duele, evita dolor fuerte, a veces el aburrimiento le gana y prueba a pesar del riesgo leve.",
+  "config": {
+    "N": 10,
+    "trials": 40,
+    "seed": 20260803,
+    "dolor_pen": 5.0,
+    "dolor_conocido_factor": 0.5,
+    "refs": [
+      "exp_SGM_0036_curiosity_global",
+      "exp_SGM_0033_grid_dolor"
+    ]
+  },
+  "result": {
+    "trials": 40,
+    "tasa_cur_eta_dolor": 0.45,
+    "tasa_base": 0.125,
+    "pisos_dolor_promedio": 0.475,
+    "T-DOL-01": true,
+    "T-DOL-02": true,
+    "T-DOL-03": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_curiosity_vs_pain.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0038_curiosity_vs_pain.json",
+  "test_target": "T-DOL-01 (evita dolor) + T-DOL-02 (sigue explorando) + T-DOL-03 NC (cierra tarea)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0036_curiosity_global.json",
+    "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Balance eta global vs dolor. El dolor CONOCIDO pesa menos (home bias del riesgo humano). La curiosidad no es suicida ni cobarde: balance dinamico. Si el sistema pisa dolor siempre o nunca llega, el mecanismo se rompe.",
+  "notes_criollo": "El bicho tiene curiosidad (eta) pero le tiene miedo al dolor. No es tonto: evita las celdas que pinchan. Pero tampoco se queda escondido: si no duele, sale a explorar. Y lo que ya le dolia una vez pesa menos (se acostumbra, como nosotros). Eso es el balance humano: no 'siempre gana la curiosidad' ni 'siempre gana el miedo'."
+}

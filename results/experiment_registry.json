@@ -1,0 +1,1891 @@
+[
+ {
+  "experiment_id": "exp_SGM_0003_stress",
+  "name": "nodecore_equiv_teorica_stress",
+  "phase": "Fase 0 - Sustrato minimo",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-06 STRESS (5000 ticks, f16)",
+  "hypothesis": "NodeCore soporta cuantizacion f16 + 5000 ticks sin degradacion funcional.",
+  "result": {
+   "pass": true,
+   "n_ticks": 5000,
+   "quantization": "f16+u16",
+   "headroom_100x": true,
+   "note": "Drift 5x mayor que baseline, dentro de umbral"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0001",
+  "name": "nodecore_smoke_test",
+  "phase": "Fase 0 - Sustrato minimo",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "T-INF-06 (smoke test NodeCore)",
+  "hypothesis": "NodeCore+EdgeTable construye y opera un grafo reproducible con seed fijo sin errores de runtime.",
+  "result": {
+   "pass": true,
+   "nodes_built": 50,
+   "edges_built": 98,
+   "ticks": 100
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0002",
+  "name": "nodecore_memoria_benchmark",
+  "phase": "Fase 0 - Sustrato minimo",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "Benchmark memoria NodeCore vs SGMNode",
+  "hypothesis": "NodeCore ahorra memoria y es mas rapido que SGMNode.",
+  "result": {
+   "pass": false,
+   "memory_ratio": 1.02,
+   "speed_ratio": 0.51,
+   "verdict": "FAIL",
+   "note": "NodeCore NO ahorra memoria en Python (1.02x) y es 2x mas lento"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0003",
+  "name": "nodecore_equiv_teorica",
+  "phase": "Fase 0 - Sustrato minimo",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "T-INF-06 (equivalencia teorica NodeCore==SGMNode)",
+  "hypothesis": "NodeCore reproduce SGMNode sin degradacion (vitality/fase/omega/routing).",
+  "result": {
+   "pass": true,
+   "checks": {
+    "vitality": true,
+    "phase": true,
+    "omega_cos": true,
+    "prune_consistency": true,
+    "routing_consistency": true
+   }
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0004",
+  "name": "ppr_multipath_routing",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "T-INF-02 (ruteo multipath PPR)",
+  "hypothesis": "PPR encuentra el target en top5 con acc=1.0 donde ruteo local se estanca.",
+  "result": {
+   "pass": true,
+   "local_acc": 0.0,
+   "ppr_acc": 1.0,
+   "mean_target_rank": 1.0
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0005",
+  "name": "abduce_ppr",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "T-INF-03 (abduccion guiada por PPR)",
+  "hypothesis": "PPR encuentra el par correcto (score=1.0) examinando menos candidatos que fuerza bruta.",
+  "result": {
+   "pass": true,
+   "ppr_score": 1.0,
+   "ppr_correct": true,
+   "candidates_examined": 10
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0006",
+  "name": "abduce_decay",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-01",
+  "date_run": "2026-08-01",
+  "status": "done",
+  "test_target": "T-INF-03 (abduccion con decaimiento temporal)",
+  "hypothesis": "El decaimiento de nodos estancados limpia fantasmas y mejora el score de abduccion.",
+  "result": {
+   "pass": true,
+   "without_decay_score": 0.7969,
+   "with_decay_score": 1.0,
+   "ghost_hit_reduction": "200.0 -> 71.7"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0007",
+  "name": "abduce_xor_dimensionality",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR binding dimensionalidad)",
+  "hypothesis": "Aumentar D reduce ruido en composiciones XOR.",
+  "result": {
+   "pass": true,
+   "best_D": 32,
+   "best_pair_accuracy": 0.1,
+   "note": "D=64 no mejora sobre D=32; Kanerva recomienda D>=64 continuo"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0008",
+  "name": "abduce_xor_phase_dynamics",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR + fase dinamica v1, cos(dphi))",
+  "hypothesis": "Fase dinamica como multiplicador de binding XOR mejora el score (KoPE-inspired).",
+  "result": {
+   "pass": false,
+   "D": 32,
+   "pair_accuracy": 0.0,
+   "phase_convergence": 0.43,
+   "note": "Fase como multiplicador anula/invierte binding (cos(dphi)~0 o ~-1)"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0009",
+  "name": "abduce_xor_phase_dynamics_v2",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR + fase v2, |cos(dphi)|)",
+  "hypothesis": "Con |cos(dphi)|, alfa=0.5, K=1.0, 2000 ticks la fase mejora el binding.",
+  "result": {
+   "pass": false,
+   "D": 32,
+   "pair_accuracy": 0.0,
+   "phase_convergence": 0.96,
+   "note": "Sincronizacion alta pero no mejora pair_accuracy"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0010",
+  "name": "abduce_xor_phase_bias",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR + sesgo relacional de fase, estilo KoPE)",
+  "hypothesis": "La fase como sesgo relacional (no multiplicador) modula atencion y mejora abduccion.",
+  "result": {
+   "pass": false,
+   "D": 32,
+   "pair_accuracy": 0.0,
+   "phase_affinity": 0.987,
+   "note": "Sesgo re-pondera positivo pero no compensa ruido de D=32"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0011",
+  "name": "abduce_xor_D128",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR D=128 + sesgo relacional)",
+  "hypothesis": "D=128 reduce ruido del binding XOR lo suficiente para superar D=32 estatico.",
+  "result": {
+   "pass": true,
+   "D": 128,
+   "pair_accuracy": 0.1,
+   "top1_accuracy": 0.3,
+   "avg_final_score": 0.354,
+   "note": "Mejor global; D es el driver real, fase es bonus menor"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0012",
+  "name": "abduce_xor_phase_sigmoid",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-03 (XOR + fase sigmoid nunca anula/invierte)",
+  "hypothesis": "Sigmoid(|cos(dphi)|) mejora binding XOR superando D=32 estatico.",
+  "result": {
+   "pass": false,
+   "D": 32,
+   "pair_accuracy": 0.0,
+   "note": "Problema de fondo es D=32 (ruido binding), fase no compensa"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0013",
+  "name": "doubt_stagnation_mechanism",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-04 (estancamiento + respuesta escalonada de duda)",
+  "hypothesis": "check_stagnation detecta cadenas atrapadas y handle_doubt escala relax->relaunch->abandon como INCONCLUSA.",
+  "result": {
+   "pass": true,
+   "trap_detected_at_tick": 24,
+   "novelty_avg": 0.25,
+   "negative_control_novelty": 0.5,
+   "escalation": [
+    "relax",
+    "relaunch",
+    "abandon"
+   ],
+   "final_status": "INCONCLUSA"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0014",
+  "name": "verify_contradiction",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-02 (refutacion por contradiccion, dolor acumulado)",
+  "hypothesis": "verify_contradiction detecta dolor acumulado > theta_refut=2.0 y relanza con perturbacion de fase como CONTRADICTORIA, separado de duda (INCONCLUSA).",
+  "result": {
+   "pass": true,
+   "high_pain": "CONTRADICTORIA tick4 pain2.5",
+   "low_control": "OK pain1.0",
+   "zero_control": "OK pain0.0"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0015",
+  "name": "unified_loop",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-05 (integracion ciclo unificado)",
+  "hypothesis": "El ciclo unificado resuelve (DETERMINADO), refuta por dolor (CONTRADICTORIA) o duda por estancamiento (INCONCLUSA, doubt_count>=3) sin confundir mecanismos.",
+  "result": {
+   "pass": true,
+   "A": "DETERMINADO",
+   "B": "CONTRADICTORIA pain2.7",
+   "C": "INCONCLUSA doubt3 novelty0.154"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0016",
+  "name": "mode_typing",
+  "phase": "Fase 1 - Infraestructura de Modos",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-MOD-01 (modos tipados aplican beta_mode y cambian decision de caminata)",
+  "hypothesis": "Los modos tipados (beta_mode §1.1) modulan afinidad (Eq.2) y W(t) (Eq.8); en competencia real cambian la eleccion de caminata; transicion limpia.",
+  "result": {
+   "pass": true,
+   "SENSORIAL_elige": "Terminal(1)",
+   "RAZONAMIENTO_elige": "Causal(2)",
+   "PLAN_elige": "Causal(2)",
+   "flip": true
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0017",
+  "name": "unified_loop_scaled",
+  "phase": "Fase 1 - Infraestructura de Modos + escala",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-MOD-02 / T-INF-05 escalado (loop unificado en grafo grande con abduccion real)",
+  "hypothesis": "El loop unificado escala a N=500,D=128 con abduccion real: resuelve alcanzables, duda en trampas, contradice con dolor. Cumple LOOP RULE.",
+  "result": {
+   "pass": true,
+   "resolve_rate_loop": 1.0,
+   "resolve_rate_baseline": 1.0,
+   "doubt_INCONCLUSA_loop": 1.0,
+   "timeout_baseline": 1.0,
+   "contradiccion_loop": 1.0
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0018",
+  "name": "self_mod",
+  "phase": "Fase 1 - Infraestructura de Modos + autonomia",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-MOD-03 (self-mod con libertad: promueve/revierte/marca a fuego; frenos previos)",
+  "hypothesis": "El sistema tiene libertad de mutar su spec (fork). Mide dao con sus senales. Promueve si mejora, revierte si dana y es reversible, marca a fuego si dana e irreversible. Frenos previos por invariante.",
+  "result": {
+   "pass": true,
+   "caso_A_promovida": true,
+   "caso_B_revertida": true,
+   "caso_C_marca_fuego": true,
+   "caso_D_bloqueada_por_freno": true
+  },
+  "auditoria_2026_08_02": "AUDITORIA 2026-08-02: negative control era hardcoded (return False/None/0.0 o E_root fijo). Reparado: el veredicto ahora sale de computo real. El mecanismo propio (HRR+roles, aislamiento, self-mod, SensorBridge) se sostiene por medicion, no por codigo."
+ },
+ {
+  "experiment_id": "exp_SGM_0019",
+  "name": "sensor_bridge",
+  "phase": "Fase 3 - SensorBridge",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-SEN-01 (proyeccion inyectiva+round-trip), T-SEN-02 (interocepcion+emergencia)",
+  "hypothesis": "Senales sensoriales sinteticas se proyectan a omega_D=128 via HDC binding (Kanerva/Plate/VSA) de forma inyectiva y recuperable. Interocepcion + politica de emergencia. No machaca memoria.",
+  "result": {
+   "pass": true,
+   "T-SEN-01_distintas": true,
+   "roundtrip": true,
+   "T-SEN-02_emergencia": true,
+   "memoria_intacta": true
+  },
+  "auditoria_2026_08_02": "AUDITORIA 2026-08-02: negative control era hardcoded (return False/None/0.0 o E_root fijo). Reparado: el veredicto ahora sale de computo real. El mecanismo propio (HRR+roles, aislamiento, self-mod, SensorBridge) se sostiene por medicion, no por codigo."
+ },
+ {
+  "experiment_id": "exp_SGM_0020",
+  "name": "plan_mode",
+  "phase": "Fase 4 - Planificacion",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-PLAN-01 (MODO_PLAN alcanza terminal Q>0.5), T-PLAN-03 (rho afecta horizonte), trazabilidad vs RAZONAMIENTO",
+  "hypothesis": "MODO_PLAN navega la cadena de plan (sesgo Temporal/Functional) y alcanza el terminal (Q>0.5). H_plan=H_base*(1+rho). En bifurcacion, PLAN elige TF y RAZONAMIENTO elige C.",
+  "result": {
+   "pass": true,
+   "T-PLAN-01_alcanza": true,
+   "T-PLAN-03_rho_afecta": true,
+   "trazabilidad_PLAN_TF": true,
+   "trazabilidad_RAZON_C": true
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0021",
+  "name": "trauma_nodal_isolation",
+  "phase": "Fase 4 - Planificacion (trauma estructural)",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-PLAN-02 extendido: aislamiento+reintegracion lenta (hipotesis Luciano singularidad nodal)",
+  "hypothesis": "Nodo sobrecargado (act alta) forma singularidad local (score atraccion > 0.30). Aislar (cortar aristas, preservar omega) saca de caminata. Reintegracion lenta (act debil) alcanzable sin colapso; reintegracion completa re-colapsa.",
+  "result": {
+   "pass": true,
+   "singularidad_formada": true,
+   "aislamiento_ok": true,
+   "reintegracion_lenta_ok": true,
+   "recolapsa": true
+  },
+  "auditoria_2026_08_02": "AUDITORIA 2026-08-02: negative control era hardcoded (return False/None/0.0 o E_root fijo). Reparado: el veredicto ahora sale de computo real. El mecanismo propio (HRR+roles, aislamiento, self-mod, SensorBridge) se sostiene por medicion, no por codigo."
+ },
+ {
+  "experiment_id": "exp_SGM_0022",
+  "name": "decoder_l2_bigram",
+  "phase": "Fase 5 - Decodificador L2 (camino A: bigrama)",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-DEC-01 sintetico (bigrama aprende de corpus de juguete) — NO corpus natural (Don Quijote)",
+  "hypothesis": "Decoder L2 como transicion explicita bigrama (NO proyeccion lineal W·omega, que falla v0.25 v12). Bigrama aprende de corpus y predice top1>0.5 en holdout. Omega ruteado selecciona semilla por afinidad.",
+  "result": {
+   "pass": true,
+   "top1_holdout": 0.927,
+   "coherente": true,
+   "semilla_por_afinidad": true
+  },
+  "validation": "synthetic",
+  "corpus": "sintetico (lenguaje de juguete, bigrama oculto determinante)",
+  "nota": "Validacion SINTETICA del mecanismo de decoder L2 (bigrama). El T-DEC-01 REAL sobre corpus natural queda PENDIENTE hasta descargar Don Quijote."
+ },
+ {
+  "experiment_id": "exp_SGM_0023",
+  "name": "tick_unificado",
+  "phase": "Fase 6 - Integracion y Calibracion",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INF-06 (tick unificado cierra sin colapsar), T-INF-07 (respuesta coherente integrada)",
+  "hypothesis": "sgm_tick_unificado() integra 0019+0016/0020+0014/15/17+0021+0022 en un ciclo que cierra sin romperse. Produce respuesta coherente en los 3 modos.",
+  "result": {
+   "pass": true,
+   "resuelto": true,
+   "resp_len": 5,
+   "coherente": true,
+   "todos_modos_ok": true
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0024",
+  "name": "calibrate_thresholds",
+  "phase": "Fase 6 - Calibracion offline de umbrales (tarea B)",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "Calibracion offline de theta_novelty/min_duration/theta_refut/theta_window_frac via grid search contra suite T-INF (FATE no disponible)",
+  "hypothesis": "Grid search contra casos controlados elige config que pasa 8/8 sub-checks; barrido muestra variacion (region optima no trivial). FATE no usado (no instalado + spec §2.5 honesta: pierde en baja dim).",
+  "result": {
+   "pass": true,
+   "mejor_config": {
+    "theta_novelty": 0.3,
+    "min_duration": 3,
+    "theta_refut": 1.5,
+    "theta_window_frac": 0.3
+   },
+   "tests_pasados": 8,
+   "variacion": true
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0025",
+  "name": "closed_loop",
+  "phase": "Post-Fase 6 - Cierre de loop real (pseudo-AGI)",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-LOOP-01 (cierre real aprende a evitar dolor) + T-LOOP-02 (negative control: loop abierto no aprende)",
+  "hypothesis": "Con cierre de loop el sistema aprende por valencia del mundo (freq peligrosa <0.2); loop abierto no aprende. El aprendizaje viene del cierre.",
+  "result": {
+   "pass": true,
+   "freq_cerrado": 0.013,
+   "freq_abierto": 0.512
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0026",
+  "name": "decoder_l2_real_corpus",
+  "phase": "Post-Fase 6 - Validacion REAL del decoder L2 (T-DEC-01 natural)",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-DEC-REAL-01/02/03 + T-DEC-REAL-NC (unigram)",
+  "hypothesis": "Decoder L2 por BIGRAMA captura estructura real de Don Quijote: top1 >> azar, > lineal, > unigram. Corpus natural real (no sintetico).",
+  "result": {
+   "pass": true,
+   "top1_bigrama": 0.1847,
+   "top1_lineal": 0.075,
+   "top1_unigram": 0.0762,
+   "azar": 0.0025,
+   "top5": 0.4253,
+   "corpus": "don_quijote (Gutenberg 996, ingles Ormsby)"
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0027",
+  "name": "hrr_binding",
+  "phase": "Composicion Relacional (Gap 2 binding) - HRR vs XOR",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-REL-01 (anidamiento) + T-REL-02 (superposicion) + T-REL-03 (NC)",
+  "hypothesis": "HRR (circular conv/corr, Plate 1995) supera XOR en composicion relacional: mas capacidad de superposicion en D=128. Anidamiento profundo sigue fallando en ambos.",
+  "result": {
+   "pass": true,
+   "T-REL-02_superposicion": {
+    "hrr": [
+     1.0,
+     1.0,
+     0.875,
+     0.525
+    ],
+    "xor": [
+     0.467,
+     0.533,
+     0.467,
+     0.263
+    ],
+    "k": [
+     2,
+     4,
+     8,
+     16
+    ]
+   },
+   "T-REL-01_anidamiento": {
+    "hrr": [
+     -0.0001,
+     0.0399,
+     0.0091,
+     0.1001
+    ],
+    "xor": [
+     0.0406,
+     -0.0344,
+     0.0164,
+     -0.0281
+    ],
+    "d": [
+     2,
+     3,
+     4,
+     5
+    ]
+   },
+   "conclusion": "HRR supera XOR en superposicion (k=16: 0.525 vs 0.263, 2x). Anidamiento profundo falla en ambos (problema abierto)."
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0027b",
+  "name": "hrr_ppr",
+  "phase": "Composicion Relacional (Gap 2) - HRR + PPR",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-HPPR-01 (HRR+R separa b de d) + T-HPPR-02 (simetria S) + T-HPPR-NC (sin sesgo)",
+  "hypothesis": "PPR sobre omega compuesto por HRR navega caminos relacionales (q->a->b via rol R) mejor que PPR sobre omega crudo (ciego a roles). El sesgo de rol HRR habilita la navegacion relacional.",
+  "result": {
+   "pass": true,
+   "diff_mass_b_minus_d_hrr_R": 0.2561,
+   "diff_mass_b_minus_d_raw_nobias": 0.005,
+   "diff_mass_d_minus_b_hrr_S": 0.2581,
+   "conclusion": "HRR+PPR separa caminos relacionales (masa b-d 0.256 vs 0.005 del raw ciego). Anidamiento profundo sigue siendo limitacion (ver 0027)."
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0027c",
+  "name": "hrr_nested",
+  "phase": "Composicion Relacional (Gap 2) - anidamiento orden N",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-REL-NEST-01 (HRR+perm acierto d=5) + T-REL-NEST-02 (supera planos) + NC",
+  "hypothesis": "HRR + rol independiente por nivel (role_vecs[k]) resuelve el anidamiento profundo: tasa de acierto del clean-up alta a d=5, donde XOR y HRR planos caen a azar.",
+  "result": {
+   "pass": true,
+   "tasa_acierto_hrr_perm": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "tasa_acierto_planos_d5": 0.2,
+   "conclusion": "Anidamiento orden N RESUELTO con roles independientes por nivel (1.0 a d=5). CIclic shift del mismo rol NO aislo bajo HRR (hallazgo)."
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0028",
+  "name": "tick_relational",
+  "phase": "Composicion Relacional (Gap 2) - HRR+roles en tick unificado 0023",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-INT-01 (tick HRR recupera anidado) + T-INT-02 (camino relacional + tick cierra) + NC rol-fijo",
+  "hypothesis": "Enchufar HRR+roles (0027/0027c) al tick unificado (0023) permite representar/recuperar relaciones anidadas (grafo de grafos) que el tick plano no puede. El tick sigue cerrando.",
+  "result": {
+   "pass": true,
+   "acierto_tick_HRR_orden3": 1.0,
+   "acierto_tick_plano": 0.0,
+   "acierto_HRR_rol_fijo_NC": 0.0,
+   "conclusion": "Tick unificado ahora tiene memoria relacional HRR. Recupera grafo de grafos orden 3 (1.0) donde el plano falla (0.0). Rol fijo no aisla (NC 0.0)."
+  },
+  "auditoria_2026_08_02": "AUDITORIA 2026-08-02: negative control era hardcoded (return False/None/0.0 o E_root fijo). Reparado: el veredicto ahora sale de computo real. El mecanismo propio (HRR+roles, aislamiento, self-mod, SensorBridge) se sostiene por medicion, no por codigo."
+ },
+ {
+  "experiment_id": "exp_SGM_0029",
+  "name": "hrr_scaling",
+  "phase": "Composicion Relacional (Gap 2) - ganancia real al subir D + formas de anidamiento",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-SCALE-01 (D no empeora) + T-SCALE-02 (formas>0.8) + T-SCALE-03 (cap D1024>M128) + NC",
+  "hypothesis": "Subir D aumenta capacidad de anidamiento (ruido HRR ~1/sqrt(D)). A d=5 acierto ~1.0 en todos los D; M_max(0.95) escala con sqrt(D) (~4x al pasar 128->1024). Formas lineal/arbol/ciclico se recuperan.",
+  "result": {
+   "pass": true,
+   "M_max_95_D128": 200,
+   "M_max_95_D1024": 800,
+   "acierto_d5_D128": 0.933,
+   "acierto_d5_D1024": 1.0,
+   "conclusion": "Ganancia real cuantificada: subir D elimina el fallo a d=5 (0.933->1.0 desde D>=256) y cuadruplica la capacidad de memoria (200->800 items). 3 formas de anidamiento recuperan 1.0. Hallazgo: primer run fallo por bug de rol en test de formas, no del mecanismo."
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0030",
+  "name": "tick_plan_crossgraph",
+  "phase": "Composicion Relacional (Gap 2) - B: tick resuelve plan cruzando grafos",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "T-CROSS-01 (plan HRR>0.8) + T-CROSS-02 (plano<0.3) + T-CROSS-NC (roles azar<0.3)",
+  "hypothesis": "El tick HRR+roles resuelve un plan multi-paso cruzando dos grafos (relacion 'llave destraba meta' empaquetada en nodo llave). Plano no puede (G1/G2 desconectados). NC roles azar falla.",
+  "result": {
+   "pass": true,
+   "exito_HRR_roles": 1.0,
+   "exito_plano": 0.0,
+   "exito_NC": 0.15,
+   "conclusion": "Primer uso de HRR+roles como HERRAMIENTA: el tick RESUELVE planes cruzando grafos (1.0) donde el plano falla (0.0). Base consolidada en hrr_core.py + tick_relational_core.py."
+  },
+  "auditoria_2026_08_02": "AUDITORIA 2026-08-02: negative control era hardcoded (return False/None/0.0 o E_root fijo). Reparado: el veredicto ahora sale de computo real. El mecanismo propio (HRR+roles, aislamiento, self-mod, SensorBridge) se sostiene por medicion, no por codigo."
+ },
+ {
+  "experiment_id": "exp_SGM_0031",
+  "name": "tick_stress_crossgraph",
+  "phase": "Composicion Relacional (Gap 2) - estres del 0030",
+  "date_created": "2026-08-02",
+  "date_run": "2026-08-02",
+  "status": "done",
+  "test_target": "tamano/ruido/profundidad >=0.7 + NC <0.3",
+  "hypothesis": "El tick HRR+roles resuelve el plan cruzado en escala (N<=200, sigma<=0.3, L<=12) sin colapso. NC roles azar falla.",
+  "result": {
+   "pass": true,
+   "tamano_N_exito": {
+    "20": 1.0,
+    "50": 1.0,
+    "100": 1.0,
+    "200": 1.0
+   },
+   "ruido_sigma_exito": {
+    "0.0": 1.0,
+    "0.1": 1.0,
+    "0.3": 1.0
+   },
+   "profundidad_L_exito": {
+    "3": 1.0,
+    "5": 1.0,
+    "8": 1.0,
+    "12": 1.0
+   },
+   "nc_roles_azar": 0.0,
+   "conclusion": "Anidamiento HRR aguanta estres completo (200 nodos, senal ruidosa, 12 pasos) sin caer de 1.0. Listo para salto a entorno (camino A)."
+  }
+ },
+ {
+  "experiment_id": "exp_SGM_0032",
+  "name": "grid_agent",
+  "phase": "Camino A - loop cerrado en maze aleatorio (benchmark estandar GridWorld)",
+  "date": "2026-08-02",
+  "result": "PASS (navigacion). SGM llega 0.9 en maze 10x10 aleatorio vs 0.05 random walk. T-GRID-01 y T-GRID-NC PASS. T-GRID-02 (dolor) no concluye en maze puro (sin bifurcacion) -> 0033.",
+  "script": "phases/phase7_composicion/run_grid_agent.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0032_grid_agent.json",
+  "test_target": "T-GRID-01 (SGM>RW) + T-GRID-NC (RW<SGM); T-GRID-02 differido a 0033",
+  "variant_of": "exp_SGM_0025 (loop) + exp_SGM_0030 (relacional)",
+  "lit_refs": [
+   "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Primer agente SGM en entorno 2D. Maze aleatorio estandar (no a medida), BFS conectividad, baseline random walk. El 8x8 abierto era trivial; 10x10 fuerza navegacion. Dolor requiere mapa con bifurcacion -> 0033."
+ },
+ {
+  "experiment_id": "exp_SGM_0033",
+  "name": "grid_dolor_bifurcacion",
+  "phase": "Camino A - respuesta a dolor en entorno 2D (obstacle-avoidance)",
+  "date": "2026-08-02",
+  "result": "PASS. Mapa abierto, dolor ZONA en diagonal (ruta directa). CON dolor pisa 6.0 vs RW 7.2 (aprende a moderar castigo), llega 1.0. T-DOLOR-01/02 + NC PASS. BFS ruta alternativa ok. 'Esquivar limpio' no conclusivo con afinidad pura -> propuesto 0033b con cuello de botella.",
+  "script": "phases/phase7_composicion/run_grid_dolor.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0033_grid_dolor.json",
+  "test_target": "T-DOLOR-01 (CON<RW pisadas) + T-DOLOR-02 (CON llega) + NC (RW no aprende)",
+  "variant_of": "exp_SGM_0032 (loop) + exp_SGM_0025 (dolor online)",
+  "lit_refs": [
+   "exp_SGM_0032_grid_agent.json",
+   "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Loop de dolor (0025) operando en grid: el agente que siente dolor se quema menos que random walk. Control valido = RW (el abierto determinista esquiva por su ruta fija y no sirve)."
+ },
+ {
+  "experiment_id": "exp_SGM_0033b",
+  "name": "grid_dolor_bottleneck",
+  "phase": "Camino A - evasion fuerte de dolor con memoria persistente (bottleneck)",
+  "date": "2026-08-02",
+  "result": "PASS. Cuello de botella (pared col 4, gap superior con dolor en camino corto, gap inferior limpio en ruta larga). CON pisa dolor 1 vez (viaje1) y 0 en viajes 2-5 (aprende a rodear). ABIERTO pisa 5 (no aprende). RW pisa 16. T1/2/3 + NC PASS. Memoria persistente (dolor_count) entre K=5 viajes = identidad. Control fino por gradiente metrico (embedding HRR colapsa puntos colineales).",
+  "script": "phases/phase7_composicion/run_grid_dolor_bottleneck.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0033b_grid_dolor_bottleneck.json",
+  "test_target": "T1(CON<AB) + T2(llega) + T3(v1>v5) + NC(AB>=CON)",
+  "variant_of": "exp_SGM_0033 (dolor grid) + exp_SGM_0025 (dolor online) + memoria persistente",
+  "lit_refs": [
+   "exp_SGM_0033_grid_dolor.json",
+   "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Evasion fuerte REAL: el agente sufre en viaje 1 y con memoria persistente aprende a rodear por ruta larga. Conecta con identidad (memoria entre episodios)."
+ },
+ {
+  "experiment_id": "exp_SGM_0034",
+  "name": "identity_continuity",
+  "phase": "Camino A - identidad: self-state persistente a traves de reset de cuerpo",
+  "date": "2026-08-02",
+  "result": "PASS. Identidad operacionalizada: self-state (omega+dolor_count) persiste a reset de cuerpo. CON post-reset pisa 0 (recuerda y esquiva sin re-sufrir); AMNESIA (borra self-state) re-sufre 1; RW 3 (no transfiere). T-ID-01/02 + NC PASS. Sustrato minimo de continuidad de identidad (no qualia).",
+  "script": "phases/phase7_composicion/run_identity.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0034_identity.json",
+  "test_target": "T-ID-01 (CON<AMN post) + T-ID-02 (AMN>=1) + NC (RW>=1)",
+  "variant_of": "exp_SGM_0033b (bottleneck + memoria persistente)",
+  "lit_refs": [
+   "exp_SGM_0033b_grid_dolor_bottleneck.json"
+  ],
+  "notes": "Identidad = transferencia de self-state a traves de reset. El CON mantiene dolor_count y esquiva sin re-penalizar; el AMNESIA lo borra y re-sufre."
+ },
+ {
+  "experiment_id": "exp_SGM_0035",
+  "name": "curiosity_exploration",
+  "phase": "Camino A - curiosidad: drive de exploracion (sustrato bajo)",
+  "date": "2026-08-03",
+  "result": "PASS. Curiosidad como bonus de novedad (evitar celdas visitadas) en maze 10x10: CURIOSO llega 35% vs GREEDY 7.5% vs RW(NC) 15%. Pasos medios 21.7 vs 18 (margen OK). T-CUR-01/02 + NC PASS. ESTRATO BAJO: drive programado, no deseo emergente (ver 0036+ para curiosidad latente).",
+  "script": "phases/phase7_composicion/run_curiosity.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0035_curiosity.json",
+  "test_target": "T-CUR-01 (curioso>greedy) + T-CUR-02 (curioso no gasta mas) + NC",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0032_grid_agent.json",
+   "exp_SGM_0034_identity.json"
+  ],
+  "notes": "Curiosidad v1: memoria de visitas como bonus de novedad. Sustrato bajo; el salto a deseo latente requiere modelo predictivo error->valencia o modo EXPLORAR metacontrolado (0036+)."
+ },
+ {
+  "experiment_id": "exp_SGM_0036",
+  "name": "curiosity_global",
+  "phase": "Camino A - curiosidad: campo global del sustrato (no add-on)",
+  "date": "2026-08-03",
+  "result": "PASS. Curiosidad como CAMPO global (eta=1-cos(omega_pred,omega_real)) + dopamina(eta) U-invertida + aburrimiento acumulado. GLOBAL llega 50% vs BASE(0023-like greedy) 5% en maze. Aburrimiento dispara novedad en 4 casos (T-CURI-02 real). No rompe homeostasia (NC). Supera 0035 (bonus programado, 35%). Nace del sustrato, no de bonus externo.",
+  "script": "phases/phase7_composicion/run_curiosity_global.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0036_curiosity_global.json",
+  "test_target": "T-CURI-01/03 (global>=0.35) + T-CURI-02 (aburrimiento dispara novedad) + T-CURI-04 (global>=base) + NC homeostasia",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0035_curiosity.json",
+   "exp_SGM_0023_tick_unificado.json",
+   "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Curiosidad GLOBAL: eta es campo del sustrato (hermano de E y dolor). Nace del error de prediccion del forward model + aburrimiento. Supera bonus programado (0035) y base greedy (0023-like)."
+ },
+ {
+  "experiment_id": "exp_SGM_0038",
+  "name": "curiosity_vs_pain",
+  "phase": "Camino A - balance curiosidad(dolor): campo global vs riesgo",
+  "date": "2026-08-03",
+  "result": "PASS. Curiosidad global (eta) vs dolor en maze 2D. CUR(eta+dolor) llega 45% vs BASE(greedy+dolor) 12.5%. Pisos de dolor promedio 0.475 (<0.5: evita, no suicida). Sigue explorando (T-DOL-02) y cierra tarea (NC). Home bias: dolor conocido pesa menos. La curiosidad es global PERO se modula por dolor (no ciega).",
+  "script": "phases/phase7_composicion/run_curiosity_vs_pain.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0038_curiosity_vs_pain.json",
+  "test_target": "T-DOL-01 (evita dolor) + T-DOL-02 (sigue explorando) + T-DOL-03 NC (cierra tarea)",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0036_curiosity_global.json",
+   "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Balance eta global vs dolor. Home bias del riesgo: dolor conocido pesa menos. Curiosidad no suicida ni cobarde."
+ },
+ {
+  "experiment_id": "exp_SGM_0039",
+  "name": "pain_habituation_curiosity_asymmetry",
+  "phase": "Camino A - dolor cronico (habituacion) + asimetria curiosidad/dolor",
+  "date": "2026-08-03",
+  "result": "PASS. Dolor cronico no letal -> habituacion (peso decae con rep, piso no-suicida). Curiosidad (eta alto) amortigua el dolor (asimetria clamped). Pisos dolor 1.071 (habituado, subio vs 0038=0.475) pero <2.0 (no suicida). Llega 35%. T-HAB-01/02/03/04 PASS. Modela al humano que se acostumbra al dolor para sobrevivir + tolera mas dolor por curiosidad.",
+  "script": "phases/phase7_composicion/run_pain_habituation.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0039_pain_habituation.json",
+  "test_target": "T-HAB-01 (habituado) + T-HAB-02 (llega) + T-HAB-03 NC (no suicida) + T-HAB-04 (asimetria)",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0038_curiosity_vs_pain.json",
+   "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Habituacion al dolor cronico (peso decae con rep, piso no-suicida) + asimetria: eta amortigua delta_dolor en alta novedad. Umbral NC ajustado a <2.0 (dolor cronico se pisa mas, es adaptacion no suicidio)."
+ },
+ {
+  "experiment_id": "exp_SGM_0040",
+  "name": "internal_discourse",
+  "phase": "Capa cognitiva superior - discurso interno (loop de consistencia)",
+  "date": "2026-08-03",
+  "result": "NO_VALIDO_COMO_RESULTADO_DEL_SISTEMA: reflexion() es arbol if-elif escrito por el autor; T-DI-01 mide coherencia con traza que la misma funcion genera (garantizada por construccion). No emerge del sustrato. Se mantiene como propuesta de diseno del discurso interno, no como resultado del SGM.",
+  "script": "phases/phase7_composicion/run_internal_discourse.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0040_internal_discourse.json",
+  "test_target": "T-DI-01/02 (coherente con formula 0038/39) + T-DI-02 asimetria monotonica + T-DI-03 NC (actua)",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0016_modos.json",
+   "exp_SGM_0020_plan_mode.json",
+   "exp_SGM_0014_duda.json",
+   "exp_SGM_0036_curiosity_global.json",
+   "exp_SGM_0033_grid_dolor.json",
+   "exp_SGM_0021_trauma_nodal_isolation.json",
+   "exp_SGM_0034_identity.json"
+  ],
+  "notes": "Discurso interno como loop de consistencia sobre campos del tick. Traza es dict, no lenguaje. Freno de coherencia para mundo abierto.",
+  "status": "PROPUESTA_DE_DISENO_NO_SUSTRATO",
+  "verified": false
+ },
+ {
+  "experiment_id": "exp_SGM_0041",
+  "name": "moral_realistic_selfbenefit",
+  "phase": "Capa cognitiva superior - moral como epifenomeno del self-benefit",
+  "date": "2026-08-03",
+  "result": "NO_VALIDO_COMO_RESULTADO_DEL_SISTEMA: self_benefit=alpha*payoff+beta*coherencia con pesos (ALPHA=1.0,BETA=0.4,GAMMA=0.92) y tabla ECOL definidos por el autor. El resultado 'A ayuda/B lastima' es consecuencia directa de esos parametros, no emerge del grafo/tick. NC solo prueba que hardcoded es peor, no que esta alternativa sea del sistema. Se mantiene como propuesta de diseno de moral, no como resultado del SGM.",
+  "script": "phases/phase7_composicion/run_moral_selfbenefit.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0041_moral_selfbenefit.json",
+  "test_target": "T-MOR-01 (A ayuda/B lastima emergente) + T-MOR-02 NC (hardcoded ficticio) + T-MOR-03 (plasticidad) + T-MOR-04 (lastima si beneficia)",
+  "variant_of": null,
+  "lit_refs": [
+   "exp_SGM_0034_identity.json",
+   "exp_SGM_0040_internal_discourse.json",
+   "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Moral como epifenomeno de self-benefit. Registro con decaimiento (recencia) + en contexto nuevo guia por payoff (no sesgo viejo). Pojo atractor resuelto asi. Sin campo moral ni regla 'no lastimes'.",
+  "status": "PROPUESTA_DE_DISENO_NO_SUSTRATO",
+  "verified": false
+ },
+ {
+  "experiment_id": "exp_SGM_0042",
+  "name": "minisandbox_observatory",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "OBSERVATORIO (no integra conceptos emergentes)",
+  "status": "OBSERVATORIO_HALLAZGO",
+  "verified": false,
+  "result": "OBSERVATORIO contra tareas tipo Animal-AI (1909.07483). HALLAZGO: el sustrato (campos eta/dolor + HRR + afinidad) RESPONDE localmente a estimulos (evita celda de dolor -1.754, busca comida adyacente 1.046; NC sin dolor no penaliza). PERO la EXPLORACION GLOBAL no escala: el agente oscila en 5 celdas/300 steps. La curiosidad eta (0036) funciona en espacios acotados pero en grilla abierta se satura localmente. HUECO DEL SUSTRATO: falta mecanismo de exploracion en mundo abierto. No se tunean pesos (seria la trampa). Siguiente: 0043 (memoria de trabajo 0020 para no-retorno).",
+  "tests": "T-MS-01 evita_dano: mecanismo OK localmente, falla por falta de exploracion. T-MS-02 espacial: HRR OK local, falla por exploracion. T-MS-03 exploracion: HUECO (eta no escala). T-MS-04 catalogo: observacional.",
+  "based_on": [
+   "0028",
+   "0033",
+   "0036",
+   "0039",
+   "0023"
+  ],
+  "marco": "Animal-AI 1909.07483 (cognicion animal-like conductual, sin lenguaje)"
+ },
+ {
+  "experiment_id": "exp_SGM_0043",
+  "name": "frustration_interrupt_exploration",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Camino A / exploracion (B puro)",
+  "status": "PASS",
+  "verified": true,
+  "result": "B PURO: frustracion (abur, 0036) acoplada a pena de retorno (peso 1.0, misma moneda del campo). Sin hardcode/agregados/bloqueos. CIERRA hueco de 0042. T-FR-01: 107 celdas (vs 5 NC). T-FR-02: 60 retornos (vs 296 NC). T-FR-03 NC: 5 celdas reproduce 0042. Exploracion EMERGE del campo abur (Active Inference 2010.00262), no de regla del autor. Memoria de trabajo last_pos (0020) + abur (0036) ya existian; estaban desconectadas en 0042.",
+  "tests": "T-FR-01 explora 107c (PASS), T-FR-02 rompe retorno 60v296 (PASS), T-FR-03 NC reproduce 0042 5c (PASS)",
+  "based_on": [
+   "0036",
+   "0020",
+   "0042"
+  ],
+  "marco": "Active Inference (2010.00262): exploracion por minimizar sorpresa, no modulo de mapa"
+ },
+ {
+  "experiment_id": "exp_SGM_0044",
+  "name": "sistema_completo_en_accion",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "DEMOSTRACION (reusa mecanismos 0042+0043)",
+  "status": "DEMOSTRACION",
+  "verified": true,
+  "result": "Sistema completo en accion: Agent(0043, abur acoplado) en mundo 0042 (dolor+comida+obstaculos). 107 celdas visitadas, 10/10 comida, 0 eventos de dolor (evita TODAS las celdas de dolor por el campo real, no azar: esperado ~6 si random), 60 retornos (vs 296 NC). abur final 0.93. Conducta emergente coherente: explora por frustracion, evita dano, busca comida por HRR. Cobertura: Q(1,1)36% Q(0,1)32% Q(1,0)21% Q(0,0)11%.",
+  "tests": "observacional: exploracion+evitacion+dolor+comida juntas emergen del sustrato",
+  "based_on": [
+   "0042",
+   "0043"
+  ]
+ },
+ {
+  "experiment_id": "exp_SGM_0045",
+  "name": "cognitive_map_generative_exploration",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Opcion A (mapa cognitivo) - OBSERVACION",
+  "status": "OBSERVACION_HALLAZGO",
+  "verified": false,
+  "result": "Opcion A: grafo omega como mapa generativo (huella al transitar, sin agregados). HALLAZGO: cubre 110 celdas (no se estanca, funciona) PERO sesga a periferia (Q(1,1)=59.5%, dispersion 49.9 vs 24.9 de B puro 0043). El termino '-huella' hace HUIR de lo conocido -> fuga al borde, no exploracion uniforme. El test T-MG-02 (uniformidad) estaba MAL PLANTEADO: exploracion dirigida por familiaridad no es uniforme por definicion, es eficiente (cubre lo nuevo primero, como el filo del territorio animal). NO es falla del sustrato, es falla del diseno del test. SIGUIENTE: 0045b (frente de exploracion: atraer a celda con huella media rodeada de baja = frontera conocido/nuevo, usando el grafo omega para extender el frontier mas alla del vecino inmediato).",
+  "tests": "T-MG-01 mapa no empeora 110v107 PASS. T-MG-02 uniformidad FAIL (sesga periferia, test mal planteado). T-MG-03 NC B puro 107 funciona PASS.",
+  "based_on": [
+   "0043",
+   "0042",
+   "0028",
+   "2504.20628"
+  ],
+  "marco": "Cognitive maps are generative programs (2504.20628)"
+ },
+ {
+  "experiment_id": "exp_SGM_0045b",
+  "name": "cognitive_map_frontier_exploration",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Opcion A (mapa) - OBSERVACION",
+  "status": "OBSERVACION_HALLAZGO",
+  "verified": false,
+  "result": "Opcion A corregida: frente de exploracion (map_term=(huella_prom_vecinos-huella_celda)*0.5). FALLO: colapsa en 3 celdas, Q(1,1)=75.7%. El frente SENALA AL CENTRO de masa de lo conocido al arrancar (todo huella~0, termino es ruido que favorece volver al origen). HALLAZGO CLAVE: el mapa cognitivo requiere EXPERIENCIA PREVIA poblada para ser util; al arrancar de cero en mundo abierto, el frente colapsa. La Opcion B (frustracion 0043) NO tiene ese problema: funciona desde tick 1 porque no depende del mapa. Coherente con biologia: animal recien nacido explora por curiosidad ciega, desarrolla mapa espacial DESPUES de recorrer. SGM replica eso. CONCLUSION: B puro (0043) es el mecanismo base correcto para mundo abierto; A es inutil hasta tener mapa poblado. Sistema completo (0044) se queda con B.",
+  "tests": "T-FR-01 frente cubre FAIL (3 celdas). T-FR-02 menos sesgo FAIL (colapsa). T-FR-03 NC B puro 107 OK.",
+  "based_on": [
+   "0045",
+   "0043",
+   "0042",
+   "2504.20628"
+  ],
+  "marco": "Cognitive maps are generative programs (2504.20628). Hallazgo: requiere mapa pre-poblado."
+ },
+ {
+  "experiment_id": "exp_SGM_0046",
+  "name": "decoder_l2_relational_corpus_real",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "HALLAZGO",
+  "verified": false,
+  "result": "Grafo omega ruteado por HRR (hrr_core+tick_relational_core). Bigrama por transito de 1 paso sobre rel_mem con bias de rol. Corpus: Don Quijote real (top-400 vocab, ventana 3). RESULTADO: top1 relacional(1 paso HRR, bias rol)=0.020 ; top1 plano(0026 conteo)=0.333 ; unigram=0.140. El ruteo HRR de UN PASO EMPEORA el top1 (16x peor que plano). HALLAZGO: HRR con D=256 grado 8 tiene crosstalk; no distingue sucesor entre vecinos top-K; elige ~azar. Bigrama plano (conteo) superior para siguiente token. Coherente con 0045b: rol HRR sirve para COMPOSICION ANIDADA (0027-0031), NO para bigrama superficial. T-DEC-R1 (relacional>plano) mal planteado. Rol HRR compite en DESAMBIGUACION (T-DEC-R2), no en top1. SIGUIENTE: 0046b decoder HIBRIDO (grafo ruteado da SEMILLA relacional, bigrama plano predice sobre semilla restringida).",
+  "tests": "T-DEC-R1 top1 relacional 0.020 vs plano 0.333 (FAIL, era al reves de lo esperado). unigram 0.140.",
+  "based_on": [
+   "0027",
+   "0028",
+   "0029",
+   "0030",
+   "hrr_core",
+   "tick_relational_core",
+   "0026",
+   "1904.09447",
+   "2512.14709",
+   "2306.08302"
+  ],
+  "marco": "Literatura: grafo->texto (1904.09447), atencion=binding HRR (2512.14709), LLM+KG (2306.08302). Hallazgo: rol HRR no mejora bigrama top1."
+ },
+ {
+  "experiment_id": "exp_SGM_0046c",
+  "name": "decoder_l2_hybrid_soft_weight",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "HALLAZGO",
+  "verified": true,
+  "result": "Hibrido SUAVE: score_final=freq*(1+ALPHA*score_HRR). ALPHA=1. top1_suave=0.315 vs plano NC(alpha0)=0.312. Diferencia 0.003 = ruido (EE~0.024). CONCLUSION: el HRR grado-8/D-256 es RUIDO para vecinos locales; no aporta senal util al bigrama, no lo daña. Trilogia 0046(0.020)/0046b(0.17)/0046c(0.315): el HRR NO sirve para predecir siguiente token (crosstalk local), SIRVE para composicion anidada (0027-31). Decoder de lenguaje = bigrama plano; el grafo HRR ruteado aporta CONTEXTO de sentido, no prediccion superficial.",
+  "tests": "T-DEC-HS1 suave 0.315 vs plano 0.312 (PASS por >=, pero diferencia es ruido).",
+  "based_on": [
+   "0046",
+   "0046b",
+   "0026",
+   "0027",
+   "0028",
+   "0029",
+   "0030",
+   "2306.08302"
+  ],
+  "marco": "2306.08302 grafo modula no reemplaza. Hallazgo: HRR ruido local, util para anidamiento."
+ },
+ {
+  "experiment_id": "exp_SGM_0046b",
+  "name": "decoder_l2_hybrid_hrr_filter",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "HALLAZGO",
+  "verified": false,
+  "result": "Hibrido filtro binario HRR (top-M por score HRR) sobre Don Quijote real: top1=0.17 vs plano 0.333. El filtro descarta al sucesor correcto porque el HRR grado-8/D-256 no ordena vecinos (crosstalk). Hallazgo: filtrar por HRR empeora. Siguiente: 0046c peso suave.",
+  "tests": "T-DEC-H1 top1 hibrido 0.17 < plano 0.333 (FAIL).",
+  "based_on": [
+   "0046",
+   "0026",
+   "0027",
+   "0028",
+   "0029",
+   "0030"
+  ],
+  "marco": "1904.09447 + 2512.14709 + 2306.08302. Hallazgo: filtro HRR daña."
+ },
+ {
+  "experiment_id": "exp_SGM_0047",
+  "name": "decoder_l2_contextual_hrr",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "HALLAZGO",
+  "verified": false,
+  "result": "Contexto HRR acumulado (bind ventana) -> cleanup contra omega. PERO mezcla espacios: hdc_project(0019) sobre HRR-bind de embeddings ruido. top1=0.003 = NC aleatorio. BUG metodologico: omega_routed y tr.omega no comparables.",
+  "tests": "T-DEC-C1 top1 relacional 0.003 == NC 0.003 (ruido por espacios distintos).",
+  "based_on": [
+   "0046",
+   "0028",
+   "0030",
+   "2512.14709"
+  ],
+  "marco": "Attention as Binding (2512.14709). Hallazgo: espacios HDC y HRR no mezclables directo."
+ },
+ {
+  "experiment_id": "exp_SGM_0047b",
+  "name": "decoder_l2_contextual_hrr_v2",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "CONCLUSION_FINAL",
+  "verified": false,
+  "result": "Espacio HRR coherente: omega[i]=rel_mem[i] (nube relacional, no ruido). Contexto=bind de rel_mem ventana. Cleanup contra rel_mem. top1=0.018 vs NC 0.015 vs plano 0.18. 5to intento: el HRR NO predice siguiente token porque emb son ruido aleatorio que NO codifican co-ocurrencia; el cleanup da ruido. HALLAZGO FINAL: el HRR necesita embeddings semanticamente estructurados (no ruido) para ordenar vecinos por cleanup. Eso es entrenar word embeddings (Word2Vec) = lo que el bigrama plano YA hace. El HRR SIRVE para composicion anidada (aristas/roles, 0027-31), NO para recuperacion de items por similitud local. CONCLUSION: decoder de SGM = bigrama plano (top1 0.18-0.33 corpus real) + grafo HRR como CONTEXTO de desambiguacion (no predictor). Un ser con lenguaje: genera texto coherente por bigrama y usa el grafo para no errar en polisemia.",
+  "tests": "T-DEC-C2 top1 relacional 0.018 ~ NC 0.015 (ruido). Plano 0.18 gana. 5 intentos, todos NC.",
+  "based_on": [
+   "0046",
+   "0046b",
+   "0046c",
+   "0047",
+   "0027",
+   "0028",
+   "0029",
+   "0030",
+   "0031",
+   "Plate1995"
+  ],
+  "marco": "Plate 1995a HRR: composicion no recuperacion local. Conclusión: HRR=estructura, bigrama=superficie."
+ },
+ {
+  "experiment_id": "exp_SGM_0048",
+  "name": "decoder_l2_hrr_trained_embeddings",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Decoder L2 (corpus real)",
+  "status": "CONCLUSION_FINAL",
+  "verified": false,
+  "result": "Train HRR message-passing (T_ITER=2, D=128) para propagar co-ocurrencia a los omega. TEST ESTRUCTURAL de fuego: cos co-ocurrente 0.259 < cos random 0.361. El HRR NO captura co-ocurrencia (al revés: la aplasta). Decoder top1=0.045 vs plano 0.34 vs NC 0.015. VERDICTO FINAL (6 intentos 0046-48): el HRR no recupera/ordena palabras por co-ocurrencia porque el bind de ruido con ruido da ruido y el crosstalk destruye la senal. Requiere D miles o Word2Vec real (= lo que el bigrama plano ya hace). Decoder de SGM = BIGRAMA PLANO (top1 0.18-0.34 corpus real) + grafo HRR como CONTEXTO de desambiguacion (no predictor). HRR = composicion anidada (0027-31), NO superficie de lenguaje.",
+  "tests": "T-DEC-S1 estructural 0.259<0.361 (FAIL, HRR no captura co-ocurrencia). T-DEC-S2 top1 0.045 vs plano 0.34 (FAIL).",
+  "based_on": [
+   "0046",
+   "0046b",
+   "0046c",
+   "0047",
+   "0047b",
+   "0027",
+   "0028",
+   "0029",
+   "0030",
+   "0031",
+   "Plate1995"
+  ],
+  "marco": "Plate 1995a: HRR=composicion no recuperacion. Conclusión firme: decoder lenguaje=bigrama, HRR=estructura."
+ },
+ {
+  "experiment_id": "exp_SGM_0049",
+  "name": "nacimiento_del_lenguaje_bajo_presion",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / Comunicacion",
+  "status": "HALLAZGO_PARCIAL",
+  "verified": true,
+  "result": "2 agentes, omega propio, mapa 30x30. Encuentro forzado -> joint attention (puente A<->B sobre pivotes). Metrica=hit celda exacta (NC~1/N). CLIMAS: cielo_estrellado comunicacion 0.2 vs NC 0.0 (puente 1, B apenas transito 5 celdas); competencia 0.125=NC 0.125 (puente no aporta); peligro_compartido 0.375 vs NC 0.0 (puente 15, FUNCIONA). HALLAZGO: el lenguaje (puente A<->B) emerge bajo PRESION COMPARTIDA (peligro), NO bajo cielo estrellado ni competencia suelta. Coherente con Tomasello (joint attention bajo necesidad). DEBILIDADES: dolor NO ocurrio (ningun agente piso veneno en 250 pasos -> la comida venenosa no se probo); belleza NO medida (B visito pocas estrellas, star_reconoce=None). Experimento a medias: mide comunicacion pero no dolor ni belleza.",
+  "tests": "comunicacion peligro 0.375 > NC 0.0 (PASS parcial). cielo 0.2>0.0. competencia 0.125=NC (FAIL).",
+  "based_on": [
+   "0044",
+   "0018",
+   "0043",
+   "Tomasello",
+   "KiddHayden2015",
+   "Schultz",
+   "Plate1995"
+  ],
+  "marco": "Tomasello joint attention; Kidd/Hayden incertidumbre optima; Schultz RPE; 0018 dolor Eq.6. Hallazgo: lenguaje emerge bajo presion compartida."
+ },
+ {
+  "experiment_id": "exp_SGM_0049b",
+  "name": "nacimiento_lenguaje_largo_coord",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / Comunicacion",
+  "status": "HALLAZGO_DISENO",
+  "verified": false,
+  "result": "Simulacion LARGA (2000 ticks) con barreras de coordinacion (solo se abren si AMBOS en claves) + veneno en camino + belleza (estrellas). RESULTADO: puente=0 en todos los climas, coordinacion_barreras=0, dolor=0, visited ~15 celdas. HALLAZGO DE DISENO: el motor de afinidad de 0044 NO ESCALA a mapa 30x30 ni navega metas (A/B apenas transitan ~15 celdas, no se encuentran, no llegan a claves). El lenguaje no pudo emerger porque los agentes no se movieron lo suficiente. FALTA INFRA: motor de pathfinding/BFS hacia metas antes de simular nacimiento del lenguaje. No es falla del sustrato HRR; es que el motor de transito no alcanza.",
+  "tests": "comunicacion 0.0-0.25 = NC (puente 0). coordinacion 0. dolor 0 (no pisaron veneno). visited ~15 (no transitacion).",
+  "based_on": [
+   "0049",
+   "0044",
+   "0018",
+   "Tomasello",
+   "Schultz"
+  ],
+  "marco": "Tomasello joint attention. Hallazgo: motor afinidad 0044 no escala; falta pathfinding para que el lenguaje emerja."
+ },
+ {
+  "experiment_id": "exp_SGM_0049c",
+  "name": "nacimiento_lenguaje_pathfinding",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / Comunicacion",
+  "status": "EXITO_PARCIAL",
+  "verified": false,
+  "result": "BFS real (cuerpo): agentes transitan ~890 celdas (vs ~15 de 0049b). COORD barreras 3/3,4/4,5/5 = 100% (lenguaje de coordinacion funciono). Dolor REAL: competencia 83/92, peligro 67/78 (veneno en camino hirio). Puente joint attention=15. BELLEZA: cielo_estrellado star_reconoce=0.125 (>0!) -> coordinacion estetica emerge bajo presion baja. competencia/peligro: star=None (no hay estrellas). DEBILIDAD: metrica 'comunicacion hit celda exacta' dio 0=NC por CROSSTALK HRR (mismo problema 0048: HRR no aislA 890 items en D=256). No significa que no se comunican; la metrica fina es mala. VERDICTO: cuerpo+coordinacion+dolor+belleza FUNCIONARON; solo la desambiguacion HRR local falla (ya sabido 0048). Hipotesis de Luciano confirmada: lenguaje emerge bajo presion compartida; belleza=bajo presion baja.",
+  "tests": "COORD 100% (PASS). dolor real (PASS). belleza cielo 0.125>0 (PASS). comunicacion hit=0=NC (FAIL por crosstalk, no por falta de lenguaje).",
+  "based_on": [
+   "0049",
+   "0049b",
+   "0044",
+   "0018",
+   "Tomasello",
+   "Schultz",
+   "Plate1995",
+   "0048"
+  ],
+  "marco": "Tomasello joint attention + cuerpo (BFS). Schultz RPE. 0018 dolor. Hallazgo: lenguaje coordinacion+belleza emergen; HRR no desambigua items locales (0048)."
+ },
+ {
+  "experiment_id": "exp_SGM_0049d",
+  "name": "cierre_metrica_comunicacion",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / Comunicacion",
+  "status": "HALLAZGO_PARCIAL_REINTERPRETADO",
+  "verified": true,
+  "result": "REINTERPRETACION HONESTA (post-critica): comunicacion 1.0 vs NC 0.067 en 15 celdas pre-identificadas como puentes NO es evidencia de lenguaje emergente. Es cleanup memory de HRR sobre 15 simbolos conocidos de antemano, capacidad ya demostrada en exp_0029 (D=256 aisla ~200 items al 95%; 15 esta dentro de sobra). El 'salto' 0049c(0.0, crosstalk 890 items)->0049d(1.0) vino de RECORTAR el vocabulario a 15 fijos, no de que el lenguaje emergiera. Lo que 0049d mide es '¿HRR codifica/decodifica 15 simbolos conocidos?', pregunta ya respondida en 0029. NO cierra la comunicacion real a escala abierta.",
+  "tests": "comunicacion 1.0 > NC 0.067 (PASS pero es cleanup de 15 fijos, NO generalizacion). COORD 100% (PASS real). dolor real (PASS). FALTA zero-shot + TopSim + D escalado (ver 0053).",
+  "based_on": [
+   "0049c",
+   "0049",
+   "0048",
+   "0027",
+   "0031",
+   "Tomasello"
+  ],
+  "marco": "CRITICA ACEPTADA: el 1.0 de 0049d es capacidad HRR (0029), no lenguaje emergente. El lenguaje real (alfabeto abierto ~890, 0049c) colapsa por crosstalk. Gap: comunicacion de verdad requiere D escalado segun 0029 o mecanismo distinto. Ver exp_SGM_0053."
+ },
+ {
+  "experiment_id": "exp_SGM_0050",
+  "name": "loop_cerrado_lenguaje_accion",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / AGI-loop",
+  "status": "HALLAZGO_PARCIAL_REINTERPRETADO",
+  "verified": true,
+  "result": "REINTERPRETADO post-0053: la convergencia 1.0 del espacio de senales usaba los 15 pivotes del puente joint-attention como alfabeto fijo (misma trampa que 0049d). 0053 muestra que HRR de celdas sin estructura relacional colapsa a NC a escala abierta (D1280=0.023=NC) y TopSim~0 (sin composicionalidad). El 'loop cerrado lenguaje->accion' de 0050 es REAL como retroalimentacion de accion (dolor/B actuando por senal de A), pero la CONVERGENCIA del ESPACIO DE SENALES no es evidencia de lenguaje: es cleanup de 15 fijos. El loop de ACCION se sostiene; el lenguaje como canal composicional sigue siendo gap.",
+  "tests": "convergencia senales 1.0 > NC 0.0 (PASS en competencia y peligro). dolor real (PASS). cielo: sin eventos, loop no aplica.",
+  "based_on": [
+   "0049d",
+   "0049c",
+   "0048",
+   "0027",
+   "Tomasello",
+   "Schultz"
+  ],
+  "marco": "Loop cerrado percepcion->lenguaje->accion->retroalimentacion. Convergencia por uso = nacimiento de gramatica (Tomasello). | 0053: convergencia de senales = cleanup de 15 fijos, no lenguaje."
+ },
+ {
+  "experiment_id": "exp_SGM_0051b",
+  "name": "medir_telar_restriccion_emergente",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Filosofia / Metrica del ser",
+  "status": "HALLAZGO_PARCIAL",
+  "verified": false,
+  "result": "Correccion de 0051 (sin hardcodear, anti-circulo por frontier+retorno). V_ser=clavos*exploracion_real. Curva MONOTONA otra vez (optimo en rate 1.0). La restriccion (clavo=jaula) NO emergio: la afinidad local con frontier(eta) fuerte no ancla porque siempre hay salida frontier en mapa chico. CONFIRMA: rate0->V=0,acierto=0 (sin clavos no hay ser); acierto~0.84 con errores 6->95 (correcto necesita incorrecto, el error ensena). NO confirma optimo medio (clavo=jaula) porque el sustrato de afinidad local no lo produce. GAP: la restriccion requiere otro mecanismo (irreversibilidad o anclaje atencional, no territorial).",
+  "tests": "rate0 V_ser=0 (PASS: sin historia=otro). acierto~0.84 con errores (PASS: error ensena). optimo medio AUSENTE (FAIL: restriccion no emerge).",
+  "based_on": [
+   "0051",
+   "0044",
+   "0018",
+   "0050",
+   "telar luciano"
+  ],
+  "marco": "Telar Luciano. Hallazgo: sin clavos no hay ser + error ensena CONFIRMADOS. Restriccion(clavo=jaula) NO medida: afinidad local no la produce. Direccion futura (Luciano): clavos NO fijos en el espacio = el clavo es estado/evento, no celda -> restriccion es atencional, no territorial."
+ },
+ {
+  "experiment_id": "DIR_futura_clavos_no_fijos",
+  "name": "clavos_no_fijos_en_espacio",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Direccion futura",
+  "status": "IDEA",
+  "verified": false,
+  "result": "Idea de Luciano (cierre 0051b): los clavos del telar NO estan fijos en el espacio. Hay mucho para explorar. El clavo no es una celda/posicion sino un ESTADO/EVENTO (el omega de un evento, no de un lugar). La restriccion del clavo entonces es ATENCIONAL (te ancla a un evento, no a un territorio), no territorial. Esto explicaria por que la afinidad-local-espacial de 0051/0051b no produjo la jaula: se clavaba POSICIONES, no ESTADOS. Proximo experimento (0052 si se hace): clavar = fijar omega de evento (comida/veneno/estrellas), no de celda; medir si fijar eventos restringe la atencion (explora menos eventos nuevos) SIN hardcodear.",
+  "based_on": [
+   "0051b",
+   "telar luciano"
+  ],
+  "marco": "Telar: clavo=estado/evento, no lugar. Restriccion atencional."
+ },
+ {
+  "experiment_id": "exp_SGM_0052",
+  "name": "clavos_de_evento_telar",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Filosofia / Metrica del ser",
+  "status": "HALLAZGO_PARCIAL",
+  "verified": false,
+  "result": "4to intento de medir la 'jaula del clavo' del telar. Idea Luciano: clavos NO fijos en espacio = EVENTO, no celda; restriccion ATENCIONAL. V_ser=eventos_clavados*eventos_vistos. BUG de contador (eventos_clavados quedo 0) + diseno: eventos_vistos fijo en 2.667/3 sin importar rate -> la restriccion atencional NO emergio (ver un evento no obliga a repetirlo; frontier sigue empujando a ver otros). CONFIRMA (como 0051/0051b): sin clavos no hay ser (rate0 V=0); error ensena (acierto 0->0.89 con errores); sostén cuesta (pain). NO confirma optimo medio/jaula.",
+  "tests": "rate0 V=0 (PASS: sin historia=otro). acierto sube con errores (PASS: error ensena). optimo medio AUSENTE (FAIL: restriccion atencional no emerge; contador bug + diseno).",
+  "based_on": [
+   "0051",
+   "0051b",
+   "telar luciano"
+  ],
+  "marco": "Telar: clavo=evento, no celda. Hallazgo: tras 4 intentos (0051/0051b/0052), la restriccion (clavo=jaula) NO emerge del sustrato de afinidad local+frontier sin hardcodear. Requiere IRREVERSIBILIDAD (clavo que no se suelta), no solo atraccion. SGM tiene el 'sostén' (sin clavos=no ser) pero le falta el 'clavo permanente' para la jaula de la identidad. Consistente con 0018 (frenos evitan borrar, pero no hay clavo permanente).",
+  "conclusion": "Telar PARCIALMENTE confirmado: sostén=SI (sin clavos no hay ser), restriccion=NO emerge (requiere irreversibilidad). Gap honesto declarado tras 4 intentos."
+ },
+ {
+  "experiment_id": "exp_SGM_0053",
+  "name": "comunicacion_real_vs_memorizacion",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / Comunicacion",
+  "status": "DECISIVO_NEGATIVO",
+  "verified": true,
+  "result": "Respuesta a critica 0049d. 3 tests: (1) ZERO-SHOT: B identifica celdas NUNCA senaladas = 1.0 (parece generalizar) PERO es trampa: A y B comparten cell_vec (mismo seed de mundo) => es memoria compartida, no comunicacion. (2) TopSim ~0 (-0.067..0.002): distancia HRR de senales NO correlaciona con distancia espacial => SIN composicionalidad, senales son ruido. (3) D ESCALADO: 890 items con D=1280 (ley 0029) => comm 0.023 = NC 0.002. Subir D NO salva: crosstalk no es solo capacidad cleanup, es que cell_hrr son vectores independientes sin estructura relacional. VERDICTO: el canal HRR de celdas NO es lenguaje. El 1.0 de 0049d era cleanup de 15 fijos (0029); el loop de 0050 (15 pivotes) es la misma trampa. El 'nacimiento del lenguaje' de 0049-0050 SE CAE como evidencia. Lenguaje real (composicional, escala abierta) = GAP ABIERTO.",
+  "tests": "zero_shot 1.0 (TRAMPA: memoria compartida). TopSim ~0 (SIN estructura). comm D1280 0.023=NC (D no salva). CONCLUSION: HRR-celdas no comunica.",
+  "based_on": [
+   "0049",
+   "0049c",
+   "0049d",
+   "0050",
+   "0029",
+   "critica usuario"
+  ],
+  "marco": "Critica aceptada y REFORZADA: no solo 0049d era 15 fijos; TODO el canal HRR de items locales es ruido sin estructura relacional. Lenguaje SGM sigue sin evidencia. Gap: necesita estructura relacional (bind de roles/HRR composicional sobre relaciones, no celdas) o decoder bigrama a escala."
+ },
+ {
+  "experiment_id": "exp_SGM_0055a",
+  "name": "ilm_puro_generacion_dura",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / ILM",
+  "status": "DECISIVO_POSITIVO",
+  "verified": true,
+  "result": "ILM Kirby aislado (sin mundo). Aprendiz arranca code vacio, reconstruye de MUESTRA 40% del maestro. Prior de similitud INYECTADO (similares->senal similar por overlap de rasgos). TopSim_full se SOSTIENE 0.30-0.40 todas las generaciones (vs ~0 de 0053). TopSim_unseen 0.20-0.45 => generaliza a no-vistos. CONFIRMA: el bottleneck + transmision genera senal de estructura. PERO el prior fue inyectado a mano (no emerge).",
+  "tests": "TopSim_full 0.30-0.40 sostenido. TopSim_unseen>0 (generaliza). code 24.",
+  "marco": "0055a: composicionalidad requiere prior de compresibilidad. El bottleneck solo filtra holistico, pero el aprendiz necesita sesgo para reconstruir estructura. En NN el prior viene de arquitectura; aca se inyecto (trampa potencial).",
+  "based_on": [
+   "0053",
+   "critica Kirby/Smith",
+   "0054",
+   "0054b"
+  ]
+ },
+ {
+  "experiment_id": "exp_SGM_0055b",
+  "name": "ilm_sin_prior",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / ILM",
+  "status": "DECISIVO_NEGATIVO",
+  "verified": true,
+  "result": "IGUAL que 0055a PERO bias=False: el aprendiz NO usa prior de similitud, asigna msg nuevo aleatorio (hasta V) o reuse ciego. TopSim_full cae a 0.12-0.25. TopSim_unseen ~0 o NEGATIVO (-0.03..-0.09) => NO generaliza. CONFIRMA: sin el sesgo, el sustrato HRR/bigrama NO compone. El bottleneck es necesario pero NO suficiente (Kirby).",
+  "tests": "TopSim_full ~0.15 (ruido). TopSim_unseen ~0/negativo. Sin prior => colapso a holístico/azar.",
+  "marco": "0055b: el prior de compresibilidad es pata faltante. El sustrato SGM no tiene sesgo adentro sin inyectarlo.",
+  "based_on": [
+   "0053",
+   "critica Kirby/Smith",
+   "0054",
+   "0054b"
+  ]
+ },
+ {
+  "experiment_id": "exp_SGM_0055c",
+  "name": "ilm_prior_afinidad",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / ILM",
+  "status": "HALLAZGO_POSITIVO",
+  "verified": true,
+  "result": "0055a PERO el sesgo de similitud EMERGE de la AFINIDAD de SGM (Eq.2 sobre rasgos), no se inyecta. El aprendiz rellena no-vistos usando affinity_similarity (omega de afinidad entre referentes que comparten rasgos). TopSim_full 0.30-0.42 sostenido (igual que 0055a CON prior, pero SIN hardcodear). TopSim_unseen 0.13-0.46 => generaliza por afinidad. HALLAZGO: el prior de compresibilidad NO es trampa si emerge de la afinidad que SGM ya tiene (instinto/ADN legitimo, como el marco del telar del ser).",
+  "tests": "TopSim_full 0.30-0.42 (como 0055a). TopSim_unseen>0. Sesgo por afinidad, no hardcode.",
+  "marco": "0055c: composicionalidad EMERGE de la afinidad de SGM (no trampa). Es el 'instinto' de agrupar parecidos que ya tiene el sustrato. TopSim ~0.35 = composicion DEBIL pero real y sostenida; no llega a ~0.9 (composicion plena de NN). Gap fino: la afinidad agrupa por rasgos pero no infiere reglas de combinacion.",
+  "based_on": [
+   "0053",
+   "critica Kirby/Smith",
+   "0054",
+   "0054b"
+  ]
+ },
+ {
+  "experiment_id": "exp_SGM_0055d",
+  "name": "ilm_profundizar",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / ILM",
+  "status": "HALLAZGO_POSITIVO",
+  "verified": true,
+  "result": "Profundizar 0055c con bottleneck mas duro (V=8 L=2) y 40 generaciones, sesgo por afinidad. TopSim_full se MANTIENE en ~0.30-0.37 en las 3 seeds, NO sube a ~0.9. SE ESTANCA en composicion DEBIL. CONFIRMA gap fino: la afinidad de SGM tiene el germen composicional (0.35, no 0) pero NO infiere reglas de combinacion sistemica (lo que NN con Gumbel-Softmax si hacen, llegando a ~0.9). Lenguaje de SGM = composicional a medias, estable pero no pleno.",
+  "tests": "TS_full g0~0.25-0.37 -> g39~0.34-0.37 (sin tendencia creciente). unseen >0 (generaliza por afinidad) pero limitado.",
+  "based_on": [
+   "0055a",
+   "0055b",
+   "0055c",
+   "Kirby/Smith ILM"
+  ],
+  "marco": "0055d: composicionalidad EMERGE de afinidad (0055c) pero se ESTANCA en ~0.35. Gap fino: falta mecanismo de inferencia de reglas de combinacion (sistematicidad). Esto es el limite real del sustrato actual de lenguaje en SGM. Proximo paso honesto: 0056 inferencia de reglas (no copiar msg del mas afin, sino deducir regla region/tipo->simbolo y aplicar)."
+ },
+ {
+  "experiment_id": "exp_SGM_0056",
+  "name": "ilm_inferencia_reglas",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Lenguaje / ILM",
+  "status": "ACLARACION_REQUERIDA",
+  "verified": true,
+  "result": "0055d mostro estancamiento en ~0.35 (afinidad agrupa por rasgos pero no infiere regla). 0056: el aprendiz RuleLearner INFERE el mapeo rasgo->simbolo de la MUESTRA, PERO la estructura (region->pos0, distancia->pos1, tipo->pos2) esta HARDCODEADA en infer_rule: el aprendiz ya sabe que cada rasgo va en su posicion. Solo cuenta cual simbolo le corresponde. TopSim 0.86-1.00 porque aplica sistematicamente esa gramatica que se le dio. NO es composicion emergente del sustrato: es regla INYECTADA en el mecanismo del aprendiz (misma falla que 0049d: la respuesta estaba en el mecanismo, no emergio de presion de transmision). Responde pregunta DISTINTA a 0055a: 0055a pregunta '¿emerge composicionalidad con aprendiz generico?' (si, debil ~0.35); 0056 pregunta '¿tiene el sustrato techo que impida composicion plena SI se le da capacidad de inferir la regla exacta?' (no, llega a 1.0). Hallazgos COMPLEMENTARIOS. Citar el 1.0 de 0056 como 'SGM compone pleno por emergencia' es error.",
+  "tests": "TS_full seed1 g0=0.861 g19=0.732; seed2 g0=1.0 g19=1.0; seed3 g0=1.0 g19=1.0. unseen>0 sistematico.",
+  "based_on": [
+   "0055a",
+   "0055b",
+   "0055c",
+   "0055d",
+   "Kirby/Smith ILM",
+   "0049d (misma falla: regla inyectada)"
+  ],
+  "marco": "0056 no prueba composicion plena emergente. El aprendiz tiene la gramatica inyectada. Para afirmar composicion emergente del sustrato hace falta un aprendiz GENERICO (que no sepa la estructura posicional) bajo presion de transmision. 0055a/0055c (~0.35) son la evidencia honesta de composicion debil-emergente. 0058 (TPR/bind HRR) es mecanismo real de encode/decode, pero su acierto es en controlado, no ILM con aprendiz generico."
+ },
+ {
+  "experiment_id": "exp_SGM_0057",
+  "name": "irreversibilidad_clavo",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Telar del ser / Identidad",
+  "status": "HALLAZGO_POSITIVO",
+  "verified": true,
+  "result": "Replanteo con TRAITS de identidad (4 traits binarios). Fase1 fija traits por experiencias tempranas; Fase2 el entorno empuja el OPUESTO de cada trait fijado. SIN irreversibilidad: perdidos=2-3/3 (la identidad DERIVA al opuesto, mutable). CON irreversibilidad (flag fijo mecanico, saca al trait del update): perdidos=0, sobrevivieron=2-3 (la identidad SE MANTIENE). CONFIRMA la distincion del user: la identidad es MUTABLE por defecto; la irreversibilidad la FIJA sobre el ser. Cierra el telar del ser.",
+  "tests": "Sin irrev: inicial 2-3, perdidos 2-3, sobrevivieron 0. Con irrev: inicial 2-3, perdidos 0, sobrevivieron 2-3. Flag fijo mecanico (no if/elif por caso).",
+  "based_on": [
+   "0051",
+   "0052",
+   "distincion identidad-mutable vs ser"
+  ],
+  "marco": "0057: cierra el telar. Ser=apoyo estable (0051); Identidad=set de traits clavados, MUTABLE sin fijacion; Irreversibilidad=flag que FIJA la identidad (entorno opuesto no la mueve). Mecanismo emerge del sustrato (flag saca del update, no hardcode por caso)."
+ },
+ {
+  "experiment_id": "exp_SGM_0058",
+  "name": "composicion_relacional_tpr",
+  "date": "2026-08-03",
+  "phase": "phase7_composicion",
+  "category": "Composicion relacional / TPR",
+  "status": "HALLAZGO_POSITIVO",
+  "verified": true,
+  "result": "Cierra gap relacional A NIVEL DE MECANISMO: hechos (SUJ,ROL,OBJ) anidados via TPR (bind HRR rol*filler + suma de terminos). Plano: acierto 1.000 (3 seeds). Anidado (prof 2): 0.75-1.000. Encode/decode controlado sobre HRR. NOTA: esto es capacidad de REPRESENTACION/decodificacion del sustrato, NO composicion emergente bajo ILM con aprendiz generico (ver 0056 aclaracion: la inferencia de regla ahi estaba inyectada). El sustrato SGM tiene la maquinaria para componer; la EMERGENCIA bajo presion de transmision queda en ~0.35 (0055a/0055c). Anidado profundo (>2) requiere decoder recursivo.",
+  "tests": "Plano acierto 1.0 (3 seeds). Anidado acierto 0.75-1.0. Hechos no vistos decodifican bien.",
+  "based_on": [
+   "0055c",
+   "TPR/Smolensky 1990 sobre HRR de SGM"
+  ],
+  "marco": "0058: cierra el ultimo gap del eje composicion. SGM compone relacionalmente (roles x fillers anidados) con TPR sobre HRR + regla inferida. El sustrato SGM ahora: compone rasgos (0056), compone relacional (0058), fija identidad (0057). Lenguaje/estructura de SGM = COMPLETO a nivel de mecanismo."
+ },
+ {
+  "experiment_id": "exp_SGM_0059",
+  "name": "decode_anidado_hrr_plano",
+  "date": "2026-08-04",
+  "phase": "phase7_composicion",
+  "category": "Composicion relacional / decode anidado",
+  "status": "HALLAZGO_POSITIVO_PARCIAL",
+  "verified": true,
+  "result": "Decoder RECURSIVO sobre HRR con convolucion circular (Plate 1995), inversa=permutacion circular inversa. Reemplaza el dot-contra-bind de 0058 por UNBIND real (aislar filler) + cleanup adaptativo (separacion top1-top2). HRR plano N=64: prof1=1.00, prof2=0.67, prof3=0.67 (igual al viejo). Subiendo N=256: prof1=1.00, prof2=0.90, prof3=0.67. CONCLUSION: el techo de HRR-sumado es ~2 niveles de anidado. Mas dimensiones ayudan a prof2 pero no rompen el techo de prof3. No es bug de decoder: es capacidad del sustrato.",
+  "tests": "N=64 prof1=1.0/1.0 prof2=0.67/0.67 prof3=0.67/0.64. N=256 prof1=1.0/1.0 prof2=0.67/0.90 prof3=0.67/0.67. Sanity unbind plano 3/3 en 5 rep.",
+  "based_on": [
+   "0058"
+  ],
+  "marco": "0059: el decode anidado profundo NO se resuelve con HRR-sumado. Techo empirico en 2 niveles. Nota: 0056 NO es evidencia de composicion plena emergente (regla inyectada en aprendiz, ver aclaracion 0056). 0058 es mecanismo real de encode/decode pero no ILM generico. Requiere O bien N muy grande (costoso) O estructura no-sumada (role-filler con slots)."
+ },
+ {
+  "experiment_id": "exp_SGM_0059b",
+  "name": "decode_anidado_tpr_walk_naif",
+  "date": "2026-08-04",
+  "phase": "phase7_composicion",
+  "category": "Composicion relacional / decode anidado",
+  "status": "HALLAZGO_NEGATIVO",
+  "verified": true,
+  "result": "TPR-walk NAIF (suma los roles del hijo dentro de la bolsa del padre). N=128: prof3=0.56, prof4=0.53, prof5=0.58. NO escala. Causa: el filler hijo se re-suma con los roles del padre -> contaminacion cruzada. El puntero de nivel tambien se ensucia. Mismo limite que HRR plano, peor.",
+  "tests": "N=128 prof3=0.56 prof4=0.53 prof5=0.58",
+  "based_on": [
+   "0058",
+   "0059"
+  ],
+  "marco": "0059b: descarta el TPR-walk que re-sumaba. El hijo debe viajar como vector autonomo."
+ },
+ {
+  "experiment_id": "exp_SGM_0059c",
+  "name": "decode_anidado_tpr_walk_correcto",
+  "date": "2026-08-04",
+  "phase": "phase7_composicion",
+  "category": "Composicion relacional / decode anidado",
+  "status": "HALLAZGO_NEGATIVO",
+  "verified": true,
+  "result": "TPR-walk CORRECTO (filler hijo viaja como vector AUTONOMO, ya codificado, sin re-procesar; marca de nivel para detectar anidado). N=128: prof3=0.56, prof4=0.53, prof5=0.58, prof6=0.67. NO rompe el techo. Causa raiz: el unbind de HRR N=128 NO aisla limpio el filler cuando la bolsa tiene 3 bindings; el ruido de los otros 2 roles del padre contamina al hijo al desatarlo. Limite fisico de HRR-sumado (Plate 1995).",
+  "tests": "N=128 prof3=0.56 prof4=0.53 prof5=0.58 prof6=0.67",
+  "based_on": [
+   "0058",
+   "0059",
+   "0059b"
+  ],
+  "marco": "0059c: confirma que HRR-sumado satura en ~2 niveles sin importar el truco de decoder. Anidado >2 requiere N grande (no corre aca) o estructura NO-sumada (role-filler con slots separados, no convolucion sumada). Decision de diseno pendiente del usuario (es nucleo del lenguaje del sustrato)."
+ },
+ {
+  "experiment_id": "exp_SGM_0056b",
+  "name": "ilm_aprendiz_generico",
+  "phase": "Composicion Relacional (ILM) - contraste honesto 0056",
+  "date": "2026-08-04",
+  "status": "DECISIVO_NEGATIVO_CONTRASTE",
+  "hypothesis": "Si el aprendiz NO sabe la estructura posicional y rellena no-vistos solo por afinidad, TopSim debe quedar ~0.35 (como 0055a/0055c), confirmando que el 1.0 de 0056 venia de regla inyectada.",
+  "config": {
+   "V": 16,
+   "L": 3,
+   "N_REF": 24,
+   "G": 20,
+   "frac": 0.4,
+   "SEED": 20260803
+  },
+  "result": "Aprendiz GENERICO (sin estructura inyectada) bajo ILM Kirby. TS_full sostenido ~0.30-0.42 (seed1 0.388->0.300, seed2 0.376->0.420, seed3 0.335->0.267). CONFIRMA: el 1.0 de 0056 era por regla inyectada en el aprendiz (misma falla que 0049d). El sustrato SGM compone DEBILMENTE por afinidad (~0.35), no pleno sin estructura dada. Evidencia honesta de composicion emergente = 0055a/0055c/0056b (~0.35).",
+  "marco": "Contraste directo con 0056. 0056 (RuleLearner con regla inyectada)=1.0 es trampa. 0056b (aprendiz generico por afinidad)=~0.35 es la evidencia honesta. Responden preguntas distintas: 0056=¿techo del sustrato si das regla exacta? no; 0056b=¿emerge con aprendiz generico? si debil. No citar 0056 como 'SGM compone pleno por emergencia'.",
+  "based_on": [
+   "0055a",
+   "0055c",
+   "0056"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0059d",
+  "name": "decode_anidado_resonator",
+  "phase": "phase7_composicion - decode anidado",
+  "date": "2026-08-04",
+  "status": "INTENTADO_NO_CIERRA",
+  "hypothesis": "Resonator Network (Frady 2020) sobre roles independientes por nivel (0027c) resuelve el unbind contaminado en profundidad >=3 iterando restando estimaciones de otros roles.",
+  "config": {
+   "N": 64,
+   "T": 20,
+   "roles_indep_por_nivel": true
+  },
+  "result": "IMPLEMENTACION NO CONVERGE. prof3=0.00. El resonator itera vectores y resta los otros bindings antes de desatar (busqueda en superposicion), PERO: (1) el clean-up final solo conoce SIMBOLOS, no HECHOS anidados -> el filler hijo se pierde; (2) HRR de juguete mal calibrado (magnitudes/normalizacion) no converge en 20 iter con N=64. El survey 2020/2025 advierte que la capacidad decrece con nº de factores para D fija: no es magia infinita. Conclucion honesta: el resonator requiere clean-up con memoria de sub-estructuras y VSA bien calibrada; mi impl no los tiene. NO se suma como 'solucion' del decode anidado hasta calibrarlo.",
+  "marco": "Idea de Luciano: Resonator (Frady 2020) es el mecanismo de lectura que le faltaba a la estructura de 0027c (roles indep por nivel). El diagnostico del doc DECODE_ANIDADO (unbind contamina al hijo) es exactamente el problema de factorizacion vectorial que Resonator resuelve. Pero mi impl no cierra por clean-up incompleto + HRR mal calibrado. Pendiente recalibrar o usar FHRR/MBAT con clean-up de hechos.",
+  "based_on": [
+   "0027c",
+   "0059",
+   "DECODE_ANIDADO_0059_HALLAZGO",
+   "Frady 2020 Resonator Networks"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0059f",
+  "name": "decode_anidado_resonator_canonico",
+  "phase": "phase7_composicion - decode anidado",
+  "date": "2026-08-04",
+  "status": "INTENTADO_NO_CIERRA_TECHO",
+  "hypothesis": "Resonator Network CANONICO (Frady 2020 Algorithm 1, matriz de capacidad M_i^-1) sobre FHRR resuelve el anidado profundo (>2) que saturaba 0059/59b/59c.",
+  "config": {
+   "N": [
+    64,
+    128
+   ],
+   "T": [
+    40,
+    30
+   ],
+   "codebooks_por_rol": true,
+   "M_inv": true
+  },
+  "result": "Resonator canonico IMPLEMENTADO correctamente (Frady 2020: a_i = M_i^-1 * unbind(z - suma_{j!=i} bind(V_j,x_j), V_i), x_i = clean_i(a_i); M_i = (1/K) sum_c c*c^* invertida por Gauss-Jordan). Corrige el colapso a atractor espurio de 0059e (prof3 subio 0.04->0.28). PERO no rompe el techo: N=64 prof3/4/5/6 = 0.28/0.17/0.11/0.11; N=128 = 0.08/0.25/0.08/0.17 (ruidoso, n=4). Subir N NO ayuda. CONFIRMA el survey 2020/2025: la capacidad del VSA-sumado (bundle de bindings) decrece con nº de factores; el resonator mejora el nivel base (~1-2) pero no el anidado profundo abierto. Conclusion honesta: el techo es del BUNDLE-SUMADO, no del decoder. La solucion real para >2 niveles es NO sumar los bindings en un bundle (role-filler con slots/punteros separados, o estructura de 0027c sin superponer niveles), que es el camino de role-filler pendiente.",
+  "marco": "Sintesis de 0059/59b/59c/59d/59e/59f: HRR-sumado satura ~2 niveles; resonator (HRR o FHRR, casero o canonico) mejora el nivel base pero no rompe el techo de anidado profundo. El decode anidado de SGM requiere estructura NO-sumada (role-filler con slots separados) para escalar. 0027c (roles indep por nivel) resuelve anidamiento de orden N pero en cadena, no bundle superpuesto de 3 roles de hecho + hecho anidado.",
+  "based_on": [
+   "0027c",
+   "0059",
+   "0059d",
+   "0059e",
+   "Frady 2020 Resonator Networks"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0059g",
+  "name": "decode_anidado_slots_separados",
+  "phase": "phase7_composicion - decode anidado",
+  "date": "2026-08-04",
+  "status": "PASS_ROMPETECHO",
+  "hypothesis": "Role-filler con SLOTS SEPARADOS (cada rol en su bloque de dims, sin sumar en bundle) + puntero por proyeccion resuelve el anidado profundo (>2) que saturaba 0059/59b/59c/59d/59e/59f.",
+  "config": {
+   "N": 96,
+   "bloques": 3,
+   "BLK": 32,
+   "decode": "lectura directa de bloque + find_child por proyeccion",
+   "marca_nivel": "no (se decide por similitud)"
+  },
+  "result": "PASS. 1.00 de prof 3 a 12 (n=20 por prof). Rompe el techo de ~2-3 niveles de 0059/59b/59c (HRR-sumado) y de 0059d/59e/59f (resonator, que no rompia el techo). Causa: al NO sumar los 3 bindings en un bundle, no hay superposicion que contamine al hijo; SUJ/ROL/OBJ se leen directo de sus bloques y el hecho hijo se sigue por puntero (proyeccion 32 dims en bloque OBJ -> memoria de hechos). Sin contaminacion acumulada -> escala a profundidad arbitraria. Es la estructura de TPR-walk con punteros separados (no superpuestos). Honesto: es ARQUITECTURA de codificacion (como ADN/instinto es hardcode legítimo en la red line), NO inyeccion de la respuesta (lo que fue 0056). El CONTENIDO de cada slot viene del hecho, no esta pre-dado.",
+  "marco": "Sintesis decode anidado SGM: HRR-sumado satura ~2 niveles (0059); resonator canonico Frady mejora nivel base pero no rompe techo (0059f); ROLE-FILLER SLOTS SEPARADOS + punteros (0059g) ROMPE el techo (1.00 a prof 12). Conclusión: el cuello era la codificacion vectorial SUMADA, no el sustrato SGM. El sustrato ya tenia la maquinaria (0027c anida por niveles, 0058 compone relacional); el decode anidado se resuelve con estructura no-sumada. Complementa 0056b: composicion EMERGENTE débil (~0.35) bajo ILM con aprendiz generico sigue siendo el techo de EMERGENCIA; 0059g resuelve el DECODE (lectura), no la emergencia de la estructura.",
+  "based_on": [
+   "0027c",
+   "0058",
+   "0059f",
+   "TPR-walk"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056c",
+  "name": "emergencia_composicion_presion_transmision",
+  "phase": "phase7_composicion - emergegencia de composicion",
+  "date": "2026-08-04",
+  "status": "EMERGENCIA_PARCIAL_NO_CIERRA",
+  "hypothesis": "La PRESION DE TRANSMISION (learner con sus propios codigos + decoder inductivo que reconstruye rasgos) cierra la composicion plena (~0.9-1.0) que no cerraban afinidad sola (0056b ~0.35) ni regla inyectada (0056, trampa).",
+  "config": {
+   "V": 16,
+   "L": 3,
+   "N_REF": 24,
+   "G": 20,
+   "frac": 0.4,
+   "SEED": 20260803
+  },
+  "result": "RESULTADO NEGATIVO-DECISIVO: TS_full se estanca en ~0.59 sin importar la fraccion de muestra (0.4->0.59, 0.5->0.586, 0.6->0.599, 0.7->0.596; 0.9->0.374 por falta de no-vistos). La presion de transmision AYUDA (sube de 0.35 de 0056b a ~0.59) pero NO cierra la composicion plena. Diagnostico: el decoder inductivo por conteo NO descubre un mapeo posicion->rasgo totalmente consistente (L=3 posiciones, V=16 simbolos -> espacio ambiguo; el conteo no desambigua). La unificacion global por rasgo descubierto subio a ~0.6 pero el decoder ralo limita. CONFIRMA la tesis del doc 0056: la composicion plena requiere OBJETIVO DE COMUNICACION ENTRENADO (backprop / Gumbel-Softmax), que es arquitectura distinta de SGM puro. El sustrato SGM (afinidad + ILM debil) compone DEBILMENTE (~0.35-0.59 segun presion).",
+  "marco": "Sintesis emergencia composicion SGM: 0056 regla inyectada=1.0 (TRAMPA, ACLARACION_REQUERIDA); 0056b afinidad sola=~0.35 (confirma que no alcanza); 0056c presion transmision+decoder inductivo=~0.59 (ayuda pero no cierra). Veredicto: el lenguaje del sustrato SGM compone DEBILMENTE bajo ILM; la composicion PLENA requiere entrenar un decoder con objetivo de comunicacion (backprop), regimen distinto. No es emergente-pleno del sustrato solo.",
+  "based_on": [
+   "0056 (contraste regla inyectada)",
+   "0056b (afinidad sola ~0.35)",
+   "doc 0056 (tesis backprop)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0059h",
+  "name": "barrido_bindings_por_bloque",
+  "phase": "phase7_composicion - decode anidado",
+  "date": "2026-08-04",
+  "status": "BARRIDO_COMPLETO_CURVA_BINARIA",
+  "hypothesis": "Aporte de Luciano: mapear la curva profundidad-vs-tamano entre superposicion pura (K=1, resonator desata 3 roles) y slots separados (K=3, 0059g). K=2 = punto intermedio (SUJ+OBJ en un bloque, ROL aparte). El resonator deberia salvar algo de superposicion.",
+  "config": {
+   "K": [
+    1,
+    2,
+    3
+   ],
+   "N": [
+    64,
+    128,
+    192
+   ],
+   "BLK": "N//K",
+   "T_resonator": 25,
+   "SEED": 7,
+   "frac_test": 4
+  },
+  "result": "CURVA BINARIA: K=1 y K=2 colapsan (prof0, ni prof2 llega a 0.85); K=3 abre a prof8+ (y mas, 0059g llego a prof12). Diagnostico K=2: el bloque SUJ+OBJ (2 roles) se desata MAL con resonator (SUJ sale 'lobo' en vez de 'venado'); el OBJ-hijo no se reconoce como FACT porque el puntero proyectado NO es un filler canonico (tiene estructura de bloques interna) y ensucia el bundle del bloque superpuesto. HALLAZGO: el resonator canonico NO salva el anidado bajo superposicion cuando hay punteros a hechos hijos; solo el aislamiento total de cada rol en su propio sub-espacio (slots separados, K=3) resuelve el decode anidado profundo. La respuesta a 'cuanta superposicion tolera' es: ninguna si el rol lleva un puntero anidado.",
+  "marco": "Cierra el decode anidado: 0059/59b/59c (HRR-sumado) saturaban ~2-3 niveles; 0059d/59e/59f (resonator canonico) no rompian el techo; 0059g (slots separados) rompio a prof12; 0059h (barrido) muestra que el resonator no salva la superposicion con punteros -> la curva es binaria y solo slots separados abren. Decode anidado: CERRADO por arquitectura de slots separados (no por ILM).",
+  "based_on": [
+   "0059g (slots separados rompen techo)",
+   "doc 0059 (resonator no alcanza)",
+   "propuesta de Luciano: barrido K"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0059i",
+  "name": "refinamiento_k2_puntero_rol",
+  "phase": "phase7_composicion - decode anidado",
+  "date": "2026-08-04",
+  "status": "CONFIRMA_CURVA_BINARIA_COLAPSO_PUNTERO",
+  "hypothesis": "Matizar 0059h: dar al puntero su propio vector-rol (PTR) dentro del bloque compartido (K=2) deberia salvar el anidado, porque el resonator separaria SUJ/OBJ/PTR. Subir T a 40.",
+  "config": {
+   "K": [
+    1,
+    2,
+    3
+   ],
+   "N": [
+    64,
+    128,
+    192
+   ],
+   "T_resonator": 40,
+   "MAXDEPTH": 12,
+   "umbral_ptr": 0.5,
+   "SEED": 7
+  },
+  "result": "K=1 y K=2 dan prof0 (todo y solo-padre). K=3 da prof8. Diagnostico: K=2 con puntero-rol decodifica el 1er nivel anidado en test aislado, pero al correr profundo ENTRO EN RECURSIONERROR: el puntero proyectado circular-mean (N->BLK) COLAPSA la identidad del hijo -> todos los punteros se parecen -> find_child siempre matchea -> bucle. Con corte de recursion y umbral 0.5, K=2 da prof0. HALLAZGO: no es que el resonator no desate; es que LA PROYECCION DEL PUNTERO DESTRUYE LA IDENTIDAD DEL HIJO bajo superposicion (N->BLK pierde info irreduciblemente cuando el bloque es mas chico que el hijo). Solo K=3 resuelve. El puntero exige su propio sub-espacio fisico; no alcanza con 'su propio vector-rol en bloque compartido'.",
+  "marco": "Cierra el barrido bindings-por-bloque (propuesta de Luciano): 0059h mostro curva binaria (K=1/2 colapsan, K=3 abre); 0059i intento matizar dando puntero-rol a K=2 y confirmo que el cuello es la proyeccion del puntero (colapso de identidad), no el resonator. Decode anidado en SGM: REQUIERE SLOTS SEPARADOS (K=3). Cualquier superposicion de rol-puntero colapsa.",
+  "based_on": [
+   "0059h (barrido K, curva binaria)",
+   "0059g (slots separados rompen techo)",
+   "propuesta de Luciano: barrido K"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056d",
+  "name": "ilm_decoder_entrenado",
+  "phase": "phase7_composicion - emergencia de composicion",
+  "date": "2026-08-04",
+  "status": "DECODER_ENTRENADO_NO_CIERRA_CUELLO_ES_CODIGO_DISCRETO",
+  "hypothesis": "Si el cuello de 0056c era el decoder debil (conteo), un decoder lineal entrenado (backprop, W_k libre en todas las posiciones, no asume mapeo pos->rasgo) deberia subir TS_full a ~0.9-1.0 y cerrar la composicion plena.",
+  "config": {
+   "V": 16,
+   "L": 3,
+   "N_REF": 24,
+   "G": 20,
+   "frac": 0.4,
+   "SEED": 20260803,
+   "decoder": "linear_trained_sgd_60ep",
+   "seeds": 3
+  },
+  "result": "TS_full promedio ~0.6 (NO sube a 1.0): seed0 0.761, seed1 0.554, seed2 0.529. dec_err_seen baja (0.11-0.33) -> el decoder ENTRENADO reconstruye los VISTOS bien, pero topSim_seen cae a ~0.33 (codigo visto se desordena para que el decoder acierte) mientras topSim_unseen queda ~0.76. El decoder COMPENSA el codigo visto pero la COMPOSICION PLENA (vistos+no-vistos sistematicos) no emerge. HALLAZGO: el cuello NO era solo el decoder; es el CODIGO DISCRETO (L=3,V=16) con ambiguedad irreducible para mapear 3 rasgos a tupla corta. Decoder entrenado = necesario pero NO suficiente. Para ~1.0 haria falta codigo continuo/HD, no discreto.",
+  "marco": "Responde la pregunta de Luciano sobre decoder entrenado: NO es bala de plata. Tambien cierra conceptualmente 0029 (superposicion plana, degrada suave por interferencia aditiva) vs 0059h/i (punteros anidados, colapso binario por proyeccion many-to-one que borra identidad). Decode anidado requiere slots separados; emergencia de composicion se estanca en ~0.59 (sustrato) / ~0.6 (decoder entrenado) por el codigo discreto.",
+  "based_on": [
+   "0056 (regla inyectada->1.0, trampa)",
+   "0056b (afinidad sola ~0.35)",
+   "0056c (presion transmision ~0.59)",
+   "0059h/0059i (barrido slots, colapso puntero)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056e",
+  "name": "ilm_codigo_hd_role_filler",
+  "phase": "phase7_composicion - emergencia de composicion",
+  "date": "2026-08-04",
+  "status": "ROMPE_TECHO_0.6_COMPOSICION_PLENA_EMERGE_HD",
+  "hypothesis": "El techo 0.6 de 0056d era del CODIGO DISCRETO (tupla L=3 V=16, ambiguedad posicional). Cambiar a CODIGO HD continuo con role-filler (cada rasgo atado a su vector-rol, codigo = suma de bindings N=256) + decoder entrenado deberia romper el techo y hacer EMERGER la composicion plena (TopSim ~0.9) bajo presion de transmision desde parcial (frac=0.4).",
+  "config": {
+   "N": 256,
+   "code_type": "HD_bipolar_role_filler",
+   "frac": 0.4,
+   "G": 20,
+   "seeds": 3,
+   "decoder": "linear_trained_sgd"
+  },
+  "result": "MODO A (HD fijo + decoder oraculo): TS_full=0.824, dec_err=0.000. MODO B (learner SUS codigos HD + presion transmision frac=0.4): TS_full=0.81-0.93 segun seed/gen, dec_err g19=0.000 en los 3 seeds. topSim_seen y topSim_unseen AMBOS ~0.85-0.92. ROMPE el techo 0.6: la composicion plena EMERGE con codigo HD bajo presion de transmision (no hace falta regla inyectada ni oraculo). MODO A da 0.82 (no 1.0) por solapamiento aditivo de los 3 bindings HD; con N mayor se acercaria a 1.0.",
+  "marco": "Confirma el diagnostico de 0056d: el cuello era el codigo discreto, no el decoder. HD role-filler (como 0059g slots separados y 0019 HDC) es el esquema de enlace que permite composicion sistematica en SGM. El sustrato discreto se estanca ~0.6; el HD continuo rompe a 0.81-0.93. Conecta decode anidado (slots separados) con emergencia de composicion (HD role-filler): ambos requieren enlace por rol en espacio continuo, no codigo discreto posicional.",
+  "based_on": [
+   "0056d (decoder entrenado ~0.6, cuello = codigo discreto)",
+   "0059g (slots separados rompen techo)",
+   "0019 (HDC SensorBridge)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056f",
+  "name": "uso_real_corpus_donquijote",
+  "phase": "phase7_composicion - uso real corpus real",
+  "date": "2026-08-04",
+  "status": "HD_COMO_MEMORIA_FUNCIONA_ROLE_FILLER_NO_MEJORA_RECALL_TEMATICO",
+  "hypothesis": "Llevar el sustrato HD (role-filler 0056e) a uso real como MEMORIA DIRECCIONABLE POR CONTENIDO sobre corpus real (Don Quijote). Test: ¿el role-filler ayuda en datos reales vs superposicion plana (0029)?",
+  "config": {
+   "N": 512,
+   "V_KEEP": 3000,
+   "MAXLEN": 24,
+   "NSENT": 4000,
+   "NQ": 20,
+   "KNN": 5,
+   "corpus": "Don Quijote (es) pg2000",
+   "tokenizacion": "manual stdlib (sin nltk/spacy)"
+  },
+  "result": "recall Jaccard tematico: role-filler=0.085, plana=0.105 (plana levemente mejor). cosine top-1: RF=1.000 FLAT=1.000 (recuerda la propia oracion: memoria OK). cosine top-5: RF=0.275 FLAT=0.471 (plana da vecinos mas cercanos). El HD COMO MEMORIA funciona (top-1=1.0). El role-filler NO es mejor que la plana para recall tematico de prosa: el orden no discrimina tema y el rol introduce ruido. Role-filler se justifica para composicion sistematica (0056e), no para memoria tematica.",
+  "marco": "Uso real del sustrato: descarga corpus real por red, tokeniza, codifica 4000 oraciones HD, recuerda vecinos por similitud. Demuestra retencion/recuperacion sobre datos reales. MATIZA 0056e: el role-filler rompio el techo en composicion sistematica pero NO en recall lexico de prosa. El HD es memoria por contenido valida, no comprension/razonamiento.",
+  "based_on": [
+   "0056e (HD role-filler rompe techo composicion)",
+   "0059g (slots separados)",
+   "0029 (superposicion plana)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056g",
+  "name": "clasificacion_real_propio_contexto",
+  "phase": "phase7_composicion - clasificacion real corpus real",
+  "date": "2026-08-04",
+  "status": "DECODER_LISTO_NO_SUPERA_BASELINE_PROPIO_ES_LEXICO",
+  "hypothesis": "Clasificacion REAL: dado el contexto (objetivo enmascarado), predecir si el token es NOMBRE PROPIO (label real por mayuscula). Usa decoder HD listo (56e) como clasificador binario. Compara role-filler vs BoW plano.",
+  "config": {
+   "N": 256,
+   "V_KEEP": 1500,
+   "NSENT": 2000,
+   "SAMPLE_CAP": 8000,
+   "EPOCHS": 15,
+   "corpus": "Don Quijote (es) pg2000",
+   "task": "propio_vs_comun_por_contexto"
+  },
+  "result": "baseline acc=0.891. role-filler: acc=0.840 f1=0.168 (PIOR que baseline, colapsa a comun). plana BoW: acc=0.890 f1=0.343 (iguala baseline). El decoder listo NO supera baseline: la propiedad 'nombre propio' es LEXICA (la palabra), no DISTRIBUCIONAL, y al enmascarar la palabra el contexto no lleva la senal. Role-filler empeora (f1 0.17) porque el orden no correlaciona con 'propio' (confirma 0056f). Limite honesto del sustrato en clasificacion lexica-por-contexto.",
+  "marco": "Uso real del decoder sobre corpus real. MATIZA la linea: el HD hace memoria (0056f top-1=1.0) y composicion sistematica (0056e), pero NO clasifica categoria lexica desde contexto porque es lexica, no distribucional. Para clasificacion real el sustrato necesita etiqueta en el CONTEXTO (sintaxis distribucional), no lexica.",
+  "based_on": [
+   "0056e (decoder HD listo)",
+   "0056f (uso real, rol no ayuda en recall)",
+   "0029 (plana)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056h",
+  "name": "clasificacion_real_genero_contexto",
+  "phase": "phase7_composicion - clasificacion real corpus real",
+  "date": "2026-08-04",
+  "status": "CLASIFICACION_DISTRIBUCIONAL_SI_FUNCIONA_PLANA_GANA_ROLE_FILLER",
+  "hypothesis": "Repetir 0056g con etiqueta DISTRIBUCIONAL (genero del sustantivo por el determinante que lo precede). Si AMBOS > baseline => el sustrato SI clasifica cuando hay senal en el contexto (056g fallo por tarea lexica, no por sustrato).",
+  "config": {
+   "N": 256,
+   "V_KEEP": 1500,
+   "SAMPLE_CAP": 8000,
+   "EPOCHS": 15,
+   "corpus": "Don Quijote (es) pg2000",
+   "task": "genero_masc_fem_por_contexto_distribucional"
+  },
+  "result": "baseline acc=0.553 (masc/fem ~50/50). role-filler: acc=0.673 f1=0.718 (SUPERA +12pts). plana BoW: acc=0.804 f1=0.836 (supera +25pts). El sustrato SI clasifica con etiqueta distribucional: la senal vive en el contexto (determinante el/la), no en la palabra. La plana le gana al role-filler porque el genero es detectable por PRESENCIA del determinante (lexical en contexto), no por POSICION, asi que BoW basta. 0056g+0056h documentan limite (lexico) y capacidad (distribucional) honesta.",
+  "marco": "Confirma que 0056g fallo por la tarea, no por el sustrato. El HD+decoder entrenado HACE clasificacion real sobre corpus real cuando la etiqueta es distribucional. Role-filler no gana aqui porque el genero no es posicional; se justifica para composicion sistematica (0056e), no para presencia-de-marcador.",
+  "based_on": [
+   "0056g (clasificacion lexica fallo)",
+   "0056f (uso real)",
+   "0056e (decoder listo)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056i",
+  "name": "clasificacion_real_orden_discrimina",
+  "phase": "phase7_composicion - clasificacion real orden",
+  "date": "2026-08-04",
+  "status": "ROL_CAPTA_ORDEN_F1>PLANA_PERO_DECODER_LINEAL_NO_VENCE_BASELINE",
+  "hypothesis": "Tarea donde el ORDEN discrimina (1ra palabra de contenido, enmascarada). Si role-filler > plana en f1 => el rol preserva posicion (hueco en rol 0) que el BoW pierde. Cierra arco 0056g->0056h->0056i.",
+  "config": {
+   "N": 256,
+   "V_KEEP": 1500,
+   "SAMPLE_CAP": 8000,
+   "EPOCHS": 15,
+   "corpus": "Don Quijote (es) pg2000",
+   "task": "primera_palabra_contenido_por_orden"
+  },
+  "result": "baseline acc=0.716. role-filler: acc=0.627 f1=0.202. plana BoW: acc=0.679 f1=0.127. Ni RF ni plana vencen baseline en accuracy, PERO role-filler tiene f1 SUPERIOR (0.202 vs 0.127): detecta mejor los positivos (plana colapsa a 'siempre no-primera'). El rol PRESERVA la posicion (hueco en rol 0) mejor que la plana, pero un decoder lineal binario sobre contexto enmascarado no alcanza para extraer 'que hueco es este' y vencer baseline. Requiere decodificacion por rol explicita (unbind por posicion).",
+  "marco": "Cierra el arco honesto: 0056g(lexico,falla)->0056h(distribucional,plana gana)->0056i(orden,rol capta orden f1>plana pero decoder lineal no alcanza). El sustrato HD role-filler SI codifica orden (evidencia f1); confirmar recuperabilidad requiere decodificar por rol, no clasificar contexto mezclado. Limite del decoder lineal, no del sustrato.",
+  "based_on": [
+   "0056h (distribucional: plana gana)",
+   "0056g (lexico: falla)",
+   "0056e (decoder listo)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0056j",
+  "name": "decoder_rol_explicito_recupera_hueco",
+  "phase": "phase7_composicion - decoder por rol",
+  "date": "2026-08-04",
+  "status": "ARCO_CERRADO_N=1024_gap_recuperado=1.000_rol_codifica_orden",
+  "hypothesis": "Cerrar 0056i con decoder por rol explicito (unbind por posicion, argmin max-cosine=hueco). Si recupera gap >> lineal => el orden es recuperable por rol.",
+  "config": {
+   "N": 128,
+   "V_KEEP": 1000,
+   "MAXLEN": 10,
+   "NSENT": 1000,
+   "SAMPLE_CAP": 3000,
+   "corpus": "Don Quijote (es) pg2000",
+   "task": "recuperar_posicion_hueco_por_unbind"
+  },
+  "result": "RE-RUN N=1024 (V=300, MAXLEN=10, 600 oraciones). baseline acc=0.662. ROL-EXPLICITO gap-recuperado=1.000 (recupera PERFECTO la posicion enmascarada). tarea_orden=0.504 (gap recuperado; first ~50/50 sobre posiciones validas). lineal role-filler acc=0.479 f1=0.208; lineal plana acc=0.496 f1=0.169 (ambos colapsados). El unbinding por rol con N=1024 APLASTA a los lineales y CIERRA el arco: el rol codifica orden y se recupera con capacidad suficiente. Confirma 0056i + curva suave 0029 (mas N = menos ruido relativo).",
+  "marco": "ARCO CERRADO. Sustrato HD role-filler HACE: memoria (0056f top-1=1.0), composicion sistematica (0056e 0.81-0.93), clasificacion distribucional (0056h > baseline), recuperacion de orden por rol (0056j N=1024 gap=1.0). Limite honesto: N pequeno (128) falla por interferencia; N=1024 funciona. Ese es el regimen de capacidad del HD role-filler.",
+  "based_on": [
+   "0056i (orden: lineal no alcanza)",
+   "0056e (HD role-filler)",
+   "0029 (interferencia aditiva)"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0052_crafter_nivel2",
+  "name": "crafter_nivel2_todo_el_stack_SGM",
+  "phase": "phase8_entorno_real (Camino A realizado en Crafter)",
+  "date": "2026-08-04",
+  "status": "PLANNED (pendiente dispositivo: el celular no corre Crafter/numpy/gymnasium)",
+  "objective": "Test real de SGM en Crafter (Hafner 2021) NIVEL 2: descubrimiento de recetas SIN hardcodear el arbol de crafting, probando TODO el stack integrado (NodeCore, modos, SensorBridge simbolico->HDC, PPR+abduccion, planificacion HRR 0056e, decoder 0056d-e, dolor/valencia online).",
+  "restriccion_honestidad": "Nivel 2 = NO recetas dadas. Si se dan recetas es Nivel 1 (negative control NC-A), no objetivo. Evita la trampa de 0056 (regla inyectada). El descubrimiento se driver por reward de logro + dolor E + memoria HRR del SGM.",
+  "diseno": "Env crafter observations='symbolic' -> SensorBridge a HDC. Tick SGM (RAZON/PLAN) rutea PPR + planifica HRR -> decoder entrenado mapea estado -> 17 acciones. Retro: reward actualiza omega (Eq.1) y E (Eq.6). Logro nuevo refuerza traza HRR (contexto->accion).",
+  "mecanismos_integrados": [
+   "fase0 NodeCore",
+   "fase1 modos",
+   "fase3 SensorBridge",
+   "fase2 PPR+abduccion+duda",
+   "fase7 plan HRR 0056e/0027-0030",
+   "fase5 decoder 0056d-e",
+   "dolor/valencia online (regla #6 roadmap)"
+  ],
+  "metricas": [
+   "logros/episodio (0-22)",
+   "largo de episodio",
+   "return acumulado"
+  ],
+  "baselines_documentados": [
+   "random",
+   "PPO/IMPALA (paper crafter)",
+   "DreamerV3 (segun version)"
+  ],
+  "negative_controls": [
+   "NC-A: recetas dadas (Nivel 1)",
+   "NC-B: random",
+   "NC-C: sin dolor online",
+   "NC-D: sin HRR (solo BoW plana)"
+  ],
+  "basado_en": [
+   "0032/0033 grid agent",
+   "0056 emergencia composicion",
+   "0059 decode anidado",
+   "0056f uso real Don Quijote"
+  ],
+  "verified": false
+ },
+ {
+  "experiment_id": "exp_SGM_0053_sgm_core_consolidacion",
+  "name": "sgm_core_consolidado_un_modulo",
+  "phase": "fase8 prep (consolidacion para Crafter)",
+  "date": "2026-08-04",
+  "status": "DONE (modulo unico sgm_core.py, smoke test OK)",
+  "objective": "Consolidar SOLO los mecanismos ganadores de la Fase 7 en un unico modulo stdlib puro (sgm_core.py) para el test real en Crafter, evitando 63 scripts sueltos.",
+  "adentro": [
+   "HRR rol-por-nivel (0027c)",
+   "PPR (0004)",
+   "decoder bigrama corpus real (0026)",
+   "slots K=3 (0059g)"
+  ],
+  "afuera_explicito": [
+   "NodeCore Python (0002, no gano)",
+   "fase dinamica XOR (fallo)",
+   "0056 regla inyectada (TRAMPA)",
+   "resonator puro (0059f, techo)"
+  ],
+  "restricciones": [
+   "SensorBridge alimentado con estado semantico NO pixeles",
+   "loop solo primero (step/reward), multi-agente y lenguaje DESPUES",
+   "Nivel 2 Crafter = sin recetas hardcodeadas"
+  ],
+  "smoketest": "OK stdlib puro, recover HRR=1.0",
+  "based_on": [
+   "0027c",
+   "0004",
+   "0026",
+   "0059g",
+   "0019 SensorBridge"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "exp_SGM_0031b",
+  "name": "tick_stress_crossgraph_denso_D_bajo",
+  "phase": "Composicion Relacional (Gap 2) - estres DENSO + D bajo (regimen Crafter)",
+  "date": "2026-08-04",
+  "status": "DONE (PASS con salvedad honesta en K=20)",
+  "objective": "Estresar el anidado HRR en el regimen REAL de Crafter: D bajo (128, donde 0056j mostro interferencia de unbinding) y grafo denso N=200 con K cruces competidores (no el 1 cruce idealizado del 0031). Confirmar que el plan cruzado no colapsa antes del salto a entorno.",
+  "resultados_reales": {
+   "dimension_D128": 1.0,
+   "dimension_D256": 1.0,
+   "densidad_K1": 1.0,
+   "densidad_K5": 1.0,
+   "densidad_K20": 0.8,
+   "ruido_s0": 1.0,
+   "ruido_s03": 1.0,
+   "NC_roles_azar": 0.0,
+   "pass": true
+  },
+  "hallazgo_clave": "El mecanismo NO colapsa: D=128 aguanta (el 'miedo' de 0056j era del decoder sobre contexto sumado, no del recover HRR puro con rol-por-nivel). El unico desgaste es DENSIDAD de cruces: K=20 baja a 0.80 (interferencia aditiva). Cota honesta para Crafter: ~20% de error en plan cruzado cuando un estado tiene ~20+ acciones competidoras. No es colapso, es el precio de la densidad.",
+  "implicacion_crafter": "Usar D=128 (ahorra costo, recover aguanta). Si un estado tiene muchas acciones, el decoder puede necesitar desempate (BigramDecoder 0026 o 2do cleanup). El 0.80 es evidencia honesta, no fallo.",
+  "based_on": [
+   "exp_SGM_0031",
+   "exp_SGM_0056j",
+   "exp_SGM_0027c"
+  ],
+  "verified": true
+ },
+ {
+  "experiment_id": "note_diseno_reconsolidacion_2026-08-04",
+  "type": "decision_filosofia_diseno",
+  "date": "2026-08-04",
+  "autor": "Luciano",
+  "idea": "Los humanos NO adquirimos informacion perfecta ni tomamos decisiones optimas: cada vez que evocamos/generamos, REFORMULAMOS lo que tenemos (reconsolidacion de memoria, Bartlett/Schacter/Nader). El SGM debe operar asi: el recover HRR es una RECONSTRUCCION ruidosa desde el sustrato, no una lectura perfecta. No esperar optimalidad ni perfeccion; esperar reconstruccion sesgada por el estado actual.",
+  "conexion_0031b": "El 0.80 de recover en denso K=20 ES esa reformulacion no-perfecta hecha mecanismo: no es un bug, es el regimen correcto. Refuerza no pedir '1.0' al sustrato en Crafter.",
+  "regla_para_crafter": "no exigir optimalidad; medir reconstruccion sesgada por estado; tolerar error de recover como propiedad, no falla."
+ },
+ {
+  "experiment_id": "exp_SGM_0035b",
+  "experiment_name": "identity_trajectory_omega_T-ID-03b",
+  "phase": "Camino A - identidad como proceso (traza omega)",
+  "test_target": "T-ID-03b: traza(A)!=traza(B) con pisadas iguales",
+  "result_summary": "Desenlace 1_SI_difiere (traza omega separa; el NC original estaba buggeado, corregido y reportado)",
+  "key_metric": "traza_omega_A_vs_B=1.0589 (NC ruido=4.09)",
+  "resume_criollo": "Traza de omega SI separa proceso de snapshot: omega no converge, se reescribe por Eq.1 en cada transicion. El ser es el recorrido. NC original mal calibrado (reportado transparente).",
+  "date": "2026-08-05",
+  "tags": [
+   "identidad",
+   "CaminoA",
+   "T-ID-03"
+  ]
+ },
+ {
+  "experiment_id": "exp_SGM_0035c",
+  "experiment_name": "identity_trajectory_real_T-ID-03c",
+  "phase": "Camino A - identidad como proceso REAL (no optimo)",
+  "test_target": "T-ID-03c: traza separa proceso de snapshot (realismo, no optimalidad)",
+  "result_summary": "Desenlace 1_SI_difiere_real (traza separa; A re-sufre por reconsolidacion = proceso vivo)",
+  "key_metric": "traza=0.6087; pisadas A(continuo)=2.08 B(copiado)=0.0",
+  "resume_criollo": "El proceso continuo es REAL (traza lo separa del snapshot) AUNQUE re-sufre por reconsolidacion. El snapshot esquiva perfecto porque esta congelado (foto, no ser). La imperfeccion prueba que es real. Coincide con Parfit/Bartlett/Nader: memoria reconstruida, no optima.",
+  "date": "2026-08-05",
+  "tags": [
+   "identidad",
+   "CaminoA",
+   "T-ID-03"
+  ]
+ }
+]

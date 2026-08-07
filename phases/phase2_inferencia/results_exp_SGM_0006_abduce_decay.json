@@ -1,0 +1,72 @@
+{
+  "experiment_id": "exp_SGM_0006_abduce_decay",
+  "date": "2026-08-01T05:49:27.091564",
+  "config": {
+    "D": 16,
+    "K": 10,
+    "seed": 42,
+    "n_queries": 30,
+    "n_noise": 20,
+    "alpha_restart": 0.15,
+    "max_iters": 100,
+    "tol": 1e-05,
+    "epsilon_abduce": 0.15,
+    "xor_strength": 0.85,
+    "gamma_decay": 0.95,
+    "theta_stale": 50.0,
+    "theta_active": 100.0
+  },
+  "result": {
+    "without_decay": {
+      "found": true,
+      "top_score": 0.7969,
+      "top_pair": [
+        4,
+        7
+      ],
+      "correct": false,
+      "candidates": 10,
+      "hit_counts": {
+        "0": 50.0,
+        "1": 50.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 200.0,
+        "6": 200.0,
+        "7": 200.0,
+        "8": 200.0,
+        "9": 200.0
+      }
+    },
+    "with_decay": {
+      "found": true,
+      "top_score": 1.0,
+      "top_pair": [
+        0,
+        1
+      ],
+      "correct": true,
+      "candidates": 7,
+      "hit_counts": {
+        "0": 17.9,
+        "1": 17.9,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 71.7,
+        "6": 71.7,
+        "7": 71.7,
+        "8": 71.7,
+        "9": 71.7
+      }
+    },
+    "pass": true,
+    "ppr_score": 1.0,
+    "ppr_correct": true,
+    "target_score": 0.85,
+    "decay_factor_20ticks": 0.3585,
+    "ghost_hit_count_reduction": "200.0 \u2192 71.7"
+  },
+  "verdict": "PASS"
+}

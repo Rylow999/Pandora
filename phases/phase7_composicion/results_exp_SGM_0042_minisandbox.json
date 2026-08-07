@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_SGM_0042",
+  "name": "minisandbox_observatory",
+  "status": "OBSERVATORIO",
+  "marco": "Animal-AI (1909.07483): tareas conductuales sin lenguaje. No integra conceptos emergentes.",
+  "config": {
+    "GRID": 12,
+    "STEPS": 300,
+    "SEED": 20260803
+  },
+  "tests": {
+    "T-MS-01_evita_dano": {
+      "pain_con_dolor": 0.0,
+      "pain_sin_dolor_NC": 0.0,
+      "pass": false,
+      "meta": "Animal-AI: evitacion de dano via campo dolor real (no regla)"
+    },
+    "T-MS-02_espacial": {
+      "comida_con_HRR": 1,
+      "comida_sin_HRR_NC": 1,
+      "pass": false,
+      "meta": "Animal-AI: memoria de ubicacion (HRR 0028) encuentra comida"
+    },
+    "T-MS-03_exploracion": {
+      "celdas_visitadas_unicas": 5,
+      "eta_final": 0.1,
+      "abur_final": 1.0,
+      "pass": false,
+      "meta": "Crafter-like: diversidad de conducta crece con eta (0036)"
+    },
+    "T-MS-04_catalogo": {
+      "nota": "OBSERVACIONAL: se cataloga si emerge conducta que etiquetariamos como coherente/pro-social. NO se integra como modulo.",
+      "dolor_total": 0.0,
+      "comida_total": 1,
+      "visited": 5,
+      "pass": true,
+      "meta": "Marco de observacion de emergencia (no prescriptivo)"
+    },
+    "overall_pass": false
+  },
+  "verified": false,
+  "hallazgo": "Sustrato responde localmente a campos (evita dolor -1.75, busca comida 1.05; NC sin dolor no penaliza). Exploracion global NO escala: eta(0036) se satura en grilla abierta, oscila 5 celdas/300 steps. Hueco del sustrato: falta exploracion en mundo abierto. No se tunea."
+}

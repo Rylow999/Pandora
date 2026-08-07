@@ -1,0 +1,72 @@
+{
+  "experiment_id": "exp_SGM_0002_nodecore_memoria_benchmark",
+  "date": "2026-08-01T04:37:25.557781",
+  "config": {
+    "D": 16,
+    "K": 10,
+    "seed": 42,
+    "n_nodes": 50,
+    "n_edges": 100,
+    "passes": 1000,
+    "beta": 0.1,
+    "gamma": 0.01,
+    "alpha": 5.0,
+    "theta_death": 0.1
+  },
+  "sgmnode": {
+    "engine": "SGMNode_v1.3",
+    "config": {
+      "D": 16,
+      "K": 10,
+      "n_nodes": 50,
+      "n_edges": 100,
+      "passes": 1000,
+      "beta": 0.1,
+      "gamma": 0.01,
+      "alpha": 5.0,
+      "theta_death": 0.1
+    },
+    "nodes_count": 50,
+    "edges_count": 98,
+    "struct_size_bytes": 21229,
+    "bytes_per_node": 424.58,
+    "ticks_per_second": 4949.7,
+    "elapsed_seconds": 0.202,
+    "rss_before_mb": 14.28,
+    "rss_after_build_mb": 14.28,
+    "rss_after_run_mb": 14.28,
+    "rss_delta_mb": 0.0
+  },
+  "nodecore": {
+    "engine": "NodeCore_v1.4",
+    "config": {
+      "D": 16,
+      "K": 10,
+      "n_nodes": 50,
+      "n_edges": 100,
+      "passes": 1000,
+      "beta": 0.1,
+      "gamma": 0.01,
+      "alpha": 5.0,
+      "theta_death": 0.1
+    },
+    "nodes_count": 50,
+    "edges_count": 98,
+    "struct_size_bytes": 20789,
+    "bytes_per_node": 415.78,
+    "ticks_per_second": 2547.07,
+    "elapsed_seconds": 0.3926,
+    "rss_before_mb": 14.28,
+    "rss_after_build_mb": 14.28,
+    "rss_after_run_mb": 14.28,
+    "rss_delta_mb": 0.0
+  },
+  "comparison": {
+    "memory_ratio": 1.02,
+    "speed_ratio": 0.51,
+    "memory_pass": false,
+    "speed_pass": false,
+    "global_pass": false
+  },
+  "verdict": "FAIL"
+}

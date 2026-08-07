@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_SGM_0040",
+  "experiment_name": "internal_discourse",
+  "phase": "Capa cognitiva superior - discurso interno (loop de consistencia)",
+  "date": "2026-08-03",
+  "hypothesis": "El discurso interno es un loop de consistencia: el sistema detecta contradiccion entre subsistemas (modo/duda, curiosidad/trauma, identidad/trauma) y genera un paso de reflexion que resuelve antes de actuar. La traza es un dict de decisiones, no lenguaje. Resuelve conflictos coherentemente con la logica de experimentos previos (0016/20, 0014/15/17, 0036, 0033, 0021, 0034).",
+  "config": {
+    "trials": 40,
+    "seed": 20260803,
+    "refs": [
+      "exp_SGM_0016_modos",
+      "exp_SGM_0020_plan_mode",
+      "exp_SGM_0014_duda",
+      "exp_SGM_0036_curiosity_global",
+      "exp_SGM_0033_grid_dolor",
+      "exp_SGM_0021_trauma_nodal_isolation",
+      "exp_SGM_0034_identity"
+    ]
+  },
+  "result": {
+    "trials": 40,
+    "con_conflicto": 40,
+    "coherentes": 40,
+    "T-DI-01_02": true,
+    "T-DI-02_asimetria": true,
+    "T-DI-03": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_internal_discourse.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0040_internal_discourse.json",
+  "test_target": "T-DI-01/02 (decision coherente con formula 0038/39) + T-DI-02 asimetria monotonica + T-DI-03 NC (actua)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0016_modos.json",
+    "exp_SGM_0020_plan_mode.json",
+    "exp_SGM_0014_duda.json",
+    "exp_SGM_0036_curiosity_global.json",
+    "exp_SGM_0033_grid_dolor.json",
+    "exp_SGM_0021_trauma_nodal_isolation.json",
+    "exp_SGM_0034_identity.json"
+  ],
+  "notes": "Discurso interno = loop de consistencia sobre campos del tick (no LLM generando texto). Detecta conflicto entre subsistemas y resuelve con peso dinamico coherente con 0038/39 (curiosidad vs dolor) y 0021 (aislar no borrar). Traza es dict, no lenguaje. Es el freno de coherencia que evita el loop de exploracion infinita en mundo abierto (MiniSandbox/Minecraft).",
+  "notes_criolo": "El bicho no 'habla solo' con palabras: hace un chequeo de consistencia. Cuando dos subsistemas se pelean (quiero explorar pero me dolió ahi; estoy en plan pero dudo del dato), el discurso interno pesa ambos y elige antes de actuar. Es el arbitro que mantiene la coherencia sin que nadie le diga que hacer. Y es justo lo que evita que en un mundo abierto (tipo Minecraft) se vuelva un saltarin sin sentido.",
+  "status": "PROPUESTA_DE_DISENO_NO_SUSTRATO",
+  "verified": false,
+  "nota_honestidad": "Resultado NO valido como propiedad del SGM: la decision la toma codigo del autor (arbol if-elif / pesos fijos), no el sustrato. Medir coherencia con traza propia = trivial. Se conserva como propuesta de diseno."
+}

@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_SGM_0039",
+  "experiment_name": "pain_habituation_curiosity_asymmetry",
+  "phase": "Camino A - dolor cronico (habituacion) + asimetria curiosidad/dolor",
+  "date": "2026-08-03",
+  "hypothesis": "Dolor cronico no letal -> habituacion (peso decae con repeticiones, con piso: no suicida). Curiosidad (eta alto) amortigua el dolor: el sistema tolera mas dolor por novedad. Esto modela al humano que se acostumbra al dolor para sobrevivir y que tolera mas dolor por curiosidad.",
+  "config": {
+    "N": 10,
+    "trials": 40,
+    "seed": 20260803,
+    "kappa_hab": 0.35,
+    "hab_piso": 0.6,
+    "beta_asim": 0.6,
+    "refs": [
+      "exp_SGM_0038_curiosity_vs_pain",
+      "exp_SGM_0033_grid_dolor"
+    ]
+  },
+  "result": {
+    "trials": 40,
+    "tasa_llegada": 0.35,
+    "pisos_dolor_prom": 1.071,
+    "T-HAB-01": true,
+    "T-HAB-02": true,
+    "T-HAB-03": true,
+    "T-HAB-04": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_pain_habituation.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0039_pain_habituation.json",
+  "test_target": "T-HAB-01 (habituado no suicida) + T-HAB-02 (llega) + T-HAB-03 NC + T-HAB-04 (asimetria)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0038_curiosity_vs_pain.json",
+    "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Habituacion al dolor cronico (peso decae con rep, piso no-suicida) + asimetria: eta amortigua delta_dolor en alta novedad. Modela al humano que se acostumbra para sobrevivir y tolera mas dolor por curiosidad.",
+  "notes_criollo": "El bicho se acostumbra al dolor que no lo mata (como nosotros: dolor crónico deja de paralizarte para que sigas funcionando). Pero nunca deja de sentir del todo (piso). Y si algo es muy nuevo, la curiosidad le resta miedo al dolor: 'duele pero quiero ver'."
+}

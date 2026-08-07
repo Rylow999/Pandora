@@ -1,0 +1,44 @@
+{
+  "experiment_id": "exp_SGM_0017",
+  "experiment_name": "unified_loop_scaled",
+  "phase": "Fase 1 - Infraestructura de Modos + escala",
+  "date": "2026-08-02",
+  "hypothesis": "El loop unificado (abduccion+duda+contradiccion) escala a grafo grande (N=500,D=128) con abduccion real: resuelve tareas alcanzables, duda en trampas, contradice con dolor. Cumple LOOP RULE (generalizacion real, no juguete).",
+  "config": {
+    "N": 500,
+    "D": 128,
+    "clusters": 10,
+    "seed": 42,
+    "theta_refut": 2.0,
+    "W_base": 50,
+    "alpha": 5.0,
+    "max_ticks": 80,
+    "n_queries": 12
+  },
+  "result": {
+    "regime_alcanzable": {
+      "resolve_rate_loop": 1.0,
+      "resolve_rate_baseline": 1.0,
+      "false_resolve": 0
+    },
+    "regime_trampa": {
+      "doubt_INCONCLUSA_rate_loop": 1.0,
+      "timeout_rate_baseline": 1.0
+    },
+    "regime_dolor": {
+      "contradiccion_rate_loop": 1.0
+    },
+    "pass": true
+  },
+  "script": "phases/phase1_modos/run_unified_loop_scaled.py",
+  "results_file": "phases/phase1_modos/results_exp_SGM_0017_unified_loop_scaled.json",
+  "test_target": "T-MOD-02 / T-INF-05 escalado (loop unificado en grafo grande con abduccion real)",
+  "variant_of": "exp_SGM_0015",
+  "lit_refs": [
+    "SGM v1.4 §1.1",
+    "SGM v1.4 §2.3.1/§2.3.2",
+    "HippoRAG (PPR sobre KGR)"
+  ],
+  "notes": "D=128 (como 0011). Clusters tipo KGR. Exito = llegar a cluster RELACIONADO (no cualquier nodo). Baseline sin duda se cuelga en trampas (TIMEOUT); loop duda (INCONCLUSA).",
+  "notes_criollo": "El 0017 es el 0015 pero en serio: 500 nodos, D=128, grafo con clusters como un grafo de conocimiento. La meta es llegar al nodo RELACIONADO (no cualquiera). En trampas el loop duda y admite que no llega; el baseline sin duda se cuelga. Con dolor, el loop dice esto esta mal. Cumple tu regla: no declaramos victoria en juguete."
+}

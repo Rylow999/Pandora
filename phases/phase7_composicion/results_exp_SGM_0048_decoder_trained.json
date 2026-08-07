@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp_SGM_0048",
+  "name": "decoder_l2_hrr_trained_embeddings",
+  "status": "EMBEDDINGS_ENTRENADOS",
+  "marco": "Message-passing HRR (skip-gram sobre HRR). Embeddings propagan co-ocurrencia al omega.",
+  "diseno": "Train T_ITER message-passing: emb[w]=normalize(sum vecinos p*HRR(rol,emb)). Test estructural: cos co-ocurrente vs random. Decoder: argmax vecinos por afinidad media al contexto.",
+  "config": {
+    "VOCAB": 400,
+    "WIN": 3,
+    "D": 128,
+    "T_ITER": 2,
+    "K": 8,
+    "SEED": 20260803,
+    "muestra": 200
+  },
+  "tests": {
+    "T-DEC-S1_estructural": {
+      "cos_coocurrente": 0.259,
+      "cos_random": 0.361,
+      "captura_coocurrencia": false,
+      "meta": "Embeddings HRR entrenados deben dar cos mayor para co-ocurrentes que random."
+    },
+    "T-DEC-S2_decoder": {
+      "top1_relacional_entrenado": 0.045,
+      "top1_plano_fijo": 0.34,
+      "top1_NC_aleatorio": 0.015,
+      "pass": false,
+      "meta": "Embeddings entrenados superan bigrama plano; NC aleatorio cae a azar."
+    }
+  },
+  "overall_pass": false,
+  "verified": false
+}

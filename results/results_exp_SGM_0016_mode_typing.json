@@ -1,0 +1,99 @@
+{
+  "experiment_id": "exp_SGM_0016",
+  "experiment_name": "mode_typing",
+  "phase": "Fase 1 - Infraestructura de Modos",
+  "date": "2026-08-02",
+  "hypothesis": "Los modos tipados (beta_mode de §1.1) modulan afinidad (Eq.2) y W(t) (Eq.8); en competencia real cambian la eleccion de caminata; transicion limpia sin contaminar omega.",
+  "config": {
+    "D": 16,
+    "seed": 42,
+    "edge_types": [
+      "Terminal",
+      "Causal",
+      "Temporal",
+      "Functional",
+      "Cognitive"
+    ],
+    "beta_mode": {
+      "SENSORIAL": {
+        "boost_edges": {
+          "Terminal": 2.0,
+          "Causal": 0.8,
+          "Temporal": 1.0,
+          "Functional": 1.0,
+          "Cognitive": 0.8
+        },
+        "K": 5,
+        "W_base": 8,
+        "lambda": 2.0,
+        "theta_interf": 0.6,
+        "alpha": 8.0,
+        "phi_bias": 0.0
+      },
+      "RAZONAMIENTO": {
+        "boost_edges": {
+          "Terminal": 0.8,
+          "Causal": 2.0,
+          "Temporal": 1.2,
+          "Functional": 1.5,
+          "Cognitive": 2.0
+        },
+        "K": 20,
+        "W_base": 50,
+        "lambda": 5.0,
+        "theta_interf": 0.85,
+        "alpha": 5.0,
+        "phi_bias": 1.571
+      },
+      "PLAN": {
+        "boost_edges": {
+          "Terminal": 0.8,
+          "Causal": 1.2,
+          "Temporal": 2.0,
+          "Functional": 2.0,
+          "Cognitive": 1.0
+        },
+        "K": 10,
+        "W_base": 100,
+        "lambda": 3.0,
+        "theta_interf": 0.75,
+        "alpha": 4.0,
+        "phi_bias": 0.785
+      }
+    }
+  },
+  "result": {
+    "competition_SENSORIAL": {
+      "chosen": 1,
+      "a_Terminal": 0.0126,
+      "a_Causal": 0.0051
+    },
+    "competition_RAZONAMIENTO": {
+      "chosen": 2,
+      "a_Terminal": 0.0338,
+      "a_Causal": 0.0844
+    },
+    "competition_PLAN": {
+      "chosen": 2,
+      "a_Terminal": 0.0636,
+      "a_Causal": 0.0954
+    },
+    "test_mode_flips_choice": true,
+    "test_sens_wins_terminal": true,
+    "test_raz_wins_causal": true,
+    "test_affinity_differs": true,
+    "test_distinct_W": true,
+    "test_boost_differs": true,
+    "test_clean_transition": true,
+    "pass": true
+  },
+  "script": "phases/phase1_modos/run_mode_typing.py",
+  "results_file": "phases/phase1_modos/results_exp_SGM_0016_mode_typing.json",
+  "test_target": "T-MOD-01 (modos tipados aplican beta_mode y cambian decision de caminata)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 §1.1 (Modos como Sesgos Semánticos)"
+  ],
+  "notes": "Usa tabla beta_mode real de §1.1. D chico (16). El test de competencia prueba que el modo cambia la eleccion cuando hay empate de distancia entre arista Terminal y Causal.",
+  "notes_criollo": "El 0016 pone los modos en serio: cada modo es un set de sesgos. En un grafo con dos caminos igual de cercanos (uno Terminal, otro Causal), Sensorial elige el Terminal y Razonamiento elige el Causal. El modo de verdad cambia por donde camina el grafo. Y pasar de un modo a otro no ensucia los omega."
+}

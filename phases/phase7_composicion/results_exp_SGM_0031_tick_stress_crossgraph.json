@@ -1,0 +1,56 @@
+{
+  "experiment_id": "exp_SGM_0031",
+  "experiment_name": "tick_stress_crossgraph",
+  "phase": "Composicion Relacional (Gap 2) - estres del 0030",
+  "date": "2026-08-02",
+  "hypothesis": "El tick HRR+roles resuelve el plan cruzado en escala: N hasta 200 nodos, ruido de senal sigma<=0.3, profundidad L<=12. NC roles azar falla. Sin colapso (>=0.7 en todos).",
+  "config": {
+    "D": 256,
+    "trials": 15,
+    "seed": 42
+  },
+  "result": {
+    "config": {
+      "D": 256,
+      "trials": 15,
+      "seed": 42
+    },
+    "tamano": {
+      "20": 1.0,
+      "50": 1.0,
+      "100": 1.0,
+      "200": 1.0
+    },
+    "ruido": {
+      "0.0": 1.0,
+      "0.1": 1.0,
+      "0.3": 1.0
+    },
+    "profundidad": {
+      "3": 1.0,
+      "5": 1.0,
+      "8": 1.0,
+      "12": 1.0
+    },
+    "nc": {
+      "roles_azar": 0.0
+    },
+    "pass": true,
+    "criterios": {
+      "tamano>=0.7": true,
+      "ruido>=0.7": true,
+      "profundidad>=0.7": true,
+      "nc<0.3": true
+    }
+  },
+  "script": "phases/phase7_composicion/run_tick_stress_crossgraph.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0031_tick_stress_crossgraph.json",
+  "test_target": "tamano/ruido/profundidad >=0.7 + NC <0.3",
+  "variant_of": "exp_SGM_0030",
+  "lit_refs": [
+    "exp_SGM_0030_tick_plan_crossgraph.json",
+    "exp_SGM_0029_hrr_scaling.json"
+  ],
+  "notes": "Estres del tick cruzado antes del salto a entorno (camino A). Reusa tick_relational_core.",
+  "notes_criollo": "Esto es el 'no se cae en escala' que pediste. El tick resuelve planes cruzando grafos con 200 nodos, senal ruidosa y cadenas de 12 pasos. Si alguno baja de 0.7, lo digo donde se rompe."
+}

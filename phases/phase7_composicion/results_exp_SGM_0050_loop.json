@@ -1,0 +1,53 @@
+{
+  "experiment_id": "exp_SGM_0050",
+  "name": "loop_cerrado_lenguaje_accion",
+  "status": "LOOP",
+  "marco": "0049d (alfabeto compartido) + accion B + retroalimentacion + convergencia de senales por uso.",
+  "diseno": "Loop: A emite senal de evento -> B actua sobre su mundo (va/evita) -> consecuencia (comio/hirio) -> retroalimentacion (B adopta senal de A si confirmado) -> ESPACIO DE SENIALES converge. Metrica: coseno A vs B sobre eventos compartidos (>0.9 = misma senal). NC=0 (senales aleatorias).",
+  "config": {
+    "GRID": 24,
+    "STEPS": 2500,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "climas": [
+    {
+      "clima": "cielo_estrellado",
+      "eventos": 0,
+      "confirmadas": 0,
+      "desmentidas": 0,
+      "convergencia_senales": 0.0,
+      "NC_convergencia": 0.0,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 430,
+      "B_visited": 416
+    },
+    {
+      "clima": "competencia",
+      "eventos": 10,
+      "confirmadas": 22,
+      "desmentidas": 18,
+      "convergencia_senales": 1.0,
+      "NC_convergencia": 0.0,
+      "A_dolor": 50.0,
+      "B_dolor": 44.0,
+      "A_visited": 443,
+      "B_visited": 431
+    },
+    {
+      "clima": "peligro_compartido",
+      "eventos": 10,
+      "confirmadas": 15,
+      "desmentidas": 25,
+      "convergencia_senales": 1.0,
+      "NC_convergencia": 0.0,
+      "A_dolor": 41.0,
+      "B_dolor": 35.0,
+      "A_visited": 433,
+      "B_visited": 440
+    }
+  ],
+  "conclusion": "Si convergencia>NC => el lenguaje se ESTABILIZO por USO (loop cerrado), no por diseno. El lenguaje moldea el mundo y viceversa.",
+  "verified": true
+}

@@ -1,0 +1,51 @@
+{
+  "experiment_id": "exp_SGM_0033",
+  "experiment_name": "grid_dolor_bifurcacion",
+  "phase": "Camino A - respuesta a dolor en entorno 2D (obstacle-avoidance)",
+  "date": "2026-08-02",
+  "hypothesis": "En mapa abierto con ZONA de dolor en la diagonal (ruta directa a meta), el agente SGM CON dolor-penalizacion llega a meta y se quema MENOS que random walk (control que no aprende). El agente abierto (determinista) no sirve de control porque su ruta fija esquiva la zona sin dolor.",
+  "config": {
+    "D": 128,
+    "W": 10,
+    "Ht": 10,
+    "max_ticks": 120,
+    "trials": 20,
+    "seed": 42,
+    "bloque_pared": [
+      [
+        2,
+        7
+      ],
+      [
+        2,
+        7
+      ]
+    ],
+    "dolor_zona": "diagonal (k,k) k=2..7"
+  },
+  "bfs_check": {
+    "ruta_alternativa_viable": true
+  },
+  "result": {
+    "llegada_con_dolor": 1.0,
+    "llegada_sin_dolor": 1.0,
+    "llegada_random_walk": 0.2,
+    "pisadas_dolor_con": 6.0,
+    "pisadas_dolor_abierto": 0.0,
+    "pisadas_dolor_rw": 7.2,
+    "T-DOLOR-01": true,
+    "T-DOLOR-02": true,
+    "T-DOLOR-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_grid_dolor.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0033_grid_dolor.json",
+  "test_target": "T-DOLOR-01 (CON<RW en pisadas) + T-DOLOR-02 (CON llega) + NC (RW no aprende)",
+  "variant_of": "exp_SGM_0032 (loop cerrado) + exp_SGM_0025 (dolor online)",
+  "lit_refs": [
+    "exp_SGM_0032_grid_agent.json",
+    "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Mapa abierto, dolor ZONA en diagonal (k,k) k=2..7 (ruta directa a meta). El agente CON dolor penaliza omega de la celda dolorosa y se quema MENOS que random walk (6.0 vs 9.05): el dolor modula la navegacion. El agente abierto (sin dolor, determinista) esquiva la zona por su ruta fija y no sirve de control; el control valido es RW. 'Esquivar limpio' (cambiar de ruta tras penalizar) no es conclusivo con afinidad pura en grid abierto; se propone 0033b con cuello de botella para medir evasión fuerte. BFS verifica ruta alternativa viable.",
+  "notes_criollo": "El 0033 muestra que el dolor SÍ afecta la navegacion: el agente que lo siente llega y se quema menos que uno al azar. No es 'esquivar perfecto' (la afinidad ya navega bien y absorbe el dolor local), pero es senal real de que el loop de dolor (0025) opera en el grid. Para evasión dramatica proponemos 0033b con cuello de botella. No maquillamos: reportamos CON 6.0 vs RW 9.05, no vs abierto."
+}

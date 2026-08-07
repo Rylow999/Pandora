@@ -1,0 +1,71 @@
+CLIMA cielo_estrellado | puente 0 | comunicacion 0.0 NC 0.0 | COORD barreras 0 / 2 | esteticas 2 star None | dolor A/B 0.0 0.0 | food A/B 7 3
+CLIMA competencia | puente 0 | comunicacion 0.0 NC 0.0 | COORD barreras 0 / 3 | esteticas 0 star None | dolor A/B 0.0 0.0 | food A/B 2 0
+CLIMA peligro_compartido | puente 0 | comunicacion 0.25 NC 0.25 | COORD barreras 0 / 4 | esteticas 0 star None | dolor A/B 0.0 0.0 | food A/B 0 0
+{
+  "experiment_id": "exp_SGM_0049b",
+  "name": "nacimiento_lenguaje_largo_coord",
+  "status": "LARGO_COORD",
+  "marco": "Tomasello joint attention sostenida, Schultz RPE, 0018 dolor Eq.6, 0044 motor, barreras de coordinacion.",
+  "diseno": "Mapa 30x30, 2000 ticks. Fase1: omega propio 500 ticks. Fase2: encuentro + JUNTOS 1500 ticks. Barreras que solo se abren si AMBOS en claves (no sorteables de a uno). Veneno en camino. Belleza=cielo estrellado denso, senal estetica. Metrica=hit celda exacta (NC~1/N).",
+  "config": {
+    "GRID": 30,
+    "STEPS": 2000,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "climas": [
+    {
+      "clima": "cielo_estrellado",
+      "puente": 0,
+      "comunicacion_top1": 0.0,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "coordinacion_barreras": 0,
+      "barriers": 2,
+      "esteticas_estrellas": 2,
+      "star_reconoce": null,
+      "A_food": 7,
+      "B_food": 3,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 18,
+      "B_visited": 19
+    },
+    {
+      "clima": "competencia",
+      "puente": 0,
+      "comunicacion_top1": 0.0,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "coordinacion_barreras": 0,
+      "barriers": 3,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 2,
+      "B_food": 0,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 19,
+      "B_visited": 12
+    },
+    {
+      "clima": "peligro_compartido",
+      "puente": 0,
+      "comunicacion_top1": 0.25,
+      "NC_top1": 0.25,
+      "targets": 8,
+      "coordinacion_barreras": 0,
+      "barriers": 4,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 0,
+      "B_food": 0,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 14,
+      "B_visited": 11
+    }
+  ],
+  "belleza_inferencia": "star_reconoce>0 en cielo_estrellado => belleza = coordinacion estetica emergente bajo presion baja sostenida.",
+  "verified": false
+}

@@ -1,0 +1,53 @@
+{
+  "experiment_id": "exp_SGM_0034",
+  "experiment_name": "identity_continuity",
+  "phase": "Camino A - identidad: self-state persistente a traves de reset de cuerpo",
+  "date": "2026-08-02",
+  "hypothesis": "Si el self-state (omega + dolor_count) persiste a un reset de cuerpo, el agente CON identidad esquiva el dolor en el viaje post-reset SIN re-sufrir (0 pisadas). El agente AMNESIA (self-state borrado) re-sufre (>=1). RW no transfiere.",
+  "config": {
+    "pre_trips": 5,
+    "seed": 20260802,
+    "bottleneck": "mismo de 0033b (col 4, gap (0,4)=dolor)",
+    "self_state": "{omega HRR, dolor_count}",
+    "reset": "pos->B, tick->0"
+  },
+  "result": {
+    "CON_pre": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "CON_post_reset": 0,
+    "AMN_pre": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "AMN_post_reset": 1,
+    "RW_pre": [
+      0,
+      0,
+      10,
+      0,
+      6
+    ],
+    "RW_post_reset": 3,
+    "T_ID_01": true,
+    "T_ID_02": true,
+    "NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_identity.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0034_identity.json",
+  "test_target": "T-ID-01 (CON<AMN post) + T-ID-02 (AMN>=1) + NC (RW>=1)",
+  "variant_of": "exp_SGM_0033b (bottleneck + memoria persistente)",
+  "lit_refs": [
+    "exp_SGM_0033b_grid_dolor_bottleneck.json"
+  ],
+  "notes": "Identidad operacionalizada como transferencia de self-state a traves de reset de cuerpo. El CON mantiene dolor_count y esquiva sin re-penalizar; el AMNESIA lo borra y re-sufre. Esto es el sustrato minimo de continuidad de identidad (no qualia: problema del otro cuerpo sigue intacto).",
+  "notes_criollo": "Identidad = 'el que aprendio antes, despues del reset YA esquiva'. El amnesico vuelve a quemarse. Primera medida honesta de continuidad de identidad en SGM: no es conciencia, es memoria que sobrevive al reinicio del cuerpo."
+}

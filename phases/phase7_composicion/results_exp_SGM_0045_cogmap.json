@@ -1,0 +1,45 @@
+{
+  "experiment_id": "exp_SGM_0045",
+  "name": "cognitive_map_generative_exploration",
+  "status": "OPCION_A",
+  "marco": "Cognitive maps are generative programs (2504.20628). Grafo omega como mapa emergente (huella), sin agregados.",
+  "diseno": "omega[celda] acumula al transitar (huella=mapa). Afinidad resta huella (territorio virgen atrae). Reusa abur(0043).",
+  "config": {
+    "GRID": 12,
+    "STEPS": 300,
+    "SEED": 20260803
+  },
+  "tests": {
+    "T-MG-01_mapa_no_empeora": {
+      "celdas_mapa": 110,
+      "celdas_B_puro_NC": 107,
+      "pass": true,
+      "meta": "Mapa generativo dirigido no reduce cobertura vs B puro"
+    },
+    "T-MG-02_exploracion_uniforme": {
+      "dispersion_mapa": 49.9,
+      "dispersion_B_puro_NC": 24.900000000000002,
+      "cobertura_mapa": {
+        "Q(0,0)": 13.0,
+        "Q(0,1)": 9.6,
+        "Q(1,0)": 17.9,
+        "Q(1,1)": 59.5
+      },
+      "cobertura_B_NC": {
+        "Q(0,0)": 11.3,
+        "Q(0,1)": 31.6,
+        "Q(1,0)": 20.9,
+        "Q(1,1)": 36.2
+      },
+      "pass": false,
+      "meta": "Mapa dirigido = cobertura mas uniforme (menos sesgo de cuadrante)"
+    },
+    "T-MG-03_NC_B_puro_funciona": {
+      "celdas_B": 107,
+      "pass": true,
+      "meta": "NC: con mapa off vuelve a ser B puro (0043), confirma que el mapa es del sustrato"
+    },
+    "overall_pass": false
+  },
+  "verified": false
+}

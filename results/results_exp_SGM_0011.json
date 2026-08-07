@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_SGM_0011",
+  "experiment_name": "abduce_xor_D128",
+  "phase": "Fase 2 \u2014 Inferencia simb\u00f3lica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "D=128 reduce el ruido del binding XOR lo suficiente como para superar el pair_accuracy de D=32 est\u00e1tico (0.1). La fase como sesgo relacional (v3) re-pondera positivamente los pares correctos pero no compensa el ruido de D=32.",
+  "result": {
+    "D": 128,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "phase_params": {
+      "alpha_phase": 0.5,
+      "omega_0": 1.0,
+      "k_coupling": 1.0,
+      "num_ticks": 500
+    },
+    "bias_params": {
+      "lambda_phase": 0.5,
+      "sigma_phase": 0.7853981633974483,
+      "phase_binding": "sesgo relacional (no multiplicador)"
+    },
+    "correct_pairs": 1,
+    "correct_top1": 3,
+    "pair_accuracy": 0.1,
+    "top1_accuracy": 0.3,
+    "avg_final_score": 0.35442459484821687,
+    "avg_binding_score": 0.2389586600707844,
+    "avg_phase_affinity": 0.96046226019436,
+    "avg_top1_score": 0.17991422724748565,
+    "correct_noisy": 1,
+    "noisy_accuracy": 0.1,
+    "avg_noisy_score": 0.308911372594253,
+    "noise_degradation": 0.04551322225396387,
+    "avg_sync_diff_all": 0.19982049777718425,
+    "avg_sync_diff_correct": 0.18377571688890448,
+    "phase_convergence_all": 0.9363951600953561,
+    "phase_convergence_correct": 0.9415023724737482,
+    "elapsed_seconds": 0.21
+  },
+  "config": {
+    "D": 128,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "seed": 42,
+    "num_ticks": 500,
+    "alpha_phase": 0.5,
+    "omega_0": 1.0,
+    "k_coupling": 1.0,
+    "lambda_phase": 0.5,
+    "sigma_phase": 0.7853981633974483
+  },
+  "script": "phases/phase2_inferencia/run_abduce_xor_D128.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0011_abduce_xor_D128.json",
+  "test_target": "T-INF-03 (abducci\u00f3n XOR con D=128 y sesgo relacional de fase)",
+  "baseline_for": [],
+  "variant_of": "exp_SGM_0007",
+  "lit_refs": [
+    "KoPE arXiv 2604.07904 (Xiao et al., Microsoft Research Asia, April 2026)",
+    "Kanerva 1988 Sparse Distributed Memory",
+    "HippoRAG NeurIPS 2024 (arxiv 2404.10501)"
+  ],
+  "notes": "Resultado pendiente de ejecuci\u00f3n. Comparar con exp_SGM_0007 (D=32, est\u00e1tico) y exp_SGM_0010 (D=32, fase sesgo).",
+  "notes_criollo": "Si D=128 mejora pair_accuracy, confirma que el ruido del binding era el cuello de botella y que aumentar D es el camino correcto para SGM. Si D=128 no mejora, el problema no es la dimensionalidad sino el mecanismo de binding XOR por producto element-wise (que es inherentemente ruidoso para vectores continuos). En ese caso, necesitar\u00edamos binding inverso (b = a\u207b\u00b9 * c) o un mecanismo completamente diferente."
+}

@@ -1,0 +1,530 @@
+{
+  "experiment_id": "exp_SGM_0056e",
+  "name": "ilm_codigo_hd_role_filler",
+  "status": "RUNNING",
+  "marco": "0056d diagnostico: el cuello de la emergencia de composicion (~0.6) NO era el decoder sino el CODIGO DISCRETO (tupla L=3 V=16, ambiguedad posicional). 0056e cambia el TIPO de codigo a HD continuo con role-filler (cada rasgo atado a su vector-rol, codigo = suma de bindings en N=256 dims). Decoder lineal entrenado desata cada rasgo por unbind (sin ambiguedad posicional).",
+  "diseno": "MODO A: codigo HD aleatorio FIJO + decoder entrenado en TODOS (oraculo, aislacion de causa). MODO B: learner con SUS codigos HD + presion de transmision (frac=0.4, decoder solo en vistos), 20 gen 3 seeds. TopSim mide distancia por cosine (no Hamming discreto).",
+  "config": {
+    "N": 256,
+    "V_symbols": [
+      4,
+      2,
+      3
+    ],
+    "N_REF": 24,
+    "G": 20,
+    "frac": 0.4,
+    "SEED": 20260803,
+    "code_type": "HD_bipolar_role_filler"
+  },
+  "resultados": {
+    "modoA": {
+      "topSim_full": 0.824,
+      "dec_err": 0.0
+    },
+    "modoB": [
+      {
+        "seed": 20260803,
+        "traj": [
+          {
+            "gen": 0,
+            "topSim_full": 0.855,
+            "topSim_seen": 0.859,
+            "topSim_unseen": 0.835,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 1,
+            "topSim_full": 0.862,
+            "topSim_seen": 0.889,
+            "topSim_unseen": 0.879,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 2,
+            "topSim_full": 0.909,
+            "topSim_seen": 0.908,
+            "topSim_unseen": 0.913,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 3,
+            "topSim_full": 0.912,
+            "topSim_seen": 0.853,
+            "topSim_unseen": 0.915,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 4,
+            "topSim_full": 0.889,
+            "topSim_seen": 0.935,
+            "topSim_unseen": 0.853,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 5,
+            "topSim_full": 0.857,
+            "topSim_seen": 0.885,
+            "topSim_unseen": 0.845,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 6,
+            "topSim_full": 0.932,
+            "topSim_seen": 0.897,
+            "topSim_unseen": 0.917,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 7,
+            "topSim_full": 0.883,
+            "topSim_seen": 0.863,
+            "topSim_unseen": 0.873,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 8,
+            "topSim_full": 0.848,
+            "topSim_seen": 0.815,
+            "topSim_unseen": 0.84,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 9,
+            "topSim_full": 0.898,
+            "topSim_seen": 0.895,
+            "topSim_unseen": 0.904,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 10,
+            "topSim_full": 0.826,
+            "topSim_seen": 0.814,
+            "topSim_unseen": 0.827,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 11,
+            "topSim_full": 0.808,
+            "topSim_seen": 0.861,
+            "topSim_unseen": 0.805,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 12,
+            "topSim_full": 0.868,
+            "topSim_seen": 0.843,
+            "topSim_unseen": 0.838,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 13,
+            "topSim_full": 0.862,
+            "topSim_seen": 0.887,
+            "topSim_unseen": 0.853,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 14,
+            "topSim_full": 0.888,
+            "topSim_seen": 0.864,
+            "topSim_unseen": 0.878,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 15,
+            "topSim_full": 0.866,
+            "topSim_seen": 0.837,
+            "topSim_unseen": 0.866,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 16,
+            "topSim_full": 0.823,
+            "topSim_seen": 0.781,
+            "topSim_unseen": 0.832,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 17,
+            "topSim_full": 0.84,
+            "topSim_seen": 0.844,
+            "topSim_unseen": 0.852,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 18,
+            "topSim_full": 0.864,
+            "topSim_seen": 0.814,
+            "topSim_unseen": 0.884,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 19,
+            "topSim_full": 0.848,
+            "topSim_seen": 0.831,
+            "topSim_unseen": 0.866,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          }
+        ]
+      },
+      {
+        "seed": 20261803,
+        "traj": [
+          {
+            "gen": 0,
+            "topSim_full": 0.848,
+            "topSim_seen": 0.824,
+            "topSim_unseen": 0.832,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 1,
+            "topSim_full": 0.881,
+            "topSim_seen": 0.915,
+            "topSim_unseen": 0.92,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 2,
+            "topSim_full": 0.843,
+            "topSim_seen": 0.784,
+            "topSim_unseen": 0.859,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 3,
+            "topSim_full": 0.921,
+            "topSim_seen": 0.86,
+            "topSim_unseen": 0.915,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 4,
+            "topSim_full": 0.901,
+            "topSim_seen": 0.891,
+            "topSim_unseen": 0.876,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 5,
+            "topSim_full": 0.808,
+            "topSim_seen": 0.836,
+            "topSim_unseen": 0.776,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 6,
+            "topSim_full": 0.785,
+            "topSim_seen": 0.804,
+            "topSim_unseen": 0.749,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 7,
+            "topSim_full": 0.875,
+            "topSim_seen": 0.792,
+            "topSim_unseen": 0.853,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 8,
+            "topSim_full": 0.79,
+            "topSim_seen": 0.81,
+            "topSim_unseen": 0.817,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 9,
+            "topSim_full": 0.872,
+            "topSim_seen": 0.873,
+            "topSim_unseen": 0.804,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 10,
+            "topSim_full": 0.843,
+            "topSim_seen": 0.881,
+            "topSim_unseen": 0.83,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 11,
+            "topSim_full": 0.89,
+            "topSim_seen": 0.899,
+            "topSim_unseen": 0.897,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 12,
+            "topSim_full": 0.878,
+            "topSim_seen": 0.841,
+            "topSim_unseen": 0.873,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 13,
+            "topSim_full": 0.868,
+            "topSim_seen": 0.858,
+            "topSim_unseen": 0.83,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 14,
+            "topSim_full": 0.804,
+            "topSim_seen": 0.828,
+            "topSim_unseen": 0.828,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 15,
+            "topSim_full": 0.823,
+            "topSim_seen": 0.821,
+            "topSim_unseen": 0.843,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 16,
+            "topSim_full": 0.837,
+            "topSim_seen": 0.865,
+            "topSim_unseen": 0.833,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 17,
+            "topSim_full": 0.848,
+            "topSim_seen": 0.826,
+            "topSim_unseen": 0.858,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 18,
+            "topSim_full": 0.847,
+            "topSim_seen": 0.861,
+            "topSim_unseen": 0.848,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 19,
+            "topSim_full": 0.843,
+            "topSim_seen": 0.881,
+            "topSim_unseen": 0.829,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          }
+        ]
+      },
+      {
+        "seed": 20262803,
+        "traj": [
+          {
+            "gen": 0,
+            "topSim_full": 0.855,
+            "topSim_seen": 0.768,
+            "topSim_unseen": 0.877,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 1,
+            "topSim_full": 0.777,
+            "topSim_seen": 0.667,
+            "topSim_unseen": 0.737,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 2,
+            "topSim_full": 0.841,
+            "topSim_seen": 0.851,
+            "topSim_unseen": 0.858,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 3,
+            "topSim_full": 0.853,
+            "topSim_seen": 0.805,
+            "topSim_unseen": 0.859,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 4,
+            "topSim_full": 0.88,
+            "topSim_seen": 0.886,
+            "topSim_unseen": 0.883,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 5,
+            "topSim_full": 0.817,
+            "topSim_seen": 0.869,
+            "topSim_unseen": 0.839,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 6,
+            "topSim_full": 0.823,
+            "topSim_seen": 0.708,
+            "topSim_unseen": 0.826,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 7,
+            "topSim_full": 0.846,
+            "topSim_seen": 0.872,
+            "topSim_unseen": 0.832,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 8,
+            "topSim_full": 0.904,
+            "topSim_seen": 0.91,
+            "topSim_unseen": 0.874,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 9,
+            "topSim_full": 0.801,
+            "topSim_seen": 0.882,
+            "topSim_unseen": 0.775,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 10,
+            "topSim_full": 0.812,
+            "topSim_seen": 0.821,
+            "topSim_unseen": 0.814,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 11,
+            "topSim_full": 0.871,
+            "topSim_seen": 0.881,
+            "topSim_unseen": 0.865,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 12,
+            "topSim_full": 0.858,
+            "topSim_seen": 0.85,
+            "topSim_unseen": 0.835,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 13,
+            "topSim_full": 0.801,
+            "topSim_seen": 0.796,
+            "topSim_unseen": 0.827,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 14,
+            "topSim_full": 0.817,
+            "topSim_seen": 0.846,
+            "topSim_unseen": 0.832,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 15,
+            "topSim_full": 0.869,
+            "topSim_seen": 0.859,
+            "topSim_unseen": 0.898,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 16,
+            "topSim_full": 0.814,
+            "topSim_seen": 0.862,
+            "topSim_unseen": 0.789,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 17,
+            "topSim_full": 0.806,
+            "topSim_seen": 0.827,
+            "topSim_unseen": 0.835,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 18,
+            "topSim_full": 0.852,
+            "topSim_seen": 0.865,
+            "topSim_unseen": 0.843,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          },
+          {
+            "gen": 19,
+            "topSim_full": 0.811,
+            "topSim_seen": 0.825,
+            "topSim_unseen": 0.805,
+            "dec_err_seen": 0.0,
+            "n_seen": 9
+          }
+        ]
+      }
+    ]
+  },
+  "verdict": "Si MODO A da TS_full~1.0 => el techo 0.6 era del CODIGO DISCRETO (confirma 0056d): cambiar a HD role-filler lo rompe. Si MODO B (emergencia desde parcial) tambien da ~1.0 => la composicion plena EMERGE con codigo HD bajo presion de transmision. HONESTIDAD: HD role-filler es arquitectura distinta del sustrato discreto; el 1.0 es del esquema de enlace, no del sustrato puro.",
+  "based_on": [
+    "0056d (decoder entrenado ~0.6, cuello = codigo discreto)",
+    "0059g (slots separados rompen techo)",
+    "0019 (HDC SensorBridge)"
+  ],
+  "verified": true
+}

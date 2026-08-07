@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_SGM_0026",
+  "experiment_name": "decoder_l2_real_corpus",
+  "phase": "Post-Fase 6 - Validacion REAL del decoder L2 (T-DEC-01 natural)",
+  "date": "2026-08-02",
+  "hypothesis": "El decoder L2 por BIGRAMA captura estructura real de Don Quijote: top1 >> azar y > proyeccion lineal. Con bigramas shuffled (NC) cae a ~azar.",
+  "config": {
+    "corpus": "don_quijote (Gutenberg 996, ingles Ormsby)",
+    "V": 400,
+    "n_test": 4000,
+    "seed": 42,
+    "spec_ref": "exp_SGM_0022 (sintetico), NOTA 0022 synthetic"
+  },
+  "result": {
+    "T-DEC-REAL-01": {
+      "top1_bigrama": 0.1847,
+      "azar": 0.0025,
+      "pass": true
+    },
+    "T-DEC-REAL-02": {
+      "top1_lineal": 0.075,
+      "top1_bigrama": 0.1847,
+      "pass": true
+    },
+    "T-DEC-REAL-03": {
+      "top5_bigrama": 0.4253,
+      "pass": true
+    },
+    "T-DEC-REAL-NC": {
+      "top1_unigram": 0.0762,
+      "top1_bigrama": 0.1847,
+      "pass": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase5_decoder/run_decoder_l2_real_corpus.py",
+  "results_file": "phases/phase5_decoder/results_exp_SGM_0026_decoder_l2_real_corpus.json",
+  "test_target": "T-DEC-REAL-01/02/03 + T-DEC-REAL-NC (negative control shuffled)",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0022 (sintetico)",
+    "SGM v1.4 decoder L2",
+    "don_quijote_gutenberg_996"
+  ],
+  "notes": "PRIMERA validacion del decoder L2 sobre corpus NATURAL (no sintetico). Usa Don Quijote (Gutenberg 996, edicion inglesa Ormsby). El corpus esta en lit/corpus/ (fuera de git por .gitignore, igual que papers). Bigrama real supera lineal y azar; shuffled cae a azar (NC). Esto COMPLETA el T-DEC-01 real que quedo pendiente en 0022.",
+  "notes_criollo": "El 0022 era de juguete; este es el de verdad. Don Quijote de verdad, bigramas reales del lenguaje. El decoder por bigrama tiene que ganarle al azar y a la proyeccion lineal (que en 0022 daba 0.020). Y si barajas el texto, se cae a azar -> prueba que captura ESTRUCTURA, no frecuencia."
+}

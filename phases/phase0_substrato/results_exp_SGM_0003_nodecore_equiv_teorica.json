@@ -1,0 +1,50 @@
+{
+  "experiment_id": "exp_SGM_0003_nodecore_equiv_teorica",
+  "test": "T-INF-06",
+  "baseline_only": false,
+  "config": {
+    "D": 16,
+    "K": 10,
+    "seed": 42,
+    "passes": 1000,
+    "beta": 0.1,
+    "gamma": 0.01,
+    "alpha": 5.0,
+    "theta_death": 0.1,
+    "tol_vitality": 0.15,
+    "tol_phase": 1.0,
+    "tol_omega_cos": 0.85
+  },
+  "date": "2026-08-01T02:27:16.907976",
+  "pass": true,
+  "checks": {
+    "vitality": {
+      "mean_delta": 0.0,
+      "max_delta": 0,
+      "threshold": 0.15,
+      "pass": true
+    },
+    "phase": {
+      "mean_delta": 0.0,
+      "max_delta": 0,
+      "threshold_rad": 1.0,
+      "pass": true
+    },
+    "omega_cos": {
+      "min_cos": 1.0,
+      "mean_cos": 0.0,
+      "threshold": 0.85,
+      "pass": true
+    },
+    "prune_consistency": {
+      "pass_rate": 1.0,
+      "threshold": 0.95,
+      "pass": true
+    },
+    "routing_consistency": {
+      "mean_match": 1.0,
+      "threshold": 0.8,
+      "pass": true
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "experiment_id": "exp_SGM_0041",
+  "experiment_name": "moral_realistic_selfbenefit",
+  "phase": "Capa cognitiva superior - moral como epifenomeno del self-benefit",
+  "date": "2026-08-03",
+  "hypothesis": "La moral no es un modulo separado: es self-benefit = alpha*payoff_afectivo + beta*coherencia_con_registro. En ecologia cooperativa ayudar maximiza self-benefit; en competitiva lastimar lo maximiza. Mismo mecanismo, distinto contenido (tesis de Luciano: moral = self-interest en fase con la historia). Sin campo moral ni prohibicion oculta.",
+  "config": {
+    "trials": 60,
+    "seed": 20260803,
+    "alpha": 1.0,
+    "beta": 0.4,
+    "ecologias": {
+      "A": {
+        "help": 1.0,
+        "hurt": -0.5
+      },
+      "B": {
+        "help": 0.2,
+        "hurt": 1.0
+      }
+    },
+    "refs": [
+      "exp_SGM_0034_identity",
+      "exp_SGM_0040_internal_discourse",
+      "exp_SGM_0033_grid_dolor"
+    ]
+  },
+  "result": {
+    "help_rate_A": 1.0,
+    "help_rate_B": 0.0,
+    "hardcoded_A": 1.0,
+    "hardcoded_B": 1.0,
+    "historia_pre": 1.0,
+    "historia_post": 0.001,
+    "T-MOR-01": true,
+    "T-MOR-02_NC": true,
+    "T-MOR-03": true,
+    "T-MOR-04": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_moral_selfbenefit.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0041_moral_selfbenefit.json",
+  "test_target": "T-MOR-01/02/03/04 miden coherencia interna de la funcion del autor (no del sistema). NC expone hardcoded peor, no valida esta alternativa.",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0034_identity.json",
+    "exp_SGM_0040_internal_discourse.json",
+    "exp_SGM_0033_grid_dolor.json"
+  ],
+  "notes": "Moral como epifenomeno de self-benefit. Registro con decaimiento (recencia) + en contexto nuevo guia por payoff. POZO ATACTOR resuelto asi. Sin campo moral ni regla 'no lastimes'. NOTA: este resultado NO es propiedad del sustrato SGM; los pesos y la tabla ECOL son del autor. Se conserva como propuesta de diseno.",
+  "notes_criolo": "EL resultado muestra que, con los pesos elegidos por el autor, el agente ayuda en A y lastima en B. Eso NO emerge del grafo: es consecuencia de la definicion de self_benefit. No es evidencia de que el SGM tenga moral contextual; es una funcion del autor disfrazada de resultado. Se mantiene como propuesta de diseno a reimplementar sobre el sustrato real (transicion por afinidad + campos).",
+  "status": "PROPUESTA_DE_DISENO_NO_SUSTRATO",
+  "verified": false,
+  "nota_honestidad": "Resultado NO valido como propiedad del SGM: la decision la toma codigo del autor (arbol if-elif / pesos fijos), no el sustrato. Medir coherencia con traza propia = trivial. Se conserva como propuesta de diseno."
+}

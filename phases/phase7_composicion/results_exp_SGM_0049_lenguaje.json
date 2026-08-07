@@ -1,0 +1,62 @@
+{
+  "experiment_id": "exp_SGM_0049",
+  "name": "nacimiento_del_lenguaje_bajo_presion",
+  "status": "INTEGRADO_v2",
+  "marco": "Tomasello joint attention, Kidd/Hayden incertidumbre optima, Schultz RPE, 0018 dolor, 0044 motor.",
+  "diseno": "2 agentes omega propio, mapa 30x30 denso. Encuentro forzado -> joint attention (puente A<->B sobre pivotes). Metrica=hit celda exacta (NC~1/N). Climas: cielo_estrellado/competencia/peligro. Belleza=senal estetica (estrella) reconocida sin recompensa.",
+  "config": {
+    "GRID": 30,
+    "STEPS": 250,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "climas": [
+    {
+      "clima": "cielo_estrellado",
+      "puente": 1,
+      "comunicacion_top1": 0.2,
+      "NC_top1": 0.0,
+      "targets": 5,
+      "esteticas_estrellas": 3,
+      "star_reconoce": null,
+      "A_food": 4,
+      "B_food": 3,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 26,
+      "B_visited": 5
+    },
+    {
+      "clima": "competencia",
+      "puente": 4,
+      "comunicacion_top1": 0.125,
+      "NC_top1": 0.125,
+      "targets": 8,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 1,
+      "B_food": 0,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 18,
+      "B_visited": 36
+    },
+    {
+      "clima": "peligro_compartido",
+      "puente": 15,
+      "comunicacion_top1": 0.375,
+      "NC_top1": 0.0,
+      "targets": 8,
+      "esteticas_estrellas": 0,
+      "star_reconoce": null,
+      "A_food": 0,
+      "B_food": 2,
+      "A_dolor": 0.0,
+      "B_dolor": 0.0,
+      "A_visited": 19,
+      "B_visited": 29
+    }
+  ],
+  "belleza_inferencia": "Si star_reconoce>0 en cielo_estrellado (A/B senalan estrellas y se reconocen sin utilidad) => belleza = coordinacion estetica emergente bajo presion baja.",
+  "verified": true
+}

@@ -1,0 +1,90 @@
+{
+  "experiment_id": "exp_SGM_0027",
+  "experiment_name": "hrr_binding",
+  "phase": "Composicion Relacional (Gap 2 binding) - HRR vs XOR",
+  "date": "2026-08-02",
+  "hypothesis": "HRR (circular conv/corr, Plate 1995) supera XOR en composicion relacional: degrada menos por anidamiento y soporta mas superposicion en D=128.",
+  "config": {
+    "D": 128,
+    "M": 200,
+    "depths": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "ksuper": [
+      2,
+      4,
+      8,
+      16
+    ],
+    "seed": 42,
+    "refs": [
+      "Plate 1995a HRR",
+      "vsa_survey_2022 Tabla 2",
+      "SGM spec Ec.8 XOR"
+    ]
+  },
+  "result": {
+    "T-REL-01_anidamiento": {
+      "hrr": [
+        -0.0001,
+        0.0399,
+        0.0091,
+        0.1001
+      ],
+      "xor": [
+        0.0406,
+        -0.0344,
+        0.0164,
+        -0.0281
+      ],
+      "profundidades": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "pass": true
+    },
+    "T-REL-02_superposicion": {
+      "hrr": [
+        1.0,
+        1.0,
+        0.875,
+        0.525
+      ],
+      "xor": [
+        0.4667,
+        0.5333,
+        0.4667,
+        0.2625
+      ],
+      "k": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "pass": true
+    },
+    "T-REL-03_negative_control": {
+      "hrr_rand": -0.0247,
+      "xor_rand": 0.0469,
+      "pass": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_hrr_binding.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0027_hrr_binding.json",
+  "test_target": "T-REL-01 (anidamiento) + T-REL-02 (superposicion) + T-REL-03 (NC)",
+  "variant_of": null,
+  "lit_refs": [
+    "plate_tensor_product_2003_cs0308022.pdf",
+    "vsa_survey_2022_2111.06077.pdf",
+    "SGM_v1_4_Especificacion_Corregida.md (Ec.8 XOR)"
+  ],
+  "notes": "PRIMER ataque al Gap 2 (binding) con operador alternativo a XOR. HRR usa circular convolution (bind) / circular correlation (unbind) y requiere clean-up memory (VSA survey p.10). Variable medida: capacidad de superposicion + degradacion por anidamiento. Siguiente paso (0027-b) propuesto: combinar HRR con ruteo PPR (0016/0019).",
+  "notes_criollo": "El XOR (spatter code actual de SGM) acumula ruido lineal por dimension cuando anidas/superpones relaciones; por eso v0.23 se inundaba de ruido con 89 relaciones. HRR (Plate 1995) usa convolution circular y el ruido de unbinding baja como 1/raiz(D). Lo medimos: a igual D=128, HRR tiene que degradar menos al anidar y aguantar mas relaciones superpuestas. Si pasa, el proximo paso es meter HRR en el ruteo PPR para navegar relaciones compuestas."
+}

@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_SGM_0030",
+  "experiment_name": "tick_plan_crossgraph",
+  "phase": "Composicion Relacional (Gap 2) - B: tick resuelve plan cruzando grafos",
+  "date": "2026-08-02",
+  "hypothesis": "El tick con memoria relacional HRR (0028/29) resuelve un plan multi-paso que requiere cruzar dos grafos de conocimiento (relacion 'llave destraba meta de G1' empaquetada en nodo llave). El tick plano no puede (G1/G2 desconectados). NC con roles al azar falla.",
+  "config": {
+    "D": 128,
+    "trials": 20,
+    "seed": 42,
+    "refs": [
+      "exp_SGM_0028 (tick)",
+      "exp_SGM_0029 (scaling)",
+      "hrr_core.py",
+      "tick_relational_core.py"
+    ]
+  },
+  "result": {
+    "exito_plan_HRR_roles": 1.0,
+    "exito_plan_plano": 0.0,
+    "exito_NC_roles_azar": 0.15,
+    "T-CROSS-01": true,
+    "T-CROSS-02": true,
+    "T-CROSS-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_tick_plan_crossgraph.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0030_tick_plan_crossgraph.json",
+  "test_target": "T-CROSS-01/02/NC",
+  "variant_of": null,
+  "lit_refs": [
+    "exp_SGM_0028_tick_relational.json",
+    "exp_SGM_0029_hrr_scaling.json"
+  ],
+  "notes": "Primer uso de HRR+roles como HERRAMIENTA del sistema (no experimento aislado). El tick planea cruzando G1/G2 via relacion empaquetada. Usa hrr_core.py y tick_relational_core.py (consolidados).",
+  "notes_criollo": "Esto es el B que acordamos: el tick ya no solo LINKEA, ahora RESUELVE. Para llegar a la meta de un grafo, tiene que ir al otro grafo, destapar la relacion 'llave abre meta' que esta guardada ADENTRO del nodo llave (grafo de grafos), y usarla. El tick plano no puede porque G1 y G2 estan sueltos. Es la primera vez que el anidamiento (0027c/28) sirve para resolver algo de verdad."
+}

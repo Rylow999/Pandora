@@ -1,0 +1,40 @@
+{
+  "experiment_id": "exp_SGM_0045b",
+  "name": "cognitive_map_frontier_exploration",
+  "status": "OPCION_A_CORREGIDA",
+  "marco": "Cognitive maps are generative programs (2504.20628). Frente de exploracion via heterogeneidad del grafo omega.",
+  "diseno": "map_term=(huella_prom_vecinos - huella_celda)*0.5. Atrae al frente (conocido/nuevo). Reusa abur(0043). Sin agregados.",
+  "config": {
+    "GRID": 12,
+    "STEPS": 300,
+    "SEED": 20260803
+  },
+  "tests": {
+    "T-FR-01_frente_cubre": {
+      "celdas_frente": 3,
+      "pass": false,
+      "meta": "Frente de exploracion cubre >100 celdas"
+    },
+    "T-FR-02_frente_menos_sesgo_periferia": {
+      "dispersion_frente": 75.7,
+      "dispersion_NC": 24.900000000000002,
+      "Q11_frente": 75.7,
+      "Q11_NC": 36.2,
+      "cobertura_frente": {
+        "Q(0,0)": 0.0,
+        "Q(0,1)": 0.0,
+        "Q(1,0)": 24.3,
+        "Q(1,1)": 75.7
+      },
+      "pass": false,
+      "meta": "Frente atrae a frontera conocido/nuevo, no al borde absoluto (Q1,1<50%)"
+    },
+    "T-FR-03_NC_sin_frente": {
+      "celdas_NC": 107,
+      "pass": true,
+      "meta": "NC: sin frente vuelve a B puro/0045, confirma que el frente es del sustrato"
+    },
+    "overall_pass": false
+  },
+  "verified": false
+}

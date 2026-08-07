@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_SGM_0051",
+  "name": "medir_telar_vitalidad_ser",
+  "status": "TELAR",
+  "marco": "Telar de Luciano: ser=historia(hilo)+proceso(recorrer). Clavos=sustrato que el ser se clava: sostén+restricción. Elegir descarta otro. Correcto necesita incorrecto.",
+  "diseno": "Agente con clavar_rate (0=proceso puro/'otro', 1=rigido). V_ser = clavos_estables * tasa_exploracion. PREDICCION: optimo en el medio (ni 'otro' ni rigido). Error ensena (acierto mejora con experiencia). Exclusion debilita vecinos.",
+  "config": {
+    "GRID": 24,
+    "STEPS": 600,
+    "D": 256,
+    "SEED": 20260803
+  },
+  "curva": [
+    {
+      "clavar_rate": 0.0,
+      "vitalidad": 0.0,
+      "clavos_estables": 0.0,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.0,
+      "errores": 0.0,
+      "aciertos": 0.0,
+      "pain": 7.167,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.1,
+      "vitalidad": 28.304,
+      "clavos_estables": 39.667,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.853,
+      "errores": 8.333,
+      "aciertos": 46.667,
+      "pain": 15.5,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.2,
+      "vitalidad": 58.67,
+      "clavos_estables": 81.333,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.853,
+      "errores": 18.333,
+      "aciertos": 97.333,
+      "pain": 25.5,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.3,
+      "vitalidad": 88.403,
+      "clavos_estables": 124.0,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.85,
+      "errores": 27.333,
+      "aciertos": 149.667,
+      "pain": 34.5,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.4,
+      "vitalidad": 109.968,
+      "clavos_estables": 154.0,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.823,
+      "errores": 41.667,
+      "aciertos": 193.667,
+      "pain": 48.833,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.5,
+      "vitalidad": 143.121,
+      "clavos_estables": 198.667,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.831,
+      "errores": 50.667,
+      "aciertos": 247.667,
+      "pain": 57.833,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.6,
+      "vitalidad": 170.887,
+      "clavos_estables": 237.0,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.828,
+      "errores": 62.0,
+      "aciertos": 297.0,
+      "pain": 69.167,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.7,
+      "vitalidad": 197.632,
+      "clavos_estables": 279.0,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.829,
+      "errores": 72.0,
+      "aciertos": 349.0,
+      "pain": 79.167,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.8,
+      "vitalidad": 220.158,
+      "clavos_estables": 306.667,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.817,
+      "errores": 88.0,
+      "aciertos": 392.667,
+      "pain": 95.167,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 0.9,
+      "vitalidad": 256.88,
+      "clavos_estables": 361.333,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.833,
+      "errores": 90.667,
+      "aciertos": 451.667,
+      "pain": 97.833,
+      "visited": 420.667
+    },
+    {
+      "clavar_rate": 1.0,
+      "vitalidad": 277.373,
+      "clavos_estables": 391.667,
+      "tasa_exploracion": 0.7,
+      "tasa_acierto": 0.825,
+      "errores": 105.0,
+      "aciertos": 495.0,
+      "pain": 112.167,
+      "visited": 420.667
+    }
+  ],
+  "optimo": {
+    "clavar_rate": 1.0,
+    "vitalidad": 277.373
+  },
+  "conclusion": "Si hay optimo en el medio => el ser 'esta vivo' solo con TASA DE CLABADO MEDIA: suficiente clavo para ser alguien, suficiente hilo para seguir siendo. Confirma el telar empiricamente.",
+  "verified": true
+}

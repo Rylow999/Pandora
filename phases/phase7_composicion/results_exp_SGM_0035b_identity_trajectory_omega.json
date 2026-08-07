@@ -1,0 +1,68 @@
+{
+  "experiment_id": "exp_SGM_0035b",
+  "experiment_name": "identity_trajectory_omega_T-ID-03b",
+  "phase": "Camino A - identidad como proceso (traza omega), no snapshot",
+  "date": "2026-08-05",
+  "hypothesis": "La traza de omega (secuencia de delta_omega del nodo activo) es observable de recorrido porque omega NO converge a punto fijo (se reescribe por Eq.1 en cada transicion). T(A)!=T(B) aunque pisadas iguales. Si falla, arquitectura markoviana -> Parfit.",
+  "config": {
+    "W": 20,
+    "N": 8,
+    "D": 64,
+    "trials": 12,
+    "seed": 20260805,
+    "beta": 0.1,
+    "observable_recorrido": "traza T=ultimos W delta_omega del nodo activo",
+    "nota": "0035 fallo en phi (converge); 0035b usa omega que NO converge a punto fijo"
+  },
+  "result": {
+    "config": {
+      "W": 20,
+      "N": 8,
+      "D": 64,
+      "trials": 12,
+      "seed": 20260805,
+      "beta": 0.1,
+      "observable_recorrido": "traza T=ultimos W delta_omega del nodo activo",
+      "nota": "0035 fallo en phi (converge); 0035b usa omega que NO converge a punto fijo"
+    },
+    "pisadas": {
+      "A": 3.5,
+      "B": 3.3333,
+      "C": 2.8333,
+      "D": 3.25
+    },
+    "traza_dist_A_vs_B": {
+      "media": 1.0589,
+      "NC_A_vs_RW_media": 4.0876
+    },
+    "condiciones": {},
+    "T-ID-03b": {
+      "predice_traza_A_distinto_B_fixed": false,
+      "predice_traza_A_distinto_B_traza_sola": true,
+      "predice_traza_A_distinto_B_original_buggeado": false,
+      "pisadas_A": 3.5,
+      "pisadas_B": 3.3333,
+      "pisadas_A_igual_B_estricto": false,
+      "traza_dist_media": 1.0589,
+      "NC_dist_media": 4.0876,
+      "nota_NC": "NC A-vs-RW es ruido puro (4.08); no debe superarse, solo confirma que la firma capta senal real vs ruido.",
+      "desenlace_fixed": "2_NO_difiere_Parfit",
+      "desenlace_traza_sola": "1_SI_difiere",
+      "desenlace_original_buggeado": "2_NO_difiere_Parfit"
+    },
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_identity_tid03b.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0035b_identity_trajectory_omega.json",
+  "test_target": "T-ID-03b: traza(A)!=traza(B) con pisadas(A)=pisadas(B)",
+  "variant_of": "exp_SGM_0035",
+  "lit_refs": [
+    "exp_SGM_0035",
+    "exp_SGM_0034",
+    "NOUS_Filosofico §1/§10",
+    "Parfit 1984"
+  ],
+  "notes": "0035 fallo en phi porque phi converge al atractor (delta_phi->0). 0035b usa traza de omega: el agente transita por el grafo y omega se reescribe por Eq.1, asi la SECUENCIA de omega visitados es el recorrido. Reset copiado deja omega final pero borra la traza.",
+  "notes_criollo": "Si la traza de omega SÍ separa A de B, la tesis NOUS §1 es operacionalmente verdadera (el ser es el recorrido, no el snapshot). Si no, Parfit: indistinguible.",
+  "capitulo10_NOUS_Filosofico": "SE ESCRIBE CON ESTE DATO (sea cual sea)."
+}

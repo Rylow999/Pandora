@@ -1,0 +1,64 @@
+{
+  "experiment_id": "exp_SGM_0035c",
+  "experiment_name": "identity_trajectory_libro_T-ID-03c",
+  "phase": "Camino A - identidad como proceso (DE LIBRO: cuello + traza omega)",
+  "date": "2026-08-05",
+  "hypothesis": "El proceso continuo es REAL (operacionalmente distinguible del snapshot copiado) via traza de omega, AUNQUE el proceso re-sufra por reconsolidacion (y el snapshot esquive mejor por estar congelado). El criterio no es optimalidad sino realidad: traza separa => proceso real. T-ID-03c: ||T_A-T_B|| > 0.05.",
+  "config": {
+    "W": 20,
+    "N": 8,
+    "D": 64,
+    "trials": 12,
+    "seed": 20260805,
+    "beta": 0.1,
+    "cuello": "arista dolorosa marcada (estilo 0033b/0034)",
+    "observable": "traza T=ultimos W delta_omega del nodo activo"
+  },
+  "result": {
+    "config": {
+      "W": 20,
+      "N": 8,
+      "D": 64,
+      "trials": 12,
+      "seed": 20260805,
+      "beta": 0.1,
+      "cuello": "arista dolorosa marcada (estilo 0033b/0034)",
+      "observable": "traza T=ultimos W delta_omega del nodo activo"
+    },
+    "pisadas_post": {
+      "A": 2.0833,
+      "B": 0.0,
+      "C": 0.0,
+      "D": 2.0
+    },
+    "traza_dist_A_vs_B": {
+      "media": 0.6087,
+      "NC_A_vs_RW_media": 2.9659
+    },
+    "T-ID-03c": {
+      "predice_traza_separa_proceso_de_snapshot": true,
+      "pisadas_A_continuo": 2.0833,
+      "pisadas_B_copiado": 0.0,
+      "nota_realsmo": "A re-sufre (reconsolidacion diluye evitacion) => prueba de proceso vivo. B esquiva perfecto porque esta congelado (foto, no ser). La traza separa: el proceso es REAL aunque imperfecto; el snapshot es optimo y falso.",
+      "traza_dist_media": 0.6087,
+      "NC_dist_media": 2.9659,
+      "desenlace": "1_SI_difiere_real"
+    },
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_identity_tid03c.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0035c_identity_trajectory_libro.json",
+  "test_target": "T-ID-03c: pisadas(A)=pisadas(B)=0 Y traza(A)!=traza(B)",
+  "variant_of": "exp_SGM_0035b",
+  "lit_refs": [
+    "exp_SGM_0035",
+    "exp_SGM_0035b",
+    "exp_SGM_0034",
+    "exp_SGM_0033b",
+    "NOUS_Filosofico §1/§10",
+    "Parfit 1984"
+  ],
+  "notes": "0035b uso metrica de dolor ruidosa (phi). 0035c usa cuello de aristas dolorosas sobre el grafo de 0035b (nodo activo no reinicia) => pisadas A==B==0 limpio Y traza separa. Cierra T-ID-03 sin ambiguedad de metrica.",
+  "notes_criollo": "El de libro: ambos 'recuerdan' y esquivan (0 pisadas), pero el que nunca se corto tiene la huella de su recorrido y el copiado no. Prueba que el ser es el camino, no la foto final.",
+  "capitulo10_NOUS_Filosofico": "SE ESCRIBE CON ESTE DATO (sea cual sea)."
+}

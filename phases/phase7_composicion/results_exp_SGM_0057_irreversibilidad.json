@@ -1,0 +1,144 @@
+irrev=False seed=20260803 inicial=2 fijos_mec=0 perdidos=2 sobrevivieron=0
+irrev=False seed=20261803 inicial=3 fijos_mec=0 perdidos=3 sobrevivieron=0
+irrev=False seed=20262803 inicial=3 fijos_mec=0 perdidos=3 sobrevivieron=0
+irrev=True seed=20260803 inicial=2 fijos_mec=2 perdidos=0 sobrevivieron=2
+irrev=True seed=20261803 inicial=3 fijos_mec=3 perdidos=0 sobrevivieron=3
+irrev=True seed=20262803 inicial=3 fijos_mec=3 perdidos=0 sobrevivieron=3
+{
+  "experiment_id": "exp_SGM_0057",
+  "name": "irreversibilidad_clavo",
+  "status": "TELAR_CIERRE",
+  "marco": "Replanteo con TRAITS de identidad. La identidad es MUTABLE (deriva sin fijacion); el SER se sostiene sobre traits fijos. Sin irreversibilidad el entorno opuesto mueve el trait; con flag fijo (mecanico, no if/elif) el trait se mantiene.",
+  "diseno": "Fase1 (500 ticks): traits se fijan por experiencias tempranas. Fase2 (1500 ticks): entorno empuja el OPUESTO de cada trait fijado. Mide traits_perdidos.",
+  "config": {
+    "N_TRAITS": 4,
+    "TH_FIJA": 0.5,
+    "DECAY": 0.985,
+    "SEED": 20260803
+  },
+  "resultados": [
+    {
+      "seed": 20260803,
+      "irreversible": false,
+      "traits_inicial": 2,
+      "traits_fijos_mec": 0,
+      "perdidos": 2,
+      "sobrevivieron": 0,
+      "peso_final": {
+        "timido/osado": -0.0,
+        "solitario/gregario": -0.148,
+        "cauteloso/arriesgado": 0.0,
+        "lento/rapido": 0.15
+      },
+      "fijo_final": {
+        "timido/osado": false,
+        "solitario/gregario": false,
+        "cauteloso/arriesgado": false,
+        "lento/rapido": false
+      }
+    },
+    {
+      "seed": 20261803,
+      "irreversible": false,
+      "traits_inicial": 3,
+      "traits_fijos_mec": 0,
+      "perdidos": 3,
+      "sobrevivieron": 0,
+      "peso_final": {
+        "timido/osado": -0.147,
+        "solitario/gregario": 0.149,
+        "cauteloso/arriesgado": 0.0,
+        "lento/rapido": 0.151
+      },
+      "fijo_final": {
+        "timido/osado": false,
+        "solitario/gregario": false,
+        "cauteloso/arriesgado": false,
+        "lento/rapido": false
+      }
+    },
+    {
+      "seed": 20262803,
+      "irreversible": false,
+      "traits_inicial": 3,
+      "traits_fijos_mec": 0,
+      "perdidos": 3,
+      "sobrevivieron": 0,
+      "peso_final": {
+        "timido/osado": 0.147,
+        "solitario/gregario": 0.149,
+        "cauteloso/arriesgado": -0.151,
+        "lento/rapido": -0.0
+      },
+      "fijo_final": {
+        "timido/osado": false,
+        "solitario/gregario": false,
+        "cauteloso/arriesgado": false,
+        "lento/rapido": false
+      }
+    },
+    {
+      "seed": 20260803,
+      "irreversible": true,
+      "traits_inicial": 2,
+      "traits_fijos_mec": 2,
+      "perdidos": 0,
+      "sobrevivieron": 2,
+      "peso_final": {
+        "timido/osado": -0.097,
+        "solitario/gregario": 1.062,
+        "cauteloso/arriesgado": 0.479,
+        "lento/rapido": 0.711
+      },
+      "fijo_final": {
+        "timido/osado": false,
+        "solitario/gregario": true,
+        "cauteloso/arriesgado": false,
+        "lento/rapido": true
+      }
+    },
+    {
+      "seed": 20261803,
+      "irreversible": true,
+      "traits_inicial": 3,
+      "traits_fijos_mec": 3,
+      "perdidos": 0,
+      "sobrevivieron": 3,
+      "peso_final": {
+        "timido/osado": 3.472,
+        "solitario/gregario": 1.632,
+        "cauteloso/arriesgado": 0.47,
+        "lento/rapido": 0.956
+      },
+      "fijo_final": {
+        "timido/osado": true,
+        "solitario/gregario": true,
+        "cauteloso/arriesgado": false,
+        "lento/rapido": true
+      }
+    },
+    {
+      "seed": 20262803,
+      "irreversible": true,
+      "traits_inicial": 3,
+      "traits_fijos_mec": 3,
+      "perdidos": 0,
+      "sobrevivieron": 3,
+      "peso_final": {
+        "timido/osado": 0.894,
+        "solitario/gregario": 0.676,
+        "cauteloso/arriesgado": 0.626,
+        "lento/rapido": -0.166
+      },
+      "fijo_final": {
+        "timido/osado": true,
+        "solitario/gregario": true,
+        "cauteloso/arriesgado": true,
+        "lento/rapido": false
+      }
+    }
+  ],
+  "verdict": "Si CON irreversibilidad perdidos=0 (traits sobreviven al empuje) y SIN irreversibilidad perdidos>0 (derivan) => la irreversibilidad FIJA la identidad (cierra el telar). Si ambos pierden => el flag no alcanza.",
+  "verified": true
+}
+EXIT=0

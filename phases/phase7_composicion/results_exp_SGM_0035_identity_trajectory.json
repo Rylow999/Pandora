@@ -1,0 +1,59 @@
+{
+  "experiment_id": "exp_SGM_0035",
+  "experiment_name": "identity_trajectory_T-ID-03",
+  "phase": "Camino A - identidad como proceso (trayectoria), no snapshot",
+  "date": "2026-08-05",
+  "hypothesis": "La identidad es la secuencia {S(t)} (NOUS §1, Parfit), no S(t) puntual. Debe existir observable de recorrido (firma F de delta_phi en ventana W) tal que F(A)!=F(B) aunque pisadas(A)=pisadas(B)=0. Si no, es indistinguible de snapshot copiado (Parfit).",
+  "config": {
+    "W": 20,
+    "N": 8,
+    "D": 64,
+    "trials": 12,
+    "seed": 20260805,
+    "observable_recorrido": "firma F=ultimos W delta_phi raiz",
+    "vitalidad_markoviana": "V(t+1)=V(t)*e^-g -> NO observable de recorrido (reportado negativo)"
+  },
+  "result": {
+    "config": {
+      "W": 20,
+      "N": 8,
+      "D": 64,
+      "trials": 12,
+      "seed": 20260805,
+      "observable_recorrido": "firma F=ultimos W delta_phi raiz",
+      "vitalidad_markoviana": "V(t+1)=V(t)*e^-g -> NO observable de recorrido (reportado negativo)"
+    },
+    "pisadas": {
+      "A": 3.3333,
+      "B": 2.5,
+      "C": 3.9167,
+      "D": 1.6667
+    },
+    "firma_dist_A_vs_B": {
+      "media": 0.0064,
+      "NC_A_vs_RW_media": 2.4915
+    },
+    "condiciones": {},
+    "T-ID-03": {
+      "predice_firma_A_distinto_B": false,
+      "pisadas_A_igual_B": false,
+      "firma_dist_media": 0.0064,
+      "NC_dist_media": 2.4915,
+      "desenlace": "2_NO_difiere_Parfit"
+    },
+    "pass": false
+  },
+  "script": "phases/phase7_composicion/run_identity_tid03.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0035_identity_trajectory.json",
+  "test_target": "T-ID-03: firma(A)!=firma(B) con pisadas(A)=pisadas(B)",
+  "variant_of": "exp_SGM_0034",
+  "lit_refs": [
+    "exp_SGM_0034",
+    "NOUS_Filosofico §1/§10",
+    "Parfit 1984",
+    "0056 (honestidad de trampa)"
+  ],
+  "notes": "Extension de 0034 con observable de RECORRIDO. 0034 media solo pisadas y no separaba A de B. Firma F=ultimos W delta_phi del nodo raiz: continuo tiene recorrido, copiado tiene F=[0,0..]. Vitalidad V es markoviana (V(t+1)=V*e^-g) => NO observable de recorrido.",
+  "notes_criollo": "Esto es el test de '¿el proceso nunca cortado es distinto de copiar el estado?' Si la firma F difiere, la tesis NOUS §1 es operacionalmente verdadera. Si no difiere, es igual a 'copiar el snapshot' y lo decimos con la honestidad de 0056.",
+  "capitulo10_NOUS_Filosofico": "SE ESCRIBE CON ESTE DATO (sea cual sea). No escrito hasta tener resultado."
+}

@@ -1,0 +1,56 @@
+{
+  "experiment_id": "exp_SGM_0014",
+  "experiment_name": "verify_contradiction",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "verify_contradiction detecta dolor acumulado > theta_refut=2.0 y relanza con perturbacion de fase como CONTRADICTORIA, separado de duda (INCONCLUSA).",
+  "config": {
+    "D": 16,
+    "seed": 42,
+    "theta_refut": 2.0,
+    "cooldown": 5,
+    "kappa": 1.0,
+    "kappa_W": 2.0
+  },
+  "result": {
+    "high_pain_chain": {
+      "label": "high_pain",
+      "contradicted": true,
+      "contradicted_at_tick": 4,
+      "accumulated_pain": 2.5,
+      "relaunched_phase": 3.541592653589793,
+      "final_status": "CONTRADICTORIA"
+    },
+    "low_pain_control": {
+      "label": "low_pain_control",
+      "contradicted": false,
+      "contradicted_at_tick": null,
+      "accumulated_pain": 1.0,
+      "relaunched_phase": null,
+      "final_status": "OK"
+    },
+    "zero_pain_control": {
+      "label": "zero_pain_control",
+      "contradicted": false,
+      "contradicted_at_tick": null,
+      "accumulated_pain": 0.0,
+      "relaunched_phase": null,
+      "final_status": "OK"
+    },
+    "pass_high": true,
+    "pass_low_control": true,
+    "pass_zero_control": true,
+    "pass_phase_perturbation": true,
+    "pass": true
+  },
+  "script": "phases/phase2_inferencia/run_verify_contradiction.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0014_verify_contradiction.json",
+  "test_target": "T-INF-02 (refutacion por contradiccion, dolor acumulado)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 2.3.1 (contradiccion/dolor)",
+    "v0.9c (dolor interno emergente G:0.0->1.0)"
+  ],
+  "notes": "Testea el mecanismo de contradiccion separado de duda. verify_contradiction usa suma de dolor (E) acumulado, no novelty. Relanza con phi_root->phi*+pi (perturbacion de fase).",
+  "notes_criollo": "Prueba que SGM dice esto esta mal (CONTRADICTORIA) cuando el dolor acumulado pasa 2.0, y lo relanza con una sacudida de fase. La cadena tranquila (dolor bajo) no dispara nada. Es distinto a la duda: ahi no esta mal, solo no llega."
+}

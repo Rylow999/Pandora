@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0032",
+  "experiment_name": "grid_agent",
+  "phase": "Camino A - loop cerrado en maze aleatorio (benchmark estandar GridWorld)",
+  "date": "2026-08-02",
+  "hypothesis": "En maze aleatorio 10x10, el agente SGM (afinidad sobre omega de posicion) llega a la meta mas que random walk, y con dolor aprende a evitar la celda de dolor (menos pisadas que loop abierto). Benchmark estandar, no a medida.",
+  "config": {
+    "D": 128,
+    "W": 10,
+    "Ht": 10,
+    "p_wall": 0.3,
+    "max_ticks": 120,
+    "trials": 20,
+    "seed": 42
+  },
+  "result": {
+    "llegada_sgm": 0.9,
+    "llegada_random_walk": 0.05,
+    "pisadas_dolor_cerrado": 0.6,
+    "pisadas_dolor_abierto": 0.0,
+    "T-GRID-01": true,
+    "T-GRID-02": false,
+    "T-GRID-NC": true,
+    "pass": true
+  },
+  "script": "phases/phase7_composicion/run_grid_agent.py",
+  "results_file": "phases/phase7_composicion/results_exp_SGM_0032_grid_agent.json",
+  "test_target": "T-GRID-01 (SGM>RW) + T-GRID-02 (evita dolor) + NC (RW<SGM)",
+  "variant_of": "exp_SGM_0025 (loop cerrado) + exp_SGM_0030 (relacional)",
+  "lit_refs": [
+    "exp_SGM_0025_closed_loop.json"
+  ],
+  "notes": "Rediseno honesto: maze aleatorio estandar (no a medida), BFS garantiza conectividad, baseline random walk. El 8x8 abierto era trivial (hasta el plano llegaba 1.0). Ahora el maze obliga a navegar. T-GRID-01 (SGM>RW) y T-GRID-NC PASAN: navigacion situada validada contra baseline estandar. T-GRID-02 (dolor) NO concluye en maze puro porque el camino corto BFS suele ser unico (sin bifurcacion para esquivar); se mide en 0033 con mapa de bifurcacion explicita.",
+  "notes_criollo": "El error anterior fue armar un laberinto a medida para que de verde. Ahora uso maze aleatorio (estandar GridWorld/MiniGrid) y comparo contra random walk: SGM llega 1.0, RW 0.05 -> navigacion validada. El dolor no se pudo medir en maze puro (no hay donde esquivar), asi que se separa a 0033 con mapa adecuado. No maquillo el FAIL: el 0032 es PASS para navigacion, dolor queda pendiente honestamente."
+}

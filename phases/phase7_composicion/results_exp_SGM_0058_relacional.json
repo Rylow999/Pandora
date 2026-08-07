@@ -1,0 +1,367 @@
+anidado=False seed=20260803 acierto=1.000
+anidado=False seed=20261803 acierto=1.000
+anidado=False seed=20262803 acierto=1.000
+anidado=True seed=20260803 acierto=0.750
+anidado=True seed=20261803 acierto=0.750
+anidado=True seed=20262803 acierto=1.000
+{
+  "experiment_id": "exp_SGM_0058",
+  "name": "composicion_relacional_tpr",
+  "status": "RELACIONAL",
+  "marco": "Cierra gap relacional: hechos (SUJ,ROL,OBJ) anidados via TPR (bind HRR rol*filler + suma). Usa afinidad (0055c) + inferencia de regla (0056). Decode por dot de bind(rol,filler) vs vector. Mide acierto en hechos NO vistos (generalizacion relacional).",
+  "diseno": "3 seeds, plano y anidado. Train 12 hechos, test 8 no vistos. Decode reconstruye rol+filler.",
+  "config": {
+    "D": 512,
+    "V": 16,
+    "N_ROLE": 5,
+    "N_FILL": 8,
+    "SEED": 20260803
+  },
+  "resultados": [
+    {
+      "seed": 20260803,
+      "anidado": false,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 1.0,
+      "detalle": [
+        {
+          "hecho": "('piedra', 'come', 'pez')",
+          "pred_rol": "come",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('pez', 'persigue', 'manzana')",
+          "pred_rol": "persigue",
+          "pred_fill": "pez",
+          "ok": true
+        },
+        {
+          "hecho": "('agua', 'persigue', 'pez')",
+          "pred_rol": "persigue",
+          "pred_fill": "agua",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'corre', 'manzana')",
+          "pred_rol": "corre",
+          "pred_fill": "lobo",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'corre', 'pasto')",
+          "pred_rol": "corre",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'esta_en', 'manzana')",
+          "pred_rol": "esta_en",
+          "pred_fill": "lobo",
+          "ok": true
+        },
+        {
+          "hecho": "('pajaro', 'persigue', 'pajaro')",
+          "pred_rol": "persigue",
+          "pred_fill": "pajaro",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'persigue', 'pasto')",
+          "pred_rol": "persigue",
+          "pred_fill": "piedra",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "seed": 20261803,
+      "anidado": false,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 1.0,
+      "detalle": [
+        {
+          "hecho": "('pajaro', 'come', 'lobo')",
+          "pred_rol": "come",
+          "pred_fill": "pajaro",
+          "ok": true
+        },
+        {
+          "hecho": "('pez', 'come', 'pajaro')",
+          "pred_rol": "come",
+          "pred_fill": "pez",
+          "ok": true
+        },
+        {
+          "hecho": "('pasto', 'esta_en', 'piedra')",
+          "pred_rol": "esta_en",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'come', 'arbol')",
+          "pred_rol": "come",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'corre', 'lobo')",
+          "pred_rol": "corre",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('manzana', 'come', 'piedra')",
+          "pred_rol": "come",
+          "pred_fill": "manzana",
+          "ok": true
+        },
+        {
+          "hecho": "('pez', 'tiene', 'lobo')",
+          "pred_rol": "tiene",
+          "pred_fill": "pez",
+          "ok": true
+        },
+        {
+          "hecho": "('agua', 'come', 'lobo')",
+          "pred_rol": "come",
+          "pred_fill": "agua",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "seed": 20262803,
+      "anidado": false,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 1.0,
+      "detalle": [
+        {
+          "hecho": "('pez', 'esta_en', 'arbol')",
+          "pred_rol": "esta_en",
+          "pred_fill": "pez",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'persigue', 'manzana')",
+          "pred_rol": "persigue",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('pasto', 'tiene', 'arbol')",
+          "pred_rol": "tiene",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'come', 'pasto')",
+          "pred_rol": "come",
+          "pred_fill": "lobo",
+          "ok": true
+        },
+        {
+          "hecho": "('agua', 'corre', 'pajaro')",
+          "pred_rol": "corre",
+          "pred_fill": "agua",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'come', 'manzana')",
+          "pred_rol": "come",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'esta_en', 'arbol')",
+          "pred_rol": "esta_en",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'corre', 'lobo')",
+          "pred_rol": "corre",
+          "pred_fill": "arbol",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "seed": 20260803,
+      "anidado": true,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 0.75,
+      "detalle": [
+        {
+          "hecho": "('arbol', 'corre', 'arbol')",
+          "pred_rol": "corre",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('manzana', 'persigue', ('agua', 'esta_en', 'piedra'))",
+          "pred_rol": "esta_en",
+          "pred_fill": "agua",
+          "ok": false
+        },
+        {
+          "hecho": "('pasto', 'corre', 'arbol')",
+          "pred_rol": "corre",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'esta_en', 'piedra')",
+          "pred_rol": "esta_en",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'tiene', ('manzana', 'come', 'pajaro'))",
+          "pred_rol": "come",
+          "pred_fill": "manzana",
+          "ok": false
+        },
+        {
+          "hecho": "('manzana', 'tiene', ('pasto', 'persigue', 'pez'))",
+          "pred_rol": "tiene",
+          "pred_fill": "manzana",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'corre', 'manzana')",
+          "pred_rol": "corre",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'come', 'piedra')",
+          "pred_rol": "come",
+          "pred_fill": "arbol",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "seed": 20261803,
+      "anidado": true,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 0.75,
+      "detalle": [
+        {
+          "hecho": "('manzana', 'come', 'piedra')",
+          "pred_rol": "come",
+          "pred_fill": "manzana",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'come', 'lobo')",
+          "pred_rol": "come",
+          "pred_fill": "lobo",
+          "ok": true
+        },
+        {
+          "hecho": "('pajaro', 'esta_en', 'lobo')",
+          "pred_rol": "esta_en",
+          "pred_fill": "pajaro",
+          "ok": true
+        },
+        {
+          "hecho": "('lobo', 'esta_en', 'arbol')",
+          "pred_rol": "esta_en",
+          "pred_fill": "lobo",
+          "ok": true
+        },
+        {
+          "hecho": "('pasto', 'tiene', 'pasto')",
+          "pred_rol": "tiene",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('agua', 'tiene', ('pajaro', 'come', 'pajaro'))",
+          "pred_rol": "come",
+          "pred_fill": "pajaro",
+          "ok": false
+        },
+        {
+          "hecho": "('pasto', 'persigue', 'arbol')",
+          "pred_rol": "persigue",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'persigue', ('pasto', 'come', 'lobo'))",
+          "pred_rol": "come",
+          "pred_fill": "pasto",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "seed": 20262803,
+      "anidado": true,
+      "n_train": 12,
+      "n_test": 8,
+      "acierto": 1.0,
+      "detalle": [
+        {
+          "hecho": "('arbol', 'corre', 'lobo')",
+          "pred_rol": "corre",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('piedra', 'persigue', ('lobo', 'tiene', 'piedra'))",
+          "pred_rol": "persigue",
+          "pred_fill": "piedra",
+          "ok": true
+        },
+        {
+          "hecho": "('pasto', 'corre', 'arbol')",
+          "pred_rol": "corre",
+          "pred_fill": "pasto",
+          "ok": true
+        },
+        {
+          "hecho": "('manzana', 'persigue', 'pajaro')",
+          "pred_rol": "persigue",
+          "pred_fill": "manzana",
+          "ok": true
+        },
+        {
+          "hecho": "('arbol', 'tiene', 'agua')",
+          "pred_rol": "tiene",
+          "pred_fill": "arbol",
+          "ok": true
+        },
+        {
+          "hecho": "('pez', 'tiene', 'piedra')",
+          "pred_rol": "tiene",
+          "pred_fill": "pez",
+          "ok": true
+        },
+        {
+          "hecho": "('manzana', 'tiene', 'manzana')",
+          "pred_rol": "tiene",
+          "pred_fill": "manzana",
+          "ok": true
+        },
+        {
+          "hecho": "('pajaro', 'corre', 'manzana')",
+          "pred_rol": "corre",
+          "pred_fill": "pajaro",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "verdict": "Si acierto alto (>0.7) en plano y anidado => composicion relacional RESUELTA (TPR sobre HRR + regla inferida). Si anidado cae => falta decode de grafo-de-grafos.",
+  "verified": true
+}
+EXIT=0

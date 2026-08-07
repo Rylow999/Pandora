@@ -1,0 +1,143 @@
+{
+  "experiment_id": "exp_SGM_0051b",
+  "name": "medir_telar_restriccion_emergente",
+  "status": "TELAR_CORREGIDO",
+  "marco": "Correccion de 0051: restriccion EMERGE de Eq.2 (afinidad por omega). Sin hardcodear exploracion. Anti-circulo por frontier+retorno.",
+  "diseno": "Agente con afinidad (Eq.2): clavar sube omega -> afinidad lo ancla -> explora menos (EMERGE). V_ser=clavos*exploracion_real. PREDICCION: optimo en el medio (ni 'otro' ni rigido). Sin hardcode, sin circulos.",
+  "config": {
+    "GRID": 24,
+    "STEPS": 600,
+    "D": 256,
+    "ALPHA": 5.0,
+    "SEED": 20260803
+  },
+  "curva": [
+    {
+      "clavar_rate": 0.0,
+      "vitalidad": 0.0,
+      "clavos_estables": 0.0,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.0,
+      "errores": 0.0,
+      "aciertos": 0.0,
+      "pain": 4.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.1,
+      "vitalidad": 16.014,
+      "clavos_estables": 43.0,
+      "tasa_exploracion": 0.367,
+      "tasa_acierto": 0.88,
+      "errores": 6.667,
+      "aciertos": 48.333,
+      "pain": 11.0,
+      "visited": 220.0
+    },
+    {
+      "clavar_rate": 0.2,
+      "vitalidad": 30.196,
+      "clavos_estables": 86.0,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.872,
+      "errores": 16.0,
+      "aciertos": 99.667,
+      "pain": 20.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.3,
+      "vitalidad": 44.564,
+      "clavos_estables": 126.667,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.858,
+      "errores": 26.0,
+      "aciertos": 151.0,
+      "pain": 30.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.4,
+      "vitalidad": 56.381,
+      "clavos_estables": 159.333,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.835,
+      "errores": 39.0,
+      "aciertos": 196.333,
+      "pain": 43.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.5,
+      "vitalidad": 71.118,
+      "clavos_estables": 202.0,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.836,
+      "errores": 49.0,
+      "aciertos": 249.333,
+      "pain": 53.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.6,
+      "vitalidad": 85.127,
+      "clavos_estables": 239.667,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.832,
+      "errores": 60.667,
+      "aciertos": 298.333,
+      "pain": 64.833,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.7,
+      "vitalidad": 100.182,
+      "clavos_estables": 286.333,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.839,
+      "errores": 68.0,
+      "aciertos": 353.0,
+      "pain": 72.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.8,
+      "vitalidad": 109.453,
+      "clavos_estables": 310.0,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.821,
+      "errores": 86.333,
+      "aciertos": 394.333,
+      "pain": 90.5,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 0.9,
+      "vitalidad": 127.726,
+      "clavos_estables": 366.667,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.838,
+      "errores": 88.0,
+      "aciertos": 454.333,
+      "pain": 92.167,
+      "visited": 207.0
+    },
+    {
+      "clavar_rate": 1.0,
+      "vitalidad": 141.762,
+      "clavos_estables": 409.0,
+      "tasa_exploracion": 0.345,
+      "tasa_acierto": 0.841,
+      "errores": 95.667,
+      "aciertos": 504.333,
+      "pain": 99.833,
+      "visited": 207.0
+    }
+  ],
+  "optimo": {
+    "clavar_rate": 1.0,
+    "vitalidad": 141.762
+  },
+  "conclusion": "Si hay optimo en el medio => el ser 'esta vivo' solo con TASA DE CLABADO MEDIA (sostén+restriccion equilibrados). Confirma el telar sin hardcodear.",
+  "verified": false
+}

@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_SGM_0012",
+  "experiment_name": "abduce_xor_phase_sigmoid",
+  "phase": "Fase 2 \u2014 Inferencia simb\u00f3lica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "La fase como multiplicador sigmoid optimizado (nunca anula, nunca invierte) mejora el binding XOR y supera D=32 est\u00e1tico.",
+  "result": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "phase_params": {
+      "alpha_phase": 0.5,
+      "omega_0": 1.0,
+      "k_coupling": 1.0,
+      "num_ticks": 2000
+    },
+    "sigmoid_params": {
+      "k": 4.0,
+      "threshold": 0.5,
+      "phase_binding": "sigmoid(|cos(\u0394\u03c6)|) \u2014 nunca anula, nunca invierte"
+    },
+    "correct_pairs": 0,
+    "correct_top1": 1,
+    "pair_accuracy": 0.0,
+    "top1_accuracy": 0.1,
+    "avg_pair_score": 0.17804885179622193,
+    "avg_binding_score": 0.17804885179622193,
+    "avg_phase_factor": 0.8772272649007737,
+    "avg_top1_score": 0.38710508663593574,
+    "correct_noisy": 1,
+    "noisy_accuracy": 0.1,
+    "avg_noisy_score": 0.29599443503340994,
+    "noise_degradation": -0.11794558323718801,
+    "avg_sync_diff_all": 0.1220108398999897,
+    "avg_sync_diff_correct": 0.10744552505824949,
+    "phase_convergence_all": 0.9611627434382456,
+    "phase_convergence_correct": 0.965799027147751,
+    "elapsed_seconds": 0.2
+  },
+  "config": {
+    "D": 32,
+    "num_nodes": 30,
+    "num_compositions": 20,
+    "num_queries": 10,
+    "seed": 42,
+    "num_ticks": 2000,
+    "alpha_phase": 0.5,
+    "omega_0": 1.0,
+    "k_coupling": 1.0,
+    "sigmoid_k": 4.0,
+    "sigmoid_threshold": 0.5
+  },
+  "script": "phases/phase2_inferencia/run_abduce_xor_sigmoid.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0012_abduce_xor_sigmoid.json",
+  "test_target": "T-INF-03 (abducci\u00f3n XOR con fase sigmoid optimizada)",
+  "baseline_for": [],
+  "variant_of": "exp_SGM_0005",
+  "lit_refs": [
+    "KoPE arXiv 2604.07904 (Xiao et al., Microsoft Research Asia, April 2026)",
+    "Kanerva 1988 Sparse Distributed Memory",
+    "HippoRAG NeurIPS 2024 (arxiv 2404.10501)"
+  ],
+  "notes": "Resultado pendiente de ejecuci\u00f3n.",
+  "notes_criollo": "Si la fase sigmoid mejora el score, confirma que el problema de v1/v2 era que el multiplicador de fase pod\u00eda anular o invertir el binding. La sigmoid resuelve eso: siempre positiva, nunca cero. Si no mejora, el problema de fondo es D=32 (ruido del binding) y la fase no puede compensarlo sola."
+}

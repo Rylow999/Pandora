@@ -1,0 +1,689 @@
+{
+  "experiment": "crafter_multiples_vidas",
+  "n_vidas": 5,
+  "vidas": [
+    {
+      "vida": 0,
+      "pasos": 160,
+      "reward_total": -0.9,
+      "health_final": 2,
+      "food_final": 3,
+      "acciones_unicas": 9,
+      "acciones_top": [
+        [
+          "make_stone_sword",
+          87
+        ],
+        [
+          "make_stone_pickaxe",
+          18
+        ],
+        [
+          "move_left",
+          18
+        ],
+        [
+          "move_down",
+          16
+        ],
+        [
+          "make_iron_pickaxe",
+          9
+        ]
+      ],
+      "status_final": "CONTRADICTORIA",
+      "duda_total": 3,
+      "E_acum_final": 3.675,
+      "log_cada_30": [
+        {
+          "step": 0,
+          "action": "make_stone_pickaxe",
+          "inventory": {
+            "health": 9,
+            "food": 9,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "ACTIVA",
+          "duda": 0,
+          "stag": 0,
+          "vital_act": 0.99,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 30,
+          "action": "move_down",
+          "inventory": {
+            "health": 9,
+            "food": 8,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "INCONCLUSA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.733,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 60,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 7,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "INCONCLUSA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.543,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 90,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 6,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "INCONCLUSA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.403,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 120,
+          "action": "move_left",
+          "inventory": {
+            "health": 9,
+            "food": 5,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "INCONCLUSA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.298,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 150,
+          "action": "make_iron_pickaxe",
+          "inventory": {
+            "health": 3,
+            "food": 4,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 1.275,
+          "status": "INCONCLUSA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.113,
+          "reward": 0.0,
+          "pain": 0.2
+        }
+      ]
+    },
+    {
+      "vida": 1,
+      "pasos": 38,
+      "reward_total": -0.9,
+      "health_final": 2,
+      "food_final": 8,
+      "acciones_unicas": 7,
+      "acciones_top": [
+        [
+          "make_wood_sword",
+          19
+        ],
+        [
+          "make_stone_sword",
+          11
+        ],
+        [
+          "make_wood_pickaxe",
+          2
+        ],
+        [
+          "place_table",
+          2
+        ],
+        [
+          "noop",
+          2
+        ]
+      ],
+      "status_final": "CONTRADICTORIA",
+      "duda_total": 3,
+      "E_acum_final": 3.017,
+      "log_cada_30": [
+        {
+          "step": 0,
+          "action": "make_wood_sword",
+          "inventory": {
+            "health": 9,
+            "food": 9,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 3.491,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.2,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 30,
+          "action": "make_wood_pickaxe",
+          "inventory": {
+            "health": 4,
+            "food": 8,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 1.517,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.133,
+          "reward": 0.0,
+          "pain": 0.1
+        }
+      ]
+    },
+    {
+      "vida": 2,
+      "pasos": 219,
+      "reward_total": -0.9,
+      "health_final": 2,
+      "food_final": 1,
+      "acciones_unicas": 7,
+      "acciones_top": [
+        [
+          "make_stone_sword",
+          156
+        ],
+        [
+          "noop",
+          45
+        ],
+        [
+          "move_down",
+          12
+        ],
+        [
+          "move_up",
+          3
+        ],
+        [
+          "place_stone",
+          1
+        ]
+      ],
+      "status_final": "CONTRADICTORIA",
+      "duda_total": 3,
+      "E_acum_final": 3.95,
+      "log_cada_30": [
+        {
+          "step": 0,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 9,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 2.867,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.115,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 30,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 8,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.615,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.085,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 60,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 7,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.132,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.063,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 90,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 6,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.028,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 120,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 5,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.006,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 150,
+          "action": "make_stone_sword",
+          "inventory": {
+            "health": 9,
+            "food": 4,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.001,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 180,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 3,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 210,
+          "action": "noop",
+          "inventory": {
+            "health": 4,
+            "food": 1,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 1.95,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.045,
+          "reward": 0.0,
+          "pain": 0.1
+        }
+      ]
+    },
+    {
+      "vida": 3,
+      "pasos": 209,
+      "reward_total": -0.9,
+      "health_final": 1,
+      "food_final": 1,
+      "acciones_unicas": 1,
+      "acciones_top": [
+        [
+          "noop",
+          209
+        ]
+      ],
+      "status_final": "CONTRADICTORIA",
+      "duda_total": 3,
+      "E_acum_final": 3.95,
+      "log_cada_30": [
+        {
+          "step": 0,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 9,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 3.753,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 30,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 8,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.805,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 60,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 7,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.173,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 90,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 6,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.037,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 120,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 5,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.008,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 150,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 4,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.002,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 180,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 3,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        }
+      ]
+    },
+    {
+      "vida": 4,
+      "pasos": 203,
+      "reward_total": -0.9,
+      "health_final": 1,
+      "food_final": 2,
+      "acciones_unicas": 1,
+      "acciones_top": [
+        [
+          "noop",
+          203
+        ]
+      ],
+      "status_final": "CONTRADICTORIA",
+      "duda_total": 3,
+      "E_acum_final": 2.5,
+      "log_cada_30": [
+        {
+          "step": 0,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 9,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 3.753,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 30,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 8,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.806,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 60,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 7,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.173,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 90,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 6,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.037,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 120,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 5,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.008,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 150,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 4,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.002,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        },
+        {
+          "step": 180,
+          "action": "noop",
+          "inventory": {
+            "health": 9,
+            "food": 3,
+            "wood": 0,
+            "stone": 0,
+            "iron": 0
+          },
+          "E_acum": 0.0,
+          "status": "CONTRADICTORIA",
+          "duda": 3,
+          "stag": 5,
+          "vital_act": 0.05,
+          "reward": 0.0,
+          "pain": 0.0
+        }
+      ]
+    }
+  ]
+}

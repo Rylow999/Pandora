@@ -1,0 +1,46 @@
+{
+  "experiment_id": "exp_SGM_0025",
+  "experiment_name": "closed_loop",
+  "phase": "Post-Fase 6 - Cierre de loop real (salto a pseudo-AGI)",
+  "date": "2026-08-02",
+  "hypothesis": "Con cierre de loop, el sistema APRENDE a evitar la accion peligrosa por valencia del mundo (frec peligrosa <0.2 tras 60 episodios). Con loop ABIERTO (negative control), NO aprende. El aprendizaje viene del cierre, no de otra cosa.",
+  "config": {
+    "N_STATES": 4,
+    "seed": 42,
+    "n_epis": 60,
+    "epis_len": 6,
+    "danger": [
+      2,
+      1
+    ],
+    "pain": 1.0,
+    "learn": 0.4,
+    "spec_ref": "Eq.6 (0014/15), NOTA_FILOSOFICA_0023"
+  },
+  "result": {
+    "T-LOOP-01": {
+      "freq_peligrosa_cerrado": 0.013,
+      "umbral": 0.2,
+      "aprendio": true
+    },
+    "T-LOOP-02": {
+      "freq_peligrosa_abierto": 0.512,
+      "umbral": 0.2,
+      "no_aprendio_abierto": true
+    },
+    "pass": true
+  },
+  "script": "phases/phase6_integracion/run_closed_loop.py",
+  "results_file": "phases/phase6_integracion/results_exp_SGM_0025_closed_loop.json",
+  "test_target": "T-LOOP-01 (cierre real aprende) + T-LOOP-02 (negative control: loop abierto no aprende)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 Eq.6 (dolor)",
+    "exp_SGM_0014/0015 (valence)",
+    "exp_SGM_0022 (decoder)",
+    "exp_SGM_0023 (tick)",
+    "NOTA_FILOSOFICA_0023_ser_campo.md"
+  ],
+  "notes": "Primer cierre de loop real: el decoder acciona sobre un mundo y el dolor vuelve al grafo (Eq.6 online). Con negative control: sin senal de retorno, no hay aprendizaje. Esto es el 'ser como continuidad' operacional (NOTA 0023): el sistema se sostiene porque aprende a protegerse del dolor del mundo.",
+  "notes_criollo": "El 0025 es el salto que veniamos postergando: el sistema no procesa senales en el vacio, sino que ACCIONA sobre un mundo y el resultado (dolor) le VUELVE como senal para cambiarse a si mismo. Aprende a evitar lo que le hace dano. Y el negative control prueba que si le cortas el retorno (loop abierto) NO aprende -> el aprendizaje es del cierre, no de magia. Es tu tesis del 'ser' hecha medible."
+}

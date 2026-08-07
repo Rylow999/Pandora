@@ -1,0 +1,59 @@
+{
+  "experiment_id": "exp_SGM_0015",
+  "experiment_name": "unified_loop",
+  "phase": "Fase 2 - Inferencia simbolica + duda",
+  "date": "2026-08-02",
+  "hypothesis": "El ciclo unificado resuelve (DETERMINADO), refuta por dolor (CONTRADICTORIA) o duda por estancamiento (INCONCLUSA) sin confundir los mecanismos; la duda escala hasta doubt_count>=3.",
+  "config": {
+    "D": 16,
+    "seed": 42,
+    "theta_refut": 2.0,
+    "cooldown": 5,
+    "W_base": 50,
+    "alpha": 5.0,
+    "theta_novelty": 0.3,
+    "theta_window_frac": 0.5,
+    "min_duration": 5
+  },
+  "result": {
+    "scenario_A_resuelve": {
+      "scenario": "A",
+      "final_status": "DETERMINADO",
+      "ticks": 2,
+      "doubt_count": 0,
+      "pain_acc": 0.0,
+      "novelty_final": 1.0
+    },
+    "scenario_B_contradiccion": {
+      "scenario": "B",
+      "final_status": "CONTRADICTORIA",
+      "ticks": 3,
+      "doubt_count": 0,
+      "pain_acc": 2.7,
+      "novelty_final": 1.0
+    },
+    "scenario_C_duda": {
+      "scenario": "C",
+      "final_status": "INCONCLUSA",
+      "ticks": 13,
+      "doubt_count": 3,
+      "pain_acc": 0.0,
+      "novelty_final": 0.154
+    },
+    "pass_A_determinado": true,
+    "pass_B_contradictoria": true,
+    "pass_C_inconclusa_escalada": true,
+    "pass": true
+  },
+  "script": "phases/phase2_inferencia/run_unified_loop.py",
+  "results_file": "phases/phase2_inferencia/results_exp_SGM_0015_unified_loop.json",
+  "test_target": "T-INF-05 (integracion ciclo unificado: abduccion + duda + contradiccion)",
+  "variant_of": null,
+  "lit_refs": [
+    "SGM v1.4 2.3.1 (contradiccion)",
+    "SGM v1.4 2.3.2 (duda)",
+    "Kirkpatrick et al. PNAS 2017"
+  ],
+  "notes": "Loop que combina Eq.2 (afinidad), Eq.6 (dolor), Eq.8 (W(t)) y §2.3.2 (novelty por conteo). Tres estados finales bien tipados. C ejercita handle_doubt escalonado hasta doubt_count>=3 (igual que 0013).",
+  "notes_criollo": "El 0015 junta todo: la cadena camina y si llega al objetivo dice DETERMINADO; si se le acumula dolor dice esto esta mal (CONTRADICTORIA) y arranca de nuevo con otra fase; si se estanca sin dolor duda y abandona como INCONCLUSA despues de 3 intentos. Los tres resortes conviven sin pisarse."
+}
