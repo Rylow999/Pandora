@@ -469,10 +469,13 @@ Document a completa en `docs/FASE8_TELEOLOGIA_OPERATIVA.md`.
 
 ### exp_SGM_0114 — Vivir hasta morir (evaluación multi-estrato)
 - **Aparato:** el agente corre hasta `terminal=True` (muerte natural), NO se corta por pasos. Reporta 6 estratos.
-- **Con reward novedad:** 170 pasos, murió CONTRADICTORIA (E_acum=5.175, food=3, health=2). Noop 3.5%. **eat_total=0 — NUNCA comió.** Movimientos=0 (no se movió de [32,32]). Acciones: make_stone_sword 135 (79.4%), make_stone_pickaxe 18, place_furnace 11.
-- **NC sin reward novedad:** 163 pasos, murió CONTRADICTORIA. Noop 28.2%. **eat_total=0.** Acciones: move_right 99, noop 46, sleep 18.
-- **Hallazgo clave:** el agente muere de hambre porque la acción `eat` NUNCA se selecciona. Explora mal el espacio de acciones (converge a 1-3 acciones). No tiene querer operativo — y no come ni aunque se muera.
-- **Pista de bug:** la obsesión con make_stone_sword (135 veces, sin haber peleado nunca) reveló un hardcode.
+- **CORRIDA CON CORE LIMPIO (post-remoción de hardcode, la definitiva):**
+  - **Con reward novedad:** 227 pasos, murió CONTRADICTORIA (E_acum=4.25, food=1, health=1). Noop 0.0%. 6 tiles, 5 movimientos (Y 27→32). **eat_total=0, hambre_sin_eat=46.**
+  - Acciones: move_up 176 (77.5%), make_iron_sword 23, make_iron_pickaxe 20, make_stone_pickaxe 6.
+  - **NC sin reward novedad:** 176 pasos, murió CONTRADICTORIA. Noop 64.8%. 0 tiles. eat_total=0.
+- **Cambio vs hardcode previo:** la obsesión con make_stone_sword (135 veces) desapareció → ahora converge a move_up (176 veces). El hardcode era real.
+- **Hallazgo que persiste:** el agente NO come (eat_total=0, 46 veces con hambre sin comer). Muere de hambre. El reward de novedad SÍ impulsa movimiento (6 tiles vs 0). El problema de fondo: el PPR converge a 1-3 acciones y `eat` nunca entra al repertorio.
+- **Conclusión para el querer:** atacar la selección de acciones — cuando food baja, `eat` debería ganar saliencia de forma emergente (Wanting, Berridge). Es el próximo diseño.
 
 ### CORRECCIÓN DEL CORE (hardcode removido, filosofía aplicada)
 Detectado por Luciano + auditado: el agente "quería" la espada no porque hubiera aprendido su valor peleando, sino por **hardcode**.

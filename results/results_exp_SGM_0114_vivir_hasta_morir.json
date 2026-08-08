@@ -11,38 +11,39 @@
   },
   "result": {
     "con_reward_novedad": {
-      "pasos": 170,
-      "tiles": 1,
-      "noop": 3.5,
+      "pasos": 227,
+      "tiles": 6,
+      "noop": 0.0,
       "muerte": {
-        "step": 169,
-        "health": 2,
-        "food": 3,
+        "step": 226,
+        "health": 1,
+        "food": 1,
         "status": "CONTRADICTORIA",
         "duda": 3
       },
       "grafo": {
-        "n_aristas_conn_type": 3,
+        "n_aristas_conn_type": 11,
         "nodos_con_arista": 64
       },
       "apetito": {
         "eat_total": 0,
         "eat_con_hambre": 0,
-        "hambre_sin_eat": 0
+        "hambre_sin_eat": 46
       },
       "acciones": {
-        "make_stone_sword": 135,
-        "make_stone_pickaxe": 18,
-        "place_furnace": 11,
-        "noop": 6
+        "move_up": 176,
+        "make_iron_sword": 23,
+        "make_iron_pickaxe": 20,
+        "make_stone_pickaxe": 6,
+        "place_stone": 2
       }
     },
     "sin_reward_novedad_nc": {
-      "pasos": 163,
+      "pasos": 176,
       "tiles": 0,
-      "noop": 28.2,
+      "noop": 64.8,
       "muerte": {
-        "step": 162,
+        "step": 175,
         "health": 2,
         "food": 3,
         "status": "CONTRADICTORIA",
