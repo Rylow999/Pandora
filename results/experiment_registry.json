@@ -2077,5 +2077,15 @@
     "test_target": "sustrato complejo en Crafter",
     "hypothesis": "El sustrato completo funciona.",
     "result_summary": "84.6% noop. El sustrato 'completo' (con baseline viejo contaminado) colapsa. Llevo a la auditoria parte por parte."
+  },
+  {
+    "experiment_id": "exp_SGM_0116_vgrafo_querer",
+    "experiment_name": "querer_vgrafo_reward_intrinseco",
+    "phase": "Fase 8 - querer por V_grafo (HRRL)",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "querer por reward intrinseco, nucleo agnostico de cuerpo",
+    "hypothesis": "Si el nucleo aprende a comer porque comer eleva la vitalidad del grafo, sin reward externo, eat gana frecuencia y el agente sobrevive mas.",
+    "result_summary": "A (intrinseco) comio 106 (PASS parcial, rompio eat_total=0) pero murio de hambre. B (ext) comio 0. NC 0. Mecanismo autorrefuerza comer - necesita ciclo de subsistencia (Luciano)."
   }
 ]

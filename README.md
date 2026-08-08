@@ -512,3 +512,29 @@ Luciano: el humano primero subsiste (mantener vivo el cuerpo), y cuando la super
 **Implicación para SGM:** la supervivencia (V_grafo) es el PRERREQUISITO de todo. El 0116 (comer por reward intrínseco de vitalidad) es la piedra fundamental — sin que el sistema aprenda a mantenerse vivo, la curiosidad y el "porqué" son irrelevantes (muere antes de preguntarse nada).
 
 Ver documento `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §8 para el detalle completo + respaldo con citas.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0116 (resultado) + CORRECCIÓN DEL DISEÑO
+
+### Resultado del 0116 (querer por reward intrínseco de V_grafo)
+- **A (solo intrínseco, reward externo apagado):** eat=106 (52.5%), 202 pasos, murió de hambre (food=2). tiles=1 (no se movió de [32,32]).
+- **B (intrínseco + reward externo):** eat=0, 137 pasos, tiles=7 (se movió explorando). murió de hambre.
+- **NC (sin mecanismo):** eat=0, 176 pasos, make_iron_pickaxe 95.5%.
+- **PASS técnico: True** (A comió 106 > NC 0).
+- **Hallazgo honesto:** A comió por primera vez en la historia del proyecto (rompió eat_total=0). **PERO:** comer 106 veces NO lo salvó de morir de hambre (vive ~igual que los otros). El mecanismo reforzó la conexión "acción que coincidió con subir food → nodo 0" y eso produjo un **autorrefuerzo de comer (atractor falso)**, no un mantenimiento real de la vitalidad.
+
+### Corrección del diseño (Luciano) — el ciclo de subsistencia, no food→eat
+Error mío: reduje la tesis a "food=vitalidad=comer-autorrefuerzo". El diseño correcto es más complejo y temporal:
+1. El sistema **HACE** (camina, explora, pelea) para subsistir.
+2. De esa actividad **nace hambre** y la vitalidad Baja.
+3. El sistema **se alimenta** para restaurar la vitalidad.
+4. Restaurado, **vuelve a moverse y explorar**.
+5. El ciclo se repite.
+
+La vitalidad baja COMO CONSECUENCIA DE HABER HECHO (gastaste energía), no como flag de comida que dispara comer. Mi implementación convirtió el ciclo vital en un bucle tonto de comida. El mecanismo debe reforzar la acción que **previene la caída de V_grafo en el ciclo** (hacer→gastar→restaurar→volver a hacer), no la que coincide con cualquier subida de food.
+
+### Objetivo declarado (Luciano): sistema que evolucione en entornos en general
+- **PASS parcial es real:** el sistema por fin come. El camino es correcto.
+- **Objetivo:** el sistema puede evolucionar en entornos EN GENERAL (Crafter, Minecraft, Terraria...).
+- **Próximo paso en roadmap:** seguir con los experimentos (0117 curiosidad, 0118 integración). El 0116 demonstró que el núcleo aprende a comer — refinar el mecanismo de ciclo-correcto queda como mejora; no bloquea el avance del roadmap.

@@ -154,6 +154,47 @@ Luciano propone que el sistema sigue la secuencia del ser humano: primero subsis
 
 ---
 
+## 9. NÚCLEO-CEREBRO Y CUERPO (2026-08-06) — diseño para el 0116
+
+### 9.1 La tesis (Luciano): SGM es el CEREBRO, necesita un CUERPO
+SGM como núcleo es un cerebro que **debe habitar un cuerpo** (Crafter, Minecraft, Terraria, etc.) para poder desarrollarse. Un sistema cognitivo sin experiencia externa no puede desarrollar NADA — ni siquiera el existir, porque "solo ESTÁ pero no ES".
+
+**"Está" vs "Es":** un sistema sin cuerpo (desconectado del mundo) tiene un estado de existencia (está) pero no un ser enactivo (es). El "ser" emerge de la interacción con el mundo — la identidad se constituye en la relación cuerpo-ambiente, no en el vacío. Esto es **enactivismo** (Varela, Thompson, Rosch 1991): la cognición no es representación pasiva, es construcción orquestada por el acoplamiento cuerpo-mundo.
+
+**Implicación arquitectónica:**
+- El **núcleo SGM** es agnóstico de cuerpo — define el sustrato cognitivo (ω, grafo, vitalidad, duda, decoder).
+- El **cuerpo** es la interfaz que conecta el núcleo al mundo (percepción → estado, acción → ejecución del cuerpo).
+- El mismo núcleo puede adaptarse a CUALQUIER cuerpo: Crafter, Minecraft, Terraria, etc.
+- Sin cuerpo, el núcleo no desarrolla nada — solo existe en abstracto ("está"), no tiene identidad enactiva ("es").
+
+### 9.2 Implementación del 0116 (diseño CORREGIDO post-resultado): ciclo de subsistencia
+**Cambio al core (aprobado por Luciano antes de tocar):**
+- Agregar `actualizar_homeostasis(food, health)` al núcleo: mantiene `self.V_grafo = mean(vitalidad)`.
+- **ERRADO (retirado por resultado 0116):** reforzar conexión "acción que coincidió con subir food → nodo 0". Esto produjo autorrefuerzo de comer (atractor falso), no mantenimiento real de vitalidad. El 0116: A comió 106 veces pero murió igual de hambre.
+- **CICLO CORRECTO (Luciano, 2026-08-06):** no es food→eat. Es un ciclo de subsistencia temporal:
+  1. El sistema HACE (camina, explora, pelea) para subsistir.
+  2. De esa actividad nace hambre y la vitalidad baja (gastaste energía).
+  3. El sistema se alimenta para restaurar la vitalidad.
+  4. Restaurado, vuelve a moverse y explorar.
+  5. El ciclo se repite.
+- La vitalidad baja COMO CONSECUENCIA DE HABER HECHO, no como flag de comida.
+- El mecanismo debe reforzar la acción que previene la caída de V_grafo EN EL CICLO (hacer→gastar→restaurar→volver a hacer), no la que coincide con cualquier subida de food.
+
+**Protocolo del experimento (A/B):**
+- **Condición A:** reward externo de Crafter por comer **APAGADO** — solo el efecto intrínseco de V_grafo.
+- **Condición B:** reward externo de Crafter por comer ACTIVO (canal A + intrínseco).
+- **Resultado:** A comió 106 (PASS técnico, rompió eat_total=0) pero murió de hambre igual. B comió 0 (se movió). NC 0.
+- **PASS parcial:** el sistema por fin come. El mecanismo actual es insuficiente (autorrefuerza comer en vez de mantener vitalidad). Refinar el ciclo queda como mejora; no bloquea el roadmap.
+
+**Objetivo declarado (Luciano):** sistema que evolucione en entornos EN GENERAL (Crafter, Minecraft, Terraria...). El 0116 valida que el núcleo aprende a comer; el refinamiento del ciclo de subsistencia es el siguiente paso de diseño, y el roadmap sigue (0117, 0118).
+
+### 9.3 El roadmap: núcleo agnóstico de cuerpo, cuerpos como capa
+- **Capa núcleo (SGM):** sustrato cognitivo agnóstico. NO sabe si habita Crafter o Minecraft.
+- **Capa cuerpo (interfaz):** traduce percepción del mundo → estado interno, y acción interna → ejecución en el mundo.
+- El 0116 valida que el NÚCLEO (sin saber del problema de comer del juego) aprende a comer por su propia vitalidad. Si funciona, el núcleo es genuinamente portátil a otros cuerpos.
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.

@@ -161,6 +161,11 @@ class SGMAgent:
         # SIN bonus de afinidad.
         # conn_type: aristas tipadas que se aprenden del uso, no se asignan.
         self.conn_type = {}  # {(i,k): tipo}
+        # V_grafo: vitalidad global = media de vitalidades nodales.
+        # Es la medida de "vida" del sistema (cuerpo del player = cuerpo del grafo).
+        self.V_grafo = 1.0
+        # Homeostasis: ultimo valor de food visto, para detectar mejora.
+        self.ultimo_food = None
 
     def aprender_conexion(self, a, b):
         """Refuerza la conexion entre accion a y accion b basado en co-ocurrencia.
@@ -365,6 +370,28 @@ class SGMAgent:
         # El conocimiento vive en las CONEXIONES (aprender_conexion + strength), NO en omega.
         # Recalcular memoria relacional con los omega estables:
         self.rel = self.hrr.relational_memory(self.edges, self.omega)
+
+    def actualizar_homeostasis(self, food, health=None):
+        """Reward intrínseco por homeostasis (HRRL). NO usa reward externo del cuerpo.
+        El cuerpo del player ES el cuerpo del grafo: V_grafo = media de vitalidades.
+        Cuando la homeostasis MEJORA (food sube) y la última acción restauró el
+        balance, refuerza la conexión entre el "estado de carencia" y la acción
+        que lo revirtió — porque esa conexión preservó V_grafo, no por reward externo.
+        """
+        food = float(food)
+        # Actualizar V_grafo (vida del sistema = vida del cuerpo del player)
+        self.V_grafo = sum(self.vitalidad) / max(1, len(self.vitalidad))
+        if self.ultimo_food is None:
+            self.ultimo_food = food
+            return
+        mejoro_homeostasis = food > self.ultimo_food
+        # Si la última acción fue la que revirtió la carencia, reforzar la conexión
+        # entre esa acción y el nodo 0 (identidad/supervivencia del sistema).
+        # Emergente: la acción coincidió con una mejora de V_grafo (el grafo=player
+        # "siguió vivo"), así que se refuerza su vínculo con la supervivencia.
+        if mejoro_homeostasis and self.ultima_accion >= 0:
+            self.aprender_conexion(self.ultima_accion, 0)
+        self.ultimo_food = food
 
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
