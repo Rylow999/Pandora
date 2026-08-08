@@ -329,6 +329,74 @@ La Fase 7 consolidó dos modulos para no duplicar la mecanica HRR (y evitar el b
 5. Metas propias: MODO_PLAN genera sus objetivos, no solo resuelve los dados.
 6. Paloma-pi / BORIS (etologia propia): dataset etologico propio con BORIS; decoder real sobre senal real (ver IDEA_FUTURA_PALOMA_PI.md). Requiere trabajo de campo, no de celular.
 
+---
+
+## Fase 7: Composición Relacional (COMPLETA 2026-08-02)
+
+**Objetivo:** Que SGM componga y navegue relaciones de CUALQUIER orden (grafos de grafos) usando HRR con rol independiente por nivel.
+
+**Tareas (todas [x], cerradas):**
+- [x] HRR binding (conv circular, Plate 1995) — exp_SGM_0027, supera XOR en superposición de relaciones.
+- [x] HRR + PPR combinados (ruteo por relación, no identidad) — exp_SGM_0027b.
+- [x] Anidamiento orden N con roles independientes — exp_SGM_0027c, acierto 1.0 a d=5.
+- [x] Tick relacional (memoria por nodo, rol=vecino) — exp_SGM_0028, grafo de grafos orden 3 con acierto 1.0.
+- [x] Escalado con D (gain real) — exp_SGM_0029: d=5 0.933->1.0 (D=128->256), capacidad 4x.
+- [x] Plan multi-paso cross-graph (llave destraba meta) — exp_SGM_0030, exito 1.0.
+- [x] Test de estrés del tick cruzado — exp_SGM_0031.
+
+**Módulos reutilizables (ruta de verdad):** `phases/phase7_composicion/hrr_core.py` y `tick_relational_core.py`.
+Cierre formal documentado en `FASE7_CIERRE_0056_0059.md` (el roadmap apunta ahí, no duplica el contenido).
+
+---
+
+## Fase 8: Entorno Abierto (Crafter) — EN EJECUCION
+
+**Objetivo:** Cerrar el loop de agencia en un mundo abierto (el agente aprende del mundo, el proposito emerge de homeostasia + curiosidad). Plan detallado en `CRAFTER_TEST_PLAN.md` y metricas en `BASELINE.md` (hoy ya referenciados desde Camino A).
+
+**Estado actual:**
+- **Colapso conductual de UN episodio: RESUELTO.** exp_SGM_0106 (core mínimo reconstruido) y 0107 (ω_root SIN bonus de auto-coherencia): noop cae de 99% a 3.7%, el agente craftea y explora 11 tiles. Hallazgo clave: el yo que observa y persiste, sin sesgar la decisión hacia su autopreservación, LIBERA al sistema en vez de atraparlo.
+- **Bug ABIERTO (marcado explícitamente, NO resuelto): degradación de persistencia entre vidas.** exp_SGM_0097/0109/0111: la variedad cae (noop 3.1%→62%→94.6% en 3 vidas) incluso con poda de aristas. La poda no alcanza — el omega se contamina con aprendizaje TD. Reintroducir SÓLO cuando haya un mecanismo de consolidación de omega.
+- **Dependencia explícita:** los experimentos de decoder en Crafter (0104, 0112) dieron NC idéntico al real PORQUE el colapso de base contaminaba la métrica. **Re-correrlos DESPUÉS de confirmar que 0107 se sostiene en más episodios** — si no, se repite la misma comparación inválida.
+
+**Experimentación en curso (build up desde core mínimo):**
+- 0107 ω_root sin bonus PASS (colapso resuelto) → 0108 aristas emergentes PASS → 0109/0111 persistencia FAIL (bug abierto) → 0110 decoder detector de loops PASS funcional → 0112 decoder modelo del mundo FAIL (NC=0.99).
+
+---
+
+## Fase 9: Migración a Rust — PROPUESTA (NO iniciar hasta cerrar persistencia)
+
+**Objetivo:** Portar el core a Rust (4 semanas). **GATE EXPLÍCITO:** no arrancar hasta que la degradación de persistencia entre vidas (0097/0109/0111) esté resuelta en Python. Regla exp_0002: no optimizar lo que todavía podés tener que rediseñar.
+
+**Semana 1 — Algebra HRR:**
+- FFT para bind/unbind (así lo formalizó Plate, O(D log D) vs O(D²)).
+- Eq. numérica Rust-vs-Python del mismo grafo (no solo "que ande").
+- Meta 100x anclada: CONTRA Qué (Python puro sin vectorizar = trivial; Contra NumPy vectorizado = serio). El número solo, sin referencia, no es verificable.
+
+**Semana 2 — PPR sobre CSR + integración:**
+- CSR coherente con spec §6.3.
+- Eq. numérica por semana (correr mismo grafo en Python y Rust, comparar resultado exacto).
+- Meta 10.000 nodos en <50ms: justificar la escala (¿cuántos nodos necesita un episodio de Crafter real?) o ajustarla.
+
+**Semana 3 — Hibernación/replay:**
+- ⚠️ "Replay" NO está validado en Python (0102 valida hibernación simple, no replay). Validarlo chico en Python ANTES de escribirlo en Rust, o quitarlo de la Semana 3 y pasar a pendiente de Fase 8. No debuggear mecanismo nuevo + lenguaje nuevo a la vez.
+
+**Semana 4 — Escala (D=1000, +5000 nodos):**
+- ⚠️ D=1000 cambia el ruido (exp_0029: 1/√D). Re-correr composición clave (0027c, 0059g) a D=1000 ANTES de asumir que lo validado sigue igual.
+- Justificar +5000 nodos con necesidad real, no número redondo.
+
+**Agregados (todas las semanas):** correr el mismo test con NC, igual que en Python — no perder la disciplina de controles negativos al cambiar de lenguaje.
+**Gate final antes de Semana 4:** si la persistencia entre vidas sigue rota en Python, PARAR y arreglar ahí antes de subir escala en Rust.
+
+---
+
+## Eje filosófico / Identidad
+
+Hilo transversal del proyecto, hoy documentado en `NOUS_Filosofico.md` (vault) y operacionalizado en exp_SGM_0034 (identidad como proceso), 0099 (ω_root), 0107 (ω_root SIN bonus).
+
+**Tensión resuelta parcialmente (0107):** el capítulo 10 del framework (nodos inmortales = zonas no corregibles) vs. la necesidad de identidad. La resolución técnica de 0107: tener un yo persistente (memoria de quién sos) SIN que el yo tire de las decisiones hacia sí mismo (sin bonus de auto-coherencia). El yo observa y persiste; no compite por el timón.
+
+**Tensión abierta (no cerrada):** qué hace que el sistema "comprenda" la belleza/valor. Requiere una definición operativa tan cuidada como la de dolor y duda antes de poder afirmar o negar nada. Igual que la duda (0026 → espec §2.3.2): primero el observable, después el claim.
+
 ## Total Estimado: ~16-24 semanas (dedicacion parcial)
 
 Las fases 8-10 (escala planetaria) NO estan en este roadmap — son vision de largo plazo.
@@ -370,13 +438,16 @@ Las fases 8-10 (escala planetaria) NO estan en este roadmap — son vision de la
 
 ```
 EXPERIMENTS/SGM/
-├── specs/           # Documentos guía (este roadmap, SGM v1.4, NOUS v4, Pure L2)
-├── motor/           # Implementación del grafo DSCN-G (NodeCore, EdgeTable, ecuaciones)
-├── decoder/         # Decodificador L2 (mini-transformer, proyección lineal, fallback L1)
-├── phases/          # Fases 0-6 del roadmap (scripts run_vXX.py + results_vXX.json)
-├── tests/           # Tests T-INF, T-SEN, T-PLAN, T-DEC (suite de aceptación)
-├── results/         # JSON de resultados consolidados
-└── docs/            # Documentación adicional (criollo, glosario, FAQ)
+├── sgm_core.py       # Implementación consolidada del grafo SGM (HDC, HRR, PPR, SGMAgent). UN solo módulo (no 63 sueltos).
+├── README.md         # Registro cronológico de estados/experimentos (secciones nuevas AL FINAL).
+├── README_SGM.md     # Readme técnico del core.
+├── docs/             # Especificación SGM v1.4, roadmap, CRAFTER_TEST_PLAN.md, BASELINE.md, notas criollo.
+├── experiments/      # Scripts exp_SGM_XXXX_descriptor.py (un experimento, un script, convención de nombre).
+├── phases/           # Fases 7+ (phase7_composicion: hrr_core.py, tick_relational_core.py) y anteriores.
+├── results/          # JSON de resultados (results_exp_SGM_XXXX.json) + experiment_registry.json.
+├── lit/              # Literatura / corpus (Don Quijote; fuera de git).
+├── _staging/         # Área de trabajo temporal (fuera del flujo principal).
+└── __pycache__/      # Cache de Python (ignorable).
 ```
 
 ---
