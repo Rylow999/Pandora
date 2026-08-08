@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_SGM_0113",
+  "experiment_name": "decoder_alimenta_duda",
+  "phase": "Decoder -> duda (sustrato, no cape)",
+  "date": "2026-08-06",
+  "hypothesis": "Integrar el decoder (predecibilidad bigrama) a check_stagnation dispara la duda ante secuencias repetitivas (A,B,A,B) que la novedad de acciones unicas NO detecta, produciendo mas variedad de acciones que la duda clasica.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "theta_novelty": 0.3,
+    "predecibilidad_factor": 0.5
+  },
+  "result": {
+    "decoder_duda": {
+      "tiles": 4,
+      "noop": 2.2,
+      "variedad": 4,
+      "duda": 3
+    },
+    "duda_clasica": {
+      "tiles": 6,
+      "noop": 14.1,
+      "variedad": 4,
+      "duda": 3
+    },
+    "nc_sin_duda": {
+      "tiles": 33,
+      "noop": 0.0,
+      "variedad": 2,
+      "duda": 0
+    },
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0113_decoder_duda.py",
+  "results_file": "results/results_exp_SGM_0113_decoder_duda.json",
+  "variant_of": "exp_SGM_0110",
+  "lit_refs": [
+    "Curiosity & intrinsic motivation in RL \u2014 prediction error drives exploration",
+    "Di Domenico & Ryan 2017 \u2014 SEEKING system, intrinsic motivation emerges from dopamine"
+  ],
+  "notes": "El decoder NO capea vitalidad (eso era hardcode de emergencia, ver 0110). En vez, ALIMENTA la duda: predecibilidad bigrama reduce la novedad efectiva en check_stagnation, disparando el mecanismo emergente de duda (relajacion/relanzamiento). 3 condiciones: decoder+duda, duda clasica pura, NC sin duda.",
+  "notes_criollo": "Antes el decoder era un portero que le bajaba la vitalidad a la accion repetida \u2014 eso era un capricho, no algo que naciera del sistema. Ahora el decoder le SUSURRA a la duda, que ya existe: 'mir\u00e1, esto que hace el agente es tan predecible como aburrido'. Y es la duda la que, por su propia naturaleza, empuja al agente a probar otra cosa. El portero se fue; ahora es el sentido interno del aburrimiento el que trabaja."
+}

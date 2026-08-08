@@ -225,6 +225,24 @@ class SGMAgent:
         self.edges = {i: list(edges.get(i, [])) for i in range(len(self.omega))}
         self.rel = self.hrr.relational_memory(self.edges, self.omega)
 
+    def _bigrama_predecibilidad(self, ventana):
+        """Mide que tan predecible es la secuencia de acciones con un bigrama.
+        Devuelve 1 - (proporcion de transiciones no triviales).
+        Si casi todas las transiciones son la misma acción (a->a), alta predecibilidad, baja novedad secuencial.
+        Si las transiciones varían, baja predecibilidad, alta novedad secuencial.
+        """
+        if len(ventana) < 4:
+            return 0.0  # sin datos, neutro
+        # Conteo de transiciones
+        pares = {}
+        for i in range(len(ventana) - 1):
+            clave = (ventana[i], ventana[i+1])
+            pares[clave] = pares.get(clave, 0) + 1
+        # Si una transición domina (>70% de los items), la secuencia es predecible
+        n_total = len(ventana) - 1
+        max_freq = max(pares.values())
+        return max_freq / max(1, n_total)
+
     def check_stagnation(self):
         W_t = min(self.W_base, max(1, len(self.historial_acciones)))
         if W_t < 5:
@@ -232,7 +250,11 @@ class SGMAgent:
             return False
         ventana = self.historial_acciones[-W_t:]
         novelty = len(set(ventana)) / len(ventana)
-        if novelty < self.theta_novelty:
+        # Novedad secuencial: si la secuencia es predecible (bigrama dominante), baja la novedad.
+        predecibilidad = self._bigrama_predecibilidad(ventana)
+        # El decoder informa a la duda: comportamiento predecible reduce la novedad efectiva
+        novelty_efectiva = novelty * (1.0 - predecibilidad * 0.5)  # max 50% de reduccion
+        if novelty_efectiva < self.theta_novelty:
             self.stagnation_ticks += 1
         else:
             self.stagnation_ticks = 0

@@ -370,10 +370,9 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 
 ### Roadmap — próximos pasos
 
-**Inmediato (detector de loops — profundizar):**
-- exp_SGM_0113: Calibración del detector — variar TOPE_LOOP (3, 5, 10) y VENTANA (30, 50, 100). Encontrar el punto óptimo.
-- exp_SGM_0114: Detector de loops + reward por novedad combinados. ¿La sinergia produce más exploración que cada uno por separado?
-- exp_SGM_0115: Detector de loops en múltiples vidas (agente reiniciado, no persistente). ¿Mejora con la experiencia del decoder aunque el omega se resetee?
+**Inmediato (decoder alimenta la duda — dirección decidida 2026-08-06):**
+- **Diseño:** No capear vitalidad con un `if` (eso era hardcode de emergencia). El decoder informa AL mecanismo de duda que ya existe: la novedad deja de ser solo "acciones únicas en ventana" y pasa a contemplar "qué tan predecible es la secuencia" (bigrama). Comportamiento predecible = baja novedad secuencial = dispara duda (que es un mecanismo emergente del sustrato: duda → relajación/relanzamiento).
+- exp_SGM_0113: Decoder integrado a check_stagnation (novedad secuencial bigrama). Comparar contra baseline (0110 usaba una ventana; ahora el decoder módula la señal de estancamiento en vez de castigar vitalidad directo).
 
 **Mediano plazo:**
 - Consolidación de omega: mecanismo para que el aprendizaje TD no contamine el omega entre episodios. Posible: solo actualizar omega con reward positivo, no con reward=0.
@@ -434,3 +433,32 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 - El **decoder L2** (bigrama) es el candidato natural para ser la interfaz consciente: puede tomar patrones del comportamiento implícito y convertirlos en señales reportables.
 - El **ω_root** (sin bonus) es el "yo" que observa — no decide, pero recibe el estado global.
 - La **duda** (check_stagnation) es la emoción que traduce una señal inconsciente (baja novedad) en un cambio de comportamiento explícito.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0113 (decoder alimenta la duda) + Decisión de Fase 8
+
+### exp_SGM_0113 — Decoder alimenta la duda (no capea vitalidad)
+- **Diseño:** El decoder NO castiga la vitalidad (eso era hardcode de emergencia en 0110). En vez, ALIMENTA la duda: la predecibilidad bigrama reduce la novedad efectiva en `check_stagnation()`, disparando el mecanismo emergente de duda (relajación/relanzamiento).
+- **Resultado:** A (decoder+duda): 2.2% noop, 4 tiles, variedad 4. B (duda clásica): 14.1% noop, 6 tiles, variedad 4. C (NC sin duda): 0.0% noop, 33 tiles, variedad 2.
+- **Dato crítico:** El NC exploró 33 tiles (5x más) pero con SOLO 2 acciones — eso significa que pasea por el mundo (acciones de movimiento) sin variar su repertorio. NO es curiosidad, es **aimless wandering** (deambular sin propósito).
+- **PASS técnico parcial:** el decoder bajó noop (14→2.2%) porque detecta loops que la novedad clásica no ve. PERO ambos sistemas con duda exploran mal (4-6 tiles) — la duda actual, en `handle_doubt()`, relanza dentro del mismo puñado de acciones sin abrir espacio nuevo.
+- **Verificado sin contaminación:** el NC de 33 tiles es real (concordante con el JSON). El agente sin duda genuinamente se mueve, pero solo con acciones de movimiento.
+- **Conclusión:** el problema no es el decoder (funciona como detector de predecibilidad), es que el `handle_doubt()` disfuncional no expande el repertorio — solo lo reordena.
+
+### Decisión metodológica — Teleología operativa y cierre de Fase 8
+Document a completa en `docs/FASE8_TELEOLOGIA_OPERATIVA.md`.
+
+- **No medir "logro/querer/belleza" sin definición operativa.** Igual que dolor y duda: primero el observable, después el claim.
+- **Wanting (Berridge) = motivación a actuar hacia el estímulo, medible como correlación hambre→búsqueda de comida** (respuesta operante), NO sensación subjetiva. Distinto de Liking (placer al consumir).
+- **Curiosidad = reducción de prediction error (Oudeyer/Berridge), NO tiles recorridos.** Un agente que pasea 33 tiles sin variar repertorio es aimless wandering, no curiosidad.
+- **Nuevo requisito de todos los experimentos Crafter:** el agente debe **VIVIR HASTA MORIR** (`terminal=True`), no cortarse por pasos. Reportar el motivo de la muerte.
+- **Formato de evaluación multi-estrato (6 estratos):** supervivencia (cómo murió), grafo (aristas creadas/podadas), movimiento (trayectoria), apetito (correlación food→eat), estados internos (E_acum/status/duda), curiosidad (reducción de prediction error).
+- **Belleza:** DEFERIDO — no bloquea Fase 8, tensión abierta en el eje filosófico.
+
+### Experimentos que faltan para cerrar Fase 8 (ver doc FASE8_TELEOLOGIA_OPERATIVA.md §5)
+1. **exp_SGM_0114:** aparato "vivir hasta morir" (correr hasta `terminal=True`), NC sin reward novedad, reporte multi-estrato.
+2. **exp_SGM_0115:** muerte y causalidad/persistencia (NO re-introducir persistencia de omega hasta consolidación).
+3. **exp_SGM_0116:** querer operativo — ¿aparece correlación food→eat en la vida? (Wanting, Berridge).
+4. **exp_SGM_0117:** curiosidad = reducción de prediction error (explorar donde falla el modelo), NC decoder apagado.
+5. **exp_SGM_0118:** evaluación multi-estrato completa (una vida entera, 6 estratos, sin corte).
