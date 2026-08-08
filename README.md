@@ -352,33 +352,39 @@ hrr_core.py + tick_relational_core.py. Siguiente: test de estrés (0031) y camin
 
 ## Roadmap unificado — estado actual y próximos pasos
 
-### Completado (33 experimentos nuevos en esta sesión)
-- Sustrato SGM completo: ω_root, interocepción, modos SENSORIAL/RAZONAMIENTO/PLAN, conn_type, vitalidad, hibernación, trauma, duda, contradicción, reset_episodio.
-- Crafter Fase 0 (plomería) ✅
-- Crafter Fase 1 (3 versiones: sin duda, con duda, persistencia entre vidas) ✅
-- Experimentos 0095-0104 documentados con formato correcto (notes_criollo, lit_refs, variant_of).
-- Repositorio SGM-CORE unificado en main, dentro del vault de vega-vault.
+### Completado (sesión 2026-08-06)
+- Sustrato SGM mínimo funcional (sgm_core.py, 346 líneas): HDC, HRR, PPR, vitalidad, duda, contradicción.
+- ω_root sin bonus (piso 0.5). Aristas emergentes del uso (aprender_conexion). Poda de aristas (strength decae).
+- Crafter Fase 0 (plomería) ✅, Fase 1 (baseline 3 versiones) ✅
+- Auditoría parte por parte (0106-0112): cada mecanismo probado con NC, documentado.
+- Decoder L2 como detector de loops (0110): PASS funcional. 12 tiles vs 1, 6 acciones vs 4.
+- 18 experimentos documentados (0095-0112) con formato correcto.
 
-### Pendiente inmediato — Auditoría parte por parte
-- **Hallazgo crítico (post-literatura 2026):** El bonus de ω_root (30%) es hardcode, no emerge del sustrato. Las aristas tipadas al azar no tienen significado (el tipo de conexión debe emerger del binding HRR, no asignarse). Ambos mecanismos están interfiriendo con el comportamiento básico del agente.
-- **Plan de acción:** Volver al baseline que funcionaba (sin ω_root, sin conn_type, sin bonus de raíz) y agregar mecanismos de a uno, con NC, midiendo si mejoran o empeoran.
-  - **exp_SGM_0106:** Baseline limpio — solo vitalidad + duda + contradicción + reward por novedad. Sin ω_root, sin modos, sin conn_type, sin bonus.
-  - **exp_SGM_0107:** Agregar ω_root (SIN bonus de afinidad). ¿Mejora o empeora?
-  - **exp_SGM_0108:** Agregar modos con aristas reales (no al azar — aristas definidas por binding HRR entre nodos).
-  - **exp_SGM_0109:** Agregar reset_episodio con persistencia de omega entre vidas.
-  - **exp_SGM_0110:** Agregar decoder L2 como detector de loops.
-- **Cada experimento:** un cambio por vez, un episodio, documentación con notes_criollo, NC explícito.
-- **¿Cómo generar variedad de acciones sin hardcodear?** El agente se clava en la misma acción porque el PPR converge al mismo nodo siempre. Posibles vías:
-  - **A:** Modificar el reward de Crafter para que ciertas acciones tengan recompensa diferencial (sin hardcode — explorar tiles nuevos da reward = curiosidad intrínseca).
-  - **B:** Usar la curiosidad ya implementada (check_stagnation) no solo para detectar estancamiento sino para generar reward intrínseco por novedad.
-  - **C:** Integrar el decoder L2 como capa de "razonamiento" que rompa loops (el agente "se da cuenta" de que está en un loop porque el bigrama predice la misma acción siempre y eso genera una señal de "esto es predecible → aburrido").
+### Hallazgos clave
+1. El bonus de ω_root (30%) era hardcode. Sacarlo restaura el comportamiento exploratorio.
+2. Las aristas tipadas al azar no tienen sentido. Deben emerger del uso (co-ocurrencia).
+3. La persistencia de omega entre vidas es TOXICA — el TD contamina el omega. Necesita consolidación.
+4. El decoder como detector de loops funciona mejor que como modelo del mundo predictivo.
+5. El inconsciente = PPR + vitalidad + aristas. El consciente = decoder que detecta loops y sacude al inconsciente.
+6. NC: CLARION (dual-level implicit/explicit) coincide con nuestra arquitectura emergente.
 
-### Pendiente a futuro (post-variedad de acciones)
+### Roadmap — próximos pasos
+
+**Inmediato (detector de loops — profundizar):**
+- exp_SGM_0113: Calibración del detector — variar TOPE_LOOP (3, 5, 10) y VENTANA (30, 50, 100). Encontrar el punto óptimo.
+- exp_SGM_0114: Detector de loops + reward por novedad combinados. ¿La sinergia produce más exploración que cada uno por separado?
+- exp_SGM_0115: Detector de loops en múltiples vidas (agente reiniciado, no persistente). ¿Mejora con la experiencia del decoder aunque el omega se resetee?
+
+**Mediano plazo:**
+- Consolidación de omega: mecanismo para que el aprendizaje TD no contamine el omega entre episodios. Posible: solo actualizar omega con reward positivo, no con reward=0.
+- Decoder como auto-narrativa: cuando el agente genere suficiente variedad, el bigrama describe su trayectoria.
+- Poda de aristas calibrada: ajustar el ritmo de decaimiento para que la memoria sea útil.
+
+**Largo plazo (post-consolidación):**
 - Crafter Fase 2 (eficiencia de muestra vs DreamerV3)
 - Crafter Fase 3 (generalización zero-shot)
 - Crafter Fase 4 (olvido catastrófico secuencial)
 - Crafter Fase 5 (multi-agente + lenguaje)
-- Auto-narrativa real (cuando el agente genere variedad)
 - Valencia afectiva — generalización por estructura HRR
 - Consciencia fenomenal: NO se toca (espera datos EEG de DSCN-BIO)
 
