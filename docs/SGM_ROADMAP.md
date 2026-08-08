@@ -359,7 +359,9 @@ Cierre formal documentado en `FASE7_CIERRE_0056_0059.md` (el roadmap apunta ahí
 - **Dependencia explícita:** los experimentos de decoder en Crafter (0104, 0112) dieron NC idéntico al real PORQUE el colapso de base contaminaba la métrica. **Re-correrlos DESPUÉS de confirmar que 0107 se sostiene en más episodios** — si no, se repite la misma comparación inválida.
 
 **Experimentación en curso (build up desde core mínimo):**
-- 0107 ω_root sin bonus PASS (colapso resuelto) → 0108 aristas emergentes PASS → 0109/0111 persistencia FAIL (bug abierto) → 0110 decoder detector de loops PASS funcional → 0112 decoder modelo del mundo FAIL (NC=0.99).
+- 0107 ω_root sin bonus PASS (colapso resuelto) → 0108 aristas emergentes PASS → 0109/0111 persistencia FAIL (bug abierto) → 0110 decoder detector de loops PASS funcional → 0112 decoder modelo del mundo FAIL (NC=0.99) → 0113 decoder alimenta duda (PASS técnico: 14%→2.2% noop; NC revela aimless wandering) → **0114 vivo-hasta-morir (hardcode de espada ENCONTRADO y removido; eat_total=0)** → **0116 (siguiente): querer por reward intrínseco de V_grafo, SIN reward externo.**
+- **Corrección del core (2026-08-06):** removido boost Causal 1.5 (hardcode) + decaimiento global de omega. Filosofía: ω = identidad estable, el conocimiento vive en las conexiones. Ver `FASE8_TELEOLOGIA_OPERATIVA.md` §7.
+- **Nueva dirección (0116):** V_grafo = recompensa intrínseca (HRRL). El cuerpo del player ES el cuerpo del grafo. Sin umbral, sin reward externo por comida. La supervivencia es prerequisito de la curiosidad (Maslow).
 
 ---
 

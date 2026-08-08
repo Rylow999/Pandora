@@ -99,14 +99,14 @@ Cada experimento debe reportar QUÉ hacía el agente en cada estrato, no solo m�
 
 ## 5. Experimentos que faltan en Crafter para cerrar Fase 8
 
-1. **exp_SGM_0114:** Aparato de "vivir hasta morir" — el agente corre hasta `terminal=True`. NC: sin reward de novedad. Reporte multi-estrato completo.
+1. **exp_SGM_0114 (HECHO):** Aparato de "vivir hasta morir" — el agente corre hasta `terminal=True`. NC: sin reward de novedad. Reporte multi-estrato. **Resultado clave (core limpio):** el agente nunca come (eat_total=0), converge a move_up, muere de hambre. El reward de novedad impulsa movimiento (6 tiles vs 0) pero no supervivencia.
 2. **exp_SGM_0115:** Muerte y causal — dado que el agente muere de hambre (inolación), ¿cambia su comportamiento en el siguiente episodio? (persistencia que QUEDÓ buggeada en 0109/0111 — NO re-introducir hasta consolidación de omega)
-3. **exp_SGM_0116:** Querer operativo — ¿aparece correlación food→eat a lo largo de la vida? Medir wanting (Berridge). Si no hay, FAIL honesto (el agente come al azar).
+3. **exp_SGM_0116 (RE-ESPECIFICADO):** **Querer por reward intrínseco de vitalidad — SIN reward externo por comida.** Que V_grafo sea la recompensa intrínseca: el agente elige comer porque comer eleva la vitalidad del grafo (su vida), no porque Crafter dé reward. El cuerpo del player ES el cuerpo del grafo. Sin umbral de alarma (si muere sin "darse cuenta", hay que iterar el sustrato, no poner un if). Medir: ¿el agente aprende a comer para mantener V_grafo viva, sin reward externo? (Wanting emergente + HRRL).
 4. **exp_SGM_0117:** Curiosidad = reducción de prediction error — el decoder mide prediction error; ¿el agente explora donde falla su modelo? NC: decoder apagado.
 5. **exp_SGM_0118:** Evaluación multi-estrato completa — el agente vive una vida completa, reporte de los 6 estratos, sin corte por pasos.
 
-*(En orden: primero el formato 0114, después 0116 querer, 0117 curiosidad, y 0118 integración multi-estrato.)*
-*Nota 2026-08-06: 0114 YA SE CORRIÓ (ver resultados). Reveló que el agente nunca come (eat_total=0) y la obsesión con make_stone_sword. Eso llevó a la corrección del core abajo.*
+*(En orden: 0114 done, 0116 querer intrínseco (siguiente), 0117 curiosidad, 0118 integración.)*
+*Nota 2026-08-06: 0114 YA SE CORRIÓ (resultado: eat_total=0). Reveló obsesión con make_stone_sword → hardcode removido (sección 7). Y llevó a re-especificar 0116: reward intrínseco de V_grafo.*
 
 ---
 
@@ -122,8 +122,35 @@ Cada experimento debe reportar QUÉ hacía el agente en cada estrato, no solo m�
 - **El entorno y el interior se crean en el acto de relacionarse.** La realidad percibida no es un dato externo fijo; es el patrón de conexiones que se auto-organiza ante el estímulo.
 - **El lenguaje interno (decoder) MODULA las conexiones, no dicta.** No reescribe identidades (label-feedback hypothesis, Frontiers 2012 — lenguaje modula procesamiento en curso, no warp el espacio perceptual).
 
+---
+
 ### 7.3 Verificado
 - Los ω ya no cambian durante step+reward (0 nodos modificados). Boost 1.5 y decaimiento parejo fuera del código.
+
+---
+
+## 8. SECUENCIA MOTIVACIONAL Y V_GRAFO COMO REWARD INTRÍNSECO (2026-08-06)
+
+### 8.1 La secuencia motivacional (Maslow, 1943; Baumeister, 1991)
+Luciano propone que el sistema sigue la secuencia del ser humano: primero subsistir (mantener vivo el cuerpo/grafo), y cuando la supervivencia está asegurada, recién nace la búsqueda de significado, belleza y los porqués de la existencia.
+
+**Respaldo en literatura:**
+- **Maslow (1943):** las necesidades fisiológicas son las "más prepotentes" — cuando no están satisfechas, dominan la conciencia y el comportamiento hasta excluir las preocupaciones superiores. "Una persona deshidratada no piensa en sus metas — su paisaje cognitivo se estrecha a la búsqueda de agua. Una vez satisfecha la necesidad, las motivaciones superiores se reafirman."
+- **Deficiency vs Growth needs:** las necesidades de carencia (comer, seguridad) motivan solo cuando faltan; las de crecimiento (belleza, conocimiento, significado) EMERGEN solo cuando las básicas están cubiertas. Es un cambio de régimen, no un escalón.
+- **Baumeister (1991):** "el significado de la vida es un problema para gente que no está desesperada, gente que puede contar con sobrevivir, comodidad, seguridad."
+
+**Implicación para SGM:** el reward de hambre debe dejar de dominar cuando la subsistencia está resuelta, y solo entonces pueden florecer la curiosidad (0117) y la búsqueda de sentido. La supervivencia (mantener V_grafo) es el PRERREQUISITO de todo lo demás.
+
+### 8.2 V_grafo como recompensa intrínseca (diseño aprobado por Luciano)
+- **El cuerpo del player de Crafter ES el cuerpo del grafo.** No hay "grafo simbólico" y "avatar" separados — desde la existencia del sistema, son lo mismo. Cuando el player muere, el grafo muere.
+- **V_grafo = mean(vitalidad nodal)** — la medida de vida del sistema, directamente la vida del player.
+- **SIN umbral de alarma:** un ser vivo no tiene "aviso de muerte" artificial — se da cuenta porque su mantenimiento deja de sostenerse. Si el sistema muere sin darse cuenta, es que el sustrato está mal (o falta iteración), NO que necesita un if.
+- **SIN reward externo por comida:** el sistema elige comer porque comer ELEVA la vitalidad del grafo (su vida). La vitalidad EN SÍ es la recompensa intrínseca. El grafo "comprende" que comer es positivo porque la vitalidad sube, no porque el juego dé un número.
+- **Marco teórico:** HRRL (homeostatically regulated RL, 2025) — los agentes biológicos optimizan sus estados internos manteniendo la viabilidad, no maximizando reward externo. + Berridge (wanting) + allostasis (Sterling & Eyer) — anticipar, no solo reaccionar.
+
+### 8.3 Preguntas de diseño pendientes antes de implementar 0116
+1. ¿La selección de acciones debe sesgarse hacia V_grafo (que el PPR "persiga" la vitalidad del grafo), o dejamos el PPR como está y solo el hambre modula la vitalidad nodal? (i.e. ¿cambio de arquitectura o incremental?)
+   - **Decisión tomada:** incremental primero. No tocar el PPR. Solo que el hambre entre como dinámica de vitalidad nodal, y ver si `eat` emerge. Si no emerge, iterar el sustrato (que es lo honesto).
 
 ---
 

@@ -489,3 +489,26 @@ Detectado por Luciano + auditado: el agente "quería" la espada no porque hubier
 - El lenguaje interno (decoder) **modula** las conexiones, no dicta (label-feedback hypothesis, Frontiers 2012).
 
 **Verificado:** los omegas ya no cambian durante step+reward (0 nodos modificados). Boost 1.5 y decaimiento parejo fuera del código.
+
+---
+
+## Estado 2026-08-06 — RE-ESPECIFICACIÓN 0116 + Secuencia motivacional
+
+### Re-especificación de exp_SGM_0116 (querer por reward intrínseco de V_grafo)
+- **Vieja hipótesis:** ¿aparece correlación food→eat? (Wanting medido como correlación). Demasiado débil — solo medía, no diseñaba.
+- **Nueva hipótesis:** el agente elige comer **porque comer ELEVA la vitalidad del grafo (su vida), sin reward externo por comida.** V_grafo = mean(vitalidad) ES la recompensa intrínseca. Querer emergente + HRRL.
+- **Principios:**
+  1. **El cuerpo del player de Crafter ES el cuerpo del grafo.** Muerte del player = muerte del grafo. Son una sola cosa.
+  2. **SIN umbral de alarma.** Si el sistema muere sin "darse cuenta", hay que iterar el sustrato (falta iteración o el sustrato está mal), NO poner un if de emergencia.
+  3. **SIN reward externo por comida.** La vitalidad es el maestro intrínseco. El grafo comprende que comer es positivo porque la vitalidad sube, no porque el juego dé un número.
+- **Marco teórico:** HRRL (2025) — optimizar estados internos manteniendo viabilidad, no maximizar reward externo. + Berridge (wanting = motivación a actuar). + allostasis (anticipar, no solo reaccionar).
+
+### Secuencia motivacional (Maslow 1943 / Baumeister 1991 / V_grafo)
+Luciano: el humano primero subsiste (mantener vivo el cuerpo), y cuando la supervivencia está asegurada recién nace la búsqueda de significado y belleza. La literatura lo respalda:
+- **Maslow:** las necesidades fisiológicas son las más prepotentes — cuando no están satisfechas, dominan hasta excluir lo superior. "Un deshidratado no piensa en sus metas, su paisaje cognitivo se estrecha a buscar agua."
+- **Deficiency vs Growth:** las de carencia motivan solo cuando faltan; las de crecimiento (belleza, significado) emergen solo cuando lo básico está cubierto.
+- **Baumeister (1991):** "el significado de la vida es un problema para gente que no está desesperada."
+
+**Implicación para SGM:** la supervivencia (V_grafo) es el PRERREQUISITO de todo. El 0116 (comer por reward intrínseco de vitalidad) es la piedra fundamental — sin que el sistema aprenda a mantenerse vivo, la curiosidad y el "porqué" son irrelevantes (muere antes de preguntarse nada).
+
+Ver documento `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §8 para el detalle completo + respaldo con citas.
