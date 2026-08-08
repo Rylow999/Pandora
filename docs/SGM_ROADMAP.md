@@ -141,19 +141,19 @@ El transformer resuelve el sentido; el root/dirige el ruteo y sirve como sistema
 
 **Evidencia de referencia:** v0.16 (referencias compositivas)
 
-### Fase 5: Decodificador L2 — Camino A (4-6 semanas)
+### Fase 5: Decodificador L2 — Camino A (COMPLETA 2026-08-02)
 
 **Objetivo:** Decoder generativo que produce texto coherente desde el sentido ruteado.
 
 **Tareas:**
-- [ ] Mini-transformer decoder (Entrena W·ω → logits, pure Python backprop)
-- [ ] Corpus alineado ω↔texto (Don Quijote procesado)
-- [ ] Integración con el grafo: tokens semánticos → texto
-- [ ] Tests T-DEC-01/T-DEC-02
+- [x] Mini-transformer decoder — validado en exp_SGM_0026 con corpus real (Don Quijote, Gutenberg 996).
+- [x] Corpus alineado ω↔texto (Don Quijote procesado, en lit/corpus/ fuera de git).
+- [x] Integración con el grafo: tokens semánticos → texto
+- [x] Tests T-DEC-01/T-DEC-02
 
-**⚠️ CRÍTICO:** NO usar similarity-NN sobre embeddings (v0.25 v12: top1=0.020). Usar modelo de transición explícito (bigrama: top1=0.630) o transformer entrenado.
+**⚠️ CRÍTICO (resuelto por exp_SGM_0026):** NO usar similarity-NN sobre embeddings (v0.25 v12: top1=0.020). Usar modelo de transición explícito (bigrama). Resultado REAL sobre Don Quijote: bigrama top1=0.185 >> azar(0.003)/lineal(0.075)/unigram(0.076). COMPLETA la validación pendiente desde 0022.
 
-**Evidencia de referencia:** v0.6a (next-token 10.11%), v0.14d (backprop), v0.5b (generator con window+repetition penalty)
+**Evidencia de referencia:** v0.6a (next-token 10.11%), v0.14d (backprop), v0.5b (generator con window+repetition penalty), exp_SGM_0026 (T-DEC-01 REAL).
 
 ### Fase 6: Integración, Calibración y Tests (COMPLETA 2026-08-02)
 
@@ -225,15 +225,22 @@ Quedan
   (explorar->evitar al subir dolor); actua sin loop infinito. Es el FRENO DE COHERENCIA que evita que el
   agente en mundo abierto se vuelva un saltarin sin proposito.
 
-## Camino A -- Test de fuego (propuesto, no implementado): MiniSandbox -> Sandbox (Minecraft-like)
-Idea de Luciano (2026-08-03): meter la SGM completa (homeostasis, dolor, curiosidad global, identidad,
-trauma, discurso interno) en un sandbox abierto. Es el unico test honesto de "agencia en mundo abierto":
-el agente NO recibe objetivos externos; el proposito emerge de su homeostasia + curiosidad. Pasos:
-  1) MiniSandbox: grilla 3D de bloques con acciones composicionales (minar/colocar/esquivar) que corra en
-     este entorno (Android) sin cliente pesado. Fuerza Composicion Relacional (Gap 2) y curiosidad sostenida.
+## Camino A -- Test de fuego (EN EJECUCION ACTIVA, 0095-0112): MiniSandbox/Crafter -> Sandbox
+
+Idea de Luciano (2026-08-03): meter la SGM (homeostasis, dolor, curiosidad, identidad, trauma, discurso interno)
+en un sandbox abierto. Es el unico test honesto de "agencia en mundo abierto": el agente NO recibe objetivos externos;
+el proposito emerge de homeostasia + curiosidad.
+
+**Estado actual:** en ejecucion activa en Crafter (Fase 8). Ver `CRAFTER_TEST_PLAN.md` (fases planificadas) y
+`BASELINE.md` (baseline y metricas). Hallazgos: colapso conductual de un episodio RESUELTO (exp_SGM_0107, 3.7% noop);
+degradacion entre vidas ABIERTA (0097/0109/0111); decoder detector de loops FUNCIONA (0110).
+
+Pasos originales:
+  1) MiniSandbox: grilla 3D de bloques composicional. (Crafter cumple funcion de test simplificado.)
   2) Sandbox (Minecraft-like): cuando haya hardware, el cliente real como prueba de fuego.
+
 El discurso interno (0040) es PREVIO necesario: sin freno de coherencia, el sandbox explota en loop de
-exploracion. Orden: 0040 -> MiniSandbox -> Sandbox.
+exploracion. Orden: 0040 -> MiniSandbox/Crafter -> Sandbox.
 
 
   + ASIMETRIA curiosidad/dolor. Dolor no letal repetido -> peso decae con repeticiones (habituacion),
