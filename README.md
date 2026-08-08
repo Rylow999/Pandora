@@ -462,3 +462,27 @@ Document a completa en `docs/FASE8_TELEOLOGIA_OPERATIVA.md`.
 3. **exp_SGM_0116:** querer operativo — ¿aparece correlación food→eat en la vida? (Wanting, Berridge).
 4. **exp_SGM_0117:** curiosidad = reducción de prediction error (explorar donde falla el modelo), NC decoder apagado.
 5. **exp_SGM_0118:** evaluación multi-estrato completa (una vida entera, 6 estratos, sin corte).
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0114 (vivir hasta morir) + CORRECCIÓN DEL CORE
+
+### exp_SGM_0114 — Vivir hasta morir (evaluación multi-estrato)
+- **Aparato:** el agente corre hasta `terminal=True` (muerte natural), NO se corta por pasos. Reporta 6 estratos.
+- **Con reward novedad:** 170 pasos, murió CONTRADICTORIA (E_acum=5.175, food=3, health=2). Noop 3.5%. **eat_total=0 — NUNCA comió.** Movimientos=0 (no se movió de [32,32]). Acciones: make_stone_sword 135 (79.4%), make_stone_pickaxe 18, place_furnace 11.
+- **NC sin reward novedad:** 163 pasos, murió CONTRADICTORIA. Noop 28.2%. **eat_total=0.** Acciones: move_right 99, noop 46, sleep 18.
+- **Hallazgo clave:** el agente muere de hambre porque la acción `eat` NUNCA se selecciona. Explora mal el espacio de acciones (converge a 1-3 acciones). No tiene querer operativo — y no come ni aunque se muera.
+- **Pista de bug:** la obsesión con make_stone_sword (135 veces, sin haber peleado nunca) reveló un hardcode.
+
+### CORRECCIÓN DEL CORE (hardcode removido, filosofía aplicada)
+Detectado por Luciano + auditado: el agente "quería" la espada no porque hubiera aprendido su valor peleando, sino por **hardcode**.
+1. **Boost Causal 1.5 en `_aff()`** — multiplicador fijo que daba +50% de afinidad a las aristas tipo Causal. Era arbitrario, no emergía del sustrato. **ELIMINADO.** Ahora solo el `strength` (que crece con uso real y decae sin uso) modula.
+2. **Decaimiento global de omega en `reward()`** — `ω = (1-β)·ω + β·r·0.01` para TODOS los nodos. Contaminaba todas las identidades parejo (causa raíz de la degradación entre vidas 0109/0111). **ELIMINADO.**
+
+**Filosofía aplicada (coherente con NOUS):**
+- **ω = identidad estable del concepto.** NO se toca. Es el ser.
+- **El conocimiento vive en las CONEXIONES** (aprender_conexion + strength + poda), no en ω.
+- El entorno y el interior se crean en el acto de relacionarse (el grafo se auto-organiza ante el estímulo), no reescribiendo las identidades.
+- El lenguaje interno (decoder) **modula** las conexiones, no dicta (label-feedback hypothesis, Frontiers 2012).
+
+**Verificado:** los omegas ya no cambian durante step+reward (0 nodos modificados). Boost 1.5 y decaimiento parejo fuera del código.

@@ -106,6 +106,24 @@ Cada experimento debe reportar QUÉ hacía el agente en cada estrato, no solo m�
 5. **exp_SGM_0118:** Evaluación multi-estrato completa — el agente vive una vida completa, reporte de los 6 estratos, sin corte por pasos.
 
 *(En orden: primero el formato 0114, después 0116 querer, 0117 curiosidad, y 0118 integración multi-estrato.)*
+*Nota 2026-08-06: 0114 YA SE CORRIÓ (ver resultados). Reveló que el agente nunca come (eat_total=0) y la obsesión con make_stone_sword. Eso llevó a la corrección del core abajo.*
+
+---
+
+## 7. CORRECCIÓN DEL CORE (2026-08-06) — el conocimiento está en las conexiones, ω es identidad
+
+### 7.1 Bug detectado y corregido
+- **Boost Causal 1.5** en `_aff()`: multiplicador fijo (+50% afinidad) a aristas tipo Causal. Era **hardcode arbitrarario** — daba ventaja sistemática sin que nazca del sustrato. **ELIMINADO.**
+- **Decaimiento global de ω** en `reward()`: `ω = (1-β)·ω + β·r·0.01` para TODOS los nodos. Contaminaba las identidades parejo (causa raíz de degradación entre vidas 0109/0111). **ELIMINADO.**
+
+### 7.2 Filosofía aplicada (coherente con NOUS + literatura)
+- **ω = identidad estable del concepto.** No se toca, no se aprende. Es el ser del concepto — la identidad del entorno y del interior.
+- **El conocimiento vive en las CONEXIONES** (`aprender_conexion` + `strength` + poda). La plasticidad es sináptica (Hebb), no en el cuerpo de la neurona.
+- **El entorno y el interior se crean en el acto de relacionarse.** La realidad percibida no es un dato externo fijo; es el patrón de conexiones que se auto-organiza ante el estímulo.
+- **El lenguaje interno (decoder) MODULA las conexiones, no dicta.** No reescribe identidades (label-feedback hypothesis, Frontiers 2012 — lenguaje modula procesamiento en curso, no warp el espacio perceptual).
+
+### 7.3 Verificado
+- Los ω ya no cambian durante step+reward (0 nodos modificados). Boost 1.5 y decaimiento parejo fuera del código.
 
 ---
 

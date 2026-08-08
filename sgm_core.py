@@ -190,12 +190,13 @@ class SGMAgent:
     def _aff(self, i, k):
         # Afinidad base: cos * vitalidad
         afinidad_base = self.hrr.cos(self.omega[i], self.omega[k]) * self.vitalidad[k]
-        # Modulacion por conn_type aprendido (strength continuo)
+        # Modulacion por conn_type aprendido (strength continuo, derivacion real del uso)
+        # NOTA (2026-08-06): se elimino el boost Causal 1.5 — era hardcode arbitrario
+        # que daba ventaja sistematica a aristas tipo Causal sin que nazca del sustrato.
+        # Solo el strength (que crece con uso genuino y decae sin uso) modula.
         conn = self.conn_type.get((i, k))
         if conn:
             afinidad_base *= conn.get("strength", 1.0)
-            if conn.get("tipo") == 1:  # Causal boost
-                afinidad_base *= 1.5
         return afinidad_base
 
     def tick(self, n=1):
@@ -356,9 +357,13 @@ class SGMAgent:
             self.status = "CONTRADICTORIA"
             self.doubt_cooldown = 10
         
-        for om in self.omega:
-            for j in range(self.D):
-                om[j] = (1 - beta) * om[j] + beta * r * 0.01
+        # NOTA (2026-08-06): se eliminó el decaimiento global de omega en reward().
+        # Antes: for om in self.omega: om[j] = (1-beta)*om[j] + beta*r*0.01
+        # Eso contaminaba TODAS las identidades (omega) con ruido parejo, corrompiendo
+        # la separación de conceptos y causando la degradación entre vidas (0109/0111).
+        # FILOSOFIA: omega = identidad ESTABLE del concepto (no se toca).
+        # El conocimiento vive en las CONEXIONES (aprender_conexion + strength), NO en omega.
+        # Recalcular memoria relacional con los omega estables:
         self.rel = self.hrr.relational_memory(self.edges, self.omega)
 
 # 6. Anidado profundo (0059g)

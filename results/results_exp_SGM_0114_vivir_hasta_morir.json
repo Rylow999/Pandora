@@ -1,0 +1,66 @@
+{
+  "experiment_id": "exp_SGM_0114",
+  "experiment_name": "vivir_hasta_morir_multi_estrato",
+  "phase": "Fase 8 \u2014 formato vivir hasta morir",
+  "date": "2026-08-06",
+  "hypothesis": "El aparato de vivir hasta morir revela por que muere el agente y si tiene querer operativo (correlacion food->eat) o come al azar. Establece el formato de evaluacion multi-estrato.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 2000
+  },
+  "result": {
+    "con_reward_novedad": {
+      "pasos": 170,
+      "tiles": 1,
+      "noop": 3.5,
+      "muerte": {
+        "step": 169,
+        "health": 2,
+        "food": 3,
+        "status": "CONTRADICTORIA",
+        "duda": 3
+      },
+      "grafo": {
+        "n_aristas_conn_type": 3,
+        "nodos_con_arista": 64
+      },
+      "apetito": {
+        "eat_total": 0,
+        "eat_con_hambre": 0,
+        "hambre_sin_eat": 0
+      },
+      "acciones": {
+        "make_stone_sword": 135,
+        "make_stone_pickaxe": 18,
+        "place_furnace": 11,
+        "noop": 6
+      }
+    },
+    "sin_reward_novedad_nc": {
+      "pasos": 163,
+      "tiles": 0,
+      "noop": 28.2,
+      "muerte": {
+        "step": 162,
+        "health": 2,
+        "food": 3,
+        "status": "CONTRADICTORIA",
+        "duda": 3
+      },
+      "apetito": {
+        "eat_total": 0,
+        "eat_con_hambre": 0,
+        "hambre_sin_eat": 0
+      }
+    }
+  },
+  "script": "experiments/exp_SGM_0114_vivir_hasta_morir.py",
+  "results_file": "results/results_exp_SGM_0114_vivir_hasta_morir.json",
+  "variant_of": null,
+  "lit_refs": [
+    "Berridge wanting vs liking \u2014 incentive salience medible como respuesta operante"
+  ],
+  "notes": "Aparato vivo-hasta-morir. Reporta 6 estratos. Establece el formato para los experimentos Fase 8 que siguen (0116 querer, 0117 curiosidad, 0118 integracion).",
+  "notes_criollo": "Dejamos al agente vivir hasta que muera, sin cortarlo por pasos. Asi vemos de verdad de que se muere: si de hambre sin comer, quiere el problema (no tiene querer); si muere peleando, es otra cosa. Tambien miramos todos los estratos: el grafo, como se mueve, si come cuando tiene hambre, y su estado interno."
+}
