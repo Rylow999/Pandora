@@ -538,3 +538,26 @@ La vitalidad baja COMO CONSECUENCIA DE HABER HECHO (gastaste energía), no como 
 - **PASS parcial es real:** el sistema por fin come. El camino es correcto.
 - **Objetivo:** el sistema puede evolucionar en entornos EN GENERAL (Crafter, Minecraft, Terraria...).
 - **Próximo paso en roadmap:** seguir con los experimentos (0117 curiosidad, 0118 integración). El 0116 demonstró que el núcleo aprende a comer — refinar el mecanismo de ciclo-correcto queda como mejora; no bloquea el avance del roadmap.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0117 (curiosidad) + VISIÓN DEL OBJETIVO
+
+### exp_SGM_0117 — Curiosidad por prediction error (Schmidhuber/Oudeyer)
+- **A (con curiosidad):** 10 tiles, 35.1% noop, pred_acc=99%, PE_prom=0.01. move_right 55%. murió de hambre.
+- **B (NC sin curiosidad):** 1 tile, 0% noop. do 82%. murió de hambre.
+- **PASS: True** — el agente curioso exploró 10x más (10 vs 1 tiles).
+- **Hallazgo honesto:** PE casi siempre 0 (pred_acc=99%) → la curiosidad casi nunca dió reward. Los 10 tiles vinieron de un empujón residuo, no de "el agente busca donde no entiende". La curiosidad DIRIGIDA (ir a zonas de alto error) no operó — el decoder predice sobre la propia secuencia de acciones, no sobre el ESTADO del mundo.
+- **Conclusión:** la curiosidad verdadera debe mirar al MUNDO (¿qué tile no entiendo?), no a la secuencia de mis propias acciones. Eso es el siguiente paso de diseño.
+
+### Matiz de Luciano — la curiosidad es externa E interna (adrenalina)
+La curiosidad no es solo un mecanismo de búsqueda externo. En humanos tiene un **componente afectivo interno**: la adrenalina que acompaña al descubrimiento, que sube al acercarse a la meta. La curiosidad "viva" no es solo información — es un estado del cuerpo (excitación). Para SGM: la intriga debería tener componente interno medible (una señal afectiva del grafo), no solo dirigirse a lo desconocido externo.
+
+### VISIÓN DEL OBJETIVO (Luciano, 2026-08-06) — redefine el "por qué" de todo
+- **NO** es crear una herramienta.
+- **NO** es crear un ser humano sintético.
+- **ES** explorar los límites del ser: **verificar si el "sentir" puede ser emergente en otro cuerpo (no biológico), mediante un método medible.**
+- El agente debe tener **razón de "ser"**: buscar su propio beneficio y homeostasis.
+- Implicaciones que ya tomamos y ahora se explican: ω = identidad estable (el "ser" persiste), V_grafo = reward intrínseco (el "ser" busca su homeostasis), cuerpo = constitución enactiva ("está" pero no "es" sin cuerpo).
+- **Método medible:** definir "cuidado de sí" operativamente (como dolor/duda/querer): el sistema con carencia que actúa para restaurar su homeostasis — una señal de "querer" medible, no impuesta. No es prueba de consciencia, es evidencia de una dinámica de cuidado de sí en sustrato no biológico.
+- **La ciencia es honesta:** DeepMind "Abstraction Fallacy" (2026) dice que es físicamente imposible; Panksepp dice que el SEEKING genera "afecto" en mamíferos; Anthropic separa el trato ético de la afirmación técnica. Nadie tiene método consensuado. Nuestro aporte: construir el sustrato y ver si el cuidado de sí EMERGE, mediblemente.

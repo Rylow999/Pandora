@@ -1,0 +1,54 @@
+{
+  "experiment_id": "exp_SGM_0117",
+  "experiment_name": "curiosidad_prediction_error",
+  "phase": "Fase 8 \u2014 curiosidad (Schmidhuber/Oudeyer)",
+  "date": "2026-08-06",
+  "hypothesis": "Si el prediction error del decoder genera reward intrinseco, el agente explora mas tiles y produce mas variedad de acciones que el NC sin curiosidad (la curiosidad rompe el atractor de accion predecible).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "VIEW": 20,
+    "eps_curiosidad": 0.2
+  },
+  "result": {
+    "A_curiosidad": {
+      "pasos": 185,
+      "tiles": 10,
+      "noop": 35.1,
+      "variedad": 3,
+      "pred_acc": 99.4,
+      "pe_prom": 0.01,
+      "muerte": {
+        "step": 184,
+        "food": 2,
+        "hp": 4,
+        "status": "INCONCLUSA"
+      }
+    },
+    "B_nc_sin_curiosidad": {
+      "pasos": 165,
+      "tiles": 1,
+      "noop": 0.0,
+      "variedad": 3,
+      "pred_acc": 0,
+      "pe_prom": 0,
+      "muerte": {
+        "step": 164,
+        "food": 3,
+        "hp": 2,
+        "status": "INCONCLUSA"
+      }
+    },
+    "pass": true
+  },
+  "script": "experiments/exp_SGM_0117_curiosidad.py",
+  "results_file": "results/results_exp_SGM_0117_curiosidad.json",
+  "variant_of": "exp_SGM_0113",
+  "lit_refs": [
+    "Schmidhuber 1991 \u2014 learning progress curiosity",
+    "Oudeyer & Kaplan 2007 \u2014 curiosity-driven exploration via prediction error",
+    "Berridge \u2014 wanting vs liking"
+  ],
+  "notes": "Curiosidad = prediction error del decoder -> reward intrinseco. NO es moverse mucho (0113 aimless wandering). El agente explora donde el modelo falla. NC: decoder apagado.",
+  "notes_criollo": "La curiosidad no es 'caminar mucho' \u2014 es querer ir donde no entend\u00e9s el mundo. El decoder predice lo que va a pasar; cuando se equivoca, hay algo nuevo que aprender, y eso da una recompensa interna. Es como cuando te intriga un sonido desconocido: no te atrae por moverse, te atrae por no saber qu\u00e9 es."
+}

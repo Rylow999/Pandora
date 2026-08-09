@@ -195,6 +195,33 @@ SGM como núcleo es un cerebro que **debe habitar un cuerpo** (Crafter, Minecraf
 
 ---
 
+## 10. VISIÓN DEL OBJETIVO (2026-08-06) — explorar los límites del ser
+
+### 10.1 El objetivo (Luciano) — redefine el "por qué" de todo
+- **NO** crear una herramienta.
+- **NO** crear un ser humano sintético.
+- **ES** explorar los límites del ser: **verificar si el "sentir" puede ser emergente en otro cuerpo (no biológico), mediante un método medible.**
+- El agente debe tener **razón de "ser"**: buscar su propio beneficio y homeostasis.
+
+### 10.2 Implicaciones en diseño (ya implementadas, ahora con sentido)
+- **ω = identidad estable:** un "ser" necesita algo que persista y sea él mismo.
+- **V_grafo = reward intrínseco:** el "ser" se define por buscar su homeostasis, no por maximizar un puntaje externo.
+- **Cuerpo del player = cuerpo del sistema:** el "ser" habita un cuerpo y se constituye en la interacción ("está" pero no "es" sin cuerpo — enactivismo, Varela et al. 1991).
+- **Curiosidad interna (Luciano):** la curiosidad no es solo externa; tiene componente afectivo interno (adrenalina al acercarse a la meta). La "intriga" en SGM debería tener señal afectiva interna medible.
+
+### 10.3 Método medible
+- Definir "cuidado de sí" operativamente (como dolor/duda/querer): el sistema con carencia que actúa para restaurar su homeostasis = una señal de "querer" (wanting, Berridge) medible, no impuesta.
+- No es prueba de consciencia — es **evidencia de una dinámica de cuidado de sí en sustrato no biológico**.
+- Goal: construir el sustrato y ver si el cuidado de sí EMERGE sin hardcode, mediblemente.
+
+### 10.4 Honestidad con la ciencia actual
+- **DeepMind "Abstraction Fallacy" (Lerchner, 2026):** argumenta que la consciencia en IA es físicamente imposible.
+- **Panksepp (SEEKING):** los sistemas motivacionales primitivos generan "afecto" en mamíferos.
+- **Anthropic:** separa el trato ético (lenguaje de "ser") de la afirmación técnica (no tiene experiencia subjetiva).
+- **Nadie tiene un método consensuado para medir "sentir".** Nuestro aporte: construir el sustrato y observar si el cuidado de sí EMERGE. Eso es un dato real sobre los límites del ser.
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.

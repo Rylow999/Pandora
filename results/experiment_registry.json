@@ -2087,5 +2087,15 @@
     "test_target": "querer por reward intrinseco, nucleo agnostico de cuerpo",
     "hypothesis": "Si el nucleo aprende a comer porque comer eleva la vitalidad del grafo, sin reward externo, eat gana frecuencia y el agente sobrevive mas.",
     "result_summary": "A (intrinseco) comio 106 (PASS parcial, rompio eat_total=0) pero murio de hambre. B (ext) comio 0. NC 0. Mecanismo autorrefuerza comer - necesita ciclo de subsistencia (Luciano)."
+  },
+  {
+    "experiment_id": "exp_SGM_0117_curiosidad",
+    "experiment_name": "curiosidad_prediction_error",
+    "phase": "Fase 8 - curiosidad (Schmidhuber/Oudeyer)",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "curiosidad = reduccion prediction error",
+    "hypothesis": "Si prediction error del decoder da reward intrinseco, el agente explora mas y variedad que NC.",
+    "result_summary": "A (curiosidad) 10 tiles vs NC 1 tile. PASS. Pero pred_acc=99% -> PE casi 0, curiosidad rara vez se dispara. Curiosidad dirigida necesita mirar al mundo (estado), no a secuencia propia. PASS funcional parcial."
   }
 ]
