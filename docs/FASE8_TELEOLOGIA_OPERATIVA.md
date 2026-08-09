@@ -311,6 +311,35 @@ El sistema funciona como el humano: **tenemos sesgos de cómo hacer algo, y cuan
 - Sin instinto: el sistema siente el hambre pero no sabe qué hacer (0119). Con instinto: prueba, y la experiencia le enseña.
 - El instinto es del SUSTRATO (la "especie"), no del script del experimento (el "diseñador").
 
+### 13.5 NO alcanza con sentir: el instinto debe ser AUTOLIMITATIVO (lección de la degeneración LLM)
+**La revelación (Luciano):** "no alcanza solo con sentir, falta algo que evite que se obsesione con tener la vitalidad alta."
+
+El patrón que se repite (en el agente y en la degeneración de LLM) es: el sistema encuentra un modo de "sentirse bien" o de no morir, y se clava en él (make_stone_pickaxe 100x, el loop de disculpa en los LLM). **Sentir + la primera solución = obsesión.**
+
+**Por qué:** si el instinto de alimentación fuera "comer siempre que se pueda", sería una compulsión disfuncional (un animal que come hasta reventar — Olds & Milner). El hambre debe ser CÍCLICA, no constante.
+
+**La solución (instinto autolimitativo):** el instinto modula su FUERZA por la carencia REAL.
+- Cuando V_grafo está MUY baja (hambre crítica) → el impulso a comer es fuerte.
+- Cuando el cuerpo se sacia (V_grafo se restaura) → el impulso se apaga naturalmente.
+- Resultado: el sistema come, se sacia, y el instinto lo SUELTA para que explore/haga otras cosas (curiosidad). No se queda comiendo hasta reventar.
+
+**Evita la obsesión porque el instinto es AUTOLIMITATIVO:** su propia condición (la carencia) desaparece cuando cumple su función. La carencia modula la fuerza; saciado → el impulso cesa.
+
+### 13.6 Diseño final del 0120 (evita la obsesión)
+El instinto de alimentación modula su fuerza por la carencia real:
+- `fuerza_instinto = instinto_fuerza_base * (umbral_carencia - V_grafo)` cuado V_grafo < umbral (cero si hay carencia).
+- Se suma a la selección de la acción `eat` SÓLO cuando hay carencia.
+- Cuando se sacia (V_grafo sube por comer), la fuerza cae y el sistema deja de favorecer `eat` — puede volver a explorar.
+- El veredicto (¿comer restauró la vida?) lo sigue dando la experiencia (refuerzo accion→nodo0), no el instinto.
+
+**En criollo:** el instinto no es "comer siempre" — es "comer cuando el cuerpo lo necesita". La carencia genera el impulso; saciado, el impulso se apaga y el sistema libera su atención para el mundo. Eso es el ciclo sano de subsistencia que buscamos desde el 0116.
+
+### 13.7 RESULTADO del 0120 (HITO): las 4 métricas PASARON
+- A (instinto): eat=66 (35%), comedon con hambre (6/6), NO obsesión (35%), vive 187 vs NC 154.
+- El sistema comió por PRIMERA VEZ en la historia del proyecto (0114/0116/0119 eran eat=0).
+- Ciclo completo: siente hambre → instinto inclina a comer → come → se sacia (V_grafo restaura) → vuelve a explorar (14 tiles vs 1).
+- **Pregunta abierta siguiente (Luciano):** ¿cómo lograr que el sistema se incline a APRENDER, no solo a comer? El instinto arranca la acción; falta que el sistema busque activamente reducir incertidumbre (curiosidad dirigida) una vez que la subsistencia básica está resuelta (Maslow: growth needs tras satisfacer deficiency needs).
+
 ---
 
 ## 6. Regla de honestidad (sin cambios, reafirmada)

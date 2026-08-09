@@ -1,0 +1,56 @@
+{
+  "experiment_id": "exp_SGM_0120",
+  "experiment_name": "instinto_especie_autolimitativo",
+  "phase": "Fase 8 - instinto de especie (ADN del sustrato)",
+  "date": "2026-08-06",
+  "hypothesis": "Con el instinto autolimitativo (empuje proporcional a la carencia), el sistema visita eat, come, se sacia y vuelve a explorar (no se obsesiona). Comparado con NC, come mas y el ciclo de subsistencia aparece.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "instinto_fuerza_base": 0.5,
+    "instinto_umbral_carencia": 0.3
+  },
+  "result": {
+    "A_instinto": {
+      "pasos": 187,
+      "tiles": 14,
+      "noop": 19.8,
+      "eat": 66,
+      "eat_pct": 35.3,
+      "eat_con_hambre": 6,
+      "hambre": 6,
+      "querer": true,
+      "muerte": {
+        "step": 186,
+        "food": 2.0,
+        "hp": 2.0,
+        "status": "CONTRADICTORIA",
+        "V_grafo_fin": 0.031
+      }
+    },
+    "NC_sin_instinto": {
+      "pasos": 154,
+      "tiles": 1,
+      "noop": 9.7,
+      "eat": 0,
+      "eat_pct": 0.0,
+      "eat_con_hambre": 0,
+      "querer": false
+    },
+    "pass_come": true,
+    "pass_querer": true,
+    "pass_no_obsesion": true,
+    "pass_supervivencia": true
+  },
+  "script": "experiments/exp_SGM_0120_instinto.py",
+  "results_file": "results/results_exp_SGM_0120_instinto.json",
+  "variant_of": "exp_SGM_0119",
+  "lit_refs": [
+    "Reflejo de succion innato (News24/Stanford/Cleveland)",
+    "Rooting reflex (StatPearls/NCBI)",
+    "Olds & Milner 1954 - reward intrinseco sin ancla colapsa",
+    "Holtzman 2019 - neural text degeneration (obsesion/loop)"
+  ],
+  "notes": "Instinto autolimitativo: fuerza del empuje a comer = base*(umbral-V_grafo), solo en carencia. Al saciarse se apaga (evita obsesion). NO pre-juzga el resultado (lo da la experiencia via refuerzo accion->nodo0). Es ADN del sustrato (reflejo de especie), no hardcode del disenador.",
+  "notes_criollo": "Le dimos al sistema el instinto del bebe: cuando el cuerpo se degrada por hambre, se siente empujado a probar comer. Pero el empuje es proporcional a la necesidad \u2014 cuando come y se sacia, el impulso se apaga y puede seguir explorando. Asi no se obsesiona con la vitalidad alta: come cuando lo necesita, no hasta reventar. Y que comer sea bueno o malo lo descubre el mismo por la experiencia."
+}

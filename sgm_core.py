@@ -166,6 +166,14 @@ class SGMAgent:
         self.V_grafo = 1.0
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
+        # INSTINTO DE ESPECIE (0120): reflejo incorporado del sustrato.
+        # En carencia (V_grafo baja), el sistema siente inclinacion a PROBAR la
+        # accion de alimentacion. AUTOLIMITATIVO: la fuerza crece con la carencia
+        # y se apaga al saciarse (V_grafo restaurado) -> no se obsesiona.
+        # NO pre-juzga si comer es bueno: eso lo aprende la experiencia.
+        self.instinto_alimentacion = 16      # accion 'eat' (el reflejo de esta especie/cuerpo)
+        self.instinto_umbral_carencia = 0.3  # V_grafo bajo este -> el instinto se activa
+        self.instinto_fuerza_base = 0.5      # fuerza base del impulso (modulada por carencia)
 
     def aprender_conexion(self, a, b):
         """Refuerza la conexion entre accion a y accion b basado en co-ocurrencia.
@@ -314,9 +322,21 @@ class SGMAgent:
         rank = ppr_route(self.edges, seed, self._aff, alpha=self.alpha, iters=100)
         
         best, bv = -1, -2.0
+        # INSTINTO DE ESPECIE (0120): fuerza modulada por la carencia real.
+        # Si V_grafo < umbral, la accion de alimentacion recibe un empuje proporcional
+        # a que tan degradado esta el cuerpo. Autolimitativo: al saciarse (V_grafo sube),
+        # la fuerza cae y el sistema puede volver a explorar (no se obsesiona).
+        en_carencia = self.V_grafo < self.instinto_umbral_carencia
+        fuerza_instinto = 0.0
+        if en_carencia:
+            fuerza_instinto = self.instinto_fuerza_base * (self.instinto_umbral_carencia - self.V_grafo)
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
+                # Empuje instintivo solo sobre la accion de alimentacion y solo en carencia.
+                # NO es veredicto (eso lo da la experiencia); es inclinacion a probar.
+                if en_carencia and a == self.instinto_alimentacion:
+                    score += fuerza_instinto
                 if score > bv:
                     bv, best = score, a
         

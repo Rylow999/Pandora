@@ -365,6 +365,8 @@ Cierre formal documentado en `FASE7_CIERRE_0056_0059.md` (el roadmap apunta ahí
 - **0118 (HECHO):** vida completa, 6 estratos. V_grafo se desangra 1.00→0.09 sin nada que lo restaure. Diagnóstico: el sistema siente el hambre pero no sabe qué hacer.
 - **0119 (HECHO):** acople directo grafo=cuerpo. A sobrevivió 265p vs NC 166p, V_grafo cayó a 0.008 (SINTIÓ el cuerpo). PERO no comió (eat=0): nunca visita `eat`, el querer no se forma.
 - **Siguiente (0120):** **INSTINTO DE ESPECIE** — un reflejo incorporado al sustrato (ADN) que en carencia (V_grafo baja) inclina al sistema a PROBAR la acción de alimentación. NO pre-juzga el resultado (eso lo aprende por experiencia). Resuelve el problema del 0119 (nunca visitaba eat). Ver §13 de FASE8_TELEOLOGIA_OPERATIVA.
+  - **HITO (0120 hecho):** las 4 métricas PASS. eat=66 primer vez en la historia, come con hambre (6/6), NO obsesión (35%), vive 187 vs 154. Ciclo subsistencia completo.
+  - **Siguiente (0121):** ¿cómo lograr que el sistema se incline a APRENDER (curiosidad dirigida / reducción de incertidumbre) una vez que la subsistencia básica está resuelta?
 
 ---
 

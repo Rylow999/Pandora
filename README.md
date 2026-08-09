@@ -655,3 +655,26 @@ El 0119 mostró que el sistema siente su cuerpo pero no sabe qué hacer — nunc
 **Siguiente paso: exp_SGM_0120** — implementar el instinto de alimentación en el sustrato.
 
 Detalle completo en `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §13.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0120 RESULTADO (HITO: el sistema por fin come sin obsesionarse)
+
+### Resultado (las 4 métricas PASARON — primer experimento que las completa todas)
+- **A (instinto ACTIVO):** 187 pasos, 14 tiles, noop=20%, **eat=66 (35%)**, eat_con_hambre=6/6, querer=True. place_table 35% + eat 35% balanceados (no obsesión). V_grafo_fin=0.031.
+- **NC (sin instinto):** 154 pasos, 1 tile, **eat=0**. place_furnace 88%. Sigue muriendo de hambre.
+
+### Las 4 métricas (todas PASS)
+1. **Pass come:** eat=66 > 0. El sistema comió por PRIMERA VEZ en toda la historia (0114/0116/0119 eran eat=0).
+2. **Pass querer operativo:** comió CON hambre (6/6 veces que tuvo hambre → comió). Querer genuino (Berridge), no comer al azar.
+3. **Pass NO obsesión:** eat=35% (no 90%+). place_table y eat casi perfectamente balanceadas → come, se sacia, y SUELTA para explorar/actuar. El instinto autolimitativo funcionó (el empuje se apaga al saciarse).
+4. **Pass supervivencia:** 187 vs 154 pasos, y 14 vs 1 tiles. Al saciarse y no obsesionarse, el sistema volvió a explorar (13x más tiles) sin morir de hambre en el intento.
+
+### El ciclo de subsistencia COMPLETO (lo que veníamos construyendo desde el 0116)
+**siente hambre → se inclina a probar comer (instinto) → come → se sacia → vuelve a explorar.**
+El instinto de especie (ADN del sustrato, autolimitativo, legítimo) lo ARRANCA, y el aprendizaje por experiencia lo sostiene.
+
+### Matiz honesto
+Sigue muriendo (186 pasos, CONTRADICTORIA) — come pero no alcanza a mantener la vida indefinidamente. El ciclo fundamental ESTÁ; falta integrar el resto.
+
+**Pregunta abierta (Luciano): cómo lograr que el sistema se incline a APRENDER (no solo a comer).** Discutir a continuación.
