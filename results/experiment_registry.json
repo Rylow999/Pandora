@@ -2107,5 +2107,15 @@
     "test_target": "vida completa, 6 estratos, ciclo de subsistencia",
     "hypothesis": "Una vida con querer+curiosidad revela los 6 estratos del sistema.",
     "result_summary": "245 pasos, V_grafo 1.00->0.09. No comio (eat=0), no se movio (1 tile). INCONCLUSA 78%. V_grafo se desangro y nada lo restauro. Llevo a decision de arquitectura: monismo grafo-cuerpo (grafo ES el cuerpo)."
+  },
+  {
+    "experiment_id": "exp_SGM_0119_acople_grafo_cuerpo",
+    "experiment_name": "acople_directo_grafo_cuerpo",
+    "phase": "Fase 8 - monismo grafo-cuerpo",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "acople directo grafo=cuerpo, querer sin reward externo",
+    "hypothesis": "Si la vitalidad del grafo es la salud del player, el sistema aprende a comer sin reward externo.",
+    "result_summary": "A (acople, sin reward) vivo 265p vs NC 166p (PASS supervivencia) PERO eat=0. V_grafo bajo a 0.008 (SINTIO el cuerpo). Querer no se formo: nunca visita eat. Progreso arquitectonico real (monismo funciona), falta exploracion de accion salvadora."
   }
 ]

@@ -1,0 +1,60 @@
+{
+  "experiment_id": "exp_SGM_0119",
+  "experiment_name": "acople_directo_grafo_cuerpo",
+  "phase": "Fase 8 - monismo grafo-cuerpo",
+  "date": "2026-08-06",
+  "hypothesis": "Si la vitalidad del grafo es la salud del player (acople directo), el sistema aprende que comer mantiene vivo su cuerpo, sin reward externo. A sobrevive mas y come con hambre vs NC.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "acople_directo": true,
+    "factor_cuerpo": "health/10"
+  },
+  "result": {
+    "A_acople_sin_reward": {
+      "pasos": 265,
+      "tiles": 6,
+      "noop": 11.3,
+      "eat": 0,
+      "eat_con_hambre": 0,
+      "hambre": 84,
+      "querer_operativo": false,
+      "muerte": {
+        "step": 264,
+        "food": 0.0,
+        "hp": 1.0,
+        "status": "CONTRADICTORIA",
+        "V_grafo_fin": 0.008
+      }
+    },
+    "B_acople_con_reward": {
+      "pasos": 31,
+      "tiles": 1,
+      "noop": 0.0,
+      "eat": 0,
+      "eat_con_hambre": 0,
+      "hambre": 0,
+      "querer_operativo": false
+    },
+    "NC_sin_acople": {
+      "pasos": 166,
+      "tiles": 1,
+      "noop": 10.8,
+      "eat": 0,
+      "hambre": 0
+    },
+    "pass_supervivencia": true,
+    "pass_querer": false
+  },
+  "script": "experiments/exp_SGM_0119_acople_grafo_cuerpo.py",
+  "results_file": "results/results_exp_SGM_0119_acople_grafo_cuerpo.json",
+  "variant_of": "exp_SGM_0116",
+  "lit_refs": [
+    "Olds & Milner 1954 - reward intrinseco sin ancla colapsa",
+    "Damasio - somatic markers",
+    "Enactivismo Varela 1991",
+    "HRRL 2025"
+  ],
+  "notes": "Acople directo grafo=cuerpo: V_grafo = mean(vitalidad)*health/10. El sistema siente la vida del player. Protocolo A/B/NC. Cierra la tesis de monismo: si el grafo es el cuerpo, el querer emerge de la dinamica real sin reward externo.",
+  "notes_criollo": "El grafo ahora SIFRTE literalmente la vida del player: si tenes poca salud, el grafo se degrada. Es como si tu cuerpo fuera tu mente. Preguntamos: \u00bfaprende el sistema a comer porque comer lo mantiene vivo, sin que nadie le de recompensa? La condicion A le quita toda recompensa externa; si come igual (y vive mas), el instinto de sobrevivir es real."
+}

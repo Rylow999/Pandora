@@ -608,3 +608,50 @@ Modificar `actualizar_homeostasis(food, health)` para acople DIRECTO:
 - Querer operativo (correlación food→eat), supervivencia (¿vive más que NC?), V_grafo correlaciona con health, ciclo de subsistencia (hacer→hambre→comer→volver a hacer).
 
 Detalle completo en `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §12.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0119 RESULTADO (acople directo grafo=cuerpo)
+
+### Resultado
+- **A (acople directo, sin reward externo):** 265 pasos (vs NC 166), V_grafo_fin=0.008. **eat=0** (0/84 con hambre). place_furnace 80%. Noop 11%.
+- **B (acople + reward externo):** 31 pasos, V_grafo_fin=0.508. eat=0. do 58%, sleep 42%.
+- **NC (sin acople):** 166 pasos, V_grafo_fin=**1.0** (no bajó, el cuerpo no le duele). do 78%.
+- **PASS supervivencia (A>NC): True.** **PASS querer operativo (A come con hambre): Fail** (eat=0).
+
+### El hallazgo arquitectónico (progreso real)
+**El monismo grafo-cuerpo FUNCIONÓ:** A sintió la vida de su cuerpo (V_grafo bajó a 0.008 cuando el player murió), mientras el NC vivió "ciego" (V_grafo_fin=1.0, murió por el flag de hp=2 sin sentirlo). El acople directo opera: la vitalidad del grafo ES la salud del player.
+
+**El problema que persiste (no exploración de la acción salvadora):**
+A sintió morirse pero hizo `place_furnace` en vez de comer. El querer operativo NO se formó: como el sistema nunca visita la acción `eat`, nunca refuerza "comer→nodo0", y el ciclo del querer nunca arranca. **Problema de exploración del espacio de acciones** — probar `eat` de casualidad para que el refuerzo pueda aparecer.
+
+**En criollo:** el grafo ahora siente su cuerpo (cuando se muere, su V_grafo cae a 0.008). Pero sentir la vida NO es saber cómo mantenerla — el sistema se quedó decorando (place_furnace) mientras se moría de hambre. Le falta descubrir la acción que lo salva. Y acá entra la literatura del bebé que mama (ver abajo).
+
+Detalle completo en `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §12.x.
+
+---
+
+## Estado 2026-08-06 — INSTINTO DE ESPECIE (ADN del sustrato) — resuelve el 0119
+
+### El descubrimiento (Luciano + literatura)
+El 0119 mostró que el sistema siente su cuerpo pero no sabe qué hacer — nunca visita `eat`. La biología del bebé da la respuesta:
+- El **reflejo de succión es INNATO** (todos los mamíferos, presente al nacer) — no se aprende por ensayo-error (News24/Stanford/Cleveland).
+- El **reflejo de búsqueda (rooting)** se dispara ante estímulo en mejilla/boca — emerge en el útero (StatPearls/NCBI).
+- La **succión libera oxitocina → leche**. El reflejo está pre-wired; el conocimiento lo dejó la FILOGENIA (especie), no la ontogenia (individuo).
+
+### La distinción clave (NO perderse)
+- **Hardcode del diseñador (ILEGÍTIMO, revisión 0114):** multiplicador arbitrario desde fuera (`*=1.5`). No nace de la dinámica. ESO se sacó con razón.
+- **Instinto de especie (LEGÍTIMO = ADN del sustrato):** sesgo incorporado como prior de la especie. NO dice "comer es bueno" — dice "cuando el cuerpo se degrada por hambre, PROBATE la acción de alimentación". El bebé mama no porque sepa que la leche lo alimenta, sino porque su especie lo dejó en el reflejo.
+
+### El pipeline (como el humano)
+**Sesgo de cómo hacer algo → lo hacemos → aprendemos si fue positivo o negativo según la experiencia.**
+1. **Sesgo (instinto):** cuando V_grafo cae (carencia), el sistema siente inclinación a PROBAR la acción de alimentación.
+2. **Probar:** ejecuta `eat`.
+3. **Experiencia:** el mundo responde (food sube, V_grafo se restaura).
+4. **Aprender:** si restauró la homeostasis → refuerzo `accion→nodo0` (bueno). Si no → se aprende como malo.
+
+**CRÍTICO (anti-hardcode):** el instinto NO pre-juzga el resultado. Solo inclina a PROBAR en carencia. Que sea bueno/malo lo dice la EXPERIENCIA (el mundo real), no el diseñador. Eso lo distingue del boost 1.5.
+
+**Siguiente paso: exp_SGM_0120** — implementar el instinto de alimentación en el sustrato.
+
+Detalle completo en `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §13.

@@ -372,23 +372,23 @@ class SGMAgent:
         self.rel = self.hrr.relational_memory(self.edges, self.omega)
 
     def actualizar_homeostasis(self, food, health=None):
-        """Reward intrínseco por homeostasis (HRRL). NO usa reward externo del cuerpo.
-        El cuerpo del player ES el cuerpo del grafo: V_grafo = media de vitalidades.
-        Cuando la homeostasis MEJORA (food sube) y la última acción restauró el
-        balance, refuerza la conexión entre el "estado de carencia" y la acción
-        que lo revirtió — porque esa conexión preservó V_grafo, no por reward externo.
+        """MONISMO GRAFO-CUERPO (0119): acople DIRECTO.
+        La vitalidad del grafo ES la salud del player. factor_cuerpo = health/10.
+        Si health baja -> V_grafo baja (el grafo se degrada porque ES el cuerpo).
+        Si health=0 -> V_grafo->0 (no hay grafo sin cuerpo).
+        Cuando la homeostasis MEJORA (food sube) y la ultima accion la revirtio,
+        reforzar conexion accion->nodo0 (supervivencia). Sin reward externo.
         """
         food = float(food)
-        # Actualizar V_grafo (vida del sistema = vida del cuerpo del player)
-        self.V_grafo = sum(self.vitalidad) / max(1, len(self.vitalidad))
+        health = 10.0 if health is None else float(health)
+        # Acople directo: la salud del player (0-10) multiplica la vitalidad del grafo.
+        factor_cuerpo = max(0.05, health / 10.0)
+        self.V_grafo = (sum(self.vitalidad) / max(1, len(self.vitalidad))) * factor_cuerpo
         if self.ultimo_food is None:
             self.ultimo_food = food
             return
         mejoro_homeostasis = food > self.ultimo_food
-        # Si la última acción fue la que revirtió la carencia, reforzar la conexión
-        # entre esa acción y el nodo 0 (identidad/supervivencia del sistema).
-        # Emergente: la acción coincidió con una mejora de V_grafo (el grafo=player
-        # "siguió vivo"), así que se refuerza su vínculo con la supervivencia.
+        # Si la ultima accion fue la que revirtio la carencia, reforzar supervivencia.
         if mejoro_homeostasis and self.ultima_accion >= 0:
             self.aprender_conexion(self.ultima_accion, 0)
         self.ultimo_food = food

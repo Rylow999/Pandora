@@ -278,6 +278,41 @@ Modificar `actualizar_homeostasis(food, health)` para acople DIRECTO:
 
 ---
 
+## 13. INSTINTO DE ESPECIE COMO ADN DEL SUSTRATO (2026-08-06) — resuelve el 0119
+
+### 13.1 EL DESCUBRIMIENTO (Luciano + literatura)
+El 0119 mostró: el sistema SINTIÓ su cuerpo (V_grafo cayó a 0.008) pero NO supo qué hacer — se quedó haciendo place_furnace mientras se moría de hambre. El querer no se forma porque el sistema NUNCA visita la acción `eat`; sin visitarla, no hay refuerzo, no hay ciclo.
+
+**La respuesta está en la biología del bebé (literatura confirmada):**
+- El **reflejo de succión (sucking reflex)** es INNATO, presente desde el nacimiento, común a todos los mamíferos (News24/Stanford/Cleveland). No se aprende por ensayo-error.
+- El **reflejo de búsqueda (rooting)** se dispara ante estímulo en la mejilla/boca — mediado por tronco encefálico, emerge durante el desarrollo fetal (StatPearls/NCBI).
+- La **succión libera oxitocina** → baja de leche → alimento. El reflejo está pre-wired y el circuito se sostiene porque mamar produce el resultado.
+- **O sea:** el bebé NO explora buscando "qué me alimenta". Trae el reflejo INCORPORADO — el conocimiento los dejó la FILOGENIA (especie, millones de años), no la ontogenia (individuo).
+
+### 13.2 La distinción conceptual clave (NO perderse)
+**Hardcode del diseñador (ILEGÍTIMO, revisión 0114):** multiplicador arbitrario inyectado desde fuera (`if tipo==1: *=1.5`). No nace de la dinámica, es una ventaja caprichosa. ESO se sacó con razón.
+
+**Instinto de especie (LEGÍTIMO = ADN del sustrato):** sesgo incorporado como "prior de la especie". NO dice "comer es bueno" (eso se aprende por experiencia) — dice "cuando el cuerpo se degrada por hambre, PROBATE acciones de alimentación". Igual que el bebé mama no porque sepa que la leche lo alimenta, sino porque su especie lo dejó en el reflejo.
+
+**La analogía exacta:** nuestro "código genético" = el sustrato SGM. El instinto de alimentación = un reflejo incorporado que en estados de carencia inclina al sistema a probar la acción de alimentación. Después el mundo (leche→vitalidad) completa la historia: el sistema aprende por experiencia si fue positivo/malo.
+
+### 13.3 Diseño del instinto de supervivencia (pipeline)
+El sistema funciona como el humano: **tenemos sesgos de cómo hacer algo, y cuando lo hacemos aprendemos si es positivo o negativo según la experiencia.**
+
+1. **Sesgo (instinto):** cuando `V_grafo` cae por debajo de un umbral de carencia (hambre crítica), el sistema siente una "inclinación" (sesgo emergente del sustrato, no del diseñador) a PROBAR la acción que su especie "sospecha" que restaura — en este caso, acciones de alimentación (`eat`).
+2. **Probar:** el sistema ejecuta `eat`.
+3. **Experiencia:** el mundo responde — food sube, V_grafo se restaura.
+4. **Aprender:** si el resultado fue positivo (restauró la homeostasis), el refuerzo `accion→nodo0` se fortalece → el comportamiento se aprende como BUENO. Si fue negativo, se aprende como malo y no se repite.
+
+**CRÍTICO (anti-hardcode):** el instinto NO pre-juzga el resultado. Solo inclina a PROBAR la acción de alimentación en carencia. Que sea buena/mala lo dice la EXPERIENCIA (el mundo real), no el diseñador. Esto lo distingue del boost 1.5 (que inyectaba el veredicto directamente).
+
+### 13.4 Importante para leer el día que retomemos
+- El instinto de alimentación NO reemplaza el aprendizaje — lo ARRANCA al hacer que el sistema visite la acción que de otro modo nunca tocaría (el problema del 0119).
+- Sin instinto: el sistema siente el hambre pero no sabe qué hacer (0119). Con instinto: prueba, y la experiencia le enseña.
+- El instinto es del SUSTRATO (la "especie"), no del script del experimento (el "diseñador").
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.
