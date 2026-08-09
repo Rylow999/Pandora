@@ -1,0 +1,7 @@
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Resultados de corridas temporales (mantener los JSON de resultados commiteados)
+*.tmp
