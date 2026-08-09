@@ -184,6 +184,12 @@ class SGMAgent:
         self.instinto_explorar_fuerza = 0.4  # empuje a moverse
         self.acciones_movimiento = {1,2,3,4} # move_left/right/up/down
         self.ultimo_estado_q = None
+        # INSTINTO DE DESPLAZAMIENTO (0122): el movimiento es la accion con RAZON.
+        # Se activa cuando la necesidad NO se satisface donde el cuerpo esta.
+        self.necesidad_insatisfecha = False
+        self.instinto_desplazar_fuerza = 0.6
+        self.devaluar_umbral = 0.35       # V_grafo bajo este => hay carencia real
+        self.devaluar_fuerza = 0.4        # castigo a acciones locales que no resuelven
 
     def aprender_conexion(self, a, b):
         """Refuerza la conexion entre accion a y accion b basado en co-ocurrencia.
@@ -347,6 +353,13 @@ class SGMAgent:
         fuerza_explorar = 0.0
         if quiere_explorar:
             fuerza_explorar = self.instinto_explorar_fuerza
+        # INSTINTO DE DESPLAZAMIENTO (0122): el movimiento es la accion con RAZON.
+        # Si la necesidad no se satisface localmente (carecia con alimento/amenaza),
+        # las acciones locales que NO resuelven se devaluan y el movimiento gana peso.
+        # El cuerpo se MUEVE porque quedarse no funciona (busca/escapa).
+        en_carencia_grave = self.V_grafo < self.devaluar_umbral
+        necesidad_insat = en_carencia_grave and (self.ultima_accion == self.instinto_alimentacion)
+        self.necesidad_insatisfecha = necesidad_insat
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
@@ -357,6 +370,14 @@ class SGMAgent:
                 # Instinto de exploracion: empuja a MOVERSE cuando el mundo es desconocido.
                 if quiere_explorar and a in self.acciones_movimiento:
                     score += fuerza_explorar
+                # Desplazamiento con razon: si la necesidad no se satisface localmente
+                # (hambre y comer no funciona), devalua las acciones locales que no
+                # resuelven y empuja el movimiento (el cuerpo busca donde si hay recurso).
+                if necesidad_insat:
+                    if a not in self.acciones_movimiento:
+                        score -= self.devaluar_fuerza
+                    elif a in self.acciones_movimiento:
+                        score += self.instinto_desplazar_fuerza
                 if score > bv:
                     bv, best = score, a
         

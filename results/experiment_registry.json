@@ -2137,5 +2137,35 @@
     "test_target": "instinto de exploracion mueve al sistema a lo desconocido",
     "hypothesis": "Con instinto de exploracion, el sistema se mueve a lo desconocido cuando su modelo falla.",
     "result_summary": "FAIL (3 metricas). A=1 tile, NC=2 tiles, mov=0-1%. El PPR nunca elige acciones de movimiento: el instinto empuja sobre acciones no-viables. Diagnostico (Luciano): el sistema es hipostatico, no usa su cuerpo para buscar comida/huir de amenazas. Lleva a 0122: reconocimiento del desplazamiento."
+  },
+  {
+    "experiment_id": "exp_SGM_0113_decoder_duda",
+    "experiment_name": "decoder_alimenta_duda",
+    "phase": "Decoder -> duda (sustrato, no cape)",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "decoder integrado a check_stagnation via predecibilidad bigrama",
+    "hypothesis": "Integrar el decoder (predecibilidad bigrama) a check_stagnation dispara la duda ante secuencias repetitivas que la novedad de acciones unicas NO detecta.",
+    "result_summary": "PASS. decoder+duda noop 2.2% vs duda clasica 14.1%. PERO NC sin duda exploro 33 tiles con 2 acciones = 5x mas que cualquier variante con duda (4-6 tiles). El decoder funciona, pero la duda (en ambas variantes) enjaula al agente en un micro-espacio. Lo que movio tiles fue deambular sin duda, no curiosidad."
+  },
+  {
+    "experiment_id": "exp_SGM_0114_vivir_hasta_morir",
+    "experiment_name": "vivir_hasta_morir_multi_estrato",
+    "phase": "Fase 8 - formato vivir hasta morir",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "aparato vivir hasta morir, evaluacion multi-estrato",
+    "hypothesis": "El aparato vivir-hasta-morir revela por que muere el agente y si tiene querer operativo (correlacion food->eat) o come al azar.",
+    "result_summary": "Establece formato multi-estrato. Con reward novedad: 227 pasos, comio 0 (eat_total=0, hambre_sin_eat=46), se movio a move_up 176x pero 6 tiles. NC: 176 pasos, noop 64.8%. El aparato revelo una muerte por inanicion que el corte por pasos escondia. Llevo a la deteccion del hardcode (boost espada) que se corrigio en 0114 post."
+  },
+  {
+    "experiment_id": "exp_SGM_0122_desplazamiento",
+    "experiment_name": "instinto_desplazamiento_con_razon",
+    "phase": "Fase 8 - instinto de desplazamiento (reconocimiento del desplazamiento)",
+    "date": "2026-08-09",
+    "status": "done",
+    "test_target": "el cuerpo se desplaza ante carencia grave tras comer sin exito (hipostasia)",
+    "hypothesis": "Con el instinto de desplazamiento, cuando la carencia grave persiste tras comer, el sistema devalua acciones locales que no resuelven y se mueve, explorando mas tiles y viviendo mas que el NC (solo alimentacion). Autolimitativo, no deambulo perpetuo.",
+    "result_summary": "PASS tecnico-funcional PARCIAL. PASS se mueve (A mov=7 vs NC mov=0, rompe el muro de 0121 que era mov=0%), PASS explora (7 vs 1 tiles), PASS no deambulo (mov=5%). FAIL supervivencia (A=134 vs NC=156), FAIL querer operativo (querer=False ambos, hambre=0). El instinto de desplazamiento rompe la hipostasia (el cuerpo por fin se mueve ante carencia) pero no redirige el atractor: A se obsesiono con make_iron_pickaxe 76%. Siguiente hipotesis: integrar el desplazamiento con querer DIRIGIDO a recurso (moverse adonde), no solo salir de donde esta."
   }
 ]

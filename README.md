@@ -729,3 +729,30 @@ El sistema debe **reconocer que puede desplazarse en el espacio si es necesario*
 - **En criollo:** el ser que quiere vivir no se queda comiendo donde no hay comida — se mueve a buscar. El bebé no mama del aire; busca el pecho.
 
 Detalle completo: `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §15.
+
+---
+
+## Estado 2026-08-09 — exp_SGM_0122 RESULTADO (PASS técnico-funcional PARCIAL)
+
+### Resultado
+- **A (desplazamiento activo):** 134 pasos, **7 tiles**, mov=5.2% (7 moves), noop=0%. eat=7. querer=False.
+  - Acciones: make_iron_pickaxe 76%, make_wood_sword 13%, eat 5%, move_down 4.5%, move_right 0.7%.
+  - carencia-insatisfecha disparada en 7 steps (5.2%). Muerte: step 133, food=4, hp=2, INCONCLUSA, V_grafo_fin=0.052.
+- **NC (desplazamiento apagado):** 156 pasos, **1 tile**, mov=0%, noop=0%. eat=44. querer=False.
+  - Acciones: make_stone_pickaxe 72%, eat 28%. Muerte: step 155, food=3, hp=2, INCONCLUSA, V_grafo_fin=0.042.
+
+### Veredicto
+- PASS **se mueve** (A mov=7 > NC mov=0) — el instinto de desplazamiento **rompe el muro de mov=0%** que el 0121 no pudo (0121: A mov=0.0%). Es el primer experimento en que el sistema se desplaza ante carencia.
+- PASS **explora** (7 tiles vs 1) — el cuerpo por fin ve mundo nuevo.
+- PASS **no deambulo** (mov=5% < 60%) — el movimiento quedó anclado a la carencia, no es deambular perpetuo. Correcto por diseño.
+- FAIL **supervivencia** (134 vs 156) — el NC que no se mueve vive más. El desplazamiento no dio ventaja evolutiva.
+- FAIL **querer operativo** (querer=False en ambos) — ni A ni NC mostraban correlación hambre→eat (hambre=0 en ambos: el food nunca bajó de 3 en ventanas de medición; murieron más por desangrado de hp que por hambre estricta).
+
+### Diagnóstico honesto
+El desplazamiento **resolvió el síntoma de hipostasia** (el cuerpo finalmente se mueve cuando quedarse no funciona: carencia_insat se disparó en 5% y eso devolvió 7 moves). PERO no resolvió el núcleo: el sistema siguen en un atractor de crafting (A se obsesionó con make_iron_pickaxe 76%, NC con make_stone_pickaxe 72%). El atractor cambió de lugar, no desapareció. Los 7 moves no alcanzaron para encontrar comida ni cambiar el destino (V_grafo se desangró igual hacia 0.05).
+
+**Matiz sobre querer=False:** hambre=0 medido no significa "no quiere comer" en sentido fuerte — el sistema se obsesionó fabricando antes de que el hambre apremiara, y murió por hp (desangrado) más que por hambre estricta. El querer de comer del 0120 (seed 42) no se reprodujo con este flujo de acciones.
+
+**Conclusión para el roadmap:** el instinto de desplazamiento es MECÁNICA CORRECTA pero INSUFICIENTE por sí solo. Rompe la hipostasia (se mueve) pero no redirige el atractor hacia subsistencia ni hacia querer. Siguiente hipótesis: el problema ya no es "no moverse" sino "moverse dónde": el desplazamiento debe integrarse con una señal de QUÉ buscar (querer dirigido a recurso), no solo "salir de donde estoy". Conecta con el 0116 (querer por ciclo de subsistencia) — el ciclo hacer→gastar→restaurar aún no se cierra con búsqueda espacial.
+
+Ver `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §15 (reconocimiento del desplazamiento).
