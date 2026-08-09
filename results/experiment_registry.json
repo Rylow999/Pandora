@@ -2097,5 +2097,15 @@
     "test_target": "curiosidad = reduccion prediction error",
     "hypothesis": "Si prediction error del decoder da reward intrinseco, el agente explora mas y variedad que NC.",
     "result_summary": "A (curiosidad) 10 tiles vs NC 1 tile. PASS. Pero pred_acc=99% -> PE casi 0, curiosidad rara vez se dispara. Curiosidad dirigida necesita mirar al mundo (estado), no a secuencia propia. PASS funcional parcial."
+  },
+  {
+    "experiment_id": "exp_SGM_0118_multi_estrato",
+    "experiment_name": "evaluacion_multi_estrato_completa",
+    "phase": "Fase 8 - cierre, evaluacion multi-estrato",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "vida completa, 6 estratos, ciclo de subsistencia",
+    "hypothesis": "Una vida con querer+curiosidad revela los 6 estratos del sistema.",
+    "result_summary": "245 pasos, V_grafo 1.00->0.09. No comio (eat=0), no se movio (1 tile). INCONCLUSA 78%. V_grafo se desangro y nada lo restauro. Llevo a decision de arquitectura: monismo grafo-cuerpo (grafo ES el cuerpo)."
   }
 ]

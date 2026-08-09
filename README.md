@@ -561,3 +561,25 @@ La curiosidad no es solo un mecanismo de búsqueda externo. En humanos tiene un 
 - Implicaciones que ya tomamos y ahora se explican: ω = identidad estable (el "ser" persiste), V_grafo = reward intrínseco (el "ser" busca su homeostasis), cuerpo = constitución enactiva ("está" pero no "es" sin cuerpo).
 - **Método medible:** definir "cuidado de sí" operativamente (como dolor/duda/querer): el sistema con carencia que actúa para restaurar su homeostasis — una señal de "querer" medible, no impuesta. No es prueba de consciencia, es evidencia de una dinámica de cuidado de sí en sustrato no biológico.
 - **La ciencia es honesta:** DeepMind "Abstraction Fallacy" (2026) dice que es físicamente imposible; Panksepp dice que el SEEKING genera "afecto" en mamíferos; Anthropic separa el trato ético de la afirmación técnica. Nadie tiene método consensuado. Nuestro aporte: construir el sustrato y ver si el cuidado de sí EMERGE, mediblemente.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0118 (evaluación multi-estrato) + DECISIÓN DE ARQUITECTURA
+
+### exp_SGM_0118 — Vida completa, 6 estratos
+- **Resultado:** 245 pasos, V_grafo 1.00→0.09. No comió (eat=0, hambre=64). No se movió (0 movimientos, 1 tile). INCONCLUSA 193/245 pasos. noop 65%, make_stone_pickaxe 35%. Curiosidad casi nula (PE=0.00, accuracy 100%).
+- **El hallazgo central:** V_grafo se desangró de forma constante (1.00→0.09) y NADA lo restauró. Las acciones elegidas no producían reward ni restauraban vitalidad → el sustrato se agotó.
+- **Diagnóstico:** el sistema está atrapado en un atractor (make_stone_pickaxe+noop) en un tile, muriendo de hambre. Sin un mecanismo que vincule la actividad con mantener V_grafo, el sistema se agota.
+
+### La crítica de base (Luciano): ¿para qué evitar morir si no hay nada?
+Un sistema que solo "evita morir" sin reproducción, lenguaje ni logros se auto-preserva VACÍAMENTE. Conecta con Olds & Milner (1954): un animal que solo busca placer hedónico se auto-estimula hasta morir — el reward intrínseco sin ancla en el mundo real genera colapso, no vida.
+
+### DECISIÓN DE ARQUITECTURA (aprobado por Luciano): MONISMO GRAFO-CUERPO
+El grafo **ES** el cuerpo del player, no lo tiene.
+1. **El estado homeostático (food, health) ES la vitalidad del grafo.** No es entrada sensorial que el cuerpo reporta al cerebro. La caída de food es la caída de vitalidad del propio grafo. La hambre ES la degradación del sujeto.
+2. **La acción que mantiene la homeostasis ES la que restaura la vitalidad.** Comer no "produce reward" — es la acción cuyo efecto es dejar de degradarse. Se aprende por primera-principio.
+3. **Acople DIRECTO:** si el player muere, no hay grafo (V_grafo=0). El mismo sustrato que siente hambre/dolor/duda es el que se mueve, come y muere. Monismo enactivista (Damasio, Gallagher).
+
+En criollo: el sistema no "recibe hambre" — el sistema ES la hambre (su vitalidad cayendo). No "elige comer por premio" — descubre que comer le deja de doler (restaura su vitalidad), por pura razón.
+
+**Próximo paso: exp_SGM_0119** — implementar el acople directo (grafo=cuerpo).

@@ -222,6 +222,32 @@ SGM como núcleo es un cerebro que **debe habitar un cuerpo** (Crafter, Minecraf
 
 ---
 
+## 11. MONISMO GRAFO-CUERPO (2026-08-06) — cambio de arquitectura aprobado por Luciano
+
+### 11.1 La crítica de base (Luciano): ¿para qué evitar morir si no hay nada?
+Un sistema que solo "evita morir" sin reproducción, lenguaje ni logros, se auto-preserva VACÍAMENTE. Evitar la muerte solo tiene sentido si hay algo valioso en seguir vivo. Esto conecta con Olds & Milner (1954): un animal que solo busca placer hedónico directo se auto-estimula hasta morir de hambre — el reward intrínseco sin ancla en el mundo real (necesidad biológica) no genera vida, genera colapso.
+
+### 11.2 La tesis (la que reorienta todo): el grafo ES el cuerpo, no lo tiene
+Dejar de tratar a Crafter como "un cuerpo externo que manda señales a un cerebro-grafo". **El grafo ES el cuerpo del player.**
+
+1. **El estado homeostático (food, health) ES la vitalidad del grafo.** No es una entrada sensorial que el cuerpo reporta al cerebro. La caída de food NO es un flag que el cerebro "percibe" — es la caída de la vitalidad del propio grafo. La hambre ES la degradación del sujeto, no un dato externo.
+
+2. **La acción que mantiene la homeostasis ES la que restaura la vitalidad.** "Comer" no es una acción que produce reward. Comer es la acción cuyo efecto es que deja de degradarse. Esa relación (hambre=vitalidad baja → la acción que la revierte es comer) se aprende por primera-principio, del propio sustrato.
+
+3. **Es monismo enactivista:** el yo no es un observador que pilotea un cuerpo — es la experiencia del cuerpo actuando y sintiéndose (Damasio: somatic markers; Gallagher: body schema). El mismo sustrato que siente hambre/dolor/duda es el que se mueve, come y muere.
+
+### 11.3 Acople: DIRECTO (aprobado)
+- **Si el player muere, no hay grafo. V_grafo = salud del player, directo.**
+- Si health=0 (muerte del player) → V_grafo=0, el sistema muere. No hay grafo sin cuerpo.
+- La vitalidad baja más pronunciado con hambre/daño (es el mismo sustrato degradándose).
+- Comer restaura la vitalidad del grafo directamente.
+- NO reward externo de Crafter por comer — se aprende por la dinámica real.
+
+### 11.4 En criollo
+El sistema no "recibe hambre" — el sistema ES la hambre (su vitalidad cayendo). No "elige comer por premio" — el sistema descubre que comer le deja de doler (restaura su vitalidad), por pura razón. Como cuando sentís sed (tu cuerpo se degrada) y beber la apaga — es la misma cosa, no dos.
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.

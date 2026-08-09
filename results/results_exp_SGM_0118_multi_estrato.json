@@ -1,0 +1,77 @@
+{
+  "experiment_id": "exp_SGM_0118",
+  "experiment_name": "evaluacion_multi_estrato_completa",
+  "phase": "Fase 8 - cierre, evaluacion multi-estrato",
+  "date": "2026-08-06",
+  "hypothesis": "Una vida entera con querer(0116)+curiosidad(0117) revela los 6 estratos del sistema. Objetivo: analizar el ciclo de subsistencia completo (hacer->hambre->comer->volver a hacer).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "VIEW": 20,
+    "EPS_CURIOSIDAD": 0.2
+  },
+  "result": {
+    "supervivencia": {
+      "pasos": 245,
+      "muerte": {
+        "step": 245,
+        "food": 0,
+        "hp": 2,
+        "status": "CONTRADICTORIA",
+        "duda": 3,
+        "V_grafo": 0.092
+      },
+      "noop": 65.3,
+      "tiles": 1,
+      "movimientos": 0
+    },
+    "grafo": {
+      "aristas_inicio": 0,
+      "aristas_fin": 1,
+      "V_grafo_inicio": 1.0,
+      "V_grafo_fin": 0.092,
+      "conexiones_supervivencia": 1
+    },
+    "movimiento": {
+      "rango_x": [
+        32,
+        32
+      ],
+      "rango_y": [
+        32,
+        32
+      ]
+    },
+    "apetito": {
+      "eat_total": 0,
+      "eat_con_hambre": 0,
+      "hambre_total": 64,
+      "querer_operativo": false
+    },
+    "estados_internos": {
+      "status": {
+        "ACTIVA": 26,
+        "INCONCLUSA": 193,
+        "CONTRADICTORIA": 26
+      },
+      "duda_max": 3,
+      "E_acum_max": 4.7
+    },
+    "curiosidad": {
+      "n_pred": 225,
+      "acc_pred": 99.55555555555556,
+      "pe_prom": 0.004
+    }
+  },
+  "script": "experiments/exp_SGM_0118_multi_estrato.py",
+  "results_file": "results/results_exp_SGM_0118_multi_estrato.json",
+  "variant_of": "exp_SGM_0114",
+  "lit_refs": [
+    "Maslow 1943 - subsistencia antes que crecimiento",
+    "Varela et al 1991 - enactivismo",
+    "Panksepp SEEKING",
+    "Schmidhuber/Oudeyer curiosidad"
+  ],
+  "notes": "Vida completa sin corte, 6 estratos. Integra querer(0116)+curiosidad(0117). Diario de vida cada 50 pasos. Analiza el ciclo de subsistencia completo.",
+  "notes_criollo": "Es la foto completa de una vida: cuanto vivio, por que murio, como se movio, si comio cuando tuvo hambre, que paso en su interior (dolor, duda), y si fue curioso. Todo junto, como una historia."
+}
