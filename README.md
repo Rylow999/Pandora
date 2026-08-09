@@ -583,3 +583,28 @@ El grafo **ES** el cuerpo del player, no lo tiene.
 En criollo: el sistema no "recibe hambre" — el sistema ES la hambre (su vitalidad cayendo). No "elige comer por premio" — descubre que comer le deja de doler (restaura su vitalidad), por pura razón.
 
 **Próximo paso: exp_SGM_0119** — implementar el acople directo (grafo=cuerpo).
+
+---
+
+## Estado 2026-08-06 — Diseño del exp_SGM_0119 (acople directo grafo=cuerpo)
+
+### Hipótesis falsable
+Si la vitalidad del grafo ES la salud del player (acople directo, monismo grafo-cuerpo), cuando el player tiene hambre la vitalidad del grafo cae (el cuerpo=sistema se degrada), y el sistema aprende por primera-principio que la acción que restaura la homeostasis (comer) mantiene vivo su propio cuerpo. **Sin reward externo de Crafter por comer.**
+
+### Cambio al core (al escribir 0119)
+Modificar `actualizar_homeostasis(food, health)` para acople DIRECTO:
+- `factor_cuerpo = max(0.05, health/10.0)` — la salud del player (0-10) es el factor del grafo.
+- `V_grafo = mean(vitalidad) * factor_cuerpo` — si health baja, V_grafo baja (grafo=se degrada).
+- Si health=0 → V_grafo→0. No hay grafo sin cuerpo.
+- Cuando la acción restaura homeostasis (food/health sube) y fue la que revirtió la carencia → reforzar conexión accion→nodo0 (supervivencia).
+
+### Protocolo A/B
+- **A:** acople directo ACTIVO, reward externo de comer APAGADO (tesis pura).
+- **B:** acople directo ACTIVO + reward externo ACTIVO.
+- **NC:** acople directo APAGADO (baseline roto, sigue muriendo de hambre).
+- Pregunta clave: ¿basta el acople directo (A come y sobrevive más) o se necesita el reward externo?
+
+### Métrica de éxito
+- Querer operativo (correlación food→eat), supervivencia (¿vive más que NC?), V_grafo correlaciona con health, ciclo de subsistencia (hacer→hambre→comer→volver a hacer).
+
+Detalle completo en `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §12.

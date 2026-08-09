@@ -248,6 +248,36 @@ El sistema no "recibe hambre" — el sistema ES la hambre (su vitalidad cayendo)
 
 ---
 
+## 12. DISEÑO DEL exp_SGM_0119 — Acople directo grafo=cuerpo (aprobado por Luciano)
+
+### 12.1 Qué prueba (hipótesis falsable)
+Si la vitalidad del grafo ES la salud del player (acople directo, monismo grafo-cuerpo),
+entonces cuando el player tiene hambre la vitalidad del grafo cae (el cuerpo=sistema se degrada);
+y el sistema aprenderá por primera-principio que la acción que restaura la homeostasis (comer)
+mantiene vivo su propio cuerpo. Sin reward externo de Crafter por comer.
+
+### 12.2 Cambio al core (a aplicar al escribir 0119)
+Modificar `actualizar_homeostasis(food, health)` para acople DIRECTO:
+- `factor_cuerpo = max(0.05, health / 10.0)` — la salud del player (0-10) es el factor del grafo.
+- `V_grafo = mean(vitalidad) * factor_cuerpo` — si health baja, V_grafo baja (el grafo se degrada porque ES el cuerpo).
+- Si health=0 (muerte del player) → V_grafo→0. No hay grafo sin cuerpo.
+- Cuando la acción restaura la homeostasis (food o health SUBE respecto al paso anterior) y fue la acción que revirtió la carencia → reforzar conexión accion→nodo0 (supervivencia).
+- **NO reward externo de Crafter por comer.** El aprender "comer mantiene vivo" emerge de la dinámica real del grafo=cuerpo.
+
+### 12.3 Protocolo del experimento (A/B)
+- **A:** acople directo grafo=cuerpo ACTIVO, reward externo de comer APAGADO. (La tesis pura).
+- **B:** acople directo ACTIVO + reward externo de comer ACTIVO.
+- **NC:** acople directo APAGADO (vitalidad como estaba) — el sistema debe seguir muriendo de hambre (baseline roto).
+- Pregunta clave: ¿basta el acople directo (A come, sobrevive más) o se necesita el reward externo?
+
+### 12.4 Métrica de éxito
+- **Querer operativo:** correlación food→eat (come cuando tiene hambre → aumentó más vida que NC).
+- **Supervivencia:** ¿vive más pasos que NC? (si A vive más, el acople directo sostiene la vida).
+- **Cuerpo del grafo:** ¿V_grafo correlaciona con health del player (acople real funcionando)?
+- **Ciclo de subsistencia:** hacer→hambre→comer→volver a hacer (el objetivo de base del 0116, ahora con arquitectura correcta).
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.
