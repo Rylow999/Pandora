@@ -342,6 +342,31 @@ El instinto de alimentación modula su fuerza por la carencia real:
 
 ---
 
+## 14. INSTINTO DE EXPLORACIÓN DEL DESCONOCIDO (0121) — diseño
+
+### 14.1 La revelación (Luciano): curiosidad como instinto, NO como reward
+El 0117 intentó la curiosidad como reward (`reward = eps*PE`) y falló (PE casi siempre 0, competía mal). La propuesta de Luciano es OTRO registro: la curiosidad como **instinto de exploración de lo desconocido, indiferente a la recompensa**.
+
+- El bebé va al fuego, a los animales, a la tierra — no porque "puntúe" tocarlos, sino porque **lo desconocido tira de él por sí mismo**. No anticipa si le dolerá o gustará; va a LO QUE NO CONOCE, y la experiencia (dolor, sorpresa, placer) lo forma después.
+- Es exactamente el patrón del 0120: el instinto de alimentación no pre-juzga si comer es bueno — inclina a probar en carencia. La curiosidad debe ser lo mismo, pero para la INCERTIDUMBRE COGNITIVA.
+
+### 14.2 La diferencia clave con el 0117
+- **0117 (erróneo):** `reward = eps * prediction_error`. La curiosidad como recompensa que competía con lo homeostático. Mal anclada (predicción sobre la secuencia propia) y mal concebida ("aprender" como puntaje).
+- **0121 (correcto):** instinto autolimitativo PARALELO al de alimentación. No un reward, sino una inclinación a explorar lo desconocido anclada al ESTADO DEL MUNDO. Igual que el hambre inclina a comer sin decir si es bueno, la incertidumbre inclina a explorar sin decir qué vas a encontrar.
+
+### 14.3 Diseño del instinto de exploración (0121)
+Análogo al instinto de alimentación (013), pero la "carencia" es la incertidumbre del modelo del mundo, NO la del cuerpo:
+- El decoder (anclado al ESTADO del mundo, no a la secuencia propia) mide prediction error por zona/estado.
+- Cuando el sistema detecta alta incertidumbre (prediction error alto) en una zona, siente inclinación a moverse hacia esa zona — **indiferente a lo que produzca**.
+- **Autolimitativo:** al explorar y reducir la incertidumbre (el modelo aprende esa zona), el prediction error baja y el impulso se apaga — el sistema puede volver.
+- NO pre-juzga el resultado (¿qué encontró? tierra/animal/fuego) — la experiencia forma el conocimiento de primera mano.
+
+### 14.4 Camino B (visión de Luciano, post-Fase 8)
+Comunicación como **emergencia social** entre dos o más SGMs autónomos. Ver SGM_ROADMAP.md (sección Camino B). Arco evolutivo:
+1. Subsistencia (0120 LISTO) → 2. Exploración del desconocido (0121 siguiente) → 3. Comunicación social (Camino B, cuando dos seres completos se encuentran). Lección de 0049-0050: los contenedores que "hablan" sin ser seres no generan lenguaje; dos seres autónomos que se coordinan SÍ.
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.

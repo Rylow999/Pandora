@@ -678,3 +678,27 @@ El instinto de especie (ADN del sustrato, autolimitativo, legítimo) lo ARRANCA,
 Sigue muriendo (186 pasos, CONTRADICTORIA) — come pero no alcanza a mantener la vida indefinidamente. El ciclo fundamental ESTÁ; falta integrar el resto.
 
 **Pregunta abierta (Luciano): cómo lograr que el sistema se incline a APRENDER (no solo a comer).** Discutir a continuación.
+
+---
+
+## Estado 2026-08-06 — Visión Camino B + Diseño del 0121 (instinto de exploración)
+
+### Camino B (visión de Luciano, post-Fase 8): comunicación como emergencia social
+Multi-instancia de SGM — dos o más SGMs autónomos se encuentran y la comunicación emerge como fenómeno social, no como módulo instalado.
+
+**Arco evolutivo de 3 capas:**
+1. **Instinto de subsistencia (0120, LISTO):** cada SGM aprende a mantenerse vivo (come, se sacia, explora).
+2. **Instinto de exploración del desconocido (0121, siguiente):** cada SGM, saciado, se inclina a ir hacia lo que no entiende — indiferente a lo que produzca (bebé al fuego/animales/tierra).
+3. **Comunicación social (Camino B):** cuando DOS SGMs completos se encuentran, el lenguaje nace de la coordinación entre existencias autónomas.
+
+**Lección de 0049-0050:** los contenedores que "hablan" sin ser seres no generan lenguaje (por eso fallaron). Los seres autónomos que se coordinan SÍ. La comunicación social presupone dos individuos completos.
+
+### Diseño del 0121 — Instinto de exploración (curiosidad como instinto, NO reward)
+- **0117 (erróneo):** curiosidad como reward (`eps*PE`). Falló (PE casi 0, competía mal).
+- **0121 (correcto, Luciano):** instinto autolimitativo PARALELO al de alimentación, con "carencia" = incertidumbre del modelo del mundo (no del cuerpo).
+  - El decoder (anclado al ESTADO del mundo, no a la secuencia propia) mide prediction error por zona.
+  - Alta incertidumbre en una zona → el sistema siente inclinación a moverse hacia ahí — **indiferente a lo que produzca**.
+  - Autolimitativo: al explorar (el modelo aprende), PE baja y el impulso se apaga.
+  - NO pre-juzga el resultado — la experiencia (¿qué encontró?) forma el conocimiento de primera mano.
+
+Ver `docs/SGM_ROADMAP.md` (Camino B) y `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §14.

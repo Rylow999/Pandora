@@ -368,6 +368,21 @@ Cierre formal documentado en `FASE7_CIERRE_0056_0059.md` (el roadmap apunta ahí
   - **HITO (0120 hecho):** las 4 métricas PASS. eat=66 primer vez en la historia, come con hambre (6/6), NO obsesión (35%), vive 187 vs 154. Ciclo subsistencia completo.
   - **Siguiente (0121):** ¿cómo lograr que el sistema se incline a APRENDER (curiosidad dirigida / reducción de incertidumbre) una vez que la subsistencia básica está resuelta?
 
+### Camino B (post-Fase 8, visión de Luciano): comunicación como emergencia social
+Multi-instancia de SGM — dos o más SGMs autónomos se encuentran y la comunicación emerge como fenómeno social, no como módulo instalado.
+
+**El arco evolutivo de 3 capas:**
+1. **Instinto de subsistencia (0120, LISTO):** cada SGM aprende a mantenerse vivo (come, se sacia, explora).
+2. **Instinto de exploración del desconocido (0121, siguiente):** cada SGM, saciado, se inclina a ir hacia lo que no entiende — indiferente a lo que produzca (bebé al fuego/animales/tierra).
+3. **Comunicación como emergencia social (Camino B):** cuando DOS SGMs completos (subsistencia + curiosidad) se encuentran, el lenguaje nace de la necesidad real de coordinarse entre existencias autónomas.
+
+**Por qué este orden es correcto (lección de 0049-0050):**
+Los experimentos 0049-0050 (nacimiento del lenguaje) fracasaron porque el motor de afinidad no escalaba a mapa grande — los agentes no podían transitar para encontrarse. Pero la causa de fondo fue más profunda: **se lanzaron dos contenedores a "hablar" sin ser seres.** No había subsistencia ni curiosidad real; el lenguaje no tenía POR QUÉ emerger.
+- **0049-0050:** dos contenedores que "hablan" sin ser seres → artificial, no emerge.
+- **Camino B:** dos SERES (con subsistencia + curiosidad) que se encuentran → el lenguaje nace de la coordinación entre existencias autónomas.
+
+**Prerequisito del Camino B:** cada instancia debe ser un ser completo primero (cerrar Fase 8 con subsistencia + exploración del desconocido). La comunicación social presupone dos individuos autónomos.
+
 ---
 
 ## Fase 9: Migración a Rust — PROPUESTA (NO iniciar hasta cerrar persistencia)
