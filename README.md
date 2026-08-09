@@ -702,3 +702,30 @@ Multi-instancia de SGM — dos o más SGMs autónomos se encuentran y la comunic
   - NO pre-juzga el resultado — la experiencia (¿qué encontró?) forma el conocimiento de primera mano.
 
 Ver `docs/SGM_ROADMAP.md` (Camino B) y `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §14.
+
+---
+
+## Estado 2026-08-06 — exp_SGM_0121 RESULTADO (FAIL) + Diagnóstico del movimiento
+
+### Resultado (FAIL en las 3 métricas)
+- **A (exploración activa):** 196 pasos, **1 tile**, mov=0%. eat=85 (43%). noop 47%. make_stone_sword 9%.
+- **NC (exploración apagada):** 188 pasos, **2 tiles**, mov=1%. eat=63 (33%). noop 36%. make_stone_sword 30%.
+- **FAIL:** exploración (1 vs 2 tiles), movimiento (0% vs 1%), ciclo completo (¡come pero no se mueve!).
+
+### Diagnóstico honesto
+El instinto de exploración empuja sobre `acciones_movimiento = {1,2,3,4}`, PERO el PPR nunca las elige como candidatas viables — el sistema está clavado en noop+eat+make_stone_sword. **El movimiento NO es un atractor activo.** Empujar sobre acciones que no son viables del PPR es inútil.
+
+**Lectura (Luciano): ¿qué hace el sistema si lo atacan, o si no le queda comida cerca?**
+- **Si lo atacan:** sube E_acumulado → CONTRADICTORIA. NO se mueve ni se defiende — sigue en el atractor.
+- **Si no hay comida cerca:** sigue intentando eat (43%) aunque no esté — come donde está, y muere si no hay.
+
+**El sistema es hipostático:** percibe su estado interno (hambre, dolor) pero solo responde con las acciones ya en su repertorio (noop, eat). No cambia de estrategia ante amenaza ni falta de recurso local.
+
+### Propuesta (0122): reconocimiento del desplazamiento como capacidad del cuerpo
+El sistema debe **reconocer que puede desplazarse en el espacio si es necesario** para romper el limitante de "solo come donde está".
+- Necesidad insatisfecha localmente (hambre sin comida cercana) → el cuerpo se MUEVE a buscar.
+- Amenaza (health baja por daño) → el cuerpo huye o se defiende.
+- El grafo=player sabe que ES un cuerpo que ocupa un lugar y puede cambiar de lugar (conexión cuerpo-espacio).
+- **En criollo:** el ser que quiere vivir no se queda comiendo donde no hay comida — se mueve a buscar. El bebé no mama del aire; busca el pecho.
+
+Detalle completo: `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §15.

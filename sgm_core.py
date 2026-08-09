@@ -174,6 +174,16 @@ class SGMAgent:
         self.instinto_alimentacion = 16      # accion 'eat' (el reflejo de esta especie/cuerpo)
         self.instinto_umbral_carencia = 0.3  # V_grafo bajo este -> el instinto se activa
         self.instinto_fuerza_base = 0.5      # fuerza base del impulso (modulada por carencia)
+        # INSTINTO DE EXPLORACION (0121): curiosidad como instinto, NO reward.
+        # El decoder aprende el modelo del mundo (estado->estado). Alta incertidumbre
+        # (prediction error) genera inclinacion a MOVERSE hacia lo desconocido.
+        # Autolimitativo: al explorar (modelo aprende), PE baja y el impulso se apaga.
+        self.modelo_mundo = {}               # (estado_q, accion) -> {siguiente_q: count}
+        self.incertidumbre_acum = 0.0        # predicciones fallidas recientes
+        self.instinto_explorar_umbral = 3    # incertidumbre acumulada para activar
+        self.instinto_explorar_fuerza = 0.4  # empuje a moverse
+        self.acciones_movimiento = {1,2,3,4} # move_left/right/up/down
+        self.ultimo_estado_q = None
 
     def aprender_conexion(self, a, b):
         """Refuerza la conexion entre accion a y accion b basado en co-ocurrencia.
@@ -330,6 +340,13 @@ class SGMAgent:
         fuerza_instinto = 0.0
         if en_carencia:
             fuerza_instinto = self.instinto_fuerza_base * (self.instinto_umbral_carencia - self.V_grafo)
+        # INSTINTO DE EXPLORACION (0121): cuando hay incertidumbre (el modelo del mundo
+        # no sabe predecir), el sistema se inclina a MOVERSE hacia lo desconocido.
+        # Autolimitativo: al explorar, el modelo aprende y la incertidumbre baja.
+        quiere_explorar = self.incertidumbre_acum >= self.instinto_explorar_umbral
+        fuerza_explorar = 0.0
+        if quiere_explorar:
+            fuerza_explorar = self.instinto_explorar_fuerza
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
@@ -337,6 +354,9 @@ class SGMAgent:
                 # NO es veredicto (eso lo da la experiencia); es inclinacion a probar.
                 if en_carencia and a == self.instinto_alimentacion:
                     score += fuerza_instinto
+                # Instinto de exploracion: empuja a MOVERSE cuando el mundo es desconocido.
+                if quiere_explorar and a in self.acciones_movimiento:
+                    score += fuerza_explorar
                 if score > bv:
                     bv, best = score, a
         
@@ -412,6 +432,37 @@ class SGMAgent:
         if mejoro_homeostasis and self.ultima_accion >= 0:
             self.aprender_conexion(self.ultima_accion, 0)
         self.ultimo_food = food
+
+    def cuantizar_estado(self, state_semantic):
+        """Cuantiza el estado sensorial a un bucket simple para el modelo del mundo."""
+        if not state_semantic:
+            return 0
+        clave = 0
+        for i, v in enumerate(state_semantic[:16]):
+            clave = clave * 2 + (1 if v > 0.5 else 0)
+        return clave
+
+    def actualizar_modelo_mundo(self, estado_q, accion, siguiente_q):
+        """El decoder aprende transiciones (estado, accion) -> siguiente_estado.
+        Si la prediccion de esta transicion FALLA (nunca vista o predice mal),
+        acumula incertidumbre -> genera inclinacion a explorar lo desconocido.
+        Autolimitativo: al ver la transicion y aprenderla, la incertidumbre del
+        sistema baja (el modelo ya sabe) -> el impulso se apaga."""
+        clave = (estado_q, accion)
+        if clave not in self.modelo_mundo:
+            self.modelo_mundo[clave] = {}
+            # primera vez: no sabia esta transicion -> incertidumbre
+            self.incertidumbre_acum += 1.0
+        if siguiente_q not in self.modelo_mundo[clave]:
+            self.modelo_mundo[clave][siguiente_q] = 0
+            # transicion nueva a estado nuevo -> incertidumbre (no la habia visto)
+            self.incertidumbre_acum += 1.0
+        self.modelo_mundo[clave][siguiente_q] += 1
+        # Al acumular evidencia, recocemos la transicion y el factor de incertidumbre
+        # se diluye (la conocemos mejor). Decaimiento de incertidumbre por familiaridad.
+        total = sum(self.modelo_mundo[clave].values())
+        if total > 1:
+            self.incertidumbre_acum = max(0.0, self.incertidumbre_acum - 0.2)
 
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):

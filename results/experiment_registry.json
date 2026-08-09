@@ -2127,5 +2127,15 @@
     "test_target": "instinto autolimitativo, comer sin obsesion",
     "hypothesis": "Con instinto autolimitativo el sistema visita eat, come, se sacia y vuelve a explorar.",
     "result_summary": "HITO: las 4 metricas PASS. eat=66 (35%), comedon con hambre (6/6), NO obsesion (35%<90%), vive 187 vs 154. NC eat=0. El sistema comio por PRIMERA VEZ en la historia. Ciclo subsistencia completo: siente hambre->inclina a comer->come->sacia->explora."
+  },
+  {
+    "experiment_id": "exp_SGM_0121_explorar",
+    "experiment_name": "instinto_exploracion_desconocido",
+    "phase": "Fase 8 - instinto de exploracion (curiosidad como instinto)",
+    "date": "2026-08-06",
+    "status": "done",
+    "test_target": "instinto de exploracion mueve al sistema a lo desconocido",
+    "hypothesis": "Con instinto de exploracion, el sistema se mueve a lo desconocido cuando su modelo falla.",
+    "result_summary": "FAIL (3 metricas). A=1 tile, NC=2 tiles, mov=0-1%. El PPR nunca elige acciones de movimiento: el instinto empuja sobre acciones no-viables. Diagnostico (Luciano): el sistema es hipostatico, no usa su cuerpo para buscar comida/huir de amenazas. Lleva a 0122: reconocimiento del desplazamiento."
   }
 ]

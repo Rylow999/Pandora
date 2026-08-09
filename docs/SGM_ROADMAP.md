@@ -367,6 +367,8 @@ Cierre formal documentado en `FASE7_CIERRE_0056_0059.md` (el roadmap apunta ahí
 - **Siguiente (0120):** **INSTINTO DE ESPECIE** — un reflejo incorporado al sustrato (ADN) que en carencia (V_grafo baja) inclina al sistema a PROBAR la acción de alimentación. NO pre-juzga el resultado (eso lo aprende por experiencia). Resuelve el problema del 0119 (nunca visitaba eat). Ver §13 de FASE8_TELEOLOGIA_OPERATIVA.
   - **HITO (0120 hecho):** las 4 métricas PASS. eat=66 primer vez en la historia, come con hambre (6/6), NO obsesión (35%), vive 187 vs 154. Ciclo subsistencia completo.
   - **Siguiente (0121):** ¿cómo lograr que el sistema se incline a APRENDER (curiosidad dirigida / reducción de incertidumbre) una vez que la subsistencia básica está resuelta?
+  - **0121 (HECHO, FAIL):** instinto de exploración. El sistema no se movió (mov=0-1%), el PPR nunca elige acciones de movimiento. Diagnóstico (Luciano): sistema hipostático — siente hambre/dolor pero solo responde con acciones locales (eat), no usa su cuerpo para buscar comida ni huir de amenazas.
+  - **Siguiente (0122):** reconocimiento del desplazamiento — el sistema debe usar su cuerpo (moverse/defenderse) cuando la necesidad NO se satisface localmente. Necesidad insatisfecha → moverse a buscar; amenaza → huir/defenderse. Ver §15.
 
 ### Camino B (post-Fase 8, visión de Luciano): comunicación como emergencia social
 Multi-instancia de SGM — dos o más SGMs autónomos se encuentran y la comunicación emerge como fenómeno social, no como módulo instalado.

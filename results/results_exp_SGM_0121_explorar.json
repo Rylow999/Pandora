@@ -1,0 +1,55 @@
+{
+  "experiment_id": "exp_SGM_0121",
+  "experiment_name": "instinto_exploracion_desconocido",
+  "phase": "Fase 8 - instinto de exploracion (curiosidad como instinto)",
+  "date": "2026-08-06",
+  "hypothesis": "Con el instinto de exploracion, el sistema se mueve hacia lo desconocido cuando su modelo del mundo falla, explorando mas tiles que el NC (sin el instinto de exploracion).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "instinto_explorar_fuerza": 0.4,
+    "instinto_explorar_umbral": 3
+  },
+  "result": {
+    "A_exploracion": {
+      "pasos": 196,
+      "tiles": 1,
+      "mov_pct": 0.0,
+      "eat": 85,
+      "hambre": 15,
+      "muerte": {
+        "step": 195,
+        "food": 2.0,
+        "hp": 2.0,
+        "status": "CONTRADICTORIA",
+        "V_grafo_fin": 0.029
+      }
+    },
+    "NC_sin_exploracion": {
+      "pasos": 188,
+      "tiles": 2,
+      "mov_pct": 0.5,
+      "eat": 63,
+      "muerte": {
+        "step": 187,
+        "food": 2.0,
+        "hp": 2.0,
+        "status": "INCONCLUSA",
+        "V_grafo_fin": 0.031
+      }
+    },
+    "pass_explora": false,
+    "pass_movimiento": false,
+    "pass_ciclo_completo": false
+  },
+  "script": "experiments/exp_SGM_0121_explorar.py",
+  "results_file": "results/results_exp_SGM_0121_explorar.json",
+  "variant_of": "exp_SGM_0120",
+  "lit_refs": [
+    "Schmidhuber 1991 - curiosidad como reduccion de incertidumbre",
+    "Oudeyer & Kaplan 2007 - exploration",
+    "Panksepp SEEKING - explorar lo incierto sin prejuzgar"
+  ],
+  "notes": "Instinto de exploracion: el decoder aprende el modelo del mundo (estado->estado). Alta incertidumbre genera inclinacion a moverse (autolimitativo: al explorar el modelo aprende y se apaga). Cuestion como instinto, NO reward (diferente a 0117).",
+  "notes_criollo": "Le dimos al sistema el mismo impulso del bebe que va a lo desconocido: cuando su modelo del mundo no entiende algo, se siente empujado a ir a verlo \u2014 sin importar si va a ser tierra, un animal o el fuego. Al explorar, aprende y el impulso se apaga. Asi aprende a moverse bien: no se queda clavado, va a donde hay misterio."
+}

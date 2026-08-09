@@ -367,6 +367,38 @@ Comunicación como **emergencia social** entre dos o más SGMs autónomos. Ver S
 
 ---
 
+## 15. RECONOCIMIENTO DEL DESPLAZAMIENTO (0122) — diseño
+
+### 15.1 El problema (de los datos del 0121)
+El 0121 falló: el sistema no se mueve (mov=0-1%). El instinto de exploración empujaba sobre acciones de movimiento, pero el PPR nunca las elegía como viables — estaban clavadas en noop+eat+make_stone_sword. Diagnóstico: **el movimiento NO es un atractor activo.**
+
+**Lectura de Luciano:** ¿qué hace el sistema si lo atacan, o si no le queda comida cerca?
+- Si lo atacan → sube E_acumulado → CONTRADICTORIA, pero NO se mueve ni se defiende.
+- Si no hay comida cerca → sigue intentando eat aunque no esté. Muere donde está.
+
+**El sistema es hipostático:** percibe su estado interno (hambre, dolor) pero solo responde con las acciones ya en su repertorio (noop, eat). No cambia de estrategia ante amenaza ni falta de recurso local. No usa su cuerpo (que puede desplazarse) para resolver la necesidad.
+
+### 15.2 La tesis (Luciano): el sistema debe reconocer que PUEDE desplazarse
+El ser que quiere vivir no se queda comiendo donde no hay comida — **se mueve a buscar.** El bebé no mama del aire; busca el pecho.
+
+El grafo=player debe **reconocer el desplazamiento como capacidad de su propio cuerpo** para romper el limitante de "solo come donde está":
+- **Necesidad insatisfecha localmente** (hambre sin comida cercana) → el cuerpo se MUEVE a buscar.
+- **Amenaza** (health baja por daño) → el cuerpo huye o se defiende.
+- Es la conexión cuerpo-espacio: el sistema sabe que ES un cuerpo que ocupa un lugar y puede cambiar de lugar.
+
+### 15.3 Diseño del mecanismo (0122)
+El desplazamiento debe aparecer como respuesta a la necesidad NO satisfecha localmente. La idea clave: **cuando la acción con instinto de alimentación (eat) se intenta pero el recurso no está disponible (food no sube), el instinto de exploración/peligro debería redirigir el cuerpo a MOVERSE** — porque comer donde no hay no funciona, y el cuerpo sabe que puede cambiar de lugar.
+
+Concretamente (a afinar):
+- Detectar "estoy intentando satisfacer una necesidad pero el entorno no la provee aquí" (food no sube tras eat; o amenaza con health bajo).
+- Ante eso, el instinto de desplazamiento empuja a las acciones de MOVIMIENTO (que ahora SÍ deben ganar peso relativo en el PPR, no como empuje sobre acciones no-viables sino como relego de las no útiles).
+- El movimiento se vuelve un atractor cuando hay necesidad insatisfecha + recurso ausente localmente.
+
+### 15.4 Pregunta abierta para el diseño del 0122
+¿El problema es que el movimiento necesita ser "satisfactorio" primero (que el PPR lo considere viable), para que luego el instinto de exploración/peligro pueda empujar sobre él? Es decir: el moverse debe reducir algo (la incertidumbre de dónde está la comida, o la distancia a la amenaza) para que la vitalidad de las acciones de movimiento suba y dejen de ser ignoradas.
+
+---
+
 ## 6. Regla de honestidad (sin cambios, reafirmada)
 
 - No atribuir "querer" o "curiosidad" sin señal operativa correlacionada.
