@@ -1,0 +1,78 @@
+{
+  "experiment_id": "exp_SGM_0123",
+  "experiment_name": "querer_dirigido_curiosidad_mundo",
+  "phase": "Fase 8 \u2014 querer dirigido a recurso (opcion C)",
+  "date": "2026-08-11",
+  "hypothesis": "Con gradiente homeostatico + curiosidad dirigida al mundo, el agente en carencia: (a) si hay recurso visible: se mueve EN DIRECCION al recurso (no azimuthal) y sobrevive mas que el 0122 puro (sin direccion). (b) si NO hay recurso: se mueve hacia zonas de alta incertidumbre del modelo del mundo (no al azar). (c) la obsesion del 0122 (make_iron_pickaxe 76%) disminuye: el movimiento dirigido saca al agente del atractor.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "gradiente_fuerza": 0.5,
+    "curiosidad_fuerza": 0.3,
+    "desplazar_fuerza": 0.6,
+    "devaluar_umbral": 0.35,
+    "devaluar_fuerza": 0.4,
+    "instinto_fuerza_base": 0.5,
+    "instinto_umbral_carencia": 0.3,
+    "recursos_food": "cow(13), plant(17)",
+    "fov": "9x9 alrededor del player (pos 32,32)"
+  },
+  "result": {
+    "A_gradiente_curiosidad": {
+      "pasos": 100,
+      "tiles": 3,
+      "mov_total": 3,
+      "mov_pct": 3.0,
+      "eat": 79,
+      "eat_pct": 79.0,
+      "eat_con_hambre": 0,
+      "hambre": 0,
+      "querer": false,
+      "noop": 0.0,
+      "mov_dirigido_gradiente": "0/0 (0%)",
+      "mov_dirigido_curiosidad": "1/3 (33%)",
+      "accion_dominante": "eat 79%",
+      "dirs_distribucion": {
+        "move_down": 100.0
+      },
+      "muerte": null
+    },
+    "B_0122_puro": {
+      "pasos": 100,
+      "tiles": 1,
+      "mov_total": 0,
+      "mov_pct": 0.0,
+      "eat": 0,
+      "accion_dominante": "noop 74%",
+      "muerte": null
+    },
+    "NC_solo_alimentacion": {
+      "pasos": 100,
+      "tiles": 1,
+      "mov_total": 0,
+      "mov_pct": 0.0,
+      "eat": 0,
+      "querer": false,
+      "noop": 0.0,
+      "muerte": null
+    },
+    "pass_supervivencia_A_mayor_B": false,
+    "pass_dirigido_gradiente": false,
+    "pass_dirigido_curiosidad": true,
+    "pass_no_obsesion": false,
+    "pass_explora": true,
+    "pass_mantiene_querer": false
+  },
+  "script": "experiments/exp_SGM_0123_querer_dirigido.py",
+  "results_file": "results/results_exp_SGM_0123_querer_dirigido.json",
+  "variant_of": "exp_SGM_0122",
+  "lit_refs": [
+    "Berg & Brown 1972 \u2014 quimiotaxis E. coli, run-and-tumble (gradiente de concentracion)",
+    "Oudeyer & Kaplan 2007 \u2014 Intelligent Adaptive Curiosity (IAC), prediction error dirige exploracion",
+    "Stephens & Krebs 1986 \u2014 forrajeo optimo (target vs exploracion)",
+    "O'Keefe & Nadel 1971 \u2014 mapas cognitivos (proto-mapa espacial por incertidumbre direccional)",
+    "Berridge & Robinson 1998 \u2014 wanting como motivacion operante (correlacion carencia->busqueda dirigida)"
+  ],
+  "notes": "El 0122 rompio la hipostasia (mov 0->5%) pero el atractor cambio de lugar (make_iron_pickaxe 76%): el agente se mueve sin rumbo. El 0123 le agrega DIRECCION al movimiento mediante dos mecanismos: (1) gradiente homeostatico -- quimiotaxis: cuando hay cow/plant visible en el FOV, el movimiento hacia el recurso recibe sesgo extra. (2) curiosidad dirigida al mundo -- cuando no hay recurso, el movimiento se dirige hacia donde el modelo del mundo tiene mayor incertidumbre (zonas menos exploradas). Ambos son autolimitativos (se apagan al saciarse / al aprender). La base del 0122 (devaluar local + empujar movimiento en carencia) se mantiene intacta.",
+  "notes_criollo": "En el 0122 el bicho por fin se movio cuando tenia hambre y comer no resolvia. Pero se movia a cualquier lado -- sin rumbo, cayo en otro atractor (make_iron_pickaxe 76%). Es como si salieras de tu casa con hambre y caminaras en cualquier direccion:ATAL vez encontras comida, probablemente no. El 0123 le da dos cosas para saber ADONDE ir: (1) si ve una vaca o una planta en el FOV, el instinto lo empuja hacia ahi -- como las bacterias que siguen el gradiente de azucar (quimiotaxis). (2) si no ve nada comestible, lo empuja hacia la zona que menos conoce (curiosidad dirigida al mundo, no a su propia secuencia). La idea es que el bicho deje de deambular al azar y se mueva con RAZON: hacia la comida si la ve, hacia lo desconocido si no la ve."
+}

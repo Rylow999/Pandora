@@ -325,6 +325,14 @@ class SGMAgent:
         for i in range(1, len(self.vitalidad)):
             self.vitalidad[i] = max(0.7, self.vitalidad[i])
 
+    def _direccion_a_accion(self, dx, dy):
+        """Convierte un vector (dx, dy) en la accion de movimiento mas cercana.
+        1=left, 2=right, 3=up, 4=down"""
+        if abs(dx) >= abs(dy):
+            return 2 if dx > 0 else (1 if dx < 0 else (4 if dy > 0 else 3))
+        else:
+            return 4 if dy > 0 else 3
+
     def step(self, state_semantic, valid_actions):
         om_r = self.hdc.project(state_semantic)
         seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
@@ -335,44 +343,59 @@ class SGMAgent:
         if self.doubt_cooldown > 0:
             self.doubt_cooldown -= 1
         
-        rank = ppr_route(self.edges, seed, self._aff, alpha=self.alpha, iters=100)
+        rank = ppr_route(self.edges, seed, self._aff, alpha=self.alpha, iters=10)
         
         best, bv = -1, -2.0
-        # INSTINTO DE ESPECIE (0120): fuerza modulada por la carencia real.
-        # Si V_grafo < umbral, la accion de alimentacion recibe un empuje proporcional
-        # a que tan degradado esta el cuerpo. Autolimitativo: al saciarse (V_grafo sube),
-        # la fuerza cae y el sistema puede volver a explorar (no se obsesiona).
+        # INSTINTO DE ESPECIE - ALIMENTACION (0120): fuerza modulada por la carencia real.
         en_carencia = self.V_grafo < self.instinto_umbral_carencia
         fuerza_instinto = 0.0
         if en_carencia:
             fuerza_instinto = self.instinto_fuerza_base * (self.instinto_umbral_carencia - self.V_grafo)
-        # INSTINTO DE EXPLORACION (0121): cuando hay incertidumbre (el modelo del mundo
-        # no sabe predecir), el sistema se inclina a MOVERSE hacia lo desconocido.
-        # Autolimitativo: al explorar, el modelo aprende y la incertidumbre baja.
+        # INSTINTO DE ESPECIE - GRADIENTE HOMEOSTATICO (0123): cuando hay hambre Y recurso visible,
+        # las acciones de movimiento HACIA el recurso reciben un sesgo. Quimiotaxis simple.
+        hay_gradiente = getattr(self, '_hay_gradiente', False)
+        grad_dir = getattr(self, '_gradiente_dir', (0, 0))
+        config_grad = getattr(self, '_config_grad', {})
+        grad_activo = hay_gradiente and config_grad.get('activo', False) and en_carencia
+        accion_grad = None
+        if grad_activo:
+            accion_grad = self._direccion_a_accion(grad_dir[0], grad_dir[1])
+        # INSTINTO DE EXPLORACION (0121): curiosidad dirigida al mundo.
         quiere_explorar = self.incertidumbre_acum >= self.instinto_explorar_umbral
         fuerza_explorar = 0.0
         if quiere_explorar:
             fuerza_explorar = self.instinto_explorar_fuerza
-        # INSTINTO DE DESPLAZAMIENTO (0122): el movimiento es la accion con RAZON.
-        # Si la necesidad no se satisface localmente (carecia con alimento/amenaza),
-        # las acciones locales que NO resuelven se devaluan y el movimiento gana peso.
-        # El cuerpo se MUEVE porque quedarse no funciona (busca/escapa).
+        inc_dirs = getattr(self, '_inc_dirs', {})
+        config_curio = getattr(self, '_config_curio', {})
+        curio_activa = quiere_explorar and config_curio.get('activo', False)
+        dir_mas_inc = None
+        if inc_dirs:
+            try:
+                dir_mas_inc = max(inc_dirs, key=inc_dirs.get)
+            except ValueError:
+                dir_mas_inc = None
+        # INSTINTO DE DESPLAZAMIENTO (0122): reactivo a necesidad insatisfecha local.
         en_carencia_grave = self.V_grafo < self.devaluar_umbral
         necesidad_insat = en_carencia_grave and (self.ultima_accion == self.instinto_alimentacion)
         self.necesidad_insatisfecha = necesidad_insat
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
-                # Empuje instintivo solo sobre la accion de alimentacion y solo en carencia.
-                # NO es veredicto (eso lo da la experiencia); es inclinacion a probar.
-                if en_carencia and a == self.instinto_alimentacion:
+                # INSTINTO ALIMENTACION (0120/0124): usa override con compuerta si existe,
+                # si no, la fuerza clasica modulada por carencia.
+                f_override = getattr(self, '_fuerza_instinto_eat_override', None)
+                if f_override is not None:
+                    if a == self.instinto_alimentacion:
+                        score += f_override
+                elif en_carencia and a == self.instinto_alimentacion:
                     score += fuerza_instinto
-                # Instinto de exploracion: empuja a MOVERSE cuando el mundo es desconocido.
-                if quiere_explorar and a in self.acciones_movimiento:
-                    score += fuerza_explorar
-                # Desplazamiento con razon: si la necesidad no se satisface localmente
-                # (hambre y comer no funciona), devalua las acciones locales que no
-                # resuelven y empuja el movimiento (el cuerpo busca donde si hay recurso).
+                # Instinto gradiente homeostatico (0123)
+                if grad_activo and a == accion_grad:
+                    score += config_grad.get('fuerza', 0.5)
+                # Instinto exploracion (0121/0124)
+                if curio_activa and a == dir_mas_inc and inc_dirs[dir_mas_inc] > 0:
+                    score += config_curio.get('fuerza', 0.3)
+                # Desplazamiento reactivo (0122 base)
                 if necesidad_insat:
                     if a not in self.acciones_movimiento:
                         score -= self.devaluar_fuerza

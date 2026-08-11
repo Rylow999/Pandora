@@ -1,0 +1,63 @@
+{
+  "experiment_id": "exp_SGM_0124",
+  "experiment_name": "habituation_instinto_aprendizaje",
+  "phase": "Fase 8 \u2014 habituacion (instinto -> aprendizaje -> prediccion)",
+  "date": "2026-08-11",
+  "hypothesis": "El instinto de alimentacion solo actua mientras el agente NO SABE el resultado. Cuando eat->nodo0.strength >= umbral, instinto OFF permanente; come por prediccion. Prediccion: multiples ciclos hambre-comer-saciarse, no obsesion eat, comida balanceada.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "umbral_eat": 2.0,
+    "pasos": 300
+  },
+  "result": {
+    "A_compuerta": {
+      "pasos": 265,
+      "tiles": 20,
+      "eat": 141,
+      "eat_instinto": 141,
+      "eat_prediccion": 0,
+      "mov": 106,
+      "ciclos": 34,
+      "instinto_off_step": null,
+      "dominante": "eat 53%",
+      "muerte": {
+        "step": 264,
+        "food": 0.0,
+        "hp": 1.0,
+        "status": "CONTRADICTORIA",
+        "Vg": 0.008
+      }
+    },
+    "B_solo_desplaz": {
+      "pasos": 221,
+      "tiles": 3,
+      "eat": 0,
+      "mov": 18,
+      "dominante": "place_furnace 89%"
+    },
+    "NC_ppr_puro": {
+      "pasos": 300,
+      "tiles": 13,
+      "eat": 0,
+      "mov": 22,
+      "dominante": "place_furnace 79%"
+    },
+    "pass_ciclos": true,
+    "pass_no_obsesion": false,
+    "pass_compuerta": false,
+    "pass_supervivencia": true,
+    "pass_explora": true
+  },
+  "script": "experiments/exp_SGM_0124_habituation.py",
+  "results_file": "results/results_exp_SGM_0124_habituation.json",
+  "variant_of": "exp_SGM_0123",
+  "lit_refs": [
+    "Berridge & Robinson 1998 - wanting operante, no permanencia",
+    "Oudeyer & Kaplan 2007 - IAC, curiosidad como muestreo inteligente",
+    "Panksepp 1998 - SEEKING reduce al descubrir",
+    "Gallistel 1990 - habituacion por conocimiento"
+  ],
+  "notes": "El 0123 fallo: el gradiente solo se activaba dentro de necesidad_insatisfecha y el agente nunca comio -> place_stone 100%. Rediseno: instinto de alimentacion con compuerta de aprendizaje. La fuerza del instinto solo se aplica mientras eat->nodo0.strength < umbral (no sabe el resultado). Al consolidarse, come por prediccion (rank*vitalidad). Gradiente radio 5 + food decay activo para ciclos reales.",
+  "notes_criollo": "La idea es que el agente nazca con la reaccion de probar comida la primera vez, cuando no sabe si sirve. Una vez que come y se da cuenta de que alimento le sube la vitalidad, ya no necesita ese reflejo: lo aprendio. A partir de ahi come por conocimiento, no por instinto. Es como un bebe que mama por reflejo la primera vez y despues come porque sabe que lo alimenta. Si esto funciona, el agente deberia comer 1-3 veces por instinto y el resto por aprendizaje, sin obsesionarse."
+}

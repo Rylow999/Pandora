@@ -280,7 +280,7 @@
     "date_run": "2026-08-02",
     "status": "done",
     "test_target": "T-MOD-01 (modos tipados aplican beta_mode y cambian decision de caminata)",
-    "hypothesis": "Los modos tipados (beta_mode §1.1) modulan afinidad (Eq.2) y W(t) (Eq.8); en competencia real cambian la eleccion de caminata; transicion limpia.",
+    "hypothesis": "Los modos tipados (beta_mode \u00a71.1) modulan afinidad (Eq.2) y W(t) (Eq.8); en competencia real cambian la eleccion de caminata; transicion limpia.",
     "result": {
       "pass": true,
       "SENSORIAL_elige": "Terminal(1)",
@@ -385,8 +385,8 @@
     "date_created": "2026-08-02",
     "date_run": "2026-08-02",
     "status": "done",
-    "test_target": "T-DEC-01 sintetico (bigrama aprende de corpus de juguete) — NO corpus natural (Don Quijote)",
-    "hypothesis": "Decoder L2 como transicion explicita bigrama (NO proyeccion lineal W·omega, que falla v0.25 v12). Bigrama aprende de corpus y predice top1>0.5 en holdout. Omega ruteado selecciona semilla por afinidad.",
+    "test_target": "T-DEC-01 sintetico (bigrama aprende de corpus de juguete) \u2014 NO corpus natural (Don Quijote)",
+    "hypothesis": "Decoder L2 como transicion explicita bigrama (NO proyeccion lineal W\u00b7omega, que falla v0.25 v12). Bigrama aprende de corpus y predice top1>0.5 en holdout. Omega ruteado selecciona semilla por afinidad.",
     "result": {
       "pass": true,
       "top1_holdout": 0.927,
@@ -422,7 +422,7 @@
     "date_run": "2026-08-02",
     "status": "done",
     "test_target": "Calibracion offline de theta_novelty/min_duration/theta_refut/theta_window_frac via grid search contra suite T-INF (FATE no disponible)",
-    "hypothesis": "Grid search contra casos controlados elige config que pasa 8/8 sub-checks; barrido muestra variacion (region optima no trivial). FATE no usado (no instalado + spec §2.5 honesta: pierde en baja dim).",
+    "hypothesis": "Grid search contra casos controlados elige config que pasa 8/8 sub-checks; barrido muestra variacion (region optima no trivial). FATE no usado (no instalado + spec \u00a72.5 honesta: pierde en baja dim).",
     "result": {
       "pass": true,
       "mejor_config": {
@@ -935,7 +935,7 @@
     "category": "Decoder L2 (corpus real)",
     "status": "HALLAZGO",
     "verified": true,
-    "result": "Hibrido SUAVE: score_final=freq*(1+ALPHA*score_HRR). ALPHA=1. top1_suave=0.315 vs plano NC(alpha0)=0.312. Diferencia 0.003 = ruido (EE~0.024). CONCLUSION: el HRR grado-8/D-256 es RUIDO para vecinos locales; no aporta senal util al bigrama, no lo daña. Trilogia 0046(0.020)/0046b(0.17)/0046c(0.315): el HRR NO sirve para predecir siguiente token (crosstalk local), SIRVE para composicion anidada (0027-31). Decoder de lenguaje = bigrama plano; el grafo HRR ruteado aporta CONTEXTO de sentido, no prediccion superficial.",
+    "result": "Hibrido SUAVE: score_final=freq*(1+ALPHA*score_HRR). ALPHA=1. top1_suave=0.315 vs plano NC(alpha0)=0.312. Diferencia 0.003 = ruido (EE~0.024). CONCLUSION: el HRR grado-8/D-256 es RUIDO para vecinos locales; no aporta senal util al bigrama, no lo da\u00f1a. Trilogia 0046(0.020)/0046b(0.17)/0046c(0.315): el HRR NO sirve para predecir siguiente token (crosstalk local), SIRVE para composicion anidada (0027-31). Decoder de lenguaje = bigrama plano; el grafo HRR ruteado aporta CONTEXTO de sentido, no prediccion superficial.",
     "tests": "T-DEC-HS1 suave 0.315 vs plano 0.312 (PASS por >=, pero diferencia es ruido).",
     "based_on": [
       "0046",
@@ -967,7 +967,7 @@
       "0029",
       "0030"
     ],
-    "marco": "1904.09447 + 2512.14709 + 2306.08302. Hallazgo: filtro HRR daña."
+    "marco": "1904.09447 + 2512.14709 + 2306.08302. Hallazgo: filtro HRR da\u00f1a."
   },
   {
     "experiment_id": "exp_SGM_0047",
@@ -1009,7 +1009,7 @@
       "0031",
       "Plate1995"
     ],
-    "marco": "Plate 1995a HRR: composicion no recuperacion local. Conclusión: HRR=estructura, bigrama=superficie."
+    "marco": "Plate 1995a HRR: composicion no recuperacion local. Conclusi\u00f3n: HRR=estructura, bigrama=superficie."
   },
   {
     "experiment_id": "exp_SGM_0048",
@@ -1019,7 +1019,7 @@
     "category": "Decoder L2 (corpus real)",
     "status": "CONCLUSION_FINAL",
     "verified": false,
-    "result": "Train HRR message-passing (T_ITER=2, D=128) para propagar co-ocurrencia a los omega. TEST ESTRUCTURAL de fuego: cos co-ocurrente 0.259 < cos random 0.361. El HRR NO captura co-ocurrencia (al revés: la aplasta). Decoder top1=0.045 vs plano 0.34 vs NC 0.015. VERDICTO FINAL (6 intentos 0046-48): el HRR no recupera/ordena palabras por co-ocurrencia porque el bind de ruido con ruido da ruido y el crosstalk destruye la senal. Requiere D miles o Word2Vec real (= lo que el bigrama plano ya hace). Decoder de SGM = BIGRAMA PLANO (top1 0.18-0.34 corpus real) + grafo HRR como CONTEXTO de desambiguacion (no predictor). HRR = composicion anidada (0027-31), NO superficie de lenguaje.",
+    "result": "Train HRR message-passing (T_ITER=2, D=128) para propagar co-ocurrencia a los omega. TEST ESTRUCTURAL de fuego: cos co-ocurrente 0.259 < cos random 0.361. El HRR NO captura co-ocurrencia (al rev\u00e9s: la aplasta). Decoder top1=0.045 vs plano 0.34 vs NC 0.015. VERDICTO FINAL (6 intentos 0046-48): el HRR no recupera/ordena palabras por co-ocurrencia porque el bind de ruido con ruido da ruido y el crosstalk destruye la senal. Requiere D miles o Word2Vec real (= lo que el bigrama plano ya hace). Decoder de SGM = BIGRAMA PLANO (top1 0.18-0.34 corpus real) + grafo HRR como CONTEXTO de desambiguacion (no predictor). HRR = composicion anidada (0027-31), NO superficie de lenguaje.",
     "tests": "T-DEC-S1 estructural 0.259<0.361 (FAIL, HRR no captura co-ocurrencia). T-DEC-S2 top1 0.045 vs plano 0.34 (FAIL).",
     "based_on": [
       "0046",
@@ -1034,7 +1034,7 @@
       "0031",
       "Plate1995"
     ],
-    "marco": "Plate 1995a: HRR=composicion no recuperacion. Conclusión firme: decoder lenguaje=bigrama, HRR=estructura."
+    "marco": "Plate 1995a: HRR=composicion no recuperacion. Conclusi\u00f3n firme: decoder lenguaje=bigrama, HRR=estructura."
   },
   {
     "experiment_id": "exp_SGM_0049",
@@ -1106,7 +1106,7 @@
     "category": "Lenguaje / Comunicacion",
     "status": "HALLAZGO_PARCIAL_REINTERPRETADO",
     "verified": true,
-    "result": "REINTERPRETACION HONESTA (post-critica): comunicacion 1.0 vs NC 0.067 en 15 celdas pre-identificadas como puentes NO es evidencia de lenguaje emergente. Es cleanup memory de HRR sobre 15 simbolos conocidos de antemano, capacidad ya demostrada en exp_0029 (D=256 aisla ~200 items al 95%; 15 esta dentro de sobra). El 'salto' 0049c(0.0, crosstalk 890 items)->0049d(1.0) vino de RECORTAR el vocabulario a 15 fijos, no de que el lenguaje emergiera. Lo que 0049d mide es '¿HRR codifica/decodifica 15 simbolos conocidos?', pregunta ya respondida en 0029. NO cierra la comunicacion real a escala abierta.",
+    "result": "REINTERPRETACION HONESTA (post-critica): comunicacion 1.0 vs NC 0.067 en 15 celdas pre-identificadas como puentes NO es evidencia de lenguaje emergente. Es cleanup memory de HRR sobre 15 simbolos conocidos de antemano, capacidad ya demostrada en exp_0029 (D=256 aisla ~200 items al 95%; 15 esta dentro de sobra). El 'salto' 0049c(0.0, crosstalk 890 items)->0049d(1.0) vino de RECORTAR el vocabulario a 15 fijos, no de que el lenguaje emergiera. Lo que 0049d mide es '\u00bfHRR codifica/decodifica 15 simbolos conocidos?', pregunta ya respondida en 0029. NO cierra la comunicacion real a escala abierta.",
     "tests": "comunicacion 1.0 > NC 0.067 (PASS pero es cleanup de 15 fijos, NO generalizacion). COORD 100% (PASS real). dolor real (PASS). FALTA zero-shot + TopSim + D escalado (ver 0053).",
     "based_on": [
       "0049c",
@@ -1180,15 +1180,15 @@
     "category": "Filosofia / Metrica del ser",
     "status": "HALLAZGO_PARCIAL",
     "verified": false,
-    "result": "4to intento de medir la 'jaula del clavo' del telar. Idea Luciano: clavos NO fijos en espacio = EVENTO, no celda; restriccion ATENCIONAL. V_ser=eventos_clavados*eventos_vistos. BUG de contador (eventos_clavados quedo 0) + diseno: eventos_vistos fijo en 2.667/3 sin importar rate -> la restriccion atencional NO emergio (ver un evento no obliga a repetirlo; frontier sigue empujando a ver otros). CONFIRMA (como 0051/0051b): sin clavos no hay ser (rate0 V=0); error ensena (acierto 0->0.89 con errores); sostén cuesta (pain). NO confirma optimo medio/jaula.",
+    "result": "4to intento de medir la 'jaula del clavo' del telar. Idea Luciano: clavos NO fijos en espacio = EVENTO, no celda; restriccion ATENCIONAL. V_ser=eventos_clavados*eventos_vistos. BUG de contador (eventos_clavados quedo 0) + diseno: eventos_vistos fijo en 2.667/3 sin importar rate -> la restriccion atencional NO emergio (ver un evento no obliga a repetirlo; frontier sigue empujando a ver otros). CONFIRMA (como 0051/0051b): sin clavos no hay ser (rate0 V=0); error ensena (acierto 0->0.89 con errores); sost\u00e9n cuesta (pain). NO confirma optimo medio/jaula.",
     "tests": "rate0 V=0 (PASS: sin historia=otro). acierto sube con errores (PASS: error ensena). optimo medio AUSENTE (FAIL: restriccion atencional no emerge; contador bug + diseno).",
     "based_on": [
       "0051",
       "0051b",
       "telar luciano"
     ],
-    "marco": "Telar: clavo=evento, no celda. Hallazgo: tras 4 intentos (0051/0051b/0052), la restriccion (clavo=jaula) NO emerge del sustrato de afinidad local+frontier sin hardcodear. Requiere IRREVERSIBILIDAD (clavo que no se suelta), no solo atraccion. SGM tiene el 'sostén' (sin clavos=no ser) pero le falta el 'clavo permanente' para la jaula de la identidad. Consistente con 0018 (frenos evitan borrar, pero no hay clavo permanente).",
-    "conclusion": "Telar PARCIALMENTE confirmado: sostén=SI (sin clavos no hay ser), restriccion=NO emerge (requiere irreversibilidad). Gap honesto declarado tras 4 intentos."
+    "marco": "Telar: clavo=evento, no celda. Hallazgo: tras 4 intentos (0051/0051b/0052), la restriccion (clavo=jaula) NO emerge del sustrato de afinidad local+frontier sin hardcodear. Requiere IRREVERSIBILIDAD (clavo que no se suelta), no solo atraccion. SGM tiene el 'sost\u00e9n' (sin clavos=no ser) pero le falta el 'clavo permanente' para la jaula de la identidad. Consistente con 0018 (frenos evitan borrar, pero no hay clavo permanente).",
+    "conclusion": "Telar PARCIALMENTE confirmado: sost\u00e9n=SI (sin clavos no hay ser), restriccion=NO emerge (requiere irreversibilidad). Gap honesto declarado tras 4 intentos."
   },
   {
     "experiment_id": "exp_SGM_0053",
@@ -1237,7 +1237,7 @@
     "status": "DECISIVO_NEGATIVO",
     "verified": true,
     "result": "IGUAL que 0055a PERO bias=False: el aprendiz NO usa prior de similitud, asigna msg nuevo aleatorio (hasta V) o reuse ciego. TopSim_full cae a 0.12-0.25. TopSim_unseen ~0 o NEGATIVO (-0.03..-0.09) => NO generaliza. CONFIRMA: sin el sesgo, el sustrato HRR/bigrama NO compone. El bottleneck es necesario pero NO suficiente (Kirby).",
-    "tests": "TopSim_full ~0.15 (ruido). TopSim_unseen ~0/negativo. Sin prior => colapso a holístico/azar.",
+    "tests": "TopSim_full ~0.15 (ruido). TopSim_unseen ~0/negativo. Sin prior => colapso a hol\u00edstico/azar.",
     "marco": "0055b: el prior de compresibilidad es pata faltante. El sustrato SGM no tiene sesgo adentro sin inyectarlo.",
     "based_on": [
       "0053",
@@ -1290,7 +1290,7 @@
     "category": "Lenguaje / ILM",
     "status": "ACLARACION_REQUERIDA",
     "verified": true,
-    "result": "0055d mostro estancamiento en ~0.35 (afinidad agrupa por rasgos pero no infiere regla). 0056: el aprendiz RuleLearner INFERE el mapeo rasgo->simbolo de la MUESTRA, PERO la estructura (region->pos0, distancia->pos1, tipo->pos2) esta HARDCODEADA en infer_rule: el aprendiz ya sabe que cada rasgo va en su posicion. Solo cuenta cual simbolo le corresponde. TopSim 0.86-1.00 porque aplica sistematicamente esa gramatica que se le dio. NO es composicion emergente del sustrato: es regla INYECTADA en el mecanismo del aprendiz (misma falla que 0049d: la respuesta estaba en el mecanismo, no emergio de presion de transmision). Responde pregunta DISTINTA a 0055a: 0055a pregunta '¿emerge composicionalidad con aprendiz generico?' (si, debil ~0.35); 0056 pregunta '¿tiene el sustrato techo que impida composicion plena SI se le da capacidad de inferir la regla exacta?' (no, llega a 1.0). Hallazgos COMPLEMENTARIOS. Citar el 1.0 de 0056 como 'SGM compone pleno por emergencia' es error.",
+    "result": "0055d mostro estancamiento en ~0.35 (afinidad agrupa por rasgos pero no infiere regla). 0056: el aprendiz RuleLearner INFERE el mapeo rasgo->simbolo de la MUESTRA, PERO la estructura (region->pos0, distancia->pos1, tipo->pos2) esta HARDCODEADA en infer_rule: el aprendiz ya sabe que cada rasgo va en su posicion. Solo cuenta cual simbolo le corresponde. TopSim 0.86-1.00 porque aplica sistematicamente esa gramatica que se le dio. NO es composicion emergente del sustrato: es regla INYECTADA en el mecanismo del aprendiz (misma falla que 0049d: la respuesta estaba en el mecanismo, no emergio de presion de transmision). Responde pregunta DISTINTA a 0055a: 0055a pregunta '\u00bfemerge composicionalidad con aprendiz generico?' (si, debil ~0.35); 0056 pregunta '\u00bftiene el sustrato techo que impida composicion plena SI se le da capacidad de inferir la regla exacta?' (no, llega a 1.0). Hallazgos COMPLEMENTARIOS. Citar el 1.0 de 0056 como 'SGM compone pleno por emergencia' es error.",
     "tests": "TS_full seed1 g0=0.861 g19=0.732; seed2 g0=1.0 g19=1.0; seed3 g0=1.0 g19=1.0. unseen>0 sistematico.",
     "based_on": [
       "0055a",
@@ -1399,7 +1399,7 @@
       "SEED": 20260803
     },
     "result": "Aprendiz GENERICO (sin estructura inyectada) bajo ILM Kirby. TS_full sostenido ~0.30-0.42 (seed1 0.388->0.300, seed2 0.376->0.420, seed3 0.335->0.267). CONFIRMA: el 1.0 de 0056 era por regla inyectada en el aprendiz (misma falla que 0049d). El sustrato SGM compone DEBILMENTE por afinidad (~0.35), no pleno sin estructura dada. Evidencia honesta de composicion emergente = 0055a/0055c/0056b (~0.35).",
-    "marco": "Contraste directo con 0056. 0056 (RuleLearner con regla inyectada)=1.0 es trampa. 0056b (aprendiz generico por afinidad)=~0.35 es la evidencia honesta. Responden preguntas distintas: 0056=¿techo del sustrato si das regla exacta? no; 0056b=¿emerge con aprendiz generico? si debil. No citar 0056 como 'SGM compone pleno por emergencia'.",
+    "marco": "Contraste directo con 0056. 0056 (RuleLearner con regla inyectada)=1.0 es trampa. 0056b (aprendiz generico por afinidad)=~0.35 es la evidencia honesta. Responden preguntas distintas: 0056=\u00bftecho del sustrato si das regla exacta? no; 0056b=\u00bfemerge con aprendiz generico? si debil. No citar 0056 como 'SGM compone pleno por emergencia'.",
     "based_on": [
       "0055a",
       "0055c",
@@ -1419,7 +1419,7 @@
       "T": 20,
       "roles_indep_por_nivel": true
     },
-    "result": "IMPLEMENTACION NO CONVERGE. prof3=0.00. El resonator itera vectores y resta los otros bindings antes de desatar (busqueda en superposicion), PERO: (1) el clean-up final solo conoce SIMBOLOS, no HECHOS anidados -> el filler hijo se pierde; (2) HRR de juguete mal calibrado (magnitudes/normalizacion) no converge en 20 iter con N=64. El survey 2020/2025 advierte que la capacidad decrece con nº de factores para D fija: no es magia infinita. Conclucion honesta: el resonator requiere clean-up con memoria de sub-estructuras y VSA bien calibrada; mi impl no los tiene. NO se suma como 'solucion' del decode anidado hasta calibrarlo.",
+    "result": "IMPLEMENTACION NO CONVERGE. prof3=0.00. El resonator itera vectores y resta los otros bindings antes de desatar (busqueda en superposicion), PERO: (1) el clean-up final solo conoce SIMBOLOS, no HECHOS anidados -> el filler hijo se pierde; (2) HRR de juguete mal calibrado (magnitudes/normalizacion) no converge en 20 iter con N=64. El survey 2020/2025 advierte que la capacidad decrece con n\u00ba de factores para D fija: no es magia infinita. Conclucion honesta: el resonator requiere clean-up con memoria de sub-estructuras y VSA bien calibrada; mi impl no los tiene. NO se suma como 'solucion' del decode anidado hasta calibrarlo.",
     "marco": "Idea de Luciano: Resonator (Frady 2020) es el mecanismo de lectura que le faltaba a la estructura de 0027c (roles indep por nivel). El diagnostico del doc DECODE_ANIDADO (unbind contamina al hijo) es exactamente el problema de factorizacion vectorial que Resonator resuelve. Pero mi impl no cierra por clean-up incompleto + HRR mal calibrado. Pendiente recalibrar o usar FHRR/MBAT con clean-up de hechos.",
     "based_on": [
       "0027c",
@@ -1448,7 +1448,7 @@
       "codebooks_por_rol": true,
       "M_inv": true
     },
-    "result": "Resonator canonico IMPLEMENTADO correctamente (Frady 2020: a_i = M_i^-1 * unbind(z - suma_{j!=i} bind(V_j,x_j), V_i), x_i = clean_i(a_i); M_i = (1/K) sum_c c*c^* invertida por Gauss-Jordan). Corrige el colapso a atractor espurio de 0059e (prof3 subio 0.04->0.28). PERO no rompe el techo: N=64 prof3/4/5/6 = 0.28/0.17/0.11/0.11; N=128 = 0.08/0.25/0.08/0.17 (ruidoso, n=4). Subir N NO ayuda. CONFIRMA el survey 2020/2025: la capacidad del VSA-sumado (bundle de bindings) decrece con nº de factores; el resonator mejora el nivel base (~1-2) pero no el anidado profundo abierto. Conclusion honesta: el techo es del BUNDLE-SUMADO, no del decoder. La solucion real para >2 niveles es NO sumar los bindings en un bundle (role-filler con slots/punteros separados, o estructura de 0027c sin superponer niveles), que es el camino de role-filler pendiente.",
+    "result": "Resonator canonico IMPLEMENTADO correctamente (Frady 2020: a_i = M_i^-1 * unbind(z - suma_{j!=i} bind(V_j,x_j), V_i), x_i = clean_i(a_i); M_i = (1/K) sum_c c*c^* invertida por Gauss-Jordan). Corrige el colapso a atractor espurio de 0059e (prof3 subio 0.04->0.28). PERO no rompe el techo: N=64 prof3/4/5/6 = 0.28/0.17/0.11/0.11; N=128 = 0.08/0.25/0.08/0.17 (ruidoso, n=4). Subir N NO ayuda. CONFIRMA el survey 2020/2025: la capacidad del VSA-sumado (bundle de bindings) decrece con n\u00ba de factores; el resonator mejora el nivel base (~1-2) pero no el anidado profundo abierto. Conclusion honesta: el techo es del BUNDLE-SUMADO, no del decoder. La solucion real para >2 niveles es NO sumar los bindings en un bundle (role-filler con slots/punteros separados, o estructura de 0027c sin superponer niveles), que es el camino de role-filler pendiente.",
     "marco": "Sintesis de 0059/59b/59c/59d/59e/59f: HRR-sumado satura ~2 niveles; resonator (HRR o FHRR, casero o canonico) mejora el nivel base pero no rompe el techo de anidado profundo. El decode anidado de SGM requiere estructura NO-sumada (role-filler con slots separados) para escalar. 0027c (roles indep por nivel) resuelve anidamiento de orden N pero en cadena, no bundle superpuesto de 3 roles de hecho + hecho anidado.",
     "based_on": [
       "0027c",
@@ -1473,8 +1473,8 @@
       "decode": "lectura directa de bloque + find_child por proyeccion",
       "marca_nivel": "no (se decide por similitud)"
     },
-    "result": "PASS. 1.00 de prof 3 a 12 (n=20 por prof). Rompe el techo de ~2-3 niveles de 0059/59b/59c (HRR-sumado) y de 0059d/59e/59f (resonator, que no rompia el techo). Causa: al NO sumar los 3 bindings en un bundle, no hay superposicion que contamine al hijo; SUJ/ROL/OBJ se leen directo de sus bloques y el hecho hijo se sigue por puntero (proyeccion 32 dims en bloque OBJ -> memoria de hechos). Sin contaminacion acumulada -> escala a profundidad arbitraria. Es la estructura de TPR-walk con punteros separados (no superpuestos). Honesto: es ARQUITECTURA de codificacion (como ADN/instinto es hardcode legítimo en la red line), NO inyeccion de la respuesta (lo que fue 0056). El CONTENIDO de cada slot viene del hecho, no esta pre-dado.",
-    "marco": "Sintesis decode anidado SGM: HRR-sumado satura ~2 niveles (0059); resonator canonico Frady mejora nivel base pero no rompe techo (0059f); ROLE-FILLER SLOTS SEPARADOS + punteros (0059g) ROMPE el techo (1.00 a prof 12). Conclusión: el cuello era la codificacion vectorial SUMADA, no el sustrato SGM. El sustrato ya tenia la maquinaria (0027c anida por niveles, 0058 compone relacional); el decode anidado se resuelve con estructura no-sumada. Complementa 0056b: composicion EMERGENTE débil (~0.35) bajo ILM con aprendiz generico sigue siendo el techo de EMERGENCIA; 0059g resuelve el DECODE (lectura), no la emergencia de la estructura.",
+    "result": "PASS. 1.00 de prof 3 a 12 (n=20 por prof). Rompe el techo de ~2-3 niveles de 0059/59b/59c (HRR-sumado) y de 0059d/59e/59f (resonator, que no rompia el techo). Causa: al NO sumar los 3 bindings en un bundle, no hay superposicion que contamine al hijo; SUJ/ROL/OBJ se leen directo de sus bloques y el hecho hijo se sigue por puntero (proyeccion 32 dims en bloque OBJ -> memoria de hechos). Sin contaminacion acumulada -> escala a profundidad arbitraria. Es la estructura de TPR-walk con punteros separados (no superpuestos). Honesto: es ARQUITECTURA de codificacion (como ADN/instinto es hardcode leg\u00edtimo en la red line), NO inyeccion de la respuesta (lo que fue 0056). El CONTENIDO de cada slot viene del hecho, no esta pre-dado.",
+    "marco": "Sintesis decode anidado SGM: HRR-sumado satura ~2 niveles (0059); resonator canonico Frady mejora nivel base pero no rompe techo (0059f); ROLE-FILLER SLOTS SEPARADOS + punteros (0059g) ROMPE el techo (1.00 a prof 12). Conclusi\u00f3n: el cuello era la codificacion vectorial SUMADA, no el sustrato SGM. El sustrato ya tenia la maquinaria (0027c anida por niveles, 0058 compone relacional); el decode anidado se resuelve con estructura no-sumada. Complementa 0056b: composicion EMERGENTE d\u00e9bil (~0.35) bajo ILM con aprendiz generico sigue siendo el techo de EMERGENCIA; 0059g resuelve el DECODE (lectura), no la emergencia de la estructura.",
     "based_on": [
       "0027c",
       "0058",
@@ -1628,7 +1628,7 @@
     "phase": "phase7_composicion - uso real corpus real",
     "date": "2026-08-04",
     "status": "HD_COMO_MEMORIA_FUNCIONA_ROLE_FILLER_NO_MEJORA_RECALL_TEMATICO",
-    "hypothesis": "Llevar el sustrato HD (role-filler 0056e) a uso real como MEMORIA DIRECCIONABLE POR CONTENIDO sobre corpus real (Don Quijote). Test: ¿el role-filler ayuda en datos reales vs superposicion plana (0029)?",
+    "hypothesis": "Llevar el sustrato HD (role-filler 0056e) a uso real como MEMORIA DIRECCIONABLE POR CONTENIDO sobre corpus real (Don Quijote). Test: \u00bfel role-filler ayuda en datos reales vs superposicion plana (0029)?",
     "config": {
       "N": 512,
       "V_KEEP": 3000,
@@ -2167,5 +2167,25 @@
     "test_target": "el cuerpo se desplaza ante carencia grave tras comer sin exito (hipostasia)",
     "hypothesis": "Con el instinto de desplazamiento, cuando la carencia grave persiste tras comer, el sistema devalua acciones locales que no resuelven y se mueve, explorando mas tiles y viviendo mas que el NC (solo alimentacion). Autolimitativo, no deambulo perpetuo.",
     "result_summary": "PASS tecnico-funcional PARCIAL. PASS se mueve (A mov=7 vs NC mov=0, rompe el muro de 0121 que era mov=0%), PASS explora (7 vs 1 tiles), PASS no deambulo (mov=5%). FAIL supervivencia (A=134 vs NC=156), FAIL querer operativo (querer=False ambos, hambre=0). El instinto de desplazamiento rompe la hipostasia (el cuerpo por fin se mueve ante carencia) pero no redirige el atractor: A se obsesiono con make_iron_pickaxe 76%. Siguiente hipotesis: integrar el desplazamiento con querer DIRIGIDO a recurso (moverse adonde), no solo salir de donde esta."
+  },
+  {
+    "experiment_id": "exp_SGM_0123_querer_dirigido",
+    "experiment_name": "querer_dirigido_curiosidad_mundo",
+    "phase": "Fase 8 - querer dirigido a recurso (opcion C)",
+    "date": "2026-08-11",
+    "status": "done",
+    "test_target": "el movimiento se dirige hacia el recurso (gradiente) y hacia lo desconocido (curiosidad), no deambula",
+    "hypothesis": "Con gradiente homeostatico radio 1 + curiosidad dirigida al mundo, el agente en carencia se mueve en direccion al recurso (si lo ve) y hacia zonas de alta incertidumbre (si no lo ve), reduciendo la obsesion de crafting del 0122.",
+    "result_summary": "FAIL parcial. PASS instinto alimentacion (A comio 79x), PASS parcial curiosidad (3 tiles vs 1, 33% hacia incertidumbre), FAIL gradiente (0/0, radio 1 inutil), FAIL obsesion eat 79%, FAIL 0122/NC sin instinto. El gradiente anidado en necesidad_insatisfecha nunca se disparo porque B/NC no comieron."
+  },
+  {
+    "experiment_id": "exp_SGM_0124_habituation",
+    "experiment_name": "habituacion_instinto_aprendizaje",
+    "phase": "Fase 8 - habituacion (instinto -> aprendizaje -> prediccion)",
+    "date": "2026-08-11",
+    "status": "done",
+    "test_target": "el instinto de alimentacion se apaga permanentemente cuando el agente aprende que comer restaura (habituacion por conocimiento)",
+    "hypothesis": "El instinto alimentacion actua solo mientras eat->nodo0.strength < umbral. Al consolidarse, instinto OFF y el agente come por prediccion. Prediccion: multiples ciclos reales hambre-comer-saciarse, no obsesion eat.",
+    "result_summary": "PASS ciclo subsistencia + FAIL compuerta habituacion. PASS 34 ciclos hambre-comer-saciarse (nunca antes), PASS supervivencia A>B (265 vs 221), PASS exploracion masiva (20 tiles vs 3/13). FAIL compuerta (eat=141 inst/pred=0, instinto_off_step=None): el decaimiento del strength en tick() (1%/step, ~93% en 265 pasos) aniquila la acumulacion +0.2/evento; el conocimiento nunca se consolida. Leccion: la habituacion requiere que el conocimiento persista (strength consolidado) a distinta tasa que la vitalidad temporal."
   }
 ]

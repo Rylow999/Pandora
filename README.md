@@ -756,3 +756,58 @@ El desplazamiento **resolvió el síntoma de hipostasia** (el cuerpo finalmente 
 **Conclusión para el roadmap:** el instinto de desplazamiento es MECÁNICA CORRECTA pero INSUFICIENTE por sí solo. Rompe la hipostasia (se mueve) pero no redirige el atractor hacia subsistencia ni hacia querer. Siguiente hipótesis: el problema ya no es "no moverse" sino "moverse dónde": el desplazamiento debe integrarse con una señal de QUÉ buscar (querer dirigido a recurso), no solo "salir de donde estoy". Conecta con el 0116 (querer por ciclo de subsistencia) — el ciclo hacer→gastar→restaurar aún no se cierra con búsqueda espacial.
 
 Ver `docs/FASE8_TELEOLOGIA_OPERATIVA.md` §15 (reconocimiento del desplazamiento).
+
+---
+
+## Estado 2026-08-11 — exp_SGM_0123 RESULTADO (FAIL parcial honesto — gradiente radio 1 inútil)
+
+### Contexto
+El 0122 rompió la hipostasia (mov 0→5%, 7 tiles) pero el atractor cambió de lugar (make_iron_pickaxe 76%). El agente se mueve SIN RUMBO. El 0123 le agrega DIRECCIÓN al movimiento: gradiente homeostático (quimiotaxis hacia recurso visible) + curiosidad dirigida al mundo (hacia zonas de menor exploración).
+
+### Resultado (corrida final real, seed 42, 100 pasos/condición)
+- **A (gradiente+curiosidad):** 100p, **3 tiles**, mov=3%, eat=79 (79%). Curiosidad dirigida 33% (1/3). Gradiente 0% (0/0). Dominante eat 79%. Muerte: None.
+- **B (0122 puro):** 100p, 1 tile, mov=0%, eat=0. Dominante noop 74% + make_iron_pickaxe 26%.
+- **NC (solo alimentación):** 100p, 1 tile, eat=0. Dominante make_wood_sword 82%.
+
+### Veredicto
+- PASS **instinto alimentación** (A comió 79 veces).
+- PASS parcial **curiosidad dirigida** (3 tiles vs 1, 33% hacia incertidumbre).
+- FAIL **gradiente** (0/0 as activaciones) — radio 1 chequeando solo 4 celdas adyacentes = nunca detecta recurso con hambre real.
+- FAIL **obsesión eat** (79%).
+- FAIL **0122 (B) y NC** sin instinto alimentación (noop/crafting).
+
+### Diagnóstico honesto
+El gradiente estaba anidado DENTRO de `necesidad_insatisfecha` (requería `ultima_accion == eat`), y como el agente B/NC nunca comió, el mecanismo nunca se disparó. El diseño de instintos independientes y paralelos es correcto, pero el gradiente con radio 1 es quimiotaxis que no tiene gradiente de concentración real. Falta el CICLO de subsistencia (food no baja naturalmente en 100 pasos), así que la saciedad nunca cedió y el agente se quedó clavado comiendo.
+
+Ver `experiments/exp_SGM_0123_querer_dirigido.py` y `results/results_exp_SGM_0123_querer_dirigido.json`.
+
+---
+
+## Estado 2026-08-11 — exp_SGM_0124 RESULTADO (PASS ciclo subsistencia + FAIL compuerta de habituación)
+
+### Contexto
+El instinto de alimentación (0120/0123) se apaga por SACIEDAD, no por APRENDIZAJE → obsesión eat 79%. Hipótesis de Luciano: **el instinto debe actuar solo mientras el agente NO SABE el resultado** (prior filogenético para muestrear lo desconocido, pe. reflejo de succión del bebé). Una vez que come y aprende que food→vitalidad (refuerzo eat→nodo0), el instinto debe apagarse PERMANENTEMENTE y el agente debe comer por PREDICCIÓN.
+
+### Mecanismo implementado (compuerta de habituación)
+La fuerza del instinto alimentación se aplica SOLO mientras la conexión `eat→nodo0` no esté consolidada (`strength < 2.0`). Al cruzar el umbral, el instinto OFF permanente. Se verificó ad-hoc (test aislado sin Crafter): override fuerza eat=16 con compuerta; sin aprendizaje fuerza>0; strength 2.5→instinto OFF; strength 1.5→instinto sigue. **La compuerta funcional correcta.**
+
+### Resultado real (seed 42, 300 pasos/condición)
+- **A (compuerta):** 265p, **20 tiles**, eat=141 (inst=141, pred=0), mov=106, **ciclos=34**, dominante eat 53%. Muerte: CONTRADICTORIA food=0 hp=1 V_grafo_fin=0.008, instinto_off_step=None.
+- **B (solo desplaz):** 221p, 3 tiles, eat=0, dominante place_furnace 89%.
+- **NC (PPR puro):** 300p, 13 tiles, eat=0, dominante place_furnace 79%.
+
+### Veredicto
+- PASS **ciclo de subsistencia** (34 ciclos hambre→comer→saciarse→hambre en 265p) — NUNCA antes el agente cerró ciclos reales. Food decay externo en el script forzó hambre repetida y el instinto respondió comiendo.
+- PASS **supervivencia A>B** (265 vs 221).
+- PASS **exploración masiva** (20 tiles vs 3 B y 13 NC).
+- FAIL **compuerta de habituación** (inst=141, pred=0) — el agente comió TODAS las veces por instinto, NUNCA transitó a predicción.
+- FAIL **obsesión eat** (53%, marginal sobre 50).
+
+### Diagnóstico honesto — POR QUÉ FALLÓ LA COMPUERTA
+`aprender_conexion(eat, 0)` refuerza con `+0.2` por evento, PERO `tick()` decae el strength en `*exp(-gamma)` (1%) por step. En 265 pasos el decaimiento acumulado ~93% aniquila la acumulación — el strength nunca llega a 2.0. **La poda/decaimiento del aprendizaje (a la misma tasa que la vitalidad) es más rápido que la consolidación de la conexión eat→nodo0, así el instinto nunca se vuelve redundante.**
+
+**Lección transversal (class-level):** la habituación requiere que el CONOCIMIENTO persista (strength se consolide, no decaiga a la tasa de la vitalidad). Si el instinto es un prior para muestrear lo desconocido, la salida del instinto requiere que el aprendizaje gane una persistencia que hoy la poda le niega. Conecta con omega = identidad estable / conocimiento en conexiones: hay que separar el ritmo de decaimiento de un CONOCIMIENTO del que decae una VITALIDAD temporal.
+
+**Siguiente hipótesis (0125):** separar el decaimiento del strength aprendido (consolidación lenta o permanente) del decaimiento de vitalidad (temporal). El instinto solo actúa donde el modelo del mundo aún predice mal (curiosidad/habituation por PE, Oudeyer 2007), y la transición instinto→predicción se mide como: primeros N eats por instinto → resto por predicción, con strength de la conexión consolidada.
+
+Ver `experiments/exp_SGM_0124_habituation.py` y `results/results_exp_SGM_0124_habituation.json`.
