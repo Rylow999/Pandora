@@ -164,16 +164,60 @@ class SGMAgent:
         # V_grafo: vitalidad global = media de vitalidades nodales.
         # Es la medida de "vida" del sistema (cuerpo del player = cuerpo del grafo).
         self.V_grafo = 1.0
+        # ONTOLOGIA TEMPORAL DE LA VITALIDAD (0125):
+        # - vitalidad[i]: base de actividad del nodo, decae con gamma_nodo (efimero,
+        #   relevancia operativa local). Ec.5 Kuramoto V_i = V_i*e^-g + A_i*(1-e^-g).
+        # - V_grafo: estado homeostatico del CUERPO (acople directo con health/food).
+        #   Es lo que sube/baja con el hambre. NO es la media de vitalidades nodales.
+        # - strength de conexion aprendida: conocimiento, decae con gamma_conocimiento
+        #   (persistente). Si se consolida por sincronizacion Kuramoto, deja de decaer.
+        # Separar estas 3 hace que "tener hambre" (estado global) no arrastre
+        # mecanicamente la vitalidad de cada nodo, y que el conocimiento aprendido
+        # (eat->nodo0) persista mientras el estado homeostatico fluctua.
+        self.gamma_nodo = gamma           # decaimiento de vitalidad[i] (efimero)
+        self.gamma_conocimiento = 0.001   # decaimiento de strength aprendido (persistente)
+        # KURAMOTO (0125): fases de sincronizacion de cada nodo con la raiz.
+        # phi[i]: fase en [0, 2pi). La sincronizacion cos(phi_i - phi_root) > umbral
+        # es proxy de 'nodo cognitivamente relevante AHORA' (Eq.7, theta_interf=0.70).
+        # La relevancia sincronizada CONSOLIDA la conexion aprendida (la vuelve no-podable),
+        # habilitando la habituacion: el instinto se apaga porque el conocimiento persiste.
+        self.phi = [rng.uniform(0, 2 * math.pi) for _ in range(n_nodes)]
+        self.phi_root = 0.0               # fase de la raiz / identidad (nodo 0)
+        self.eta_phase = 0.05             # tasa de aprendizaje de fase (Kuramoto Eq.3)
+        self.R_base = 1.0                 # radio de acople base
+        self.theta_interf = 0.70          # umbral de interferencia (Eq.7) -> consolida
+        # conexiones consolidadas por sincronizacion: {(i,k)} no se podan
+        self.consolidadas = set()
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
+        # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
+        # cuando food sube, se refuerza/consolida la conexion action->nodo0 de las
+        # acciones que co-ocurrieron con la mejora, ponderadas por actividad.
+        # NO hardcode de "comer es bueno": es Hebb (co-ocurrencia actividad-resultado).
+        self.historial_food = []
         # INSTINTO DE ESPECIE (0120): reflejo incorporado del sustrato.
         # En carencia (V_grafo baja), el sistema siente inclinacion a PROBAR la
         # accion de alimentacion. AUTOLIMITATIVO: la fuerza crece con la carencia
         # y se apaga al saciarse (V_grafo restaurado) -> no se obsesiona.
         # NO pre-juzga si comer es bueno: eso lo aprende la experiencia.
-        self.instinto_alimentacion = 16      # accion 'eat' (el reflejo de esta especie/cuerpo)
-        self.instinto_umbral_carencia = 0.3  # V_grafo bajo este -> el instinto se activa
-        self.instinto_fuerza_base = 0.5      # fuerza base del impulso (modulada por carencia)
+        self.instinto_alimentacion = 5       # accion 'do' (CRITICO: en Crafter COMER = accion 5 'do', que procesa cow/plant ENFRENTE. Antes estaba en 16 = make_iron_sword (fabricar espada), lo que hacia que el instinto empujara a fabricar, no a comer. FIX 0131.)
+        self.instinto_umbral_carencia = 0.3  # V_grafo bajo este -> el instinto se activa (DEPRECATED 0127)
+        self.instinto_fuerza_base = 0.5      # fuerza base del impulso (modulada por hambre)
+        # 0127: el instinto de alimentacion se ancla a HAMBRE REAL de food (no a V_grafo).
+        # food va en percepcion en escala 0-10 (food/10 en sv) -> umbral en esa escala.
+        self.umbral_hambre_food = 3.0   # food < este => hambre especifica -> pulsion a comer
+        # 0128: DRIVE DE ACCION (SEEEKING, energia acumulada anti-noop).
+        # El noop deja de ser gratis: cada paso en noop acumula energia libre (entropia)
+        # que se libera presionando a ejecutar una accion no-noop del repertorio. Es el
+        # SEEKING basado en Panksepp 1998: energia basal que empuja a ACTUAR (sin drive no
+        # se hace nada aunque haya hambre) + Friston active inference: quedarse quieto sin
+        # reducir incertidumbre = alta energia libre esperada que el sistema evita.
+        # Autolimitativo: al ejecutar una accion no-noop, el drive se descarga.
+        self.drive_noop = 0.0            # energia libre acumulada por inaccion
+        self.drive_noop_umbral = 1.5     # entropia que dispara el empuje (se sobrepasa)
+        self.drive_noop_fuerza = 1.0     # fuerza del empuje cuando se activa
+        self.drive_noop_tasa = 0.1       # acumulacion por paso en noop (0.1/step)
+        self.drive_noop_descarga = 0.5   # descarga al ejecutar una accion no-noop
         # INSTINTO DE EXPLORACION (0121): curiosidad como instinto, NO reward.
         # El decoder aprende el modelo del mundo (estado->estado). Alta incertidumbre
         # (prediction error) genera inclinacion a MOVERSE hacia lo desconocido.
@@ -189,6 +233,30 @@ class SGMAgent:
         self.necesidad_insatisfecha = False
         self.instinto_desplazar_fuerza = 0.6
         self.devaluar_umbral = 0.35       # V_grafo bajo este => hay carencia real
+        # 0132: INSTINTO DE INTERACCION (mecanismo multiaccion independiente, Luciano 2026-08-11).
+        # El 'do'(5) es la accion de interactuar con lo que el cuerpo tiene ENFRENTE: come si
+        # hay comida, ataca si hay enemigo. Es UN mecanismo operante general. La pulsion a 'do'
+        # sube cuando hay UNA necesidad bio-insatisfecha del cuerpo (hambre real de food, o dolor/
+        # amenaza/daño) Y hay algo accionable enfrente. Autolimitativo: al resolver (comer o
+        # neutralizar amenaza) la necesidad cesa y la pulsion cae. Compuerta de habituacion:
+        # la conexion do->nodo0 que protege la homeostasis se consolida (come por prediccion).
+        # Senales (el harness setea estas en cada step):
+        self._hambre_real = 0.0       # 0-1, hambre real de food (escala normalizada)
+        self._amenaza = 0.0           # 0-1, dolor/hp bajo reciente + enemigo en vista
+        self._algo_enfrente = 0       # 0=nada, 1=comida, 2=enemigo (lo que hay en pos+facing)
+        # umbrales de las pulsiones
+        self.umbral_amenaza_dolor = 0.5  # fraccion de hp perdida que dispara defensa
+        self.instinto_interaccion_fuerza = 0.7  # fuerza base del impulso a 'do'
+        # 0133: RE-ENCARE EMERGENTE (opcion A, Luciano). El sustrato aprende a POSICIONARSE
+        # para que el objetivo quede ENFRENTE antes de interactuar. Senal: el harness setea
+        # _target_dir (dx,dy) hacia el objetivo mas cercano (comida o enemigo). Si el objetivo
+        # NO esta en pos+facing (no accionable ya), el instinto empuja a MOVERSE hacia el
+        # (lo reorienta); al quedar enfrente (algo_enfrente>0), empuja 'do'. Asi emerge la
+        # secuencia acercar -> reorientar -> interactuar, sin hardcodearla. Acto fallido no
+        # crea nodo-referencia (leccion 0129): solo el 'do' efectivo consolida.
+        self._target_dir = (0, 0)     # direccion (dx,dy) al objetivo mas cercano, o (0,0)
+        self._target_dist = 0         # distancia manhattan al objetivo (0=enfrente, 1=adyacente, >1 lejos)
+        self.reencare_fuerza = 0.8    # fuerza del empuje a moverse hacia el objetivo para reencarar
         self.devaluar_fuerza = 0.4        # castigo a acciones locales que no resuelven
 
     def aprender_conexion(self, a, b):
@@ -214,7 +282,43 @@ class SGMAgent:
         if b not in self.edges.get(a, []):
             if a < len(self.edges):
                 self.edges[a].append(b)
-                self.conn_type[clave] = {"count": c, "tipo": 1 if c > 3 else 0}
+                # Preservar strength/age/consolidada si ya existian (fix integridad 0126):
+                # antes se re-escribia la estructura sin esos campos -> KeyError: 'strength'
+                existente = self.conn_type.get(clave, {})
+                self.conn_type[clave] = {
+                    "count": c,
+                    "tipo": 1 if c > 3 else 0,
+                    "strength": existente.get("strength", 1.0),
+                    "age": existente.get("age", 0),
+                    **({"consolidada": True} if clave in self.consolidadas else {}),
+                }
+
+    def update_phase(self, i, signo):
+        """Kuramoto Eq.3 (0125): actualiza la fase del nodo i hacia la raiz.
+        phi_i += eta * R_i * sign(o_i) * sin(phi_root - phi_i)  mod 2pi.
+        sign(o_i) = +1 si la accion ayudo a la homeostasis (food subio), -1 si no.
+        La sincronizacion resultante (cos(phi_i - phi_root)) es proxy de relevancia.
+        """
+        R_i = self.R_base / (1.0 + self._dist_omega(i, 0))
+        delta = math.sin(self.phi_root - self.phi[i])
+        self.phi[i] = (self.phi[i] + self.eta_phase * R_i * signo * delta) % (2 * math.pi)
+
+    def _dist_omega(self, i, j):
+        return math.sqrt(sum((x - y) ** 2 for x, y in zip(self.omega[i], self.omega[j])))
+
+    def sincronizacion(self, i):
+        """Eq.7 interferencia: I_i = cos(phi_i - phi_root). Proxy de relevancia sincronizada."""
+        return math.cos(self.phi[i] - self.phi_root)
+
+    def consolidar_si_sincroniza(self, i, j):
+        """Si el nodo i esta sincronizado con la raiz (relevante), la conexion (i,j)
+        se consolida: el strength deja de decaer con la poda (entra en self.consolidadas).
+        Es el mecanismo que hace PERSISTIR el conocimiento aprendido (0125 opcion C)."""
+        sin = self.sincronizacion(i)
+        clave = (i, j)
+        if sin > self.theta_interf and clave in self.conn_type:
+            self.consolidadas.add(clave)
+            self.conn_type[clave]["consolidada"] = True
 
     def _aff(self, i, k):
         # Afinidad base: cos * vitalidad
@@ -231,18 +335,24 @@ class SGMAgent:
     def tick(self, n=1):
         for _ in range(n):
             for i in range(len(self.omega)):
-                self.vitalidad[i] *= math.exp(-self.gamma)
+                # Vitalidad nodo: decae con gamma_nodo (efimero, relevancia operativa)
+                self.vitalidad[i] *= math.exp(-self.gamma_nodo)
                 if self.vitalidad[i] < 0.05:
                     self.vitalidad[i] = 0.05
             # La raiz (nodo 0) tiene piso 0.5 para persistencia de identidad
             if self.vitalidad[0] < 0.5:
                 self.vitalidad[0] = 0.5
-            # Poda de aristas: las conexiones no usadas se debilitan
+            # Poda de aristas: las conexiones no usadas se debilitan.
+            # El KNOWLEDGE (strength) decae con gamma_conocimiento (mucho mas lento que
+            # la vitalidad), y las consolidadas por sincronizacion Kuramoto NO se podan.
             poda = []
             for clave, conn in self.conn_type.items():
                 conn["age"] = conn.get("age", 0) + 1
-                # Decaer strength si no se usa (ritmo lento: gamma, no gamma*2)
-                conn["strength"] = conn.get("strength", 1.0) * math.exp(-self.gamma)
+                if clave in self.consolidadas:
+                    # Consolidada: el strength persiste (sigma pegado, no decae)
+                    conn["strength"] = min(2.0, conn.get("strength", 1.0))
+                    continue
+                conn["strength"] = conn.get("strength", 1.0) * math.exp(-self.gamma_conocimiento)
                 if conn["strength"] < 0.05:
                     poda.append(clave)
             for clave in poda:
@@ -378,15 +488,47 @@ class SGMAgent:
         en_carencia_grave = self.V_grafo < self.devaluar_umbral
         necesidad_insat = en_carencia_grave and (self.ultima_accion == self.instinto_alimentacion)
         self.necesidad_insatisfecha = necesidad_insat
+        # 0128: DRIVE DE ACCION (SEEEKING). Si la energia libre acumulada por noop
+        # supera el umbral, se activa un empuje que sesga CONTRA quedarse quieto
+        # (noop=0): las acciones no-noop ganan fuerza. Es energia que se descarga al actuar.
+        drive_dispara = self.drive_noop >= self.drive_noop_umbral
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
-                # INSTINTO ALIMENTACION (0120/0124): usa override con compuerta si existe,
-                # si no, la fuerza clasica modulada por carencia.
+                # DRIVE NOOP (0128): si el sistema acumulo mucha inaccion, empujar a
+                # ejecutar CUALQUIER accion no-noop (salir del pozo de inercia).
+                if drive_dispara and a != 0:
+                    score += self.drive_noop_fuerza * (self.drive_noop / self.drive_noop_umbral)
+                # INSTINTO DE INTERACCION (0132/0133 unificado: hambre + defensa via 'do').
+                # El 'do'(5) interactua con lo que haya ENFRENTE. Con RE-ENCARE (0133):
+                # - Si el objetivo (comida/enemigo) esta ENFRENTE (_algo_enfrente>0): pulsion a 'do'.
+                # - Si hay necesidad real pero el objetivo NO se puede interactuar (no enfrente,
+                #   _algo_enfrente==0 pero _target_dir!=0): pulsion a MOVERSE hacia el objetivo
+                #   (lo reorienta para dejarlo enfrente). Emerge la secuencia sin hardcodearla.
                 f_override = getattr(self, '_fuerza_instinto_eat_override', None)
-                if f_override is not None:
-                    if a == self.instinto_alimentacion:
+                if a == self.instinto_alimentacion:
+                    necesidad = max(self._hambre_real, self._amenaza)
+                    if self._algo_enfrente > 0 and necesidad > 0.05:
+                        # objetivo accionable enfrente -> interactuar (comer o atacar)
+                        score += max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
+                    elif f_override:
                         score += f_override
+                # RE-ENCARE (0133/0135): acople fino al objetivo.
+                # - Si hay necesidad y el objetivo esta a distancia 1 (adyacente), la pulsion
+                #   a 'do' sube FUERTE (es la distancia de interaccion; el facing del harness
+                #   puede estar mal calculado, el _target_dist es mas confiable que _algo_enfrente).
+                # - Si el objetivo esta lejos (dist>1), empujar el MOVE hacia el (reorientarse).
+                necesidad = max(self._hambre_real, self._amenaza)
+                if necesidad > 0.05 and self._target_dir != (0, 0):
+                    dist_t = getattr(self, '_target_dist', 0)
+                    if dist_t == 1 and a == self.instinto_alimentacion:
+                        # adyacente: interactuar (comer/atacar) con fuerza
+                        score += max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
+                    elif dist_t > 1 and a in self.acciones_movimiento:
+                        # lejos: mover hacia el objetivo para reencarar
+                        dx, dy = self._target_dir
+                        if a == self._direccion_a_accion(dx, dy):
+                            score += self.reencare_fuerza * necesidad
                 elif en_carencia and a == self.instinto_alimentacion:
                     score += fuerza_instinto
                 # Instinto gradiente homeostatico (0123)
@@ -418,7 +560,14 @@ class SGMAgent:
         else:
             self.conteo_repeticion = 0
         self.ultima_accion = best
-        
+
+        # 0128: actualizar DRIVE NOOP. Si se ejecuto noop, la energia libre acumula
+        # (noop deja de ser gratis); si se ejecuto una accion, se descarga. Autolimitativo.
+        if best == 0:
+            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + self.drive_noop_tasa)
+        else:
+            self.drive_noop = max(0.0, self.drive_noop - self.drive_noop_descarga)
+
         # Aprender conexion entre la accion anterior y la actual
         if anterior >= 0 and best != anterior:
             self.aprender_conexion(anterior, best)
@@ -468,13 +617,36 @@ class SGMAgent:
         # Acople directo: la salud del player (0-10) multiplica la vitalidad del grafo.
         factor_cuerpo = max(0.05, health / 10.0)
         self.V_grafo = (sum(self.vitalidad) / max(1, len(self.vitalidad))) * factor_cuerpo
+        # Registrar (accion, food) en la ventana Hebbiana
+        if self.ultima_accion >= 0 and self.ultima_accion < len(self.vitalidad):
+            self.historial_food.append((self.ultima_accion, food))
+            if len(self.historial_food) > 6:
+                self.historial_food.pop(0)
         if self.ultimo_food is None:
             self.ultimo_food = food
             return
         mejoro_homeostasis = food > self.ultimo_food
-        # Si la ultima accion fue la que revirtio la carencia, reforzar supervivencia.
-        if mejoro_homeostasis and self.ultima_accion >= 0:
-            self.aprender_conexion(self.ultima_accion, 0)
+        # HEBBIANO (0126, fix del bug 0125): cuando la homeostasis MEJORA (food sube),
+        # se refuerza/consolida la conexion accion->nodo0 de TODAS las acciones que
+        # co-ocurrieron con la mejora en la ventana reciente, ponderadas por actividad.
+        # Esto corrige el bug de 0125: `ultima_accion` era casi siempre MOVIMIENTO (por
+        # el gradiente), asi que aprender_conexion(ultima_accion,0) reforzaba
+        # movimiento->supervivencia en vez de comer->supervivencia. Con Hebb, el 'eat'
+        # gana peso naturalmente si estuvo activo cerca de la mejora (co-ocurrencia),
+        # sin hardcodear "comer es bueno".
+        if mejoro_homeostasis:
+            for (act, f_obs) in self.historial_food:
+                if act >= 0 and act < len(self.vitalidad):
+                    # Peso por actividad (= vitalidad del nodo) => co-ocurrencia real
+                    self.aprender_conexion(act, 0)
+                    self.update_phase(act, +1.0 * self.vitalidad[act])
+                    self.consolidar_si_sincroniza(act, 0)
+        else:
+            # La mejora no ocurrio: las acciones recientes desincronizan (sign negativo),
+            # pero NO se castiga conexion -> se deja que la poda actue naturalmente.
+            for (act, _f_obs) in self.historial_food:
+                if act >= 0 and act < len(self.vitalidad):
+                    self.update_phase(act, -1.0 * self.vitalidad[act])
         self.ultimo_food = food
 
     def cuantizar_estado(self, state_semantic):

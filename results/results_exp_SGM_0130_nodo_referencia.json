@@ -1,0 +1,82 @@
+{
+  "experiment_id": "exp_SGM_0130",
+  "experiment_name": "nodo_referencia_al_acto",
+  "phase": "Fase 8 - hipotesis nodo-referencia al acto (gatear eat vacio)",
+  "date": "2026-08-11",
+  "hypothesis": "El acto 'eat' debe crear nodo-referencia de restauracion SOLO si produjo resultado real (comida). Eat vacio (sin comida) NO consolida: se registra malestar que empuja a buscar comida. Pred: reduce eat vacio, aumenta eat_efectivo y mov (buscar), aparecen ciclos de subsistencia, y eat->nodo0 se consolida porque solo los eats efectivos lo refuerzan.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 600,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "gating": "eat vacio (food no sube y sin comida a la vista) => pain 0.3 intrinseco",
+    "homeostasis": "NATIVA Crafter"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "gated_pasos": 161,
+        "gated_tiles": 5,
+        "gated_eat": 0,
+        "gated_eat_efectivo": 0,
+        "gated_eat_vacio": 0,
+        "gated_mov": 22,
+        "gated_ciclos": 0,
+        "gated_muerte": {
+          "step": 160,
+          "food": 3.0,
+          "hp": 2.0,
+          "Vg": 0.041
+        }
+      },
+      {
+        "seed": 7,
+        "gated_pasos": 174,
+        "gated_tiles": 8,
+        "gated_eat": 0,
+        "gated_eat_efectivo": 0,
+        "gated_eat_vacio": 0,
+        "gated_mov": 82,
+        "gated_ciclos": 0,
+        "gated_muerte": {
+          "step": 173,
+          "food": 3.0,
+          "hp": 2.0,
+          "Vg": 0.035
+        }
+      },
+      {
+        "seed": 99,
+        "gated_pasos": 91,
+        "gated_tiles": 21,
+        "gated_eat": 0,
+        "gated_eat_efectivo": 0,
+        "gated_eat_vacio": 0,
+        "gated_mov": 66,
+        "gated_ciclos": 0,
+        "gated_muerte": {
+          "step": 90,
+          "food": 6.0,
+          "hp": 1.0,
+          "Vg": 0.039
+        }
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0130_nodo_referencia.py",
+  "results_file": "results/results_exp_SGM_0130_nodo_referencia.json",
+  "variant_of": "exp_SGM_0129",
+  "lit_refs": [
+    "Hipotesis nodo-referencia al acto (Luciano 2026-08-11)",
+    "Hebb 1949 - co-ocurrencia acto-resultado consolida",
+    "Damasio - somatic markers",
+    "Hafner/Crafter 2022 - eat efectivo si cow/plant"
+  ],
+  "notes": "En Crafter el eat solo sube food si hay cow(+6)/plant(+4) a la vista. El 0129 mostro que el agente come 52x pero muere con food=0: la mayoria son eats vacios que no refuerzan eat->nodo0, bloqueando el aprendizaje innato. Este experimento gatea el acto: cuando eat no produce restauracion (vacio), aplica malestar intrinseco que impide crear nodo-referencia de restauracion y empuja a buscar. Es la hipotesis de Luciano aplicada sin hardcode.",
+  "notes_criollo": "Luciano pensaba que no es la falta de reward lo que traba, sino que el acto de comer genera un nodo de referencia al acto aunque no haya comido nada de verdad. En Crafter comer solo sirve si tenes una vaca o planta adelante. Este experimento hace que comer 'al pedo' (sin comida) de malestar en vez de consolidar, asi el bicho aprende a buscar donde hay comida de verdad en vez de quedarse comiendo aire."
+}

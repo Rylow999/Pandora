@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_SGM_0135",
+  "experiment_name": "acople_fino_adyacente",
+  "phase": "Fase 8 - acople fino: interactuar cuando el objetivo esta adyacente",
+  "date": "2026-08-11",
+  "hypothesis": "El 'do'(5) es el mecanismo operante general: come si hay comida enfrente, ataca si hay enemigo. La pulsion sube = max(hambre, amenaza) cuando hay algo accionable enfrente. Pred: el agente ataca enemigos (reduce da\u00f1o) y/o come (food sube). Mecanismo multiaccion independiente del sustrato.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 600,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "comer": "accion do(5)",
+    "atacar": "accion do(5) sobre enemigo enfrente",
+    "homeostasis": "NATIVA Crafter"
+  },
+  "result": "ver reporte stdout (resultados se imprimieron arriba)",
+  "script": "experiments/exp_SGM_0135_acople_fino.py",
+  "results_file": "results/results_exp_SGM_0135_acople_fino.json",
+  "variant_of": "exp_SGM_0134",
+  "lit_refs": [
+    "Luciano 2026-08-11 - mecanismo multiaccion independiente del sustrato",
+    "Panksepp 1998 - SEEKING/RAGE",
+    "crafter objects.py:113-116 - do=comer/cazar"
+  ],
+  "notes": "Extiende el instinto de alimentacion (que apuntaba a 'do') a un instinto de interaccion UNIFICADO: la misma accion 'do' come o ataca segun que haya enfrente. El sustrato percibe hambre (food bajo), amenaza (hp perdido + enemigo en grace), y lo que tiene enfrente (pos+facing). La pulsion a 'do' = max(hambre, amenaza) si hay algo accionable. Test de si el agente por fin ejecuta 'do' (comer y/o pelear).",
+  "notes_criollo": "Ahora el 'do' es como la mano del bebe: toma lo que tenga adelante. Si hay comida, come; si hay un bicho, lo golpea. La pulsion de hacerlo crece cuando el cuerpo tiene una necesidad real (hambre o le pegaron) y hay algo adelante sobre lo que actuar. Es UN solo mecanismo para subsistencia Y defensa, no dos sistemas separados \u2014 la idea que marcaste."
+}

@@ -1,0 +1,48 @@
+{
+  "experiment_id": "exp_SGM_0131",
+  "experiment_name": "fix_mapeo_acciones_do",
+  "phase": "Fase 8 - fix critico del mapeo de acciones (comer=do=5)",
+  "date": "2026-08-11",
+  "hypothesis": "Con instinto_alimentacion=5 (do, que es COMER en Crafter), el agente por primera vez ejecuta la accion correcta para comer. Al llegar adyacente a una cow/plant y hacer 'do', food sube -> nodo-referencia de restauracion se crea -> Hebb/Kuramoto consolidan (do,0) -> el instinto se apaga -> come por prediccion. Pred: comio_efectivo>0, no muere con food=0, ciclos de subsistencia.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 600,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "instinto_alimentacion": "5 (do/COMER, fix critico) - antes era 16 make_iron_sword",
+    "homeostasis": "NATIVA Crafter"
+  },
+  "result": [
+    {
+      "seed": 99,
+      "pasos": 151,
+      "tiles": 2,
+      "comio_efectivo": 0,
+      "comio_vacio": 0,
+      "mov": 9,
+      "ciclos": 0,
+      "muerte": {
+        "step": 150,
+        "food": 4.0,
+        "hp": 2.0,
+        "Vg": 0.044
+      },
+      "consol": 0
+    }
+  ],
+  "script": "experiments/exp_SGM_0131_fix_mapeo_acciones.py",
+  "results_file": "results/results_exp_SGM_0131_fix_mapeo_acciones.json",
+  "variant_of": "exp_SGM_0130",
+  "lit_refs": [
+    "Verificado en crafter/objects.py:113-116 - COMER = accion 'do'(5)",
+    "Hipotesis nodo-referencia (Luciano 2026-08-11)",
+    "Hebb 1949 - co-ocurrencia acto-resultado",
+    "Kuramoto 1975 - consolidacion por relevancia sincronizada"
+  ],
+  "notes": "HALLAZGO CRITICO: todos los experimentos 0123-0130 usaban instinto_alimentacion=16 que en Crafter es make_iron_sword, NO comer. Comer=do=5. Se corrige el mapeo. Este es el verdadero desbloqueo: el instinto ahora empuja a la accion que come. El reward de Crafter por comer es indirecto (food->health->reward), y 'do' solo come si hay cow/plant ENFRENTE (pos+facing). Se evalua si con el mapeo correcto el agente subsiste por primera vez.",
+  "notes_criollo": "\u00a1Encontramos el problema de raiz! Todo este tiempo el 'instinto de comer' empujaba a la accion 16, que en Crafter es FABRICAR ESPADA DE HIERRO, no comer. Por eso el bicho 'comia' 52 veces y nunca se llenaba: en realidad estaba fabricando espadas con la pulsion de hambre. Comer de verdad es la accion 5 (do), que come la vaca o planta que tengas adelante. Corregimos el mapa de acciones y ahora SI el instinto deberia comer de verdad."
+}

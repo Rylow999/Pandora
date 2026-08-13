@@ -1,0 +1,78 @@
+{
+  "experiment_id": "exp_SGM_0129",
+  "experiment_name": "variante_C_mas_seeds",
+  "phase": "Fase 8 - variante C: mas vida + seeds (rompe atractor de crafting?)",
+  "date": "2026-08-11",
+  "hypothesis": "Con mas pasos (800) y varias seeds, la presion homeostatica real + drive noop debiera romper el atractor de crafting en alguna seed: moverse, gastar, generar hambre, comer (ciclo de subsistencia). Pred: >=1 de 3 seeds con eat>0, mov>10, ciclos>=1, dominante no 100% crafting.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 800,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "drive_noop": "activo en core (umbral 1.5)",
+    "homeostasis": "NATIVA Crafter"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "pasos": 284,
+        "tiles": 26,
+        "eat": 52,
+        "mov": 232,
+        "ciclos": 0,
+        "muerte": {
+          "step": 283,
+          "food": 0.0,
+          "hp": 2.0,
+          "Vg": 0.013
+        }
+      },
+      {
+        "seed": 7,
+        "pasos": 213,
+        "tiles": 9,
+        "eat": 16,
+        "mov": 146,
+        "ciclos": 0,
+        "muerte": {
+          "step": 212,
+          "food": 1.0,
+          "hp": 2.0,
+          "Vg": 0.025
+        }
+      },
+      {
+        "seed": 99,
+        "pasos": 189,
+        "tiles": 4,
+        "eat": 1,
+        "mov": 7,
+        "ciclos": 0,
+        "muerte": {
+          "step": 188,
+          "food": 2.0,
+          "hp": 2.0,
+          "Vg": 0.031
+        }
+      }
+    ],
+    "n_seeds_ciclo": 0,
+    "n_seeds_come": 3,
+    "n_seeds_muve": 2
+  },
+  "script": "experiments/exp_SGM_0129_varianteC_seeds.py",
+  "results_file": "results/results_exp_SGM_0129_varianteC_seeds.json",
+  "variant_of": "exp_SGM_0128",
+  "lit_refs": [
+    "Panksepp 1998 - SEEKING",
+    "Friston - active inference",
+    "Hafner/Crafter 2022 - homeostasis nativa"
+  ],
+  "notes": "Opcion C: conservador, solo se da mas vida (800p) y mas seeds (42,7,99) con el core de 0128 (drive_noop + instinto hambre real + Hebb). Sin tocar arquitectura. Se mide si en alguna seed el atractor de crafting cede ante la subsistencia (comer, moverse, ciclo). Si ninguna seed sensa del ciclo, se confirma que el problema es estructural y motiva la opcion A (multiples ejes en paralelo).",
+  "notes_criollo": "En el 0128 el agente salio del noop pero se clavo fabricando espadas de madera sin moverse ni comer. Antes de redisenar toda la arquitectura, miramos si dandole MAS VIDA (800 pasos) a varias semillas, la necesidad real (hambre) por fin lo hace salir del atractor de fabricar. Si con mas tiempo alguna semilla aprende a comer y moverse, el problema era de extension temporal. Si no, es arquitectura."
+}

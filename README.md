@@ -811,3 +811,29 @@ La fuerza del instinto alimentación se aplica SOLO mientras la conexión `eat�
 **Siguiente hipótesis (0125):** separar el decaimiento del strength aprendido (consolidación lenta o permanente) del decaimiento de vitalidad (temporal). El instinto solo actúa donde el modelo del mundo aún predice mal (curiosidad/habituation por PE, Oudeyer 2007), y la transición instinto→predicción se mide como: primeros N eats por instinto → resto por predicción, con strength de la conexión consolidada.
 
 Ver `experiments/exp_SGM_0124_habituation.py` y `results/results_exp_SGM_0124_habituation.json`.
+
+---
+
+## Estado 2026-08-11 — SAGA 0125→0137: estabilización + diagnóstico del acople cuerpo-mundo
+
+### Qué se logró (verificado, experimentos 0125-0137)
+Tras el 0124, se iteró sobre el mecanismo de subsistencia completo. Logros verificados:
+- **Instinto de interacción unificado** (0132): el `do`(5) es el mecanismo operante general — come si hay comida enfrente, ataca si hay enemigo. La pulsión sube = max(hambre, amenaza) cuando hay algo accionable enfrente. El agente ataca (25-30 veces), explora (36 tiles), sobrevive más.
+- **Drive noop (0128, SEEKING)**: el noop deja de ser cómodo (acumula energía libre que se descarga al actuar). El agente ya no se queda clavado.
+- **Consolidación (Hebb + Kuramoto)**: la conexión do→nodo0 se consolida por co-ocurrencia con la mejora + sincronización con la raíz.
+- **Re-encare (0133)**: el sustrato aprende a orientarse hacia el objetivo antes de interactuar.
+- **Equilibrio temporal funcionando (0134)**: amenaza con decaimiento por distancia (lejos=calma, cerca=alerta).
+
+### DOS BUGS CRÍTICOS DE MAPEO DEL ENTORNO (descubiertos en la saga)
+1. **Mapeo de acciones (0131)**: "comer" era `do`=5, NO 16 (`make_iron_sword`). El instinto empujaba a fabricar espadas, no a comer.
+2. **Mapeo de objetos (0136)**: el semantic de Crafter usa mat_ids(0..12)+idx → Player=13, **Cow=14, Plant=18, Zombie=15, Skeleton=16** (NO 13/17). El gradiente de comida apuntaba al propio Player (13) y a flechas (17) → jamás a comida real. Verificado contra `crafter/engine.py`.
+
+**Lección transversal (CLAVE)**: los errores recurrentes vienen de *pre-digestar el estado a mano* (facing asumido, mapeos, gradiente manual). La literatura RL (Crafter paper, Hafner ICLR 2022) muestra que los baselines reciben la imagen cruda y **aprenden** el acople percepción-acción, no lo pre-calculan. El camino correcto es que el SGM interprete el entorno con su propio decoder, no que el programador le diga "dónde está la comida".
+
+### El bloqueo final diagnosticado (0137, honesto)
+Con el mapeo correcto + facing derivado del engine (verificado 4/4), el agente hace `do` 55-93 veces pero `comio_efectivo=0`. Causa: el acople geométrico fino — el `do` solo come si la cow está EXACTAMENTE en `pos+facing`, y mi re-encare manual no logra posicionar al agente con precisión frente a la comida (el `do` contra cow adyacente pero no en-facing falla). Es el mismo obstáculo que los RL resuelven dejando que la red Aprenda del input espacial.
+
+### Dirección (B2, próxima)
+Place cells EMERGENTES: el sustrato construye su propio mapa del entorno mediante su mecanismo de exploración (cada tile nuevo crea un omega), con el decoder aprendiendo transiciones espaciales. B2: el place cell codifica posición + contenido enfrente (bind), para que el decoder asocie "lugar con cow enfrente → do funciona" de forma emergente — sin pre-digestión manual.
+
+Literatura: O'Keefe 1971 (place cells), Stachenfeld et al. 2017 (place cells como predicciones), Hafting et al. 2005 (grid cells), "Cognitive Map Learners via HDC" (2023), "Neural sampling from cognitive maps" (Nature MI 2026), Crafter paper (Hafner ICLR 2022).

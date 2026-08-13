@@ -1,0 +1,70 @@
+{
+  "experiment_id": "exp_SGM_0125",
+  "experiment_name": "kuramoto_habituacion_relevancia",
+  "phase": "Fase 8 - Kuramoto: relevancia sincronizada -> consolidacion -> habituacion",
+  "date": "2026-08-11",
+  "hypothesis": "Kuramoto Eq.3 da senal de relevancia sincronizada: cuando la accion ayuda a la homeostasis (food sube => sign=+1), la fase del nodo sincroniza hacia la raiz; si cos(phi_i - phi_root) > umbral (Eq.7), la conexion accion->nodo0 se consolida (no-podable, persiste). El instinto se apaga en el primer ciclo de refuerzo porque el conocimiento persiste; el agente come despues por prediccion, no por reflejo. Pred: inst=1-3, pred>0, off_step<60, dom<50%.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "umbral_eat": 2.0,
+    "eta_phase": 0.05,
+    "theta_interf": 0.7,
+    "gamma_nodo": 0.01,
+    "gamma_conocimiento": 0.001,
+    "signo": "B (+1 si food sube)"
+  },
+  "result": {
+    "A_inst_kuramoto": {
+      "pasos": 196,
+      "tiles": 29,
+      "eat": 42,
+      "eat_instinto": 42,
+      "eat_prediccion": 0,
+      "mov": 154,
+      "ciclos": 21,
+      "consolidadas": 0,
+      "instinto_off_step": null,
+      "dominante": "move_up 77%",
+      "muerte": {
+        "step": 195,
+        "food": 1.98,
+        "hp": 2.0,
+        "status": "CONTRADICTORIA",
+        "Vg": 0.029
+      }
+    },
+    "B_inst_sin_kuramoto": {
+      "pasos": 209,
+      "tiles": 8,
+      "eat": 44,
+      "eat_instinto": 44,
+      "eat_prediccion": 0,
+      "instinto_off_step": null,
+      "dominante": "move_up 69%"
+    },
+    "NC_ppr_puro": {
+      "pasos": 168,
+      "tiles": 14,
+      "eat": 1,
+      "mov": 143,
+      "dominante": "move_down 85%"
+    },
+    "pass_instinto_off": false,
+    "pass_balance": false,
+    "pass_no_obsesion": false,
+    "pass_consolida": false,
+    "pass_mejora_vs_B": false
+  },
+  "script": "experiments/exp_SGM_0125_kuramoto_habituacion.py",
+  "results_file": "results/results_exp_SGM_0125_kuramoto_habituacion.json",
+  "variant_of": "exp_SGM_0124",
+  "lit_refs": [
+    "Kuramoto 1975 - osciladores de fase acoplados",
+    "Arquitectura_Pure_L2_Pandora Eq.3/Eq.7 - dinamicas de fase e interferencia",
+    "Gallistel 1990 - habituacion por conocimiento persistente",
+    "Berridge & Robinson 1998 - wanting operante no permanente"
+  ],
+  "notes": "Revive la base Kuramoto pausada en la auditoria 0106. Separa 3 escalas: vitalidad nodo (gamma_nodo efimero), V_grafo (estado cuerpo/homeostasis), y strength de conocimiento (gamma_conocimiento persistente, consolidable). En actualizar_homeostasis, food sube => sign=+1 => update_phase(accion,+1) => si sincroniza con la raiz, la conexion accion->nodo0 se consolida (no podable). El instinto (compuerta) se apaga si la conexion esta consolidada.",
+  "notes_criollo": "Kuramoto es la base que habiamos pausado al limpiar el sustrato. La idea aca es que la FASE de un nodo (su 'sincronia' con el ser/raiz) dice si ese nodo le importa al sistema AHORA. Cuando comer hace subir el food, la fase del nodo 'comer' se alinea con la raiz (es rele%ante), y esa relevancia 'fija' el conocimiento: la conexion 'comer->estar bien' se consolida y ya no se olvida con la poda. Entonces el instinto (el reflejo de probar de nacimiento) ya no hace falta: el agente APRENDIO que comer sirve y lo hace por conocimiento, no por reflejo. Eso es la habituacion por relevancia: el instinto muere cuando el conocimiento nace."
+}

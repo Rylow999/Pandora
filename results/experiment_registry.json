@@ -2187,5 +2187,135 @@
     "test_target": "el instinto de alimentacion se apaga permanentemente cuando el agente aprende que comer restaura (habituacion por conocimiento)",
     "hypothesis": "El instinto alimentacion actua solo mientras eat->nodo0.strength < umbral. Al consolidarse, instinto OFF y el agente come por prediccion. Prediccion: multiples ciclos reales hambre-comer-saciarse, no obsesion eat.",
     "result_summary": "PASS ciclo subsistencia + FAIL compuerta habituacion. PASS 34 ciclos hambre-comer-saciarse (nunca antes), PASS supervivencia A>B (265 vs 221), PASS exploracion masiva (20 tiles vs 3/13). FAIL compuerta (eat=141 inst/pred=0, instinto_off_step=None): el decaimiento del strength en tick() (1%/step, ~93% en 265 pasos) aniquila la acumulacion +0.2/evento; el conocimiento nunca se consolida. Leccion: la habituacion requiere que el conocimiento persista (strength consolidado) a distinta tasa que la vitalidad temporal."
+  },
+  {
+    "experiment_id": "exp_SGM_0125",
+    "experiment_name": "kuramoto_habituacion_relevancia",
+    "date": "2026-08-11",
+    "test_target": "el instinto se apaga cuando eat->nodo0 se consolida por sincronizacion Kuramoto",
+    "hypothesis": "Kuramoto Eq.3+Eq.7: accion ayuda homeostasis -> fase sincroniza -> conexion consolida -> instinto OFF",
+    "result_summary": "FAIL. consol=0, inst=141 pred=0. La poda a tasa de vitalidad aniquila la acumulacion; faltaba separar vitalidad-nodo de conocimiento.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0126",
+    "experiment_name": "hebbian_consolidacion",
+    "date": "2026-08-11",
+    "test_target": "la consolidacion Hebbiana consolida eat->nodo0",
+    "hypothesis": "cuando food sube, reforzar las acciones que co-ocurrieron",
+    "result_summary": "FAIL. Fix Hebbiano correcto pero consol=0 en vida real: el mapeo equivocado hacia hacer espadas(16), no comer.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0127",
+    "experiment_name": "instinto_hambre_real",
+    "date": "2026-08-11",
+    "test_target": "pulsion a comer por food bajo (hambre), no por V_grafo",
+    "hypothesis": "anclar instinto a food<umbral en vez de V_grafo",
+    "result_summary": "FAIL. inst=0: el agente en noop no gasta, food no baja, nunca hambre real. Correcto el anclaje pero no actua.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0128",
+    "experiment_name": "drive_noop_seeking",
+    "date": "2026-08-11",
+    "test_target": "el noop deja de ser gratis",
+    "hypothesis": "SEEEKING: cada noop acumula energia que sesga a actuar",
+    "result_summary": "PASS mecanico (noop 0/30 con drive alto) pero cayo en make_wood_sword(16) atractor.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0129",
+    "experiment_name": "variante_C_mas_seeds",
+    "date": "2026-08-11",
+    "test_target": "si el atractor de crafting cede con mas vida",
+    "hypothesis": "con 800p y 3 seeds la necesidad real rompe el atractor",
+    "result_summary": "FAIL. Come 52x pero ciclos=0: los eats eran make_iron_sword(16).",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0130",
+    "experiment_name": "nodo_referencia_al_acto",
+    "date": "2026-08-11",
+    "test_target": "el eat vacio no crea referencia de restauracion",
+    "hypothesis": "gatear el acto: solo el do efectivo consolida, el vacio genera malestar",
+    "result_summary": "FAIL. eat_efectivo=0: el gradiente (13/17) apuntaba al player, no a comida real. La hipotesis era correcta pero el mapping la saboteo.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0131",
+    "experiment_name": "fix_mapeo_acciones_do",
+    "date": "2026-08-11",
+    "test_target": "corregir mapeo de acciones (comer=do=5, no 16)",
+    "hypothesis": "el instinto debe empujar 'do' (la accion que come)",
+    "result_summary": "FIX CONFIRMADO. Comer=do(5), 16 era make_iron_sword. Todo 0123-0130 comia con accion equivocada.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0132",
+    "experiment_name": "instinto_interaccion_unificado",
+    "date": "2026-08-11",
+    "test_target": "el do come o ataca segun que haya enfrente",
+    "hypothesis": "UN mecanismo operante (do), el mundo decide que hace",
+    "result_summary": "PASS PARCIAL. ataco>0 en las 3 seeds: el agente por fin pelea. Comer 0 (mapeo 13/17).",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0133",
+    "experiment_name": "reencare_emergente",
+    "date": "2026-08-11",
+    "test_target": "el sustrato se orienta al objetivo",
+    "hypothesis": "si objetivo no enfrente, mover hacia el; si enfrente, do",
+    "result_summary": "PASS PARCIAL. ataco 30, mov 159, consol=2 (primera vez consolida). Comer 0. La amenaza aplastaba el hambre.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0134",
+    "experiment_name": "equilibrio_temporal_hambre_defensa",
+    "date": "2026-08-11",
+    "test_target": "la amenaza decae con distancia (lejos=calma)",
+    "hypothesis": "el agente come entre amenazas, no pelea constante",
+    "result_summary": "PASS PARCIAL. Seed 42 vivio 260p (mas larga), 30 tiles. Comer 0 (mapeo 13/17).",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0135",
+    "experiment_name": "acople_fino_adyacente",
+    "date": "2026-08-11",
+    "test_target": "distinguir adyacente(do) vs lejano(move)",
+    "hypothesis": "objetivo a distancia 1 -> do; lejos -> mover",
+    "result_summary": "FAIL. comio_vacio 70-71: adyacente a lo bruto != enfrente(pos+facing). Muestra el acople fino correcto.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0136",
+    "experiment_name": "fix_mapeo_objetos_crafter",
+    "date": "2026-08-11",
+    "test_target": "corregir FOOD={14,18}, ENEMIGO={15,16}",
+    "hypothesis": "el gradiente apuntaba al player(13)/arrow(17)",
+    "result_summary": "FIX CONFIRMADO. mapeo: Player=13,Cow=14,Zombie=15,Skeleton=16,Arrow=17,Plant=18. Aun 93x do vacio por acople geometrico.",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0137",
+    "experiment_name": "acople_fino_facing_real",
+    "date": "2026-08-11",
+    "test_target": "facing derivado del engine + do con obj enfrente",
+    "hypothesis": "facing real + do con objetivo confirmado -> come",
+    "result_summary": "FAIL. comio_ef=0, comio_vac=55-63. Facing y mapeo correctos pero el re-encare manual no posiciona la cow en pos+facing. Bloqueo: acople geometrico fino. Siguiente: place cells emergentes (B2).",
+    "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
+    "status": "done"
   }
 ]

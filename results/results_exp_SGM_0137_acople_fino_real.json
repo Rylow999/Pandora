@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_SGM_0137",
+  "experiment_name": "acople_fino_facing_real",
+  "phase": "Fase 8 - acople fino: facing derivado del engine (no asumido)",
+  "date": "2026-08-11",
+  "hypothesis": "Con el facing derivado de la diferencia real de player_pos entre pasos (verificado coincide 4/4 con player.facing), y 'do' empujado solo cuando hay objetivo CONFIRMADO en pos+facing, el agente por fin come efectivo (comio_efectivo>0). Elimina los 'do' vacios por facing incorrecto (93x en 0136).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 600,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "FOOD": [
+      14,
+      18
+    ],
+    "ENEMIGO": [
+      15,
+      16
+    ],
+    "facing": "derivado del engine (movimiento real)"
+  },
+  "result": "ver stdout",
+  "script": "experiments/exp_SGM_0137_acople_fino_real.py",
+  "results_file": "results/results_exp_SGM_0137_acople_fino_real.json",
+  "variant_of": "exp_SGM_0136",
+  "lit_refs": [
+    "Crafter paper (Hafner ICLR 2022): RL aprenden acople percepcion-accion, no lo pre-calculan; eat_cow es un achievement dificil"
+  ],
+  "notes": "Leccion de los errores 0120-0136: pre-digestar el estado a mano (facing asumido) crea puntos de falla. Aqui el facing se deriva del engine (delta de player_pos), eliminando la variable manual erronea. 'do' solo se dispara con objetivo confirmado en pos+facing real.",
+  "notes_criollo": "Aprendi la leccion: cada vez que le 'adivinaba' al bicho el estado del mundo (mapeo de objetos, facing), metia la pata. Ahora el facing lo saco directo del juego (mirando como se movio de verdad el player entre pasos), y el 'do' solo se lanza cuando la comida esta confirmada al frente. Asi el bicho deberia por fin comer de verdad."
+}

@@ -1,0 +1,68 @@
+{
+  "experiment_id": "exp_SGM_0127",
+  "experiment_name": "instinto_hambre_real",
+  "phase": "Fase 8 - instinto anclado a hambre real de food - vida nativa",
+  "date": "2026-08-11",
+  "hypothesis": "Con la dinamica nativa de Crafter (homeostasis real de food/health), instinto + consolidacion Hebbiana (co-ocurrencia comida-mejora) + Kuramoto (relevancia sincronizada) => el agente aprende que comer restaura, el instinto se apaga, come por prediccion. Pred: off_step<150, inst pequeno, pred>0, ciclos hunger nativos>=1, dom<50%.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "umbral_eat": 2.0,
+    "max_pasos": 500,
+    "epsilon_grad": 5,
+    "eta_phase": 0.05,
+    "theta_interf": 0.7,
+    "gamma_nodo": 0.01,
+    "gamma_conocimiento": 0.001,
+    "homeostasis": "NATIVA Crafter (sin simulacion)",
+    "instinto_signo": "Hebb co-ocurrencia"
+  },
+  "result": {
+    "A_nativa_hebb_kuramoto": {
+      "pasos": 177,
+      "tiles": 1,
+      "eat": 0,
+      "eat_instinto": 0,
+      "eat_prediccion": 0,
+      "mov": 0,
+      "ciclos": 0,
+      "consolidadas": 0,
+      "instinto_off_step": null,
+      "dominante": "noop 100%",
+      "muerte": {
+        "step": 176,
+        "food": 3.0,
+        "hp": 2.0,
+        "status": "INCONCLUSA",
+        "Vg": 0.035
+      }
+    },
+    "B_nativa_hebb_sin_kuramoto": {
+      "pasos": 166,
+      "tiles": 9,
+      "eat": 0,
+      "eat_instinto": 0,
+      "eat_prediccion": 0,
+      "instinto_off_step": null,
+      "dominante": "place_furnace 83%"
+    },
+    "pass_instinto_off": false,
+    "pass_balance": false,
+    "pass_no_obsesion": false,
+    "pass_consolida": false,
+    "pass_ciclos": false,
+    "pass_mejora_vs_B": false
+  },
+  "script": "experiments/exp_SGM_0127_instinto_hambre_real.py",
+  "results_file": "results/results_exp_SGM_0127_instinto_hambre_real.json",
+  "variant_of": "exp_SGM_0125",
+  "lit_refs": [
+    "Kuramoto 1975 - osciladores de fase acoplados",
+    "Arquitectura_Pure_L2_Pandora Eq.3/Eq.7 - dinamicas de fase e interferencia",
+    "Hebb 1949 - co-ocurrencia actividad-resultado consolida conexion",
+    "Gallistel 1990 - habituacion por conocimiento persistente",
+    "Hafner/Crafter 2022 - homeostasis nativa (food baja por hunger, health por degen)"
+  ],
+  "notes": "DECISION (Luciano): se elimino el food_decay simulado del script. Crafter YA tiene homeostasis nativa (objetos.py: _hunger baja food cada ~25 ticks, _degen_or_regen_health vincula food/drink/energy con health, reward nativo). El core ya tenia la diferenciacion vitalidad-nodo vs conocimiento (gamma_nodo vs gamma_conocimiento), la compuerta de habituacion, Kuramoto (update_phase, sincronizacion, consolidar) y el fix Hebbiano (consolidar co-ocurrencia). Este experimento solo cambia el HARNESS para usar la dinamica nativa completa, sin forzar el entorno.",
+  "notes_criollo": "Basta de andar simulando que la comida baja en el script \u2014 Crafter ya lo hace solo, nativamente: pasan pasos, te da hambre, y si no comes baja la salud. Este experimento deja que el entorno haga su trabajo y mide si el agente, con el instinto de probar la primera vez + la regla de que 'lo que co-ocurre con mejora se consolida' (Hebb) + la sincronizacion Kuramoto, aprende que comer sirve y deja de necesitar el reflejo. Si se apaga el instinto y come por conocimiento, logramos la habituacion por relevancia."
+}
