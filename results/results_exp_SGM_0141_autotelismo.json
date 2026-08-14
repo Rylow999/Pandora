@@ -1,0 +1,92 @@
+{
+  "experiment_id": "exp_SGM_0141",
+  "experiment_name": "autotelismo_puro_solo_hacer",
+  "phase": "Fase 8 - autotelismo puro (opcion A): el agente solo hace, aprende en vidas",
+  "date": "2026-08-11",
+  "hypothesis": "El agente sin intintos dirigidos (curiosidad+drive+duda), con grafo persistente a traves de varias vidas, descubre por exploracion que comer planta restaura (comio_efectivo>0) y en vidas posteriores repite antes (aprendizaje entre vidas). Si come, desbloquea el ciclo.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "nvidas": 5,
+    "seed": 42,
+    "max_pasos": 1200,
+    "instintos_dirigidos": "DESACTIVADOS (autotelismo puro)",
+    "curiosidad": "activa",
+    "drive_noop": "activo",
+    "duda": "activa"
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 337,
+        "tiles": 11,
+        "comio_efectivo": 0,
+        "comio_vacio": 112,
+        "mov": 128,
+        "muerte": "natural",
+        "food_fin": 0.0,
+        "n_place": 5,
+        "consol": 0
+      },
+      {
+        "vida": 1,
+        "pasos": 163,
+        "tiles": 8,
+        "comio_efectivo": 0,
+        "comio_vacio": 44,
+        "mov": 55,
+        "muerte": "natural",
+        "food_fin": 3.0,
+        "n_place": 5,
+        "consol": 0
+      },
+      {
+        "vida": 2,
+        "pasos": 111,
+        "tiles": 7,
+        "comio_efectivo": 0,
+        "comio_vacio": 19,
+        "mov": 28,
+        "muerte": "natural",
+        "food_fin": 5.0,
+        "n_place": 5,
+        "consol": 0
+      },
+      {
+        "vida": 3,
+        "pasos": 156,
+        "tiles": 18,
+        "comio_efectivo": 0,
+        "comio_vacio": 42,
+        "mov": 50,
+        "muerte": "natural",
+        "food_fin": 3.0,
+        "n_place": 7,
+        "consol": 0
+      },
+      {
+        "vida": 4,
+        "pasos": 190,
+        "tiles": 11,
+        "comio_efectivo": 0,
+        "comio_vacio": 58,
+        "mov": 68,
+        "muerte": "natural",
+        "food_fin": 2.0,
+        "n_place": 7,
+        "consol": 0
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0141_autotelismo.py",
+  "results_file": "results/results_exp_SGM_0141_autotelismo.json",
+  "variant_of": "exp_SGM_0140",
+  "lit_refs": [
+    "Panksepp 1998 (SEEKING autotelico)",
+    "Oudeyer & Kaplan 2007 (IAC)",
+    "Schmidhuber 1991 (curiosidad por prediccion)"
+  ],
+  "notes": "Opcion A de Luciano: quitar la capa de fin. El agente no persigue hambre; explora por curiosidad+drive+duda. Hallazgo de la saga: comer cow requiere 3 golpes a la misma vaca (que se mueve); la planta come de una vez. Aqui se deja que el agente descubra el comer planta solo. Vidas en gredo persistente (aprendizaje entre vidas).",
+  "notes_criollo": "Le sacamos la 'mision' al bicho y lo dejamos libre: solo que haga, explore, se aburra, y de las vueltas que le salgan. La idea es que se tropiece con la comida por curiosidad, aprenda que sirve, y en la proxima vida ya la busque solito. Es el aprendizaje emergente de verdad, sin que nadie le diga que hacer."
+}

@@ -200,7 +200,14 @@ class SGMAgent:
         # accion de alimentacion. AUTOLIMITATIVO: la fuerza crece con la carencia
         # y se apaga al saciarse (V_grafo restaurado) -> no se obsesiona.
         # NO pre-juzga si comer es bueno: eso lo aprende la experiencia.
-        self.instinto_alimentacion = 5       # accion 'do' (CRITICO: en Crafter COMER = accion 5 'do', que procesa cow/plant ENFRENTE. Antes estaba en 16 = make_iron_sword (fabricar espada), lo que hacia que el instinto empujara a fabricar, no a comer. FIX 0131.)
+        # INSTINTO DE INTERACCION (0132): accion operativa para la pulsion.
+        # AGNOSTICO DEL ENTORNO: NO se hardcodea el indice de Crafter aqui. El adaptador del
+        # entorno (harness) setea `instinto_alimentacion` a la accion real de 'interactuar con
+        # lo que hay enfrente' (en Crafter es 5=do, en Minecraft u otro entorno sera otra).
+        # El sustrato solo tiene una pulsion (hambre/amenaza) y una categoria de accion
+        # operativa; el mapeo indice->accion lo hace el adaptador. LECCION 0131+0136: el
+        # mapeo del entorno (acciones, objetos) vive en el adaptador, NUNCA en el core.
+        self.instinto_alimentacion = None    # lo configura el adaptador (accion de interactuar)
         self.instinto_umbral_carencia = 0.3  # V_grafo bajo este -> el instinto se activa (DEPRECATED 0127)
         self.instinto_fuerza_base = 0.5      # fuerza base del impulso (modulada por hambre)
         # 0127: el instinto de alimentacion se ancla a HAMBRE REAL de food (no a V_grafo).
@@ -257,6 +264,71 @@ class SGMAgent:
         self._target_dir = (0, 0)     # direccion (dx,dy) al objetivo mas cercano, o (0,0)
         self._target_dist = 0         # distancia manhattan al objetivo (0=enfrente, 1=adyacente, >1 lejos)
         self.reencare_fuerza = 0.8    # fuerza del empuje a moverse hacia el objetivo para reencarar
+        # 0138: PLACE CELLS EMERGENTES + NODOS QUE MUTAN (B2, Luciano 2026-08-11).
+        # El sustrato construye su propio mapa del entorno de forma AGNOSTICA (no asume
+        # Crafter ni ningun entorno). Cuando el agente llega a una observacion NO familiar,
+        # crea un NODO-LUGAR (place cell) cuyo omega codifica esa situacion. El decoder usa
+        # estos nodos-lugar para aprender transiciones (lugar+accion->resultado) e interpretar
+        # el espacio de forma emergente, como hacen los RL con la imagen cruda (ver teoria).
+        # Los omegas de los nodos-lugar MUTAN localmente con la experiencia (plasticidad de
+        # identidad hacia el resultado util), SIN tocar el resto (leccion 0109-0111: el
+        # decaimiento global corrompia todo; aqui la mutacion es SOLO del nodo activo).
+        self.place_cells = {}          # clave conceptual -> indice de nodo (lugar creado)
+        self.place_pos = {}           # indice de nodo-lugar -> (x,y) para navegacion a meta
+        self.place_clave = 0           # contador de lugares (estructura del sustrato)
+        # senal de la situacion actual (el adaptador/harness la setea, generica):
+        # es la 'observacion' que genera la place cell (bind de lo que ve + que hay enfrente)
+        self.obs_activa = None         # vector/etiqueta de la situacion actual (gen)
+        self.place_activo = -1         # indice del nodo-lugar activo (o -1)
+        self.mutacion_tasa = 0.05      # cuanta muta el omega del lugar activo con la experiencia
+        # 0143: INTEGRACION AUTONOMA del mapa emergente (refactor, Luciano 2026-08-11).
+        # La auditoria revelo que _registrar_place_cell, _mutar_omega_lugar y la navegacion
+        # quedaron ORQUESTADAS desde el harness, no integradas en el sustrato. Esto es el
+        # anti-patron de "pre-digestion". Aqui se integran en el step() con senales INTERNAS.
+        self.meta_recordada = None     # (x,y) autogenerado: lugar donde el mapa recuerda algo
+        # senales que el sustrato setea internamente (sin depender de harness):
+        self.auto_registrar_place = True   # crear place cell en el step (mapa autonomo)
+        self.auto_mutar_omega = True       # mutar omega del lugar activo en el step
+        self.auto_navegar_meta = False     # navegar hacia meta_recordada si hay hambre
+        self.place_bucket = 4              # granularidad del bucket de place cell (abstracto)
+        self._posicion_actual = None       # (x,y) que setea el adaptador al step
+        self._accion_meta = None           # accion de movimiento hacia la meta (interno)
+        # 0144: MODELO DE OBJETO PREDICTIVO (opcion A, Luciano 2026-08-11).
+        # El objeto externo NO es un snapshot estatico: es un PROCESO dinamico que muta con
+        # el tiempo (la planta madura) y el espacio (la cow se mueve). El sustrato modela
+        # cada objeto como una entidad con trayectoria aprendida, y PREDICE su estado futuro
+        # para decidir acciones (object permanence de Piaget, world models de Ha/Schmidhuber,
+        # affordances de Gibson). Agnóstico del entorno: solo ve "objeto de tipo T en pos P".
+        self.objetos = {}   # id_objeto -> {tipo, pos_hist:[(t,x,y)...], velocidad, estado}
+        self.objeto_next_id = 0
+        # senales que el adaptador setea: qué objeto hay y dónde (genérico, no Crafter)
+        self._objetos_vistos = []   # lista de (tipo_generico, x, y) que el adaptador provee
+        # 0145: RED ACCION->RESULTADO DEL MUNDO (Luciano). Si el agente no sabe QUÉ acciones
+        # existen y QUÉ producen, nunca logra nada (no conoce el espacio de posibilidades).
+        # El sustrato aprende una red general de "accion -> resultado observable": al ejecutar
+        # cada accion, consolida la conexion (accion, contexto) -> recurso que cambio en el
+        # mundo. NO es solo supervivencia: es CADA cambio de inventario/recursos que produce
+        # la accion. Asi descubre estructura (romper->madera, plantar->planta, craftear->item).
+        self._resultado_mundo_prev = None  # estado de recursos del paso anterior (adaptador)
+        self._resultado_mundo_act = None   # estado de recursos actual (adaptador)
+        self.aprender_resultado = True     # consolidar (accion->recurso que cambia)
+        # 0140: ARBITRO DE MODOS (contention scheduling, Luciano 2026-08-11).
+        # Inspirado en Norman & Shallice 1986 (contention scheduling / SAS), Baars/Dehaene
+        # (Global Workspace Theory, cuello de botella central) y el spec v1.4 ChainMode §5.2
+        # (STRESS_HIGH -> SENSORIAL cuando E_root > theta_emerg).
+        # PROBLEMA QUE RESUELVE: en 0116-0139 todos los instintos sumaban scores en un pool
+        # aditivo plano -> ninguno tomaba el control EXCLUSIVO, el atractor ganaba siempre.
+        # SOLUCION: cuando hay necesidad critica (hambre O amenaza), el sistema entra en
+        # MODO_SUPERVIVENCIA que toma el control del canal de accion: una sola pulsion dirige
+        # (encadena mover->orientar->do), las demas NO compiten aditivamente. Vuelve al modo
+        # base cuando la necesidad se satisface. Es un VECTOR DE SESGOS (beta_mode), no un
+        # if hardcodeado (spec v1.4: "un modo es un vector de sesgos que modifica parametros").
+        self.modo = "BASE"             # BASE | SUPERVIVENCIA
+        self.modo_ticks = 0            # ticks en el modo actual
+        self.theta_emerg_critico = 0.4   # necesidad critica (estres) que dispara modo supervivencia
+        # sesgos de modo (spec v1.4: modo = vector de sesgos, no modulo separado)
+        self.beta_supervivencia = 1.5   # amplifica la pulsion de supervivencia en modo SV
+        self.beta_otras_compo = 0.3     # atenua las otras pulsiones en modo SV (control exclusivo)
         self.devaluar_fuerza = 0.4        # castigo a acciones locales que no resuelven
 
     def aprender_conexion(self, a, b):
@@ -319,6 +391,157 @@ class SGMAgent:
         if sin > self.theta_interf and clave in self.conn_type:
             self.consolidadas.add(clave)
             self.conn_type[clave]["consolidada"] = True
+
+    # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
+    def _registrar_place_cell(self, obs_clave, posicion=None):
+        """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.
+        Agnóstico del entorno (no asume Crafter): 'obs_clave' es una etiqueta generica de la
+        situacion que setea el adaptador. Si el lugar ya existe, devuelve su indice; si no,
+        crea un omega nuevo (mutante) y lo agrega al sustrato dinamicamente.
+        'posicion' (opcional, (x,y)) la guarda el sustrato para NAVEGACION dirigida a meta:
+        cuando el agente recuerda que un lugar tiene comida, puede rutear hacia esa posicion.
+        """
+        if obs_clave in self.place_cells:
+            idx = self.place_cells[obs_clave]
+            self.place_activo = idx
+            return idx
+        # lugar nuevo: crear omega (identidad) + vitalidad + participantes
+        idx = len(self.omega)
+        nuevo = [random.gauss(0, 1) for _ in range(self.D)]
+        n = math.sqrt(sum(x * x for x in nuevo))
+        self.omega.append([x / n for x in nuevo] if n > 0 else nuevo)
+        self.vitalidad.append(1.0)
+        self.edges[idx] = []
+        self.place_cells[obs_clave] = idx
+        if posicion is not None:
+            self.place_pos[idx] = tuple(int(v) for v in posicion)
+        self.place_activo = idx
+        self.place_clave += 1
+        return idx
+
+    def _mutar_omega_lugar(self, señal_resultado):
+        """MUTACION LOCAL del omega del nodo-lugar activo (plasticidad de identidad).
+        El place cell activo ajusta su identidad hacia la señal de resultado util (reward/
+        restauracion), SIN tocar los demas omegas (leccion 0109-0111). Es como una place cell
+        que se especializa: un lugar donde se come bien 'adquiere' la identidad de subspistencia.
+        """
+        if self.place_activo < 0 or self.place_activo >= len(self.omega):
+            return
+        om = self.omega[self.place_activo]
+        for j in range(self.D):
+            # mover el omega un paso hacia la señal (que llega en 0-1 normalizada)
+            om[j] += self.mutacion_tasa * (señal_resultado - om[j])
+        # renormalizar para no degradar
+        n = math.sqrt(sum(x * x for x in om))
+        if n > 0:
+            for j in range(self.D):
+                om[j] /= n
+
+    # ---------- 0144: MODELO DE OBJETO PREDICTIVO (objeto como proceso dinamico) ----------
+    def _actualizar_objetos(self):
+        """Aprende la dinámica de los objetos vistos (trayectoria/velocidad) y guarda su
+        predicción de posición futura. El adaptador llena `_objetos_vistos` con
+        (tipo_generico, x, y). El sustrato rastrea por proximidad espacial (asocia cada
+        objeto visto a su id por cercanía con la predicción previa). Agnóstico del entorno."""
+        seen = getattr(self, '_objetos_vistos', None)
+        if not seen:
+            return
+        t = getattr(self, '_paso_temporal', self.modo_ticks)
+        for tipo, ox, oy in seen:
+            ox, oy = int(ox), int(oy)
+            # asociar a un objeto existente por cercanía con su última posición predicha
+            best_id, best_d = None, 4.0  # tolerancia de matching (re-asociación)
+            for oid, odata in self.objetos.items():
+                if odata['tipo'] != tipo:
+                    continue
+                px_prev = odata['pos_hist'][-1][1] if odata['pos_hist'] else ox
+                py_prev = odata['pos_hist'][-1][2] if odata['pos_hist'] else oy
+                d = abs(px_prev - ox) + abs(py_prev - oy)
+                if d < best_d:
+                    best_d, best_id = d, oid
+            if best_id is None:
+                # objeto nuevo
+                best_id = self.objeto_next_id
+                self.objeto_next_id += 1
+                self.objetos[best_id] = {'tipo': tipo, 'pos_hist': [], 'vel': (0, 0)}
+            oid = best_id
+            od = self.objetos[oid]
+            od['pos_hist'].append((t, ox, oy))
+            # aprender velocidad (delta entre las 2 últimas posiciones con más de 1 paso)
+            if len(od['pos_hist']) >= 3:
+                (_, x1, y1), (_, x2, y2) = od['pos_hist'][-3], od['pos_hist'][-1]
+                od['vel'] = ((x2 - x1) / 2.0, (y2 - y1) / 2.0)
+            # predecir posición futura (extrapolación con la velocidad aprendida)
+            od['pred'] = (ox + od['vel'][0], oy + od['vel'][1])
+            # podar historial (mantener últimos 6 para no crecer infinito)
+            if len(od['pos_hist']) > 6:
+                od['pos_hist'] = od['pos_hist'][-6:]
+
+    def _posicion_predicha_objeto(self, tipo):
+        """Devuelve la posición PREDICHA del objeto mas cercano de tipo dados (`tipo`),
+        o None si no hay ninguno. Es la clave del modelo de objeto: la decision se basa
+        en donde ESTARA el objeto, no donde estaba (compensación de movimiento)."""
+        cand = [(oid, od['pred']) for oid, od in self.objetos.items()
+                if od['tipo'] == tipo and 'pred' in od]
+        if not cand:
+            return None
+        # el más cercano a la posición actual del agente (si hay), si no el primero
+        if getattr(self, '_posicion_actual', None) is not None:
+            px, py = self._posicion_actual
+            return min(cand, key=lambda c: abs(c[1][0]-px) + abs(c[1][1]-py))[1]
+        return cand[0][1]
+
+    # ---------- 0145: RED ACCION->RESULTADO DEL MUNDO ----------
+    def _aprender_resultado_mundo(self, accion):
+        """Consolida la conexion (accion)->(recurso que cambio) usando el cambio observado
+        entre el resultado del mundo anterior y el actual. El adaptador setea
+        _resultado_mundo_prev y _resultado_mundo_act como dict {recurso: cantidad}.
+        SI el inventario cambio tras la accion (p. ej. subio madera), se refuerza la
+        conexion accion->nodo_del_recurso. Es la red "que accion produce que resultado".
+        """
+        if not self.aprender_resultado:
+            return
+        pr = getattr(self, '_resultado_mundo_prev', None)
+        ac = getattr(self, '_resultado_mundo_act', None)
+        if not pr or not ac or accion < 0:
+            return
+        # detectar que recursos cambiaron (subieron = la accion los produjo)
+        for rec, cant in ac.items():
+            prev = pr.get(rec, 0)
+            if cant > prev and accion < len(self.vitalidad):
+                # la accion produjo un aumento de 'rec' -> consolidar conexion accion->nodo_rec
+                nodo_rec = self._hash_recurso_a_nodo(rec)
+                self.aprender_conexion(accion, nodo_rec)
+                self.update_phase(accion, +0.5)
+                self.consolidar_si_sincroniza(accion, nodo_rec)
+
+    def _hash_recurso_a_nodo(self, rec):
+        """Mapea un recurso generico (nombre) a un nodo-categoria estable del sustrato.
+        El primer recurso 'food' se mapea a nodo0 (supervivencia); los demas a nodos
+        derivados (el sustrato les asigna slots). Es la 'semantica de recursos' que el
+        agente aprende: cada recurso tiene un nodo, y las acciones que lo producen se
+        conectan a el."""
+        if rec == 'food':
+            return 0
+        # slots estables para recursos comunes, derivados del nombre (agnostico)
+        if not hasattr(self, '_nodo_recursos'):
+            self._nodo_recursos = {}
+        if rec not in self._nodo_recursos:
+            # usar un nodo existente alto o crear place-cell-esque
+            idx = len(self.omega)
+            nuevo = [random.gauss(0, 1) for _ in range(self.D)]
+            self.omega.append(nuevo)
+            self.vitalidad.append(1.0)
+            self.edges[idx] = []
+            # IMPORTANTE: el HRR tiene 'roles' de tamaño fijo en el init. Al agregar nodos
+            # dinamicamente, hay que ampliar roles para que relational_memory no falle
+            # (rollbar del 0145: IndexError en role(k) al crecer omega sin ampliar roles).
+            while len(self.hrr.roles) <= idx:
+                nuevo_rol = [random.gauss(0, 1) for _ in range(self.D)]
+                n = math.sqrt(sum(x * x for x in nuevo_rol)) or 1.0
+                self.hrr.roles.append([x / n for x in nuevo_rol])
+            self._nodo_recursos[rec] = idx
+        return self._nodo_recursos[rec]
 
     def _aff(self, i, k):
         # Afinidad base: cos * vitalidad
@@ -441,7 +664,17 @@ class SGMAgent:
         if abs(dx) >= abs(dy):
             return 2 if dx > 0 else (1 if dx < 0 else (4 if dy > 0 else 3))
         else:
-            return 4 if dy > 0 else 3
+            return 4 if dy > 0 else (3 if dy < 0 else (2 if dx > 0 else 1))
+        return 0  # no mover si no hay direccion clara
+
+    def _dir_hacia(self, px, py, target):
+        """Vector (dx,dy) unitario hacia 'target' desde (px,py). Agnóstico del entorno."""
+        tx, ty = target
+        dx, dy = tx - px, ty - py
+        # normalizar a un paso de celda hacia el target
+        if abs(dx) >= abs(dy):
+            return (1 if dx > 0 else -1 if dx < 0 else (1 if dy > 0 else -1), 0)
+        return (0, 1 if dy > 0 else -1 if dy < 0 else 0)
 
     def step(self, state_semantic, valid_actions):
         om_r = self.hdc.project(state_semantic)
@@ -456,6 +689,52 @@ class SGMAgent:
         rank = ppr_route(self.edges, seed, self._aff, alpha=self.alpha, iters=10)
         
         best, bv = -1, -2.0
+        # 0140: ARBITRO DE MODOS. Computar la necesidad critica (estres) que dispara el modo.
+        # hambre_real y amenaza llegan del adaptador (genericas). Si alguna es critica, el
+        # sistema entra en MODO_SUPERVIVENCIA: la pulsion de supervivencia toma el control
+        # EXCLUSIVO del canal (beta_supervivencia amplifica, beta_otras atenua las demas).
+        # Es contention scheduling (Norman & Shallice 1986): el arbitro decide quien mueve
+        # el cuerpo, mientras los demas procesos siguen corriendo sin mando. Al satisfacerse,
+        # vuelve al modo base (STRESS_HIGH baja, spec v1.4 5.2).
+        necesidad_critica = max(self._hambre_real, self._amenaza)
+        if necesidad_critica > self.theta_emerg_critico:
+            self.modo = "SUPERVIVENCIA"
+            self.modo_ticks += 1
+        else:
+            self.modo = "BASE"
+            self.modo_ticks = 0
+        en_supervivencia = (self.modo == "SUPERVIVENCIA")
+        # 0143: MAPA EMERGENTE AUTONOMO. Registrar place cell y navegar a meta de forma
+        # INTERNA (sin depender de que el harness lo orqueste). Usa _posicion_actual y
+        # _meta_espacial que el adaptador setea (señales basicas del entorno, agnostico).
+        if self.auto_registrar_place and getattr(self, '_posicion_actual', None) is not None:
+            px, py = self._posicion_actual
+            bucket = (px // self.place_bucket, py // self.place_bucket)
+            clave = f"P{bucket[0]}_{bucket[1]}|enf={self._algo_enfrente}"
+            self._registrar_place_cell(clave, posicion=(px, py))
+        # NAVEGACION A META (0143): si hay hambre y una meta recordada, empujar el movimiento
+        # que acerca a esa meta. La meta la autogenera el mapa (donde se resolvio antes).
+        if self.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
+            mx, my = self.meta_recordada
+            if getattr(self, '_posicion_actual', None) is not None:
+                cxp, cyp = self._posicion_actual
+                if abs(mx - cxp) + abs(my - cyp) > 1:
+                    dir_m = self._dir_hacia(cxp, cyp, self.meta_recordada)
+                    accion_meta = self._direccion_a_accion(dir_m[0], dir_m[1])
+                    self._accion_meta = accion_meta
+                else:
+                    self._accion_meta = None  # adyacente: la logica de interaccion decide
+        # 0144: MODELO DE OBJETO PREDICTIVO. Procesar los objetos vistos (aprender dinamica,
+        # predecir posicion futura). El adaptador lleno _objetos_vistos. Interno, no harness.
+        self._actualizar_objetos()
+        # Si hay una meta_recordada y ahora PODEMOS predecir donde estara el objeto, ajustar
+        # la meta a la PREDICCION (compensar movimiento del objeto, object permanence).
+        if self.auto_navegar_meta and self.meta_recordada is not None:
+            for tipo in getattr(self, '_tipos_meta_buscados', ['comida']):
+                pred = self._posicion_predicha_objeto(tipo)
+                if pred is not None:
+                    self.meta_recordada = pred
+                    break
         # INSTINTO DE ESPECIE - ALIMENTACION (0120): fuerza modulada por la carencia real.
         en_carencia = self.V_grafo < self.instinto_umbral_carencia
         fuerza_instinto = 0.0
@@ -495,54 +774,64 @@ class SGMAgent:
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
-                # DRIVE NOOP (0128): si el sistema acumulo mucha inaccion, empujar a
-                # ejecutar CUALQUIER accion no-noop (salir del pozo de inercia).
-                if drive_dispara and a != 0:
-                    score += self.drive_noop_fuerza * (self.drive_noop / self.drive_noop_umbral)
-                # INSTINTO DE INTERACCION (0132/0133 unificado: hambre + defensa via 'do').
-                # El 'do'(5) interactua con lo que haya ENFRENTE. Con RE-ENCARE (0133):
-                # - Si el objetivo (comida/enemigo) esta ENFRENTE (_algo_enfrente>0): pulsion a 'do'.
-                # - Si hay necesidad real pero el objetivo NO se puede interactuar (no enfrente,
-                #   _algo_enfrente==0 pero _target_dir!=0): pulsion a MOVERSE hacia el objetivo
-                #   (lo reorienta para dejarlo enfrente). Emerge la secuencia sin hardcodearla.
+                # ARBITRO DE MODOS (0140): en modo SUPERVIVENCIA, la pulsion de interactuar
+                # se amplifica y las pulsiones de exploracion/curiosidad/drive se atenuan.
+                # Es el "control exclusivo" del canal: la supervivencia domina la accion.
+                # Las demas pulsiones siguen (duda, dolor) pero no compiten por el cuerpo.
                 f_override = getattr(self, '_fuerza_instinto_eat_override', None)
-                if a == self.instinto_alimentacion:
+                # INSTINTO DE INTERACCION (0132/0133): el 'do'(5) interactua con lo enfrente.
+                es_interaccion = (a == self.instinto_alimentacion)
+                es_exploracion = (a in self.acciones_movimiento)
+                if es_interaccion and en_supervivencia:
+                    # supervivencia: interactuar (do) amplificado (control exclusivo)
                     necesidad = max(self._hambre_real, self._amenaza)
                     if self._algo_enfrente > 0 and necesidad > 0.05:
-                        # objetivo accionable enfrente -> interactuar (comer o atacar)
+                        score += self.beta_supervivencia * max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
+                    elif f_override:
+                        score += self.beta_supervivencia * f_override
+                elif es_interaccion:
+                    # modo base: interaccion normal (aditiva, compite)
+                    necesidad = max(self._hambre_real, self._amenaza)
+                    if self._algo_enfrente > 0 and necesidad > 0.05:
                         score += max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
                     elif f_override:
                         score += f_override
-                # RE-ENCARE (0133/0135): acople fino al objetivo.
-                # - Si hay necesidad y el objetivo esta a distancia 1 (adyacente), la pulsion
-                #   a 'do' sube FUERTE (es la distancia de interaccion; el facing del harness
-                #   puede estar mal calculado, el _target_dist es mas confiable que _algo_enfrente).
-                # - Si el objetivo esta lejos (dist>1), empujar el MOVE hacia el (reorientarse).
+                # RE-ENCARE (0133/0135): mover hacia el objetivo en la secuencia de supervivencia
                 necesidad = max(self._hambre_real, self._amenaza)
+                mult_reencare = self.beta_supervivencia if en_supervivencia else 1.0
                 if necesidad > 0.05 and self._target_dir != (0, 0):
                     dist_t = getattr(self, '_target_dist', 0)
                     if dist_t == 1 and a == self.instinto_alimentacion:
-                        # adyacente: interactuar (comer/atacar) con fuerza
-                        score += max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
+                        score += mult_reencare * max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
                     elif dist_t > 1 and a in self.acciones_movimiento:
-                        # lejos: mover hacia el objetivo para reencarar
                         dx, dy = self._target_dir
                         if a == self._direccion_a_accion(dx, dy):
-                            score += self.reencare_fuerza * necesidad
-                elif en_carencia and a == self.instinto_alimentacion:
+                            score += mult_reencare * self.reencare_fuerza * necesidad
+                # DRIVE NOOP (0128): atenuado en supervivencia (la supervivencia decide la accion)
+                if drive_dispara and a != 0:
+                    mult_drive = self.beta_otras_compo if en_supervivencia else 1.0
+                    score += mult_drive * self.drive_noop_fuerza * (self.drive_noop / self.drive_noop_umbral)
+                # (reencare ya manejado arriba con sesgos de modo)
+                if en_carencia and a == self.instinto_alimentacion:
                     score += fuerza_instinto
                 # Instinto gradiente homeostatico (0123)
                 if grad_activo and a == accion_grad:
-                    score += config_grad.get('fuerza', 0.5)
+                    score += config_grad.get('fuerza', 0.5) * (1.0 if not en_supervivencia else self.beta_otras_compo)
                 # Instinto exploracion (0121/0124)
                 if curio_activa and a == dir_mas_inc and inc_dirs[dir_mas_inc] > 0:
-                    score += config_curio.get('fuerza', 0.3)
+                    score += config_curio.get('fuerza', 0.3) * (1.0 if not en_supervivencia else self.beta_otras_compo)
                 # Desplazamiento reactivo (0122 base)
                 if necesidad_insat:
                     if a not in self.acciones_movimiento:
                         score -= self.devaluar_fuerza
                     elif a in self.acciones_movimiento:
                         score += self.instinto_desplazar_fuerza
+                # NAVEGACION A META (0143): si hay una meta guardada y hambre, empujar el
+                # movimiento hacia ella (cuando no hay nada accionable enfrente).
+                meta_a = getattr(self, '_accion_meta', None)
+                if (meta_a is not None and a == meta_a and self._hambre_real > 0.2
+                        and self._algo_enfrente == 0 and en_supervivencia):
+                    score += self.reencare_fuerza * 0.8
                 if score > bv:
                     bv, best = score, a
         
@@ -576,6 +865,8 @@ class SGMAgent:
             if self.check_stagnation():
                 self.handle_doubt()
         
+        # 0145: guardar la accion elegida para que el adaptador reporte su resultado.
+        self._ultima_accion_ejec = best
         return best
 
     def reward(self, r, pain=0.0, beta=0.10):
@@ -617,6 +908,11 @@ class SGMAgent:
         # Acople directo: la salud del player (0-10) multiplica la vitalidad del grafo.
         factor_cuerpo = max(0.05, health / 10.0)
         self.V_grafo = (sum(self.vitalidad) / max(1, len(self.vitalidad))) * factor_cuerpo
+        # 0143: MUTACION AUTONOMA del omega del lugar activo (SIEMPRE, no depende del late
+        # Hebb ni del early-return). El mapa emergente ajusta su identidad hacia el resultado
+        # homeostatico (food normalizado 0-1). Interno, no harness.
+        if self.auto_mutar_omega and self.place_activo >= 0:
+            self._mutar_omega_lugar(max(0.0, min(1.0, food / 10.0)))
         # Registrar (accion, food) en la ventana Hebbiana
         if self.ultima_accion >= 0 and self.ultima_accion < len(self.vitalidad):
             self.historial_food.append((self.ultima_accion, food))
@@ -641,12 +937,23 @@ class SGMAgent:
                     self.aprender_conexion(act, 0)
                     self.update_phase(act, +1.0 * self.vitalidad[act])
                     self.consolidar_si_sincroniza(act, 0)
+            # 0138 B2c: conectar el PLACE CELL activo con la accion que funciono (Hebb espacial).
+            # Si en este lugar el 'do' produjo restauracion, se aprende lugar->do. Asi, en
+            # futuros pasos en un lugar donde se come bien, el PPR da mas peso al 'do' porque
+            # la conexion (lugar,do) esta aprendida. Emergente, agnostico, no hardcode.
+            if self.place_activo >= 0 and self.instinto_alimentacion is not None:
+                act_ok = self.instinto_alimentacion if self.ultima_accion == self.instinto_alimentacion else None
+                # reforzar lugar->accion_que_funciono y lugar->interaccion si comio
+                self.aprender_conexion(self.place_activo, self.instinto_alimentacion)
+                if act_ok is not None:
+                    self.aprender_conexion(self.place_activo, act_ok)
         else:
             # La mejora no ocurrio: las acciones recientes desincronizan (sign negativo),
             # pero NO se castiga conexion -> se deja que la poda actue naturalmente.
             for (act, _f_obs) in self.historial_food:
                 if act >= 0 and act < len(self.vitalidad):
                     self.update_phase(act, -1.0 * self.vitalidad[act])
+        # (la mutacion del omega del lugar activo se hace ANTES del early-return, arriba)
         self.ultimo_food = food
 
     def cuantizar_estado(self, state_semantic):

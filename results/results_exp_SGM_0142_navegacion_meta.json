@@ -1,0 +1,83 @@
+{
+  "experiment_id": "exp_SGM_0142",
+  "experiment_name": "navegacion_dirigida_a_meta",
+  "phase": "Fase 8 - navegacion dirigida a meta (recuerdo espacial y acople fino del do)",
+  "date": "2026-08-11",
+  "hypothesis": "El agente que recuerda la posicion de comida madura y navega hacia ella (place cells + _dir_hacia), al llegar adyacente orienta el facing hacia la comida y ejecuta do SOLO cuando world[target] confirma comida madura en pos+facing. Resultado esperado: comio_efectivo>0 (comer planta por primera vez).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 1200,
+    "nvidas": 5,
+    "seed": 42
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 154,
+        "tiles": 4,
+        "comio_efectivo": 0,
+        "comio_vacio": 0,
+        "ataco": 0,
+        "mov": 98,
+        "food_fin": 4.0,
+        "hp_fin": 2.0
+      },
+      {
+        "vida": 1,
+        "pasos": 181,
+        "tiles": 9,
+        "comio_efectivo": 0,
+        "comio_vacio": 50,
+        "ataco": 0,
+        "mov": 48,
+        "food_fin": 3.0,
+        "hp_fin": 2.0
+      },
+      {
+        "vida": 2,
+        "pasos": 151,
+        "tiles": 8,
+        "comio_efectivo": 0,
+        "comio_vacio": 0,
+        "ataco": 0,
+        "mov": 96,
+        "food_fin": 4.0,
+        "hp_fin": 2.0
+      },
+      {
+        "vida": 3,
+        "pasos": 153,
+        "tiles": 20,
+        "comio_efectivo": 0,
+        "comio_vacio": 7,
+        "ataco": 0,
+        "mov": 83,
+        "food_fin": 9.0,
+        "hp_fin": 2.0
+      },
+      {
+        "vida": 4,
+        "pasos": 214,
+        "tiles": 9,
+        "comio_efectivo": 0,
+        "comio_vacio": 0,
+        "ataco": 0,
+        "mov": 159,
+        "food_fin": 1.0,
+        "hp_fin": 1.0
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0142_navegacion_meta.py",
+  "results_file": "results/results_exp_SGM_0142_navegacion_meta.json",
+  "variant_of": "exp_SGM_0141",
+  "lit_refs": [
+    "O'Keefe 1971 (place cells)",
+    "Tolman 1948 (cognitive map)",
+    "dise\u00f1o arbitro de modos, paso 2 (recuerdo dirigido a meta via mapa)"
+  ],
+  "notes": "Implementa la navegacion dirigida a meta que faltaba: recordar posicion de comida madura, rutear hacia ella, orientarse y do con world[target] confirmado. Objetivo: cerrar el acople fino y lograr el primer eat efectivo.",
+  "notes_criollo": "Ahora el bicho guarda en su mapa mental D\u00d3NDE vio comida madura, y cuando tiene hambre va ahi a proposito. Al llegar se pone justo delante y come. Es el 'irme a comer donde se que hay comida' que nos faltaba."
+}

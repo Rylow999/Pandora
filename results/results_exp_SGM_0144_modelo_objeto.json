@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp_SGM_0144",
+  "experiment_name": "modelo_objeto_predictivo",
+  "phase": "Fase 8 - modelo de objeto predictivo (objeto como proceso dinamico)",
+  "date": "2026-08-11",
+  "hypothesis": "El sustrato modela los objetos como procesos dinamicos (velocidad aprendida, posicion futura predicha). El agente navega hacia donde la comida ESTARA y hace 'do' cuando la prediccion la ubica en pos+facing. Resultado esperado: comio_efectivo>0 (compensa el movimiento de la cow / la maduracion).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 900,
+    "nvidas": 3,
+    "seeds": [
+      42,
+      7
+    ],
+    "agnostico": true
+  },
+  "result": {
+    "nota": "vidas por seed impresas en stdout"
+  },
+  "script": "experiments/exp_SGM_0144_modelo_objeto.py",
+  "results_file": "results/results_exp_SGM_0144_modelo_objeto.json",
+  "variant_of": "exp_SGM_0143",
+  "lit_refs": [
+    "Piaget (object permanence)",
+    "Ha & Schmidhuber 2018 (world models)",
+    "Loci arxiv 2310.10372 (imaginar trayectoria de objetos)",
+    "Gibson 1979 (affordances: objeto como proceso)"
+  ],
+  "notes": "El modelo de objeto predictivo (0144) hace que el sustrato aprenda la dinamica de los objetos (velocidad) y prediga su posicion futura. El agente navega a la prediccion, no al snapshot, compensando el movimiento. Prueba de si esto logra comer efectivo por primera vez en la saga.",
+  "notes_criollo": "El bicho ahora no ve la comida como una foto, sino como algo que se mueve y cambia. Aprende a donde va la vaca (velocidad) y va PARA ALLA, no hacia donde estaba. Es la diferencia entre tirar a donde esta la pelota vs donde va a estar. Ojala esto lo haga comer de una vez."
+}

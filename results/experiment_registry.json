@@ -2317,5 +2317,105 @@
     "result_summary": "FAIL. comio_ef=0, comio_vac=55-63. Facing y mapeo correctos pero el re-encare manual no posiciona la cow en pos+facing. Bloqueo: acople geometrico fino. Siguiente: place cells emergentes (B2).",
     "phase": "Fase 8 - estabilizacion del acople cuerpo-mundo",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0138",
+    "experiment_name": "place_cells_emergentes_b2",
+    "date": "2026-08-11",
+    "test_target": "el agente crea NODOS-LUGAR emergentes (mapa propio) de forma agnostica",
+    "hypothesis": "cada observacion nueva crea un omega; el decoder aprende transiciones espaciales",
+    "result_summary": "PASS mecanico. place_creados 6/2/10: el sustrado construye su propio mapa del entorno. comio_ef=0 (el mapeo de objetos 13/17 seguia roto hacia el player/arrow). Se corrigio a comida=14/18.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0139",
+    "experiment_name": "integracion_b2c_vidas_completas",
+    "date": "2026-08-11",
+    "test_target": "B2c: lugar->do aprendido cuando comer funciona + vidas completas",
+    "hypothesis": "el mapa aprendido (lugar->interaccion) cierra el acople",
+    "result_summary": "FAIL. comio_ef=0 en 5 vidas completas. El agente hace do (84-131x) pero nunca come: la comida NO esta en pos+facing al ejecutar (las cows se mueven / plantas inmaduras). Primera evidencia del bloqueo de timing.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0140",
+    "experiment_name": "arbitro_modos_contention_scheduling",
+    "date": "2026-08-11",
+    "test_target": "NEED critica -> MODO_SUPERVIVENCIA toma el canal exclusivo (flexion)",
+    "hypothesis": "el modo da control exclusivo: la supervivencia amplifica do, atenua exploracion",
+    "result_summary": "PASS mecanico (sistema de modos funciona: do amplificado x1.5, exploracion atenuada x0.3). PERO comio_ef=0: el arbitro no puede resolver un do que fisicamente falla por timing del entorno. Referencia: Norman&Shallice, GWT, spec v1.4.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0141",
+    "experiment_name": "autotelismo_puro_solo_hacer",
+    "date": "2026-08-11",
+    "test_target": "agente SOLO hace (curiosidad+drive+duda) sin instintos dirigidos, aprende en vidas",
+    "hypothesis": "la exploracion autotelica descubre estructura sin objetivo",
+    "result_summary": "FAIL parcial. El agente libre hace do 112 veces (comio_vac) pero nunca come. Sin aprendizaje entre vidas (consol=0). Confirma que el problema NO era el sustrado: incluso sin forzar nada, el do falla por el acople.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0142",
+    "experiment_name": "navegacion_dirigida_a_meta",
+    "date": "2026-08-11",
+    "test_target": "el agente navega hacia la posicion recordada de comida madura, orienta, do",
+    "hypothesis": "recuerdo espacial (place cells) + orientacion fina cierra el acople",
+    "result_summary": "FAIL. comio_ef=0. La navegacion llevo al agente cerca de la comida pero el do no coincide con pos+facing REal. El desfase semantic-vs-world persiste.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0144",
+    "experiment_name": "modelo_objeto_predictivo",
+    "date": "2026-08-11",
+    "test_target": "el sustrado modela objetos como procesos dinamicos (velocidad, prediccion)",
+    "hypothesis": "apuntar a donde el objeto VA a estar (no donde esta) compensa el movimiento",
+    "result_summary": "PASS mecanico (rastrea objetos, objetos_track 9->20). PERO comio_ef=0. El rastreo funciona pero el do no pilla la comida en el instante. HALLAZGO: el problema es el timing de 1 paso del do, no el sustrado.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0145",
+    "experiment_name": "red_accion_resultado_mundo",
+    "date": "2026-08-11",
+    "test_target": "el agente aprende QUE accion produce QUE recurso (no solo supervivencia)",
+    "hypothesis": "si el agente conoce el mapa de posibilidades, puede lograr cosas",
+    "result_summary": "PASS mecanico (conn_res 7-10, recursos descubiertos). PERO comio_ef=0 y consol=0: aprende conexiones pero no se consolidan. FIX DE BUG: _hash_recurso_a_nodo amplia hrr.roles (IndexError en relacional_memory).",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0146",
+    "experiment_name": "reward_shaping_por_hito",
+    "date": "2026-08-11",
+    "test_target": "premiar los hitos de la secuencia hacia la comida (cerca/adyacente/orientado/come)",
+    "hypothesis": "reward shaping ensena la estructura parcial sin hardcodear la accion",
+    "result_summary": "PASS PARCIAL. comio_vac BAJO drasticamente (91->4): el reward shape disciplin\u00f3 al agente a no hacer do a ciegas. PERO comio_ef=0: la comida madura en Crafter es tan rara que el encuentro en pos+facing casi nunca ocurre en la vida.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0147",
+    "experiment_name": "reward_orientacion_ultimo_paso",
+    "date": "2026-08-11",
+    "test_target": "premiar fuertemente el ultimo paso geometrico (orientar el facing hacia la comida)",
+    "hypothesis": "con orientacion directa + reward de orientado, el agente cierra el acople",
+    "result_summary": "FAIL. comio_ef=0, comio_vac bajo (4-28, orientacion funciona). consol=1 aparecio. La comida madura real en Crafter (plantas casi inexistentes al inicio) + cows moviles hacen el encuentro en pos+facing rar\u00edsimo. LIMITE del entorno, no del sustrado.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0148",
+    "experiment_name": "libertad_total",
+    "date": "2026-08-11",
+    "test_target": "el agente actua LIBRE sin objetivo (todas las 17 acciones), observando que emerge",
+    "hypothesis": "la emergencia sin guia produce comportamiento estructurado (no solo atractores)",
+    "result_summary": "HALLAZGO IMPORTANTE. El agente libre descubre la RECOLECCION basica por emergencia (collect_drink, collect_wood, collect_sapling), construye mapa, aprende red accion->resultado (8->14). PERO NO da el salto a COMPOSICION (make/place/eat): recolecta recursos pero no descubre que puede COMBINARLOS en herramientas/comida. La frontera entre coereccion por refuerzo y SINTESIS de acciones queda identificada como el siguiente nivel.",
+    "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
+    "status": "done"
   }
 ]

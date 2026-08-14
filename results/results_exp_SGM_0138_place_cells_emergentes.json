@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_SGM_0138",
+  "experiment_name": "place_cells_emergentes_b2",
+  "phase": "Fase 8 - place cells emergentes + nodos que mutan (B2, agnostico)",
+  "date": "2026-08-11",
+  "hypothesis": "Con place cells emergentes + mutacion local del omega, el sustrato construye su propio mapa del entorno (agnostico). Cuando un lugar tiene comida enfrente + hambre + consolidacion, el agente ejecuta do EFECTIVO (comio_efectivo>0) mas que en 0137. El nodo-lugar muta hacia identidad de supervivencia.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 600,
+    "seeds": [
+      42,
+      7,
+      99
+    ],
+    "agnostico": "True (core no hardcodea entorno)",
+    "instinto_alimentacion": "configurado por adaptador",
+    "mutacion_tasa": 0.05
+  },
+  "result": "ver stdout",
+  "script": "experiments/exp_SGM_0138_place_cells_emergentes.py",
+  "results_file": "results/results_exp_SGM_0138_place_cells_emergentes.json",
+  "variant_of": "exp_SGM_0137",
+  "lit_refs": [
+    "O'Keefe 1971 (place cells)",
+    "Stachenfeld 2017 (place cells como predicciones)",
+    "Hafner ICLR 2022 (RL aprenden acople del input)"
+  ],
+  "notes": "El core es ahora AGNOSTICO del entorno: instinto_alimentacion=None (configurable), place cells emergentes (_registrar_place_cell), mutacion local (_mutar_omega_lugar). El adaptador (harness) traduce los IDs de Crafter a senales genericas. Cumple el principio de Luciano: el mismo sustrato sirve en Crafter, Minecraft, etc.",
+  "notes_criollo": "El bicho ahora se arma su propio mapa a medida que explora: cada lugar nuevo le crea una 'celda de lugar' (identidad). Cuando esa celda tiene comida delante + hambre, aprende que ahi se come bien, y la celda 'muta' hacia ser una celda de supervivencia. Todo sin saber que es Crafter: el sustrato es neutral, el que le traduce el mundo es el adapter."
+}

@@ -1,0 +1,258 @@
+{
+  "experiment_id": "exp_SGM_0148",
+  "experiment_name": "libertad_total",
+  "phase": "Fase 8 - libertad total: el agente actua libre en todo Crafter (observacion)",
+  "date": "2026-08-11",
+  "mision": "Luciano: actuar libremente sin restricciones, varias seeds/vidas, que haga/mezcle/invente. Interesa mas la emergencia de comportamiento que 'comer'.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "seeds": [
+      42,
+      7,
+      2024
+    ],
+    "vidas": 4,
+    "max_pasos": 1500,
+    "acciones_disponibles": 17,
+    "objetivo": "ninguno (libertad total)"
+  },
+  "result": {
+    "vidas": [
+      {
+        "seed": 42,
+        "vida": 0,
+        "pasos": 165,
+        "tiles": 19,
+        "logros": [
+          "collect_drink",
+          "collect_wood"
+        ],
+        "n_logros": 2,
+        "inv_final": {
+          "food": 3,
+          "drink": 9,
+          "energy": 4,
+          "wood": 3
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 10
+      },
+      {
+        "seed": 42,
+        "vida": 1,
+        "pasos": 154,
+        "tiles": 19,
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood"
+        ],
+        "n_logros": 3,
+        "inv_final": {
+          "food": 4,
+          "drink": 9,
+          "energy": 4,
+          "sapling": 2,
+          "wood": 1
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 12
+      },
+      {
+        "seed": 42,
+        "vida": 2,
+        "pasos": 221,
+        "tiles": 19,
+        "logros": [],
+        "n_logros": 0,
+        "inv_final": {
+          "food": 1,
+          "energy": 2
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 12
+      },
+      {
+        "seed": 42,
+        "vida": 3,
+        "pasos": 221,
+        "tiles": 7,
+        "logros": [
+          "collect_drink",
+          "collect_wood"
+        ],
+        "n_logros": 2,
+        "inv_final": {
+          "food": 1,
+          "drink": 9,
+          "energy": 2,
+          "wood": 1
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 12
+      },
+      {
+        "seed": 7,
+        "vida": 0,
+        "pasos": 183,
+        "tiles": 21,
+        "logros": [
+          "collect_sapling"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "food": 2,
+          "drink": 1,
+          "energy": 4,
+          "sapling": 1
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 8
+      },
+      {
+        "seed": 7,
+        "vida": 1,
+        "pasos": 146,
+        "tiles": 12,
+        "logros": [],
+        "n_logros": 0,
+        "inv_final": {
+          "food": 4,
+          "drink": 2,
+          "energy": 5
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 10
+      },
+      {
+        "seed": 7,
+        "vida": 2,
+        "pasos": 178,
+        "tiles": 7,
+        "logros": [
+          "collect_drink"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "food": 3,
+          "drink": 9,
+          "energy": 4
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 12
+      },
+      {
+        "seed": 7,
+        "vida": 3,
+        "pasos": 240,
+        "tiles": 12,
+        "logros": [
+          "collect_drink"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "drink": 9,
+          "energy": 2
+        },
+        "consol": 0,
+        "n_place": 6,
+        "n_conn_resultado": 12
+      },
+      {
+        "seed": 2024,
+        "vida": 0,
+        "pasos": 169,
+        "tiles": 33,
+        "logros": [
+          "collect_sapling",
+          "collect_wood"
+        ],
+        "n_logros": 2,
+        "inv_final": {
+          "food": 3,
+          "drink": 1,
+          "energy": 4,
+          "sapling": 3,
+          "wood": 2
+        },
+        "consol": 0,
+        "n_place": 9,
+        "n_conn_resultado": 10
+      },
+      {
+        "seed": 2024,
+        "vida": 1,
+        "pasos": 227,
+        "tiles": 6,
+        "logros": [
+          "collect_drink"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "food": 1,
+          "drink": 9,
+          "energy": 2
+        },
+        "consol": 0,
+        "n_place": 9,
+        "n_conn_resultado": 14
+      },
+      {
+        "seed": 2024,
+        "vida": 2,
+        "pasos": 158,
+        "tiles": 12,
+        "logros": [
+          "collect_wood"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "food": 3,
+          "drink": 2,
+          "energy": 4,
+          "wood": 1
+        },
+        "consol": 0,
+        "n_place": 9,
+        "n_conn_resultado": 14
+      },
+      {
+        "seed": 2024,
+        "vida": 3,
+        "pasos": 172,
+        "tiles": 9,
+        "logros": [
+          "collect_drink"
+        ],
+        "n_logros": 1,
+        "inv_final": {
+          "food": 3,
+          "drink": 9,
+          "energy": 4
+        },
+        "consol": 0,
+        "n_place": 9,
+        "n_conn_resultado": 14
+      }
+    ],
+    "log_detallado": "omitido por tamano (los patrones se analizan aparte)"
+  },
+  "script": "experiments/exp_SGM_0148_libertad_total.py",
+  "results_file": "results/results_exp_SGM_0148_libertad_total.json",
+  "variant_of": "exp_SGM_0145",
+  "lit_refs": [
+    "exploracion autotelica (Panksepp SEEKING)",
+    "curiosidad (Oudeyer)",
+    "behavior emergence (no objetivo impuesto)"
+  ],
+  "notes": "Libertad total con TODO el espacio de acciones de Crafter, sin meta, observando que emerge. Autotelismo puro + red accion->resultado para que descubra estructura.",
+  "notes_criollo": "Le damos al bicho la libertad TOTAL y sin mision: que haga lo que quiera en todo el mundo, por horas si hace falta. Vamos a mirar que hace, que inventa, si arma secuencias utiles o se queda en vericuetos. Eso es mas interesante que obligarlo a comer."
+}

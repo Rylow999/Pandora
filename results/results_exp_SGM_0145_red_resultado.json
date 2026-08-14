@@ -1,0 +1,120 @@
+{
+  "experiment_id": "exp_SGM_0145",
+  "experiment_name": "red_accion_resultado_mundo",
+  "phase": "Fase 8 - red accion->resultado del mundo + probar todo (autotelismo instrumental)",
+  "date": "2026-08-11",
+  "hypothesis": "El agente que prueba todas las acciones y aprende QUE recurso produce cada una (red accion->resultado) descubre la estructura del mundo. Eso le permite dirigirse a acciones utiles y eventualmente comer (food sube). SI: consol>0 y comio_efectivo>0.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 900,
+    "nvidas": 3,
+    "seeds": [
+      42,
+      7
+    ],
+    "aprender_resultado": true
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 180,
+            "tiles": 28,
+            "comio_efectivo": 0,
+            "comio_vacio": 32,
+            "mov": 49,
+            "n_conn_resultado": 8,
+            "consol": 0,
+            "recursos_conocidos": 2,
+            "food_fin": 3.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 1,
+            "pasos": 255,
+            "tiles": 7,
+            "comio_efectivo": 0,
+            "comio_vacio": 91,
+            "mov": 100,
+            "n_conn_resultado": 10,
+            "consol": 0,
+            "recursos_conocidos": 2,
+            "food_fin": 0.0,
+            "hp_fin": 1.0
+          },
+          {
+            "vida": 2,
+            "pasos": 178,
+            "tiles": 12,
+            "comio_efectivo": 0,
+            "comio_vacio": 53,
+            "mov": 61,
+            "n_conn_resultado": 10,
+            "consol": 0,
+            "recursos_conocidos": 2,
+            "food_fin": 3.0,
+            "hp_fin": 2.0
+          }
+        ]
+      },
+      {
+        "seed": 7,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 163,
+            "tiles": 6,
+            "comio_efectivo": 0,
+            "comio_vacio": 23,
+            "mov": 39,
+            "n_conn_resultado": 7,
+            "consol": 0,
+            "recursos_conocidos": 1,
+            "food_fin": 3.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 1,
+            "pasos": 210,
+            "tiles": 21,
+            "comio_efectivo": 0,
+            "comio_vacio": 70,
+            "mov": 78,
+            "n_conn_resultado": 10,
+            "consol": 0,
+            "recursos_conocidos": 2,
+            "food_fin": 1.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 2,
+            "pasos": 264,
+            "tiles": 7,
+            "comio_efectivo": 0,
+            "comio_vacio": 95,
+            "mov": 105,
+            "n_conn_resultado": 10,
+            "consol": 0,
+            "recursos_conocidos": 2,
+            "food_fin": 0.0,
+            "hp_fin": 1.0
+          }
+        ]
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0145_red_resultado.py",
+  "results_file": "results/results_exp_SGM_0145_red_resultado.json",
+  "variant_of": "exp_SGM_0144",
+  "lit_refs": [
+    "Oudeyer & Kaplan (curiosidad instrumental)",
+    "Gibson (affordances)",
+    "RL: exploracion de acciones"
+  ],
+  "notes": "Implementa la intuicion de Luciano: el agente debe conocer el espacio de acciones y QUE producen cada una para poder lograr algo. El sustrato consolida una red general accion->recurso (no solo supervivencia), asi descubre que romper->madera, etc.",
+  "notes_criollo": "Le dimos al bicho la carta de QUE puede hacer: que pruebe todo (romper, beber, plantar, craftear) y el sustrato anota cual accion produce cual recurso. Asi aprende el mapa de posibilidades del mundo, no solo a sobrevivir. Es como darle las llaves y que descubra cual abre cada puerta."
+}

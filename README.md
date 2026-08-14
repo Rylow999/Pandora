@@ -837,3 +837,40 @@ Con el mapeo correcto + facing derivado del engine (verificado 4/4), el agente h
 Place cells EMERGENTES: el sustrato construye su propio mapa del entorno mediante su mecanismo de exploración (cada tile nuevo crea un omega), con el decoder aprendiendo transiciones espaciales. B2: el place cell codifica posición + contenido enfrente (bind), para que el decoder asocie "lugar con cow enfrente → do funciona" de forma emergente — sin pre-digestión manual.
 
 Literatura: O'Keefe 1971 (place cells), Stachenfeld et al. 2017 (place cells como predicciones), Hafting et al. 2005 (grid cells), "Cognitive Map Learners via HDC" (2023), "Neural sampling from cognitive maps" (Nature MI 2026), Crafter paper (Hafner ICLR 2022).
+
+---
+
+## Estado 2026-08-11 — SAGA 0138→0148: emergencia del sustrato (mapa, objeto, libertad)
+
+### Qué se construyó (todos los mecanismos verificados en la auditoría total)
+- **Place cells emergentes + nodos que mutan (0138)**: el sustrato crea su propio mapa del entorno (agnóstico), los omegas de lugar mutan localmente hacia supervivencia.
+- **Árbitro de modos (0140)**: contention scheduling (Norman & Shallice) — la necesidad crítica da control exclusivo del canal a la supervivencia, las demás pulsiones siguen sin mando.
+- **Autotelismo puro (0141)**: el agente "solo hace" (curiosidad+drive+duda) sin objetivos, aprende en vidas.
+- **Navegación dirigida a meta (0142)**: recuerdo espacial (place cells) + orientación para llegar a la comida.
+- **Modelo de objeto predictivo (0144)**: el sustrato modela los objetos como procesos dinámicos (velocidad, posición futura predicha) — object permanence (Piaget), world models.
+- **Red acción→resultado (0145)**: el agente aprende QUÉ acción produce QUÉ recurso (no solo supervivencia) — base del conocimiento de posibilidades.
+- **Integración autónoma (0143)**: las primitivas se movieron DENTRO del `step()` (el sustrato no depende de orquestación del harness).
+- **Reward shaping por hito (0146-0147)**: premiar los hitos de la secuencia hacia la comida; orientación del último paso.
+
+### Auditoría total (14 de agosto): TODOS los mecanismos PASS.
+Instinto do, drive noop, árbitro modos, place cells, mutación omega, modelo objeto, red resultado, consolidación Kuramoto, autonomía step. El sustrato está íntegro.
+
+### La PRUEBA DEFINITIVA (14 de agosto): el do de Crafter SÍ come.
+Con comida forzada en pos+facing real (planta madura), el do come: food 3→7, eat_plant=1. **El mecanismo de comer funciona; el problema de comio_ef=0 en la saga NO era el sustrato.**
+
+### El BLOQUEO final (por qué comio_ef=0 durante 0138-0147)
+El do necesita comida en pos+facing REAL al instante. En Crafter:
+- Las cows se mueven (50%/paso) → nunca están en el facing exacto al ejecutar.
+- Las plantas maduras son casi inexistentes en el mapa inicial (0 al nacer; requieren agricultura de 300 pasos).
+- El desfase semantic-vs-world: el agente "ve" comida en el semantic pero el do usa world[target].
+Confirmado también en literatura: eat_plant es "extremely rare" incluso para RL top (Craftax).
+
+### HALLAZGO CLAVE — LIBERTAD TOTAL (0148)
+Con el agente actuando LIBRE (todas las 17 acciones, sin objetivo), emerge:
+- **Recolección básica por emergencia**: collect_drink, collect_wood, collect_sapling desbloqueados solo.
+- Construye mapa, aprende red acción→resultado (8→14 conexiones).
+- **PERO NO da el salto a COMPOSICIÓN**: no craftea (make_), no coloca (place_), no come. Recolecta recursos pero no descubre que puede COMBINARLOS en herramientas/comida.
+
+**La frontera identificada**: el sustrato descubre COSECHA (reforzar resultados de recolección) pero le falta SÍNTESIS/COMPOSICIÓN (usar recursos acumulados para crear algo nuevo). Es el salto que separa lo trivial de lo difícil en Crafter, y la siguiente dirección de investigación (aprendizaje de combinación).
+
+Literatura clave de la saga: Piaget (object permanence), Gibson (affordances), Merleau-Ponty (fenomenología), Oudeyer & Kaplan (curiosidad), Panksepp (SEEKING), Baars/Dehaene (GWT), Norman & Shallice (contention scheduling), Ha & Schmidhuber (world models), Ng et al. 1999 (reward shaping).

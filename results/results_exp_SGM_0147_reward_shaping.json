@@ -1,0 +1,118 @@
+{
+  "experiment_id": "exp_SGM_0147",
+  "experiment_name": "reward_shaping_por_hito",
+  "phase": "Fase 8 - reward shaping por hito (mostrar c\u00f3mo se hace, sin 1M pasos)",
+  "date": "2026-08-11",
+  "hypothesis": "El agente que recibe reward por los hitos de la secuencia (cerca/adyacente/orientado) aprende a LLEGAR a la comida, y el reward del 'come' completa la cadena. Si aprendemos en vivo (miles de pasos, no millones), logra comer: comio_efectivo>0. Impresionante: superar la muestra-ineficiencia de la RL.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 900,
+    "nvidas": 3,
+    "seeds": [
+      42,
+      7
+    ],
+    "reward_shaping": {
+      "cerca": 0.05,
+      "adyacente": 0.2,
+      "enfrente": 0.5,
+      "come": 1.0
+    }
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 177,
+            "tiles": 26,
+            "comio_efectivo": 0,
+            "comio_vacio": 4,
+            "mov": 76,
+            "reward_hito": 11.45,
+            "consol": 0,
+            "food_fin": 3.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 1,
+            "pasos": 152,
+            "tiles": 28,
+            "comio_efectivo": 0,
+            "comio_vacio": 17,
+            "mov": 69,
+            "reward_hito": 11.6,
+            "consol": 1,
+            "food_fin": 4.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 2,
+            "pasos": 182,
+            "tiles": 25,
+            "comio_efectivo": 0,
+            "comio_vacio": 14,
+            "mov": 102,
+            "reward_hito": 5.3,
+            "consol": 1,
+            "food_fin": 2.0,
+            "hp_fin": 2.0
+          }
+        ]
+      },
+      {
+        "seed": 7,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 156,
+            "tiles": 22,
+            "comio_efectivo": 0,
+            "comio_vacio": 18,
+            "mov": 37,
+            "reward_hito": 11.25,
+            "consol": 0,
+            "food_fin": 6.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 1,
+            "pasos": 213,
+            "tiles": 33,
+            "comio_efectivo": 0,
+            "comio_vacio": 18,
+            "mov": 124,
+            "reward_hito": 14.25,
+            "consol": 0,
+            "food_fin": 1.0,
+            "hp_fin": 2.0
+          },
+          {
+            "vida": 2,
+            "pasos": 161,
+            "tiles": 21,
+            "comio_efectivo": 0,
+            "comio_vacio": 28,
+            "mov": 63,
+            "reward_hito": 9.8,
+            "consol": 1,
+            "food_fin": 3.0,
+            "hp_fin": 2.0
+          }
+        ]
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0147_reward_shaping.py",
+  "results_file": "results/results_exp_SGM_0147_reward_shaping.json",
+  "variant_of": "exp_SGM_0145",
+  "lit_refs": [
+    "Ng, Harada & Russell 1999 (reward shaping)",
+    "Crafter paper (Hafner ICLR 2022)"
+  ],
+  "notes": "Reward shaping por hito: el adaptador premia acercarse a comida madura, ponerse adyacente, orientarse, y comer. Le ense\u00f1a la estructura de la secuencia sin hardcodear la accion. PRUEBA PREVIA: comer funciona (planta madura food 3->7).",
+  "notes_criollo": "Le mostramos al bicho 'que hacer' premiando cada pasito de la secuencia: acercarte a la comida te da cari\u00f1o, ponerte al lado mas, mirarla enfrente mucho mas, y comerlo lo maximo. Asi aprende el camino A LA COMIDA sin que le digamos 'aprieta tal tecla'. Si lo logra sin un millon de pasos, es una bestialidad: el sustrato cognitivo supera la fuerza bruta de la RL."
+}

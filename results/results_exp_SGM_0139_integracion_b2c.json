@@ -1,0 +1,137 @@
+{
+  "experiment_id": "exp_SGM_0139",
+  "experiment_name": "integracion_b2c_vidas_completas",
+  "phase": "Fase 8 - integracion B2c completa (place cell -> do) + vidas completas",
+  "date": "2026-08-11",
+  "hypothesis": "B2c (lugar->do aprendido cuando comer funciona) cierra el acople: el agente comera efectivo (comio_efectivo>0) en alguna seed. Vidas completas + multiple seeds.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "max_pasos": 1200,
+    "seeds": [
+      42,
+      7,
+      99,
+      123,
+      2024
+    ],
+    "agnostico": true,
+    "instinto_alimentacion": "adaptador (do=5)"
+  },
+  "result": {
+    "resumenes": [
+      {
+        "seed": 42,
+        "pasos": 163,
+        "tiles": 37,
+        "comio_efectivo": 0,
+        "comio_vacio": 75,
+        "ataco": 9,
+        "mov": 79,
+        "place_creados": 12,
+        "n_place_cells": 12,
+        "consol": 0,
+        "frec_acciones": {
+          "mv_u": 15,
+          "mv_l": 30,
+          "mv_r": 22,
+          "do": 84,
+          "mv_d": 12
+        },
+        "muerte": "natural",
+        "food_final": 3.0,
+        "hp_final": 2.0
+      },
+      {
+        "seed": 7,
+        "pasos": 183,
+        "tiles": 10,
+        "comio_efectivo": 0,
+        "comio_vacio": 6,
+        "ataco": 0,
+        "mov": 177,
+        "place_creados": 4,
+        "n_place_cells": 4,
+        "consol": 0,
+        "frec_acciones": {
+          "mv_d": 169,
+          "mv_l": 5,
+          "do": 6,
+          "mv_r": 3
+        },
+        "muerte": "natural",
+        "food_final": 2.0,
+        "hp_final": 2.0
+      },
+      {
+        "seed": 99,
+        "pasos": 85,
+        "tiles": 6,
+        "comio_efectivo": 0,
+        "comio_vacio": 0,
+        "ataco": 0,
+        "mov": 85,
+        "place_creados": 2,
+        "n_place_cells": 2,
+        "consol": 0,
+        "frec_acciones": {
+          "mv_d": 65,
+          "mv_l": 20
+        },
+        "muerte": "natural",
+        "food_final": 6.0,
+        "hp_final": 2.0
+      },
+      {
+        "seed": 123,
+        "pasos": 174,
+        "tiles": 35,
+        "comio_efectivo": 0,
+        "comio_vacio": 28,
+        "ataco": 8,
+        "mov": 138,
+        "place_creados": 12,
+        "n_place_cells": 12,
+        "consol": 0,
+        "frec_acciones": {
+          "mv_l": 51,
+          "mv_u": 24,
+          "do": 36,
+          "mv_d": 33,
+          "mv_r": 30
+        },
+        "muerte": "natural",
+        "food_final": 8.0,
+        "hp_final": 2.0
+      },
+      {
+        "seed": 2024,
+        "pasos": 158,
+        "tiles": 27,
+        "comio_efectivo": 0,
+        "comio_vacio": 60,
+        "ataco": 1,
+        "mov": 97,
+        "place_creados": 10,
+        "n_place_cells": 10,
+        "consol": 0,
+        "frec_acciones": {
+          "mv_u": 15,
+          "mv_r": 47,
+          "mv_l": 26,
+          "do": 61,
+          "mv_d": 9
+        },
+        "muerte": "natural",
+        "food_final": 3.0,
+        "hp_final": 1.0
+      }
+    ],
+    "log_detallado": "ver results_exp_SGM_0139... los logs por seed estan en el archivo adjunto si se guarda"
+  },
+  "script": "experiments/exp_SGM_0139_integracion_b2c.py",
+  "results_file": "results/results_exp_SGM_0139_integracion_b2c.json",
+  "variant_of": "exp_SGM_0138",
+  "notes": "Integracion completa de B2c: en actualizar_homeostasis, cuando el do es efectivo, se aprende lugar->do (Hebb espacial). El place cell activo influye en el PPR via la conexion aprendida. Se corre vida completa (hasta muerte) en 5 seeds y se registra log de patrones por paso para analisis posterior.",
+  "notes_criollo": "Ahora le dimos el mapa que armo y lo conectamos a la mano: si en un lugar comer funciono, el bicho aprende que ahi se come. Con eso corre varias vidas completas y registramos TODO lo que hace (que accion, donde, que senales) para ver los patrones: que hace, que no, como y por que."
+}
