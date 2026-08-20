@@ -2467,5 +2467,25 @@
     "hypothesis": "corrigiendo el detector (wood_pickaxe item en vez de make_wood_pickaxe achievement) la consolidacion de hitos se dispararia y consol subiria (memoria entre episodios)",
     "result_summary": "PASS. Vida 9: make_wood_pickaxe logrado + consol=1 (la conexion se consolida). Vidas 10-14: consol=1 persiste (memoria a largo plazo). EL BUG era: el detector usaba el nombre del achievement (make_wood_pickaxe) en vez del item real del inventario (wood_pickaxe), por lo que consolidar_hito nunca se disparaba en el megamaraton 0154 (consol=0 en 60 vidas). Corregido: al detectar el item wood_pickaxe, el hito se consolida. PASO 2 DEL ROADMAP (memoria entre episodios) RESUELTO: el sustrado graba los eventos salientes (craftear) en memoria persistente.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0152",
+    "experiment_name": "robustez_multi_seed_cadena_subsistencia",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - ROBUSTEZ: cadena de subsistencia en multiples seeds",
+    "test_target": "confirmar que el HITO 0151 (subsistencia emergente) es robusto en MULTIPLES seeds",
+    "hypothesis": "la cadena collect->place_table->make->eat_cow se repite en las 3 seeds (42,7,2024)",
+    "result_summary": "PASS. LAS 3 SEEDS lograron exactamente los mismos 6 logros de subsistencia: drink, sapling, wood, place_table, make_wood_pickaxe, EAT_COW. La cadena se repite robustamente (1417-1314-1267 pasos). El hito NO fue golpe de suerte de la seed 42. Datos: results_exp_SGM_0152.",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0153",
+    "experiment_name": "memoria_entre_episodios_consolidacion",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - memoria entre episodios (paso 2 del roadmap)",
+    "test_target": "que la consolidacion refuerce la memoria de supervivencia entre vidas",
+    "hypothesis": "facilitacion sinaptica por repeticion (0153) + consolidacion de hitos (0153-A) harian que el conocimiento persista entre episodios",
+    "result_summary": "PARCIAL. La facilitacion por repeticion sola no basto (consol=0) por eventos escasos. La consolidacion DIRECTA de hitos (0153-A, en exp 0155) S\u00cd activo consol=1 al lograr make_wood_pickaxe. En este run 0153, la seed 7 logro defeat_zombie y la robustez se mantuvo. La memoria inter-episodio quedo resuelta en el 0155 (consol persiste entre vidas).",
+    "status": "done"
   }
 ]

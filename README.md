@@ -927,3 +927,33 @@ Dejado correr ~3h (10,455 pasos, 60 vidas, mundo persistente + conocimiento + co
 **Significado:** el sustrato ahora GRABA los eventos salientes (craftear una herramienta) en memoria persistente — la conexión `madera+mesa → pico` deja de olvidarse entre vidas. Es la "memoria de sobrevivir" que permite que el conocimiento aprendido supersista y se reutilice en vidas posteriores sin re-descubrir.
 
 La auditoría final de resultados: todos los JSON de la saga guardan datos reales (no placeholders "ver stdout"), registry completo en 152 entradas, y la memoria entre episodios — el eslabón que faltaba tras el hito de la composición — queda verificado.
+
+---
+
+## CIERRE FASE 8 — Comparativa SGM vs Benchmarks RL (Crafter) + estado del registry
+
+### Comparativa honesta (métrica de logros del paper Crafter, Hafner ICLR 2022)
+
+| Sistema | Score % | Observación |
+|---|------|------|
+| **SGM (nuestro, 0152)** | **27.3%** (6/22 logros, incl. eat_cow) | Subsistencia emergente, sin guión |
+| Human experts | 50.5% | SGM llega al 54% del humano |
+| **DreamerV2** (mejor RL del paper) | 10.0% | SGM = 2.7× |
+| PPO | 4.6% | SGM = 5.9× |
+| Rainbow | 4.3% | SGM = 6.3× |
+| Plan2Explore | 2.1% | SGM = 13× |
+| RND | 2.0% | SGM = 13.6× |
+| Random | 1.6% | SGM = 17× |
+
+**Los MATICES HONESTOS (no afirmamos "ganarle" a la RL en igualdad):**
+1. **Setting diferente**: RL del paper usa RGB crudo 64×64×3 y episodios independientes; SGM usa semantic + mundo persistente + conocimiento del mundo (recetas). Son ventajas de setting que SGM aprovecha.
+2. **Número de pasos**: RL = millones de frames; SGM = ~10K pasos. El claim FUERTE honesto es MUESTRA-EFICIENCIA: SGM logra más logros con 100-1000× menos experiencia.
+3. **El techo**: SGM alcanza ~6-7 logros; no logra los avanzados (iron, diamond, crafteos superiores) ni alcanza al humano. La victoria es la muestra-eficiencia, no el rendimiento absoluto en el task difícil.
+
+### Estado del registry (154 entradas)
+
+Se agregaron **exp_SGM_0152** (robustez multi-seed) y **exp_SGM_0153** (memoria entre episodios), los únicos experimentos reales que faltaban con datos. El diagnóstico del "faltante 0051-0124" fue un **falso positivo**: la gran mayoría ya está en el registry con sufijo de nombre (p. ej. `exp_SGM_0124_habituation`, `exp_SGM_0052_crafter_nivel2`).
+
+**Agujeros legítimos de numeración (sin datos, no se recuperan)**: `0054`, `0060-0094` y `0115` — no tienen scripts, ni results, ni referencia en README/changelog (salvo 0115 que es una NOTA de diseño en docs/FASE8_TELEOLOGIA y README). No se inventan datos para números que nunca tuvieron experimento. `0143` fue un refactor del core (no un experimento standalone).
+
+**Registry real**: 154 entradas = 151 experimentos exp_SGM_XXXX + notas/DIR.

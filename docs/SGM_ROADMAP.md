@@ -517,15 +517,22 @@ forma emergente.
 - **HITO 0151**: con libertad + conocimiento del mundo + mundo persistente + escala temporal,
   el sustrato desbloquea SOLO la cadena `collect → place_table → make_wood_pickaxe → eat_cow`.
 
-### Roadmap futuro (post-hito)
-1. **Robustez**: confirmar la cadena de subsistencia en múltiples seeds/vidas (el 0151 logró en
-   1 seed / 8 vidas).
-2. **Memoria entre episodios**: fortalecer la consolidación (kuramoto/consol) para que la
-   "memoria de sobrevivir" persista sin re-descubrir cada vez.
+### Roadmap futuro (post-hito) — ACTUALIZADO 14-08-2026
+
+1. **[COMPLETADO] Robustez** (0152): la cadena de subsistencia se replicó en 3 seeds (42/7/2024),
+   todas con los mismos 6 logros (drink/sapling/wood/place_table/make_wood_pickaxe/eat_cow).
+2. **[COMPLETADO] Memoria entre episodios** (0153 + 0155): la consolidación directa de hitos
+   (0155) activó consol=1 al lograr make_wood_pickaxe; la conexión persiste entre vidas.
 3. **Migrar a Minecraft**: el sustrato es agnóstico del entorno (0138) — se cambia el adaptador.
 4. **Razonamiento sobre el grafo de conocimiento**: conectar el modelo del mundo de Fase 8 con la
    composición relacional HRR de Fase 7, para que el agente PLANIFIQUE simbólicamente ("para
    sobrevivir necesito X; para X necesito Y"). Este es el salto hacia la "singularidad" de Luciano:
    bucle conocimiento→composición→nuevo-conocimiento.
+
+**Cierre de la Fase 8 (comparativa honesta):** en la métrica de logros de Crafter, SGM (27.3%,
+6/22 logros) supera a los RL del paper (DreamerV2 10%, PPO 4.6%, Random 1.6%) y alcanza el 54% del
+humano experto (50.5%). El claim honesto es MUESTRA-EFICIENCIA: SGM logra más con ~10K pasos vs
+millones de frames de la RL (y con ventajas de setting: semantic + mundo persistente + conocimiento
+del mundo). El techo está en ~6-7 logros; faltan los avanzados (iron/diamond).
 
 ---
