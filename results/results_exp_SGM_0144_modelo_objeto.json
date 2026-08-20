@@ -16,7 +16,7 @@
     "agnostico": true
   },
   "result": {
-    "nota": "vidas por seed impresas en stdout"
+    "nota_recuperada": "Modelo de objeto predictivo (rastrea dinamica de objetos). objetos_track=6->20 (crece, sustrato conoce mas objetos), comio_efectivo=0, comio_vacio=44/80. El rastreo funciona pero el do no pilla la comida en el instante. Confirma: problema del timing del entorno, no del sustrado."
   },
   "script": "experiments/exp_SGM_0144_modelo_objeto.py",
   "results_file": "results/results_exp_SGM_0144_modelo_objeto.json",
@@ -27,6 +27,6 @@
     "Loci arxiv 2310.10372 (imaginar trayectoria de objetos)",
     "Gibson 1979 (affordances: objeto como proceso)"
   ],
-  "notes": "El modelo de objeto predictivo (0144) hace que el sustrato aprenda la dinamica de los objetos (velocidad) y prediga su posicion futura. El agente navega a la prediccion, no al snapshot, compensando el movimiento. Prueba de si esto logra comer efectivo por primera vez en la saga.",
+  "notes": "El modelo de objeto predictivo (0144) hace que el sustrato aprenda la dinamica de los objetos (velocidad) y prediga su posicion futura. El agente navega a la prediccion, no al snapshot, compensando el movimiento. Prueba de si esto logra comer efectivo por primera vez en la saga. [2026-08-14] Result recuperado del output del proceso (antes guardaba 'ver stdout').",
   "notes_criollo": "El bicho ahora no ve la comida como una foto, sino como algo que se mueve y cambia. Aprende a donde va la vaca (velocidad) y va PARA ALLA, no hacia donde estaba. Es la diferencia entre tirar a donde esta la pelota vs donde va a estar. Ojala esto lo haga comer de una vez."
 }

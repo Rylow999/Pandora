@@ -2427,5 +2427,25 @@
     "hypothesis": "con libertad total + conocimiento del mundo + mundo persistente entre vidas + tiempo (8 vidas largas), el sustrado emergente logra por si solo lo que los mecanismos guiados no pudieron: la composicion y el comer.",
     "result_summary": "HITO HISTORICO. Logros desbloqueados SOLO, sin guion: collect_drink, collect_sapling, collect_wood, place_table, make_wood_pickaxe, EAT_COW (que se resistio 20+ experimentos). El agente coloco la mesa (vida0), uso la mesa persistente para craftear make_wood_pickaxe (vida3), y comio vaca (vida7). LA CLAVE fue la persistencia del mundo entre vidas (antes env.reset() borraba la mesa) + conocimiento del mundo (recetas como repertorio) + escala temporal. Confirma la idea de Luciano: libertad + conocimiento + persistencia + tiempo > mas mecanismos cognitivos.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0149",
+    "experiment_name": "grafo_conocimiento_composicion_V2",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - grafo de conocimiento del mundo construido por observacion (V2)",
+    "test_target": "que el sustrato aprenda COMPOSICION construyendo su propio conocimiento del mundo",
+    "hypothesis": "curiosidad dirigida a make_* cuando hay recursos -> el agente descubre el crafteo",
+    "result_summary": "PARCIAL. El agente probo acciones de composicion (make_*) por curiosidad dirigida (probadas_comp>0 en algunas vidas), pero NINGUN make se completo (descubrio_comp=[]): probo make sin mesa cerca -> fallo. Primera evidencia de que make_* requiere la precondicion espacial (mesa).",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0150",
+    "experiment_name": "precondicion_espacial_composicion",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - precondicion espacial de la composicion (place_table habilita make)",
+    "test_target": "que el agente aprenda que make_* necesita una MESA cerca (place_table)",
+    "hypothesis": "detectar mesa con world.nearby y dirigir a place_table cuando falta la precondicion",
+    "result_summary": "PROGRESO REAL. El agente aprendio a COLOCAR LA MESA (place_table logrado en seed 42 vidas 1 y 2, 'cadena lista'). La precondicion espacial se descubre. Pero despues de colocar la mesa no ejecuto el make (probadas_comp=0 en esas vidas) - eslabon de secuencia con recursos. Seed 7 no completo mesa.",
+    "status": "done"
   }
 ]

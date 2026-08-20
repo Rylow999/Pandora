@@ -17,7 +17,9 @@
     "instinto_alimentacion": "configurado por adaptador",
     "mutacion_tasa": 0.05
   },
-  "result": "ver stdout",
+  "result": {
+    "nota_recuperada": "Place cells emergentes + nodos que mutan (B2). place_creados=6/2/10 (mapa emergente funciona), comio_efectivo=0, comio_vacio=9/0/67. El mapa se construye pero no guia el do."
+  },
   "script": "experiments/exp_SGM_0138_place_cells_emergentes.py",
   "results_file": "results/results_exp_SGM_0138_place_cells_emergentes.json",
   "variant_of": "exp_SGM_0137",
@@ -26,6 +28,6 @@
     "Stachenfeld 2017 (place cells como predicciones)",
     "Hafner ICLR 2022 (RL aprenden acople del input)"
   ],
-  "notes": "El core es ahora AGNOSTICO del entorno: instinto_alimentacion=None (configurable), place cells emergentes (_registrar_place_cell), mutacion local (_mutar_omega_lugar). El adaptador (harness) traduce los IDs de Crafter a senales genericas. Cumple el principio de Luciano: el mismo sustrato sirve en Crafter, Minecraft, etc.",
+  "notes": "El core es ahora AGNOSTICO del entorno: instinto_alimentacion=None (configurable), place cells emergentes (_registrar_place_cell), mutacion local (_mutar_omega_lugar). El adaptador (harness) traduce los IDs de Crafter a senales genericas. Cumple el principio de Luciano: el mismo sustrato sirve en Crafter, Minecraft, etc. [2026-08-14] Result recuperado del output del proceso (antes guardaba 'ver stdout').",
   "notes_criollo": "El bicho ahora se arma su propio mapa a medida que explora: cada lugar nuevo le crea una 'celda de lugar' (identidad). Cuando esa celda tiene comida delante + hambre, aprende que ahi se come bien, y la celda 'muta' hacia ser una celda de supervivencia. Todo sin saber que es Crafter: el sustrato es neutral, el que le traduce el mundo es el adapter."
 }

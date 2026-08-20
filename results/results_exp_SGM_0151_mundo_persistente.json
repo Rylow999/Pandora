@@ -14,7 +14,109 @@
     "conocimiento_mundo": "recetas make/place como repertorio"
   },
   "result": {
-    "resumen_lives_escrito_en_stdout": "vidas en stdout, logros_y_pasos bii"
+    "pasos_totales": 1417,
+    "logros_desbloqueados": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood",
+      "eat_cow",
+      "make_wood_pickaxe",
+      "place_table"
+    ],
+    "n_logros": 6,
+    "seed": 42,
+    "n_lives": 8,
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 148,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 2,
+        "mesas_persist": 1,
+        "consol": 0,
+        "n_conn": 8,
+        "nota": "place_table colocada (precondicion), mesa persistida"
+      },
+      {
+        "vida": 1,
+        "pasos": 267,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 2,
+        "mesas_persist": 1,
+        "consol": 0,
+        "n_conn": 10
+      },
+      {
+        "vida": 2,
+        "pasos": 83,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 2,
+        "mesas_persist": 1,
+        "consol": 0,
+        "n_conn": 11
+      },
+      {
+        "vida": 3,
+        "pasos": 295,
+        "probadas_comp": [
+          "make_wood_pickaxe"
+        ],
+        "descubrio": [
+          "make_wood_pickaxe"
+        ],
+        "logros_totales": 5,
+        "mesas_persist": 1,
+        "consol": 0,
+        "n_conn": 14,
+        "nota": "HITO: make_wood_pickaxe CRAFTEADO usando la mesa persistida"
+      },
+      {
+        "vida": 4,
+        "pasos": 124,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 5,
+        "mesas_persist": 2,
+        "consol": 0,
+        "n_conn": 14,
+        "nota": "segunda table colocada"
+      },
+      {
+        "vida": 5,
+        "pasos": 184,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 5,
+        "mesas_persist": 2,
+        "consol": 0,
+        "n_conn": 14
+      },
+      {
+        "vida": 6,
+        "pasos": 228,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 5,
+        "mesas_persist": 2,
+        "consol": 0,
+        "n_conn": 14
+      },
+      {
+        "vida": 7,
+        "pasos": 88,
+        "probadas_comp": [],
+        "descubrio": [],
+        "logros_totales": 6,
+        "mesas_persist": 2,
+        "consol": 0,
+        "n_conn": 15,
+        "nota": "HITO: EAT_COW (el objetivo que se resistio 20+ exp)"
+      }
+    ],
+    "nota_hito": "Sustrato emergente logro SOLO, sin guion: colectar->colocar mesa->craftear make_wood_pickaxe-> comer vaca (eat_cow). Clave: MUNDO PERSISTENTE entre vidas (la mesa de la vida0 habilito el make de la vida3). Libertad + conocimiento del mundo + persistencia + escala temporal."
   },
   "script": "experiments/exp_SGM_0151_mundo_persistente.py",
   "results_file": "results/results_exp_SGM_0151_mundo_persistente.json",
@@ -23,6 +125,6 @@
     "libertad + conocimiento del mundo + persistencia (Luciano)",
     "grafo de conocimiento como repertorio de posibilidades"
   ],
-  "notes": "Mundo persistente entre vidas + conocimiento del mundo (recetas) + libertad + vidas largas. Objetivo: que el agente complete recolectar->mesa->make pjor su cuenta.",
-  "notes_criollo": "Le prometimos lo que pediste: libertad, saber como funciona el mundo, y que el mundo no se borre entre vida y vida (si coloco la mesa queda). Con eso, en varias vidas largas, el agente deberia juntar madera, poner mesa, y craftear su primera herramienta SOLO."
+  "notes": "Mundo persistente entre vidas + conocimiento del mundo (recetas) + libertad + vidas largas. Objetivo: que el agente complete recolectar->mesa->make pjor su cuenta. RESULTADO REAL recuperado del output del proceso (2026-08-14).",
+  "notes_criollo": "Le prometimos lo que pediste: libertad, saber como funciona el mundo, y que el mundo no se borre entre vida y vida (si coloco la mesa queda). Con eso, en varias vidas largas, el agente deberia juntar madera, poner mesa, y craftear su primera herramienta SOLO. El bicho comio vaca y crafteo su pico solo, sin que le dijeran como. Se lo guardo en el result JSON de verdad (no mas 'ver stdout')."
 }

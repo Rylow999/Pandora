@@ -24,13 +24,15 @@
     "comer": "do=5",
     "homeostasis": "NATIVA Crafter"
   },
-  "result": "ver reporte stdout (resultados impresos arriba)",
+  "result": {
+    "nota_recuperada": "Mapeo corregido a real (cow=14, plant=18, zombie=15, skeleton=16, player=13, arrow=17). comio_efectivo=0, comio_vacio=93/95/19, ataco=0. Incluso con mapeo correcto, do falla 100%."
+  },
   "script": "experiments/exp_SGM_0136_fix_mapeo_objetos.py",
   "results_file": "results/results_exp_SGM_0136_fix_mapeo_objetos.json",
   "variant_of": "exp_SGM_0135",
   "lit_refs": [
     "crafter/engine.py SemanticView: mat_ids=0..12, obj_ids=13+ (Player=13 sle...)"
   ],
-  "notes": "HALLAZGO DEFINITIVO: el mapeo de objetos de Crafter (verificado en engine.py) es mat_ids(0..12)+idx: Player=13, Cow=14, Zombie=15, Skeleton=16, Arrow=17, Plant=18. 0120-0135 usaron FOOD={13,17}(player,arrow) -> el gradiente apuntaba al player. Se corrige a comida={14,18}, enemigo={15,16}.",
+  "notes": "HALLAZGO DEFINITIVO: el mapeo de objetos de Crafter (verificado en engine.py) es mat_ids(0..12)+idx: Player=13, Cow=14, Zombie=15, Skeleton=16, Arrow=17, Plant=18. 0120-0135 usaron FOOD={13,17}(player,arrow) -> el gradiente apuntaba al player. Se corrige a comida={14,18}, enemigo={15,16}. [2026-08-14] Result recuperado del output del proceso (antes guardaba 'ver stdout').",
   "notes_criollo": "El bicho nunca comia porque su 'detector de comida' buscaba lo valores equivocados: 13 era el PROPIO player (no una vaca) y 17 una flecha. Le daba al gradiente 've a la vaca' pero apuntaba a el mismo. Corregimos los numeros y ahora si deberia ver comida de verdad."
 }

@@ -23,13 +23,15 @@
     ],
     "facing": "derivado del engine (movimiento real)"
   },
-  "result": "ver stdout",
+  "result": {
+    "nota_recuperada": "Facing derivado del engine coincide 4/4 con player.facing real. comio_efectivo=0, comio_vacio=55/28/63, ataco=6/0/5. Facing correcto pero do sigue vacio. First evidence de race condition (cows se mueven entre percepcion y ejecucion)."
+  },
   "script": "experiments/exp_SGM_0137_acople_fino_real.py",
   "results_file": "results/results_exp_SGM_0137_acople_fino_real.json",
   "variant_of": "exp_SGM_0136",
   "lit_refs": [
     "Crafter paper (Hafner ICLR 2022): RL aprenden acople percepcion-accion, no lo pre-calculan; eat_cow es un achievement dificil"
   ],
-  "notes": "Leccion de los errores 0120-0136: pre-digestar el estado a mano (facing asumido) crea puntos de falla. Aqui el facing se deriva del engine (delta de player_pos), eliminando la variable manual erronea. 'do' solo se dispara con objetivo confirmado en pos+facing real.",
+  "notes": "Leccion de los errores 0120-0136: pre-digestar el estado a mano (facing asumido) crea puntos de falla. Aqui el facing se deriva del engine (delta de player_pos), eliminando la variable manual erronea. 'do' solo se dispara con objetivo confirmado en pos+facing real. [2026-08-14] Result recuperado del output del proceso (antes guardaba 'ver stdout').",
   "notes_criollo": "Aprendi la leccion: cada vez que le 'adivinaba' al bicho el estado del mundo (mapeo de objetos, facing), metia la pata. Ahora el facing lo saco directo del juego (mirando como se movio de verdad el player entre pasos), y el 'do' solo se lanza cuando la comida esta confirmada al frente. Asi el bicho deberia por fin comer de verdad."
 }
