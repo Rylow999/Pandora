@@ -1,0 +1,1927 @@
+{
+  "experiment_id": "exp_SGM_0154",
+  "experiment_name": "megamaraton_3h_escala_temporal",
+  "phase": "Fase 8 - MEGAMARATON (3h): escala temporal, que logra el sistema",
+  "date": "2026-08-14",
+  "mision": "Luciano: dejar al sistema correr 3 horas y ver que logra. Escala temporal max: 60 vidas con mundo persistente + conocimiento + consolidacion de hitos (0153-A). El sustrado deberia seguir escalando la composicion (crafteo, comer, defensa) con tiempo.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 60,
+    "max_pasos_vida": 2000,
+    "seed": 42,
+    "mundo_persistente": true,
+    "conocimiento_mundo": "recetas make/place como repertorio",
+    "consolidacion_hitos": "0153-A activa"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 153,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [],
+            "logros_totales": 2,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 9
+          },
+          {
+            "vida": 1,
+            "pasos": 53,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 2,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 2,
+            "pasos": 209,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 2,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 3,
+            "pasos": 235,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 4,
+            "pasos": 176,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 5,
+            "pasos": 209,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 6,
+            "pasos": 192,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 7,
+            "pasos": 100,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 8,
+            "pasos": 280,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 9,
+            "pasos": 152,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 10,
+            "pasos": 166,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 11,
+            "pasos": 142,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 12,
+            "pasos": 237,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 13,
+            "pasos": 191,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 14,
+            "pasos": 201,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 15,
+            "pasos": 213,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 16,
+            "pasos": 337,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 17,
+            "pasos": 214,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 18,
+            "pasos": 219,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 19,
+            "pasos": 160,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 20,
+            "pasos": 154,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 21,
+            "pasos": 187,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 22,
+            "pasos": 163,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 23,
+            "pasos": 150,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 24,
+            "pasos": 172,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 25,
+            "pasos": 194,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 26,
+            "pasos": 192,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 27,
+            "pasos": 175,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 28,
+            "pasos": 209,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 29,
+            "pasos": 150,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 30,
+            "pasos": 151,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 31,
+            "pasos": 175,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 32,
+            "pasos": 206,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 33,
+            "pasos": 80,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 34,
+            "pasos": 157,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 35,
+            "pasos": 90,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 36,
+            "pasos": 149,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 37,
+            "pasos": 169,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 38,
+            "pasos": 189,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 39,
+            "pasos": 173,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 40,
+            "pasos": 162,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 41,
+            "pasos": 111,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 42,
+            "pasos": 161,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 43,
+            "pasos": 156,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 44,
+            "pasos": 165,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 45,
+            "pasos": 162,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 46,
+            "pasos": 149,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 47,
+            "pasos": 78,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 48,
+            "pasos": 132,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 49,
+            "pasos": 177,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 50,
+            "pasos": 154,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 51,
+            "pasos": 166,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 11
+          },
+          {
+            "vida": 52,
+            "pasos": 179,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 53,
+            "pasos": 165,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 54,
+            "pasos": 156,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 55,
+            "pasos": 191,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 56,
+            "pasos": 228,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 57,
+            "pasos": 273,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 58,
+            "pasos": 171,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 59,
+            "pasos": 195,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    19,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    25,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "defeat_skeleton",
+          "make_wood_pickaxe",
+          "place_table"
+        ],
+        "pasos_totales": 10455
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0154_megamaraton.py",
+  "results_file": "results/results_exp_SGM_0154_megamaraton.json",
+  "variant_of": "exp_SGM_0153",
+  "lit_refs": [
+    "libertad + conocimiento del mundo + persistencia (Luciano)",
+    "grafo de conocimiento como repertorio de posibilidades"
+  ],
+  "notes": "Mundo persistente entre vidas + conocimiento del mundo (recetas) + libertad + vidas largas. Objetivo: que el agente complete recolectar->mesa->make pjor su cuenta.",
+  "notes_criollo": "Le prometimos lo que pediste: libertad, saber como funciona el mundo, y que el mundo no se borre entre vida y vida (si coloco la mesa queda). Con eso, en varias vidas largas, el agente deberia juntar madera, poner mesa, y craftear su primera herramienta SOLO."
+}

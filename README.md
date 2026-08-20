@@ -903,3 +903,13 @@ En los experimentos anteriores (0125-0150), cada `env.reset()` entre vidas **BOR
 **Conclusión central para la pregunta de la singularidad:** el agente NO necesitaba más mecanismos cognitivos — se necesitaban **libertad + conocimiento del mundo + persistencia física + escala temporal**. Con eso, el bucle conocimiento→composición→nuevo-conocimiento emergió por sí solo: de recolectar a craftear a comer, sin guion.
 
 Literatura: reinforcement-emergent composition por persistencia + conocimiento del mundo (Luciano 2026-08-11). El poder de la escala temporal y la persistencia sobre el refuerzo guiado.
+
+---
+
+## MEGAMARATÓN 0154 — 3 horas de escala temporal (14-08-2026)
+
+Dejado correr ~3h (10,455 pasos, 60 vidas, mundo persistente + conocimiento + consolidación de hitos), el sustrado logró 6 logros: drink, sapling, wood, **defeat_skeleton**, place_table, **make_wood_pickaxe**. El crafteo se **repitió en 8 vidas** (la composición es sostenida, con 3 mesas persistidas) — la escala temporal permitió que la cadena de composición se estabilizara.
+
+**PERO: `consol=0` en todas las vidas** — la memoria entre episodios NO se activó (la consolidación de hitos 0153-A no produjo consolidación), y `eat_cow` no apareció en el maratón. **El sistema alcanzó un TEcho de behavior (6 logros):** la escala temporal mantiene la composición pero no la hace escalar ni consolida memoria.
+
+**Conclusión del maratón:** más tiempo sostiene lo que el sistema ya sabe hacer (craftear) pero no genera el salto de memoria que permitiría ir más allá del techo. La memoria entre episodios (consolidación) sigue siendo el eslabón sin resolver (paso 2 del roadmap).

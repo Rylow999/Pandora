@@ -2447,5 +2447,15 @@
     "hypothesis": "detectar mesa con world.nearby y dirigir a place_table cuando falta la precondicion",
     "result_summary": "PROGRESO REAL. El agente aprendio a COLOCAR LA MESA (place_table logrado en seed 42 vidas 1 y 2, 'cadena lista'). La precondicion espacial se descubre. Pero despues de colocar la mesa no ejecuto el make (probadas_comp=0 en esas vidas) - eslabon de secuencia con recursos. Seed 7 no completo mesa.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0154",
+    "experiment_name": "megamaraton_3h_escala_temporal",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - megamaron de 3h (escala temporal max)",
+    "test_target": "que logra el sistema dejado correr ~3h (60 vidas, mundo persistente, conocimiento)",
+    "hypothesis": "con escala temporal maxima el sustrado supera el techo de behavior (mas logros, memoria)",
+    "result_summary": "10455 pasos / 60 vidas / seed 42. Logros: drink, sapling, wood, defeat_skeleton, place_table, make_wood_pickaxe (6). El crafteo se REPITIO 8 vidas (composicion sostenida) con mesas_persist=3. PERO consol=0 en TODAS las vidas (la memoria entre episodios NO se activo) y eat_cow no aparecio. El sistema alcanzo un TECHO de behavior de 6 logros: la escala temporal mantiene la composicion (repite make) pero no la hace escalar ni consolida memoria. La consolidacion de hitos 0153-A no produjo consol>0 (bug: consistencia y paso_make no medido).",
+    "status": "done"
   }
 ]

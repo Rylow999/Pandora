@@ -188,6 +188,14 @@ class SGMAgent:
         self.theta_interf = 0.70          # umbral de interferencia (Eq.7) -> consolida
         # conexiones consolidadas por sincronizacion: {(i,k)} no se podan
         self.consolidadas = set()
+        # 0153: FACILITACION SINAPTICA POR REPETICION (memoria entre episodios).
+        # La neurociencia: la consolidacion de memoria depende de la FRECUENCIA de uso. Una
+        # conexion reforzada muchas veces (exito repetido) BAIJA su umbral de consolidacion =
+        # la fase no necesita estar tan alineada con la raiz para persistir. Es lo que hace que
+        # la 'memoria de sobrevivir' persista entre vidas sin re-descubrir cada vez.
+        self.conteo_exitos_conexion = {}  # (i,j) -> veces que esa conexion fue reforzada por exito
+        self.theta_interf_min = 0.45      # umbral de consolidacion minimo (facilitacion maxima)
+        self.facilitacion_por_exito = 0.03  # cuanta baja el umbral por cada exito repetido
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
         # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
@@ -385,12 +393,33 @@ class SGMAgent:
     def consolidar_si_sincroniza(self, i, j):
         """Si el nodo i esta sincronizado con la raiz (relevante), la conexion (i,j)
         se consolida: el strength deja de decaer con la poda (entra en self.consolidadas).
-        Es el mecanismo que hace PERSISTIR el conocimiento aprendido (0125 opcion C)."""
+        Es el mecanismo que hace PERSISTIR el conocimiento aprendido (0125 opcion C).
+        0153: el umbral BAJA con la repeticion (facilitacion sinaptica) - las conexiones
+        usadas repetidamente por exito consolidan mas facil (memoria entre episodios)."""
         sin = self.sincronizacion(i)
         clave = (i, j)
-        if sin > self.theta_interf and clave in self.conn_type:
+        # umbral efectivo: theta_base - facilitacion por exitos repetidos (memoria 0153)
+        n_exitos = self.conteo_exitos_conexion.get(clave, 0)
+        umbral_efectivo = max(self.theta_interf_min,
+                              self.theta_interf - self.facilitacion_por_exito * n_exitos)
+        if sin > umbral_efectivo and clave in self.conn_type:
             self.consolidadas.add(clave)
             self.conn_type[clave]["consolidada"] = True
+
+    def consolidar_hito(self, i, j):
+        """0153-A: CONSOLIDACION DIRECTA DE HITO (evento saliente, memoria fuerte).
+        Los eventos emocionalmente significativos (lograr un hito de supervivencia: craftear
+        una herramienta, comer) se consolidan INMEDIATAMENTE, sin esperar repeticiones
+        (neurociencia: la consolidacion de memoria esta sesgada hacia eventos significativos -
+        norepinefrina/estres, McGaugh 2000). La conexion (i,j) entra en consolidadas YA y el
+        conteo de exitos se maximiza. Es la 'memoria de sobrevivir' que persiste entre vidas."""
+        clave = (i, j)
+        self.consolidadas.add(clave)
+        if clave in self.conn_type:
+            self.conn_type[clave]["consolidada"] = True
+            self.conn_type[clave]["hito"] = True
+        # maximizar el conteo para que la fase no vuelva a quedar expuesta
+        self.conteo_exitos_conexion[clave] = 1000
 
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
@@ -513,6 +542,9 @@ class SGMAgent:
                 nodo_rec = self._hash_recurso_a_nodo(rec)
                 self.aprender_conexion(accion, nodo_rec)
                 self.update_phase(accion, +0.5)
+                # 0153: contar este exito -> facilita la consolidacion (memoria entre episodios)
+                clave = (accion, nodo_rec)
+                self.conteo_exitos_conexion[clave] = self.conteo_exitos_conexion.get(clave, 0) + 1
                 self.consolidar_si_sincroniza(accion, nodo_rec)
 
     def _hash_recurso_a_nodo(self, rec):

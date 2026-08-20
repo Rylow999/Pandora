@@ -1,0 +1,553 @@
+{
+  "experiment_id": "exp_SGM_0152",
+  "experiment_name": "robustez_multi_seed_cadena_subsistencia",
+  "phase": "Fase 8 - ROBUSTEZ: cadena de subsistencia en multiples seeds + vidas largas",
+  "date": "2026-08-14",
+  "mision": "Confirmar que el HITO 0151 (subsistencia emergente) es ROBUSTO: la cadena collect->place_table->make->eat_cow se repite en MULTIPLES seeds (no solo seed 42).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "max_pasos_vida": 2000,
+    "seeds": [
+      42,
+      7,
+      2024
+    ],
+    "mundo_persistente": true,
+    "conocimiento_mundo": "recetas make/place como repertorio"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 173,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 9
+          },
+          {
+            "vida": 1,
+            "pasos": 204,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 3,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 2,
+            "pasos": 253,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 3,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 3,
+            "pasos": 185,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 3,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 4,
+            "pasos": 151,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 5,
+            "pasos": 214,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 6,
+            "pasos": 170,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          },
+          {
+            "vida": 7,
+            "pasos": 164,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    24,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 15
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "make_wood_pickaxe",
+          "place_table"
+        ],
+        "pasos_totales": 1514
+      },
+      {
+        "seed": 7,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 174,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 2,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 8
+          },
+          {
+            "vida": 1,
+            "pasos": 165,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 2,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 2,
+            "pasos": 203,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 3,
+            "pasos": 190,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 4,
+            "pasos": 131,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 5,
+            "pasos": 86,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 13
+          },
+          {
+            "vida": 6,
+            "pasos": 172,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          },
+          {
+            "vida": 7,
+            "pasos": 193,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 6,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    16,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 14
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "eat_cow",
+          "make_wood_pickaxe",
+          "place_table"
+        ],
+        "pasos_totales": 1314
+      },
+      {
+        "seed": 2024,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 70,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 7
+          },
+          {
+            "vida": 1,
+            "pasos": 139,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 16
+          },
+          {
+            "vida": 2,
+            "pasos": 203,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 2,
+            "n_conn": 18
+          },
+          {
+            "vida": 3,
+            "pasos": 147,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 2,
+            "n_conn": 18
+          },
+          {
+            "vida": 4,
+            "pasos": 163,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    32,
+                    23
+                  ]
+                ]
+              ]
+            },
+            "consol": 2,
+            "n_conn": 18
+          },
+          {
+            "vida": 5,
+            "pasos": 164,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    32,
+                    23
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    18,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 2,
+            "n_conn": 20
+          },
+          {
+            "vida": 6,
+            "pasos": 187,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    32,
+                    23
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    18,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 2,
+            "n_conn": 20
+          },
+          {
+            "vida": 7,
+            "pasos": 194,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 6,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    32,
+                    23
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    18,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 3,
+            "n_conn": 21
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "eat_cow",
+          "make_wood_pickaxe",
+          "place_table"
+        ],
+        "pasos_totales": 1267
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0152_robustez_seeds.py",
+  "results_file": "results/results_exp_SGM_0152_robustez_seeds.json",
+  "variant_of": "exp_SGM_0150",
+  "lit_refs": [
+    "libertad + conocimiento del mundo + persistencia (Luciano)",
+    "grafo de conocimiento como repertorio de posibilidades"
+  ],
+  "notes": "Mundo persistente entre vidas + conocimiento del mundo (recetas) + libertad + vidas largas. Objetivo: que el agente complete recolectar->mesa->make pjor su cuenta.",
+  "notes_criollo": "Le prometimos lo que pediste: libertad, saber como funciona el mundo, y que el mundo no se borre entre vida y vida (si coloco la mesa queda). Con eso, en varias vidas largas, el agente deberia juntar madera, poner mesa, y craftear su primera herramienta SOLO."
+}
