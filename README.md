@@ -1,11 +1,21 @@
-# SGM - Synaptic Graph Model
-## Grafo sináptico cognitivo (en construcción — Fase 7 + B completos, 44 experimentos)
+# SGM — Synaptic Graph Model
+## Grafo sináptico cognitivo autopoiético
 
-**Estado (2026-08-02):** Fases 0, 1, 2, 3, 4, 5, 6 y 7 COMPLETAS. 44 experimentos en el registry,
-todos con resultados verificados y negative control. El sistema SGM late en un `sgm_tick_unificado()`
-que integra SensorBridge + Modos + Duda/Contradicción + Trauma/Aislamiento + Decoder L2, y desde la
-Fase 7 incorpora **memoria relacional HRR** (composición de relaciones de cualquier orden) y la usa
-para **resolver planes cruzando grafos de conocimiento** (exp_SGM_0030).
+**Estado (2026-08-14):** Fases 0–7 completas **+ bloque de subsistencia/emergencia (0125–0151)**.
+**148 experimentos** en el registry, todos con resultado verificado y negative control. El
+sustrato SGM opera como agente encorporado en entornos reales (Crafter) y logra **subsistencia
+emergente: recolectar, colocar, craftear y comer por sí solo** (HITO 0151).
+
+**Línea de base (Fases 0–7):** el sistema late en `sgm_tick_unificado()` integrando
+SensorBridge + Modos + Duda/Contradicción + Trauma/Aislamiento + Decoder L2, y desde la Fase 7
+incorpora **memoria relacional HRR** (composición de relaciones de cualquier orden) usada para
+resolver planes cruzando grafos de conocimiento (exp_SGM_0030).
+
+**Extensión de agencia (Fase 8, 0125–0151):** el sustrato, sin guion, construye su propio
+mapa del entorno (place cells emergentes), modela objetos como procesos dinámicos, aprende una
+red acción→resultado, arbitra entre modos de control, y con **libertad + conocimiento del mundo +
+mundo persistente + escala temporal** desbloquea la cadena completa de subsistencia en Crafter:
+`collect_drink/sapling/wood → place_table → make_wood_pickaxe → eat_cow`.
 
 **Objetivo:** Modelo de grafo sináptico (nodos con vector omega, fase phi, vitalidad V, valencia E)
 que opera como sustrato cognitivo autopoyético: memoria persistente, dolor/valencia interna

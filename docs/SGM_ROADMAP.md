@@ -492,3 +492,40 @@ Todos los mecanismos propios se sostienen por medicion real. Lo reparado fue el 
 Los result JSON y el registry fueron actualizados a los valores reales.
 
 ---
+
+## Fase 8 — Agencia emergente en entorno real (extiende este roadmap)
+
+**Estado (2026-08-14):** 148 experimentos (registry). Las Fases 0–7 construyeron el sustrato
+cognitivo/simbólico (lenguaje, polisemia, composición relacional HRR). La **Fase 8** conecta ese
+sustrato con la AGENCIA física: agente encorporado en un entorno real (Crafter) que subsiste de
+forma emergente.
+
+### Por qué conecta con las Fases 0–7
+- El AGENTE reutiliza toda la infra de modos, duda, dolor, HRR, PPR construida en Fases 0–7.
+- La novedad de Fase 8 es el ACOPLAMIENTO cuerpo-mundo: señales homeostáticas (hambre, amenaza),
+  mapa del entorno, y dinámica de objetos. El sustrato ya no opera sobre lenguaje, sino sobre un
+  cuerpo en un mundo físico.
+- Los mecanismos emergentes de Fase 8 (place cells, red acción→resultado, árbitro de modos,
+  mundo persistente) son la base del agente autopoiético que luego puede PLANIFICAR sobre su
+  propio grafo de conocimiento (puente hacia la Fase 7 HRR).
+
+### Logros verificados de Fase 8 (0125–0151)
+- Place cells emergentes + nodos que mutan (0138) — mapa propio agnóstico.
+- Árbitro de modos (0140), autotelismo (0141), modelo de objeto predictivo (0144), red
+  acción→resultado (0145), integración autónoma (0143), reward shaping por hito (0146-0147),
+  grafo de conocimiento V2 / precondición espacial (0149-0150).
+- **HITO 0151**: con libertad + conocimiento del mundo + mundo persistente + escala temporal,
+  el sustrato desbloquea SOLO la cadena `collect → place_table → make_wood_pickaxe → eat_cow`.
+
+### Roadmap futuro (post-hito)
+1. **Robustez**: confirmar la cadena de subsistencia en múltiples seeds/vidas (el 0151 logró en
+   1 seed / 8 vidas).
+2. **Memoria entre episodios**: fortalecer la consolidación (kuramoto/consol) para que la
+   "memoria de sobrevivir" persista sin re-descubrir cada vez.
+3. **Migrar a Minecraft**: el sustrato es agnóstico del entorno (0138) — se cambia el adaptador.
+4. **Razonamiento sobre el grafo de conocimiento**: conectar el modelo del mundo de Fase 8 con la
+   composición relacional HRR de Fase 7, para que el agente PLANIFIQUE simbólicamente ("para
+   sobrevivir necesito X; para X necesito Y"). Este es el salto hacia la "singularidad" de Luciano:
+   bucle conocimiento→composición→nuevo-conocimiento.
+
+---
