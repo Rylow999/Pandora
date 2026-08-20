@@ -1,0 +1,351 @@
+{
+  "experiment_id": "exp_SGM_0155",
+  "experiment_name": "megamaraton_3h_escala_temporal",
+  "phase": "Fase 8 - MEGAMARATON (3h): escala temporal, que logra el sistema",
+  "date": "2026-08-14",
+  "mision": "Luciano: dejar al sistema correr 3 horas y ver que logra. Escala temporal max: 60 vidas con mundo persistente + conocimiento + consolidacion de hitos (0153-A). El sustrado deberia seguir escalando la composicion (crafteo, comer, defensa) con tiempo.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 60,
+    "max_pasos_vida": 2000,
+    "seed": 42,
+    "mundo_persistente": true,
+    "conocimiento_mundo": "recetas make/place como repertorio",
+    "consolidacion_hitos": "0153-A activa"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 149,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 7
+          },
+          {
+            "vida": 1,
+            "pasos": 156,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 2,
+            "pasos": 153,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 3,
+            "pasos": 180,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 4,
+            "pasos": 217,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 5,
+            "pasos": 176,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 6,
+            "pasos": 222,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 1,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": []
+            },
+            "consol": 0,
+            "n_conn": 10
+          },
+          {
+            "vida": 7,
+            "pasos": 149,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 8,
+            "pasos": 159,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 4,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 0,
+            "n_conn": 12
+          },
+          {
+            "vida": 9,
+            "pasos": 223,
+            "probadas_comp": [
+              11
+            ],
+            "descubrio": [
+              "make_wood_pickaxe"
+            ],
+            "logros_totales": 5,
+            "paso_make": 94,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          },
+          {
+            "vida": 10,
+            "pasos": 170,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          },
+          {
+            "vida": 11,
+            "pasos": 177,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          },
+          {
+            "vida": 12,
+            "pasos": 189,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          },
+          {
+            "vida": 13,
+            "pasos": 196,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          },
+          {
+            "vida": 14,
+            "pasos": 285,
+            "probadas_comp": [],
+            "descubrio": [],
+            "logros_totales": 5,
+            "paso_make": null,
+            "paso_eat": null,
+            "mesas_persist": {
+              "tipo": [
+                [
+                  "table",
+                  [
+                    13,
+                    32
+                  ]
+                ],
+                [
+                  "table",
+                  [
+                    26,
+                    32
+                  ]
+                ]
+              ]
+            },
+            "consol": 1,
+            "n_conn": 13
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "make_wood_pickaxe",
+          "place_table"
+        ],
+        "pasos_totales": 2801
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0155_megamaraton.py",
+  "results_file": "results/results_exp_SGM_0155_megamaraton.json",
+  "variant_of": "exp_SGM_0153",
+  "lit_refs": [
+    "libertad + conocimiento del mundo + persistencia (Luciano)",
+    "grafo de conocimiento como repertorio de posibilidades"
+  ],
+  "notes": "Mundo persistente entre vidas + conocimiento del mundo (recetas) + libertad + vidas largas. Objetivo: que el agente complete recolectar->mesa->make pjor su cuenta.",
+  "notes_criollo": "Le prometimos lo que pediste: libertad, saber como funciona el mundo, y que el mundo no se borre entre vida y vida (si coloco la mesa queda). Con eso, en varias vidas largas, el agente deberia juntar madera, poner mesa, y craftear su primera herramienta SOLO."
+}

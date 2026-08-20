@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""exp_SGM_0154 — LIBERTAD + CONOCIMIENTO DEL MUNDO + MUNDO PERSISTENTE + 30min.
+"""exp_SGM_0155 — LIBERTAD + CONOCIMIENTO DEL MUNDO + MUNDO PERSISTENTE + 30min.
 
 MISION (Luciano 2026-08-11): "si le damos libertad y conocimiento del mundo en donde esta,
 junto a todas las funciones que puede realizar, deberia poderlo hacer por su cuenta si le
@@ -151,12 +151,12 @@ def run(seed, t_max_pasos=15000, n_lives=30):
                     descubrio.add(COMP_ACCIONES[a])
             if ('wood_pickaxe' in nuevo_inv or info['achievements'].get('make_wood_pickaxe',0) > 0) and paso_make_primero is None:
                 paso_make_primero = step  # memoria: paso del primer crafteo (acelera entre vidas)
-                # 0154-A: consolidar el HITO (accion_make -> nodo del pico) directo, memoria fuerte
+                # 0155-A: consolidar el HITO (accion_make -> nodo del pico) directo, memoria fuerte
                 nodo_tool = ag._hash_recurso_a_nodo('wood_pickaxe')
                 ag.consolidar_hito(a, nodo_tool)
             if info['achievements'].get('eat_cow',0)>0 and paso_eat_primero is None:
                 paso_eat_primero = step
-                # 0154-A: consolidar el HITO de comer (do -> nodo0 comida) directo
+                # 0155-A: consolidar el HITO de comer (do -> nodo0 comida) directo
                 ag.consolidar_hito(5, 0)  # do -> nodo0 (supervivencia/comer)
             ag.actualizar_homeostasis(inv['food'],inv['health'])
             pain=abs(r) if r<0 else 0.0
@@ -178,19 +178,19 @@ def run(seed, t_max_pasos=15000, n_lives=30):
 
 
 print("="*70)
-print(" exp_SGM_0154 — MEGAMARATON (3h): escala temporal, ver que logra el sistema")
+print(" exp_SGM_0155 — MEGAMARATON (3h): escala temporal, ver que logra el sistema")
 print("="*70)
 TODAS_SEEDS = []
 for seed in [42]:
-    res, logros, pasos = run(seed, n_lives=60)
+    res, logros, pasos = run(seed, n_lives=15)
     TODAS_SEEDS.append({"seed": seed, "vidas": res, "logros": logros, "pasos_totales": pasos})
     print(f"\n  seed {seed}: {pasos} pasos totales, logros desbloqueados = {logros}")
 
 out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
-                       "results/results_exp_SGM_0154_megamaraton.json")
+                       "results/results_exp_SGM_0155_megamaraton.json")
 os.makedirs(os.path.dirname(out),exist_ok=True)
 json.dump({
-    "experiment_id":"exp_SGM_0154","experiment_name":"megamaraton_3h_escala_temporal",
+    "experiment_id":"exp_SGM_0155","experiment_name":"megamaraton_3h_escala_temporal",
     "phase":"Fase 8 - MEGAMARATON (3h): escala temporal, que logra el sistema",
     "date":"2026-08-14",
     "mision":"Luciano: dejar al sistema correr 3 horas y ver que logra. Escala temporal max: "
@@ -200,8 +200,8 @@ json.dump({
               "mundo_persistente":True,"conocimiento_mundo":"recetas make/place como repertorio",
               "consolidacion_hitos":"0153-A activa"},
     "result":{"seeds":TODAS_SEEDS},
-    "script":"experiments/exp_SGM_0154_megamaraton.py",
-    "results_file":"results/results_exp_SGM_0154_megamaraton.json",
+    "script":"experiments/exp_SGM_0155_megamaraton.py",
+    "results_file":"results/results_exp_SGM_0155_megamaraton.json",
     "variant_of":"exp_SGM_0153",
     "lit_refs":["libertad + conocimiento del mundo + persistencia (Luciano)",
                 "grafo de conocimiento como repertorio de posibilidades"],

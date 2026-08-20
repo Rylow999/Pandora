@@ -913,3 +913,17 @@ Dejado correr ~3h (10,455 pasos, 60 vidas, mundo persistente + conocimiento + co
 **PERO: `consol=0` en todas las vidas** — la memoria entre episodios NO se activó (la consolidación de hitos 0153-A no produjo consolidación), y `eat_cow` no apareció en el maratón. **El sistema alcanzó un TEcho de behavior (6 logros):** la escala temporal mantiene la composición pero no la hace escalar ni consolida memoria.
 
 **Conclusión del maratón:** más tiempo sostiene lo que el sistema ya sabe hacer (craftear) pero no genera el salto de memoria que permitiría ir más allá del techo. La memoria entre episodios (consolidación) sigue siendo el eslabón sin resolver (paso 2 del roadmap).
+
+---
+
+## 0155 — MEMORIA ENTRE EPISODIOS ACTIVADA (14-08-2026)
+
+**Paso 2 del roadmap RESUELTO.** El megamaraton 0154 mostró `consol=0` en todas las vidas a pesar de que el crafteo ocurría 8 veces — la consolidación de hitos NO se disparaba. **El bug**: el harness detectaba el make con `make_wood_pickaxe` (nombre del achievement) en vez de `wood_pickaxe` (el item real del inventario de Crafter), así que `consolidar_hito` nunca se ejecutaba.
+
+**Corregido** (0155): detectando el item real `wood_pickaxe` (o el achievement) al lograr el crafteo, el hito se consolida de inmediato (`consolidar_hito`). Resultado:
+- Vida 9: `make_wood_pickaxe` logrado + **`consol=1`** (la conexión se consolida).
+- Vidas 10-14: `consol=1` persiste (memoria a largo plazo entre episodios).
+
+**Significado:** el sustrato ahora GRABA los eventos salientes (craftear una herramienta) en memoria persistente — la conexión `madera+mesa → pico` deja de olvidarse entre vidas. Es la "memoria de sobrevivir" que permite que el conocimiento aprendido supersista y se reutilice en vidas posteriores sin re-descubrir.
+
+La auditoría final de resultados: todos los JSON de la saga guardan datos reales (no placeholders "ver stdout"), registry completo en 152 entradas, y la memoria entre episodios — el eslabón que faltaba tras el hito de la composición — queda verificado.
