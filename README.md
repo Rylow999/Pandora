@@ -874,3 +874,22 @@ Con el agente actuando LIBRE (todas las 17 acciones, sin objetivo), emerge:
 **La frontera identificada**: el sustrato descubre COSECHA (reforzar resultados de recolección) pero le falta SÍNTESIS/COMPOSICIÓN (usar recursos acumulados para crear algo nuevo). Es el salto que separa lo trivial de lo difícil en Crafter, y la siguiente dirección de investigación (aprendizaje de combinación).
 
 Literatura clave de la saga: Piaget (object permanence), Gibson (affordances), Merleau-Ponty (fenomenología), Oudeyer & Kaplan (curiosidad), Panksepp (SEEKING), Baars/Dehaene (GWT), Norman & Shallice (contention scheduling), Ha & Schmidhuber (world models), Ng et al. 1999 (reward shaping).
+
+---
+
+## HITO — EXPERIMENTO 0151: el sustrado emergente COME y CRAFTEA por sí solo (14-08-2026)
+
+### El resultado
+Con el agente en **libertad total** (todas las acciones), **conocimiento del mundo** (recetas make/place como repertorio de posibilidades, no como guion), **MUNDO PERSISTENTE entre vidas** (la mesa colocada no se borra), y **varias vidas largas** (~1417 pasos totales, 8 vidas), el sustrado emergente desbloqueó SOLO, sin guion ni reward-shaping:
+
+- `collect_drink`, `collect_sapling`, `collect_wood` (recolección básica)
+- `place_table` (vida 0) — la precondición espacial
+- **`make_wood_pickaxe`** (vida 3) — ¡la COMPOSICIÓN! crafteó su primera herramienta usando la mesa persistida
+- **`eat_cow`** (vida 7) — ¡COMER VACA! el objetivo que se resistió durante 20+ experimentos (comio_ef=0 en 0125-0147 siempre)
+
+### La clave (lo que destapó la propuesta de Luciano)
+En los experimentos anteriores (0125-0150), cada `env.reset()` entre vidas **BORRABA el progreso físico del mundo** (la mesa colocada desaparecía). Al permitir que **el mundo persista entre vidas**, el agente pudo ACUMULAR: la mesa de la vida 0 habilitó el make de la vida 3, y la exploración de comidas llevó al eat_cow de la vida 7.
+
+**Conclusión central para la pregunta de la singularidad:** el agente NO necesitaba más mecanismos cognitivos — se necesitaban **libertad + conocimiento del mundo + persistencia física + escala temporal**. Con eso, el bucle conocimiento→composición→nuevo-conocimiento emergió por sí solo: de recolectar a craftear a comer, sin guion.
+
+Literatura: reinforcement-emergent composition por persistencia + conocimiento del mundo (Luciano 2026-08-11). El poder de la escala temporal y la persistencia sobre el refuerzo guiado.

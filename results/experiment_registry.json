@@ -2417,5 +2417,15 @@
     "result_summary": "HALLAZGO IMPORTANTE. El agente libre descubre la RECOLECCION basica por emergencia (collect_drink, collect_wood, collect_sapling), construye mapa, aprende red accion->resultado (8->14). PERO NO da el salto a COMPOSICION (make/place/eat): recolecta recursos pero no descubre que puede COMBINARLOS en herramientas/comida. La frontera entre coereccion por refuerzo y SINTESIS de acciones queda identificada como el siguiente nivel.",
     "phase": "Fase 8 - emergencia del sustrado (libertad, mapa, objeto, resultado)",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0151",
+    "experiment_name": "libertad_conocimiento_mundo_persistente",
+    "date": "2026-08-11",
+    "phase": "Fase 8 - HITO: libertad + conocimiento del mundo + MUNDO PERSISTENTE + vidas largas",
+    "test_target": "que el agente complete la cadena de composicion SOLO (recolectar->mesa->make->comer)",
+    "hypothesis": "con libertad total + conocimiento del mundo + mundo persistente entre vidas + tiempo (8 vidas largas), el sustrado emergente logra por si solo lo que los mecanismos guiados no pudieron: la composicion y el comer.",
+    "result_summary": "HITO HISTORICO. Logros desbloqueados SOLO, sin guion: collect_drink, collect_sapling, collect_wood, place_table, make_wood_pickaxe, EAT_COW (que se resistio 20+ experimentos). El agente coloco la mesa (vida0), uso la mesa persistente para craftear make_wood_pickaxe (vida3), y comio vaca (vida7). LA CLAVE fue la persistencia del mundo entre vidas (antes env.reset() borraba la mesa) + conocimiento del mundo (recetas como repertorio) + escala temporal. Confirma la idea de Luciano: libertad + conocimiento + persistencia + tiempo > mas mecanismos cognitivos.",
+    "status": "done"
   }
 ]

@@ -1,0 +1,167 @@
+{
+  "experiment_id": "exp_SGM_0149",
+  "experiment_name": "grafo_conocimiento_composicion_V2",
+  "phase": "Fase 8 - grafo de conocimiento del mundo construido por observacion (V2)",
+  "date": "2026-08-11",
+  "mision": "Luciano V2: el sustrato construye por observacion su propio grafo de conocimiento del mundo, integrado y auto-extensible. El hallazgo del 0148: recoleccion basal pero no composicion (craftear). Aqui se da el empuje observacional de curiosidad hacia make_* cuando hay recursos, para que el agente DESCUBRA la sintesis.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "seeds": [
+      42,
+      7
+    ],
+    "vidas": 4,
+    "max_pasos": 1500
+  },
+  "result": {
+    "vidas": [
+      {
+        "seed": 42,
+        "vida": 0,
+        "pasos": 216,
+        "tiles": 7,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 1,
+          "energy": 2
+        },
+        "consol": 0,
+        "n_conn": 6,
+        "n_place": 3
+      },
+      {
+        "seed": 42,
+        "vida": 1,
+        "pasos": 156,
+        "tiles": 6,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 3,
+          "drink": 2,
+          "energy": 4
+        },
+        "consol": 0,
+        "n_conn": 9,
+        "n_place": 3
+      },
+      {
+        "seed": 42,
+        "vida": 2,
+        "pasos": 199,
+        "tiles": 14,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 2,
+          "drink": 9,
+          "energy": 3
+        },
+        "consol": 0,
+        "n_conn": 11,
+        "n_place": 5
+      },
+      {
+        "seed": 42,
+        "vida": 3,
+        "pasos": 401,
+        "tiles": 11,
+        "probadas_comp": [
+          11,
+          14
+        ],
+        "descubrio_comp": [],
+        "inv_final": {
+          "drink": 9,
+          "sapling": 1,
+          "wood": 2
+        },
+        "consol": 0,
+        "n_conn": 13,
+        "n_place": 5
+      },
+      {
+        "seed": 7,
+        "vida": 0,
+        "pasos": 171,
+        "tiles": 19,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 3,
+          "drink": 1,
+          "energy": 4
+        },
+        "consol": 0,
+        "n_conn": 6,
+        "n_place": 6
+      },
+      {
+        "seed": 7,
+        "vida": 1,
+        "pasos": 184,
+        "tiles": 9,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 2,
+          "drink": 9,
+          "energy": 4,
+          "sapling": 6
+        },
+        "consol": 0,
+        "n_conn": 11,
+        "n_place": 6
+      },
+      {
+        "seed": 7,
+        "vida": 2,
+        "pasos": 160,
+        "tiles": 30,
+        "probadas_comp": [
+          11,
+          14
+        ],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 3,
+          "drink": 9,
+          "energy": 4,
+          "sapling": 1,
+          "wood": 1
+        },
+        "consol": 0,
+        "n_conn": 12,
+        "n_place": 9
+      },
+      {
+        "seed": 7,
+        "vida": 3,
+        "pasos": 177,
+        "tiles": 8,
+        "probadas_comp": [],
+        "descubrio_comp": [],
+        "inv_final": {
+          "food": 3,
+          "drink": 9,
+          "energy": 4
+        },
+        "consol": 0,
+        "n_conn": 12,
+        "n_place": 9
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0149_grafo_conocimiento.py",
+  "results_file": "results/results_exp_SGM_0149_grafo_conocimiento.json",
+  "variant_of": "exp_SGM_0148",
+  "lit_refs": [
+    "Oudeyer & Kaplan (curiosidad hacia acciones desconocidas en condicion)",
+    "grafo de conocimiento / prior estructural",
+    "V2: conocimiento aprendido, no inyectado"
+  ],
+  "notes": "V2: el sustrado construye el grafo de conocimiento del mundo observando. Cuando el inventario tiene recursos que habilitan un make no probado, la curiosidad lo empuja a muestrearlo. Si produce, consolida [recurso+accion]->tool. Busca EL SALTO A LA COMPOSICION que el 0148 mostro que faltaba.",
+  "notes_criollo": "Le dimos la curiosidad de probar las combinaciones cuando tiene los materiales: si tiene madera y nunca intento hacer un pico, lo tienta a probarlo. Asi descubre que puede COMBINAR recursos para hacer herramientas (la sintesis que le faltaba). Es el germen de entender el mundo: no solo juntar, sino CREAR."
+}
