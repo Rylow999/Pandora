@@ -572,6 +572,33 @@ class SGMAgent:
                     break
         return sig, conf, bonus
 
+    def _confianza_modelo(self, estado_actual):
+        """Mide cuan CONFIABLE es el modelo del mundo en el estado actual: cantidad de
+        transiciones aprendidas desde ese estado. Alta = el agente sabe que pasa aquí.
+        Baja = incertidumbre (deberia explorar, no explotar). Es el gate entre
+        exploracion (curiosidad, cuando no se conoce) y explotacion (imaginacion, cuando
+        se confia en el modelo)."""
+        total = 0
+        for acc in range(17):
+            total += len(self.modelo_mundo.get((estado_actual, acc), {}))
+        return total
+
+    def decidir_explotar(self, estado_actual, accion_imaginada):
+        """0158-A: GATE explotacion-exploracion. Decide si confiar en la imaginacion
+        (explotar) o en la curiosidad (explorar) en este estado. EXPLOTA (usa la
+        imaginacion) solo si el modelo del mundo es CONFIABLE en ese estado (muchas
+        transiciones conocidas) Y la accion imaginada es coherente (confianza en el
+        modelo para esa transicion). EXPLORA (deja actuar a la curiosidad) si hay
+        incertidumbre. Devuelve True = usar la imaginacion, False = explorar."""
+        conf_estado = self._confianza_modelo(estado_actual)
+        if conf_estado == 0:
+            return False  # incertidumbre total -> explorar (no se sabe que pasa aqui)
+        # confianza de la transicion especifica
+        trans = self.modelo_mundo.get((estado_actual, accion_imaginada), {})
+        conf_trans = sum(trans.values()) if trans else 0
+        # explotar si el estado es conocido y la transicion imaginada ocurrio al menos una vez
+        return conf_trans > 0
+
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
         """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.

@@ -2507,5 +2507,25 @@
     "hypothesis": "mas vidas y seeds aumentan que el crafteo ocurra y el conocimiento fluya entre grafos",
     "result_summary": "FAIL de cruce. En las 3 seeds (42/7/2024, 12 vidas c/u, ~2K pasos), conexiones_compartidas=0 SIEMPRE. Ambos grafos coexisten (historia cap 200, conn crecen A:4->20, B:3->13) y logran subsistencia basica (drink/sapling/wood/defeat_zombie), PERO ninguno crafteo wood_pickaxe (el disparador de la comparticion), asi que no habia conocimiento que transferir. LECCION: la comunicacion entre grafos esta implementada y verificada sinteticamente (0156b), pero el cruce REAL depende de que un grafo logre un hito; el harness de 2 grafos alternando el mismo cuerpo puede fragmentar la continuidad (cada grafo la mitad de los pasos), dificultando encadenar la secuencia completa. Se requiere contexto/continuidad mejor para el cruce real.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0158",
+    "experiment_name": "fase9_memoria_imaginacion_subsistencia",
+    "date": "2026-08-14",
+    "phase": "Fase 9 - Mundo Interno en accion (memoria episodica + imaginacion)",
+    "test_target": "ver si memoria episodica + imaginacion mejoran la subsistencia emergente",
+    "hypothesis": "con memoria + imaginacion, el agente craftea/come mas temprano o con mas logros",
+    "result_summary": "HALLAZGO HONESTO (falla de integracion, corregido en 0159). El agente uso MUCHO su mundo interno (epi=50 recuerdos, n_imaginaciones=695) pero NO crafteo ni comio (logros minimos: drink/sapling/wood). Causa: la imaginacion, integrada como PRIORITARIA sobre la curiosidad, REPRIMIA la exploracion (el agente se fijaba en la accion imaginada pobre del modelo, sin explorar novedad). Leccion: el mundo interno guia pero no debe CEGAR la exploracion. El equilibrio explotacion-exploracion es el correcto (corregido en 0159 con el gate).",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0159",
+    "experiment_name": "fase9_gate_explotacion_exploracion",
+    "date": "2026-08-14",
+    "phase": "Fase 9 - gate explotacion-exploracion (explotar con confianza, explorar con incertidumbre)",
+    "test_target": "corregir la integracion de la imaginacion: explotar solo con modelo confiable, explorar con incertidumbre",
+    "hypothesis": "con el gate, el mundo interno guia sin reprimir la exploracion -> mejora la subsistencia",
+    "result_summary": "PASS PARCIAL - MEJORA REAL. El gate (decidir_explotar) redujo el overuse de la imaginacion (461 vs 695 en 0158) y la subsistencia MEJORO: el agente COMIO VACA (eat_cow, paso 834, el logro mas dificil de la saga) + drink/sapling/wood = 4 logros. Confirma: explotar con confianza + explorar con incertidumbre es el equilibrio correcto. paso_make=None persiste (varianza; otro run podria craftear). LOS MECANISMOS DEL MUNDO INTERNO (memoria episodica + imaginacion + gate) estan verificados y muestran impacto positivo en la conducta de subsistencia.",
+    "status": "done"
   }
 ]

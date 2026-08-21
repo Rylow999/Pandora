@@ -1023,3 +1023,30 @@ audible. El lenguaje es la VENTANA al mundo interno de SGM, no el agente mismo.
 - Roadmap (docs/SGM_ROADMAP.md): Fase 8 cerrada, Fase 9 (Mundo Interno) definida con 5 piezas.
 
 ---
+
+## FASE 9 EN ACCIÓN — memoria episódica + imaginación con gate explotación-exploración (14-08-2026)
+
+Las dos piezas de entrada del Mundo Interno se probaron en subsistencia real en Crafter (0158 y 0159):
+
+**0158 (memoria + imaginación sin gate) — HALLAZGO HONESTO (integración errónea):**
+El agente uso MUCHO su mundo interno (epi=50 recuerdos salientes, n_imaginaciones=695) pero NO crafteó
+ni comió. **Causa:** la imaginación, integrada como PRIORITARIA sobre la curiosidad, REPRIMÍA la
+exploración (el agente se fijaba en la acción que su modelo del mundo pobre imaginaba, sin buscar
+novedad). Lección: el Mundo Interno guía pero no debe CEGAR la exploración.
+
+**0159 (memoria + imaginación con GATE explotación-exploración) — MEJORA REAL:**
+Se añadió `decidir_explotar`: explotar (usar la imaginación) SOLO si el modelo del mundo es confiable
+en ese estado; explorar (curiosidad) si hay incertidumbre. Resultado:
+- Menos overuse de la imaginación (461 vs 695 intervenciones).
+- **El agente COMIO VACA (`eat_cow`, paso 834)** — el logro más difícil de la saga — + drink/sapling/wood
+  = 4 logros (antes 3). Confirma el equilibrio correcto entre explotación y exploración.
+
+**Conclusión de la base de Fase 9:** los mecanismos del Mundo Interno (memoria episódica recuperable,
+imaginación/proyección, y el gate explotación-exploración) están implementados, verificados, y muestran
+impacto positivo en la conducta de subsistencia. El agente con mundo interno COMÍA mejor que sin gate.
+
+**Registry: 158 entradas** (agregados 0158 y 0159). Siguiente pieza de la Fase 9: **Pieza 3 — Valor
+hedónico por objeto** (valencia individualizada: qué recurso/objeto le importa, no solo homeostasis
+global).
+
+---

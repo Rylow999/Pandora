@@ -1,0 +1,98 @@
+{
+  "experiment_id": "exp_SGM_0159",
+  "experiment_name": "fase9_memoria_imaginacion_subsistencia",
+  "phase": "Fase 9 - Mundo Interno en accion: memoria episodica + imaginacion mejoran subsistencia",
+  "date": "2026-08-14",
+  "mision": "probar si las dos piezas nuevas (memoria episodica + imaginacion) mejoran la emergente subsistencia del agente en Crafter",
+  "hypothesis": "con memoria episodica + imaginacion, el agente craftea/come MAS TEMPRANO y/o con mas logros vs baseline (0155)",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42,
+    "metas": [
+      "food",
+      "wood_pickaxe",
+      "wood"
+    ]
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 163,
+        "logros": 0,
+        "episodios": 50,
+        "n_imagino": 60
+      },
+      {
+        "vida": 1,
+        "pasos": 184,
+        "logros": 2,
+        "episodios": 50,
+        "n_imagino": 141
+      },
+      {
+        "vida": 2,
+        "pasos": 151,
+        "logros": 3,
+        "episodios": 50,
+        "n_imagino": 189
+      },
+      {
+        "vida": 3,
+        "pasos": 241,
+        "logros": 3,
+        "episodios": 50,
+        "n_imagino": 327
+      },
+      {
+        "vida": 4,
+        "pasos": 173,
+        "logros": 4,
+        "episodios": 50,
+        "n_imagino": 327
+      },
+      {
+        "vida": 5,
+        "pasos": 150,
+        "logros": 4,
+        "episodios": 50,
+        "n_imagino": 374
+      },
+      {
+        "vida": 6,
+        "pasos": 190,
+        "logros": 4,
+        "episodios": 50,
+        "n_imagino": 461
+      },
+      {
+        "vida": 7,
+        "pasos": 73,
+        "logros": 4,
+        "episodios": 50,
+        "n_imagino": 461
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood",
+      "eat_cow"
+    ],
+    "pasos_totales": 1325,
+    "paso_make": null,
+    "paso_eat": 834,
+    "n_imaginaciones": 461
+  },
+  "script": "experiments/exp_SGM_0159_memoria_imag_subsistencia.py",
+  "results_file": "results/results_exp_SGM_0159_memoria_imag_subsistencia.json",
+  "variant_of": "exp_SGM_0155",
+  "lit_refs": [
+    "memoria episodica (Fase 9-1)",
+    "imaginacion Ha&Schmidhuber (Fase 9-2)"
+  ],
+  "notes": "Integra memoria episodica (recordar eventos salientes al razonar) e imaginacion (simular consecuencia con modelo del mundo) al agente de subsistencia. Mide si mejora (crafteo/comer mas temprano, mas logros) vs baseline.",
+  "notes_criollo": "Le dimos al bicho memoria (recuerda las veces que le fue bien) y capacidad de imaginar que va a pasar si hace algo, y vemos si con eso sobrevive mejor y aprende a craftear/hero mas temprano."
+}
