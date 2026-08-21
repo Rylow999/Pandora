@@ -2487,5 +2487,15 @@
     "hypothesis": "facilitacion sinaptica por repeticion (0153) + consolidacion de hitos (0153-A) harian que el conocimiento persista entre episodios",
     "result_summary": "PARCIAL. La facilitacion por repeticion sola no basto (consol=0) por eventos escasos. La consolidacion DIRECTA de hitos (0153-A, en exp 0155) S\u00cd activo consol=1 al lograr make_wood_pickaxe. En este run 0153, la seed 7 logro defeat_zombie y la robustez se mantuvo. La memoria inter-episodio quedo resuelta en el 0155 (consol persiste entre vidas).",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0156",
+    "experiment_name": "razonamiento_grafo_multigrafo_cruce",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - razonamiento sobre el grafo + 2 grafos en el mismo Crafter (comunicacion explicita)",
+    "test_target": "que el sistema cree su propia experiencia interna/historia y razone sobre ella; 2 grafos en el mismo Crafter que se cruzan y se comunican",
+    "hypothesis": "razonamiento (razonar_meta desde historia) + comunicacion explicita hacen fluir el conocimiento entre grafos y la subsistencia colectiva mas eficiente",
+    "result_summary": "INFRA funciono: 2 grafos (A/B) coexistieron en el mismo cuerpo, ambos construyeron historia interna (histA/HLB llegaron al cap 200) y redes (connA=14, connB=11). Logros: drink/sapling/wood/defeat_zombie (4). PERO conexiones_compartidas=0: la comunicacion explicita no se activo porque ningun grafo logro craftear wood_pickaxe en este run (el disparador de la comparticion). El MECANISMO de comunicacion se verifico en test sintetico (A aprende, comparte a B, B razona la meta - PASS). El cruce real necesita que ocurra el hito de crafteo. Se correra mas vidas/seeds (0157).",
+    "status": "done"
   }
 ]

@@ -957,3 +957,17 @@ Se agregaron **exp_SGM_0152** (robustez multi-seed) y **exp_SGM_0153** (memoria 
 **Agujeros legítimos de numeración (sin datos, no se recuperan)**: `0054`, `0060-0094` y `0115` — no tienen scripts, ni results, ni referencia en README/changelog (salvo 0115 que es una NOTA de diseño en docs/FASE8_TELEOLOGIA y README). No se inventan datos para números que nunca tuvieron experimento. `0143` fue un refactor del core (no un experimento standalone).
 
 **Registry real**: 154 entradas = 151 experimentos exp_SGM_XXXX + notas/DIR.
+
+---
+
+## 0156-0157 — RAZONAMIENTO SOBRE EL GRAFO + VARIOS GRAFOS EN EL MISMO CRAFTER (14-08-2026)
+
+**Paso 4 del roadmap INICIADO** (razonamiento sobre el grafo de conocimiento, el camino hacia la "singularidad" de Luciano). Dos piezas nuevas en el core:
+
+1. **Experiencia interna / historia (0156)**: el sustrato mantiene un **buffer episódico** de "qué hice, qué resultó, en qué contexto" — su propia historia subjetiva. Cuando tiene una meta (p.ej. mandrie), **RAZONCENE** (`razonar_meta`) sobre esa historia para COMPONER el plan (secuencia de acciones hacia la meta), no solo reacciona. Verificado: con historia "mover (3) → colocar mesa (8) → craftear (11)", `razonar_meta('wood_pickaxe')` devuelve la acción 11 y el plan `[3, 8, 11]`.
+
+2. **Comunicación explícita entre grafos (0156)**: `compartir_conocimiento(A, B, recurso)` — el grafo A transfiere a B la conexión que aprendió para producir un recurso. Es el cruce explícito (no solo observar, sino DICTAR el conocimiento). Verificado sintéticamente: A aprende wood_pickaxe, comparte a B, y B incorpora la conexión y puede razonar la meta.
+
+**Experimento 0156 (2 grafos en el mismo cuerpo de Crafter, alternados):** infraestructura funcionó — ambos grafos construyeron historia (cap 200) y redes, lograron drink/sapling/wood/defeat_zombie. PERO `conexiones_compartidas=0`: el cruce no se activó porque ningún grafo logró craftear wood_pickaxe en ese run (el disparador de la compartición). El mecanismo de comunicación está verificado sintéticamente; falta capturar el cruce real en el mundo. **0157 (en ejecución): 3 seeds × 12 vidas** para aumentar la probabilidad de que el crafteo ocurra y el conocimiento fluya entre grafos.
+
+**Estado del paso 4:** mecanismos NUEVOS implementados y verificados (experiencia interna, razonamiento, comunicación explícita). El cruce real entre grafos en el mundo queda por confirmar (0157).

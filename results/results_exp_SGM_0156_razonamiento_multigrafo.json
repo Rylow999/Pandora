@@ -1,0 +1,109 @@
+{
+  "experiment_id": "exp_SGM_0156",
+  "experiment_name": "razonamiento_grafo_multigrafo_cruce",
+  "phase": "Fase 8 - razonamiento sobre el grafo + 2 grafos en el mismo Crafter (comunicacion explicita)",
+  "date": "2026-08-14",
+  "mision": "(1) Sistema crea su propia experiencia interna/historia y razona sobre ella; (2) varios grafos en el mismo Crafter que se cruzan: aprenden entre ellos y se comunican.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42,
+    "grafos": 2,
+    "control": "alternado (A par, B impar) sobre el mismo cuerpo/mundo"
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 167,
+        "logros": 0,
+        "conn_A": 4,
+        "conn_B": 3,
+        "historia_A": 84,
+        "historia_B": 83
+      },
+      {
+        "vida": 1,
+        "pasos": 209,
+        "logros": 0,
+        "conn_A": 8,
+        "conn_B": 6,
+        "historia_A": 189,
+        "historia_B": 187
+      },
+      {
+        "vida": 2,
+        "pasos": 229,
+        "logros": 1,
+        "conn_A": 8,
+        "conn_B": 7,
+        "historia_A": 200,
+        "historia_B": 200
+      },
+      {
+        "vida": 3,
+        "pasos": 234,
+        "logros": 2,
+        "conn_A": 13,
+        "conn_B": 10,
+        "historia_A": 200,
+        "historia_B": 200
+      },
+      {
+        "vida": 4,
+        "pasos": 179,
+        "logros": 2,
+        "conn_A": 13,
+        "conn_B": 10,
+        "historia_A": 200,
+        "historia_B": 200
+      },
+      {
+        "vida": 5,
+        "pasos": 208,
+        "logros": 3,
+        "conn_A": 14,
+        "conn_B": 11,
+        "historia_A": 200,
+        "historia_B": 200
+      },
+      {
+        "vida": 6,
+        "pasos": 202,
+        "logros": 4,
+        "conn_A": 14,
+        "conn_B": 11,
+        "historia_A": 200,
+        "historia_B": 200
+      },
+      {
+        "vida": 7,
+        "pasos": 167,
+        "logros": 4,
+        "conn_A": 14,
+        "conn_B": 11,
+        "historia_A": 200,
+        "historia_B": 200
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood",
+      "defeat_zombie"
+    ],
+    "pasos_totales": 1595,
+    "conexiones_compartidas": 0
+  },
+  "script": "experiments/exp_SGM_0156_razonamiento_multigrafo.py",
+  "results_file": "results/results_exp_SGM_0156_razonamiento_multigrafo.json",
+  "variant_of": "exp_SGM_0155",
+  "lit_refs": [
+    "experiencia interna/historia (Luciano)",
+    "planificacion simbolica",
+    "comunicacion explicita entre agentes (multiagente)"
+  ],
+  "notes": "Razonamiento sobre el grafo (historia interna -> plan) + 2 grafos que alternan el mismo cuerpo en Crafter y se comunican conocimiento explicitamente. Busca que el conocimiento fluya entre grafos y la subsistencia colectiva sea mas eficiente.",
+  "notes_criollo": "Dos cerebros (A y B) compartiendo el mismo cuerpo por turnos en el mismo mundo, cada uno con su historia interna. Cuando uno aprende algo (hacer un pico) se lo cuenta al otro. Asi el conocimiento fluye entre ellos y no tienen que re-descubrir todo cada uno. Es el germen de la emergencia colectiva."
+}

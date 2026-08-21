@@ -196,6 +196,13 @@ class SGMAgent:
         self.conteo_exitos_conexion = {}  # (i,j) -> veces que esa conexion fue reforzada por exito
         self.theta_interf_min = 0.45      # umbral de consolidacion minimo (facilitacion maxima)
         self.facilitacion_por_exito = 0.03  # cuanta baja el umbral por cada exito repetido
+        # 0156: EXPERIENCIA INTERNA / HISTORIA (Luciano). El sistema crea su PROPIA historia:
+        # un buffer episodico de 'que hice, que resulto, en que contexto' que da materia prima
+        # al razonamiento (no solo el ultimo paso, sino la trayectoria). Base de la experiencia
+        # interna subjetiva y de la inferencia (que acciones llevan a que resultado).
+        self.historia = []          # [(estado_q, accion, resultado_recurso, contexto)]
+        self.historia_max = 200     # tamano max del buffer episodico (memoria de trabajo)
+        self.razonando = False      # si el agente esta en modo razonamiento (planificando)
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
         # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
@@ -420,6 +427,73 @@ class SGMAgent:
             self.conn_type[clave]["hito"] = True
         # maximizar el conteo para que la fase no vuelva a quedar expuesta
         self.conteo_exitos_conexion[clave] = 1000
+
+    # ---------- 0156: EXPERIENCIA INTERNA / HISTORIA + RAZONAMIENTO SOBRE EL GRAFO ----------
+    def _registrar_historia(self, estado_q, accion, resultado_recurso, contexto):
+        """Registra un paso en la HISTORIA INTERNA del sistema (buffer episodico).
+        Cada paso = (estado, accion, resultado, contexto). Es la 'experiencia interna
+        subjetiva': el sistema construye un relato de lo que hace y como responde el mundo.
+        Se poda al maximo (memoria de trabajo)."""
+        self.historia.append((int(estado_q), int(accion), dict(resultado_recurso) if resultado_recurso else None, str(contexto)))
+        if len(self.historia) > self.historia_max:
+            self.historia.pop(0)
+
+    def _meta_a_resultado(self, meta_recurso):
+        """Devuelve True si el buffer de historia confirma que alguna vez OBTUVO el recurso
+        deseado (meta) y QUÉ acción lo produjo. Es la base del razonamiento: el sistema
+        infiere, de su propia historia, 'que accion me llevo a ese resultado'."""
+        for (_e, acc, res, _c) in reversed(self.historia):
+            if res and res.get(meta_recurso, 0) > 0:
+                return acc, True
+        return None, False
+
+    def razonar_meta(self, meta_recurso):
+        """0156: RAZONAMIENTO SIMBÓLICO sobre el grafo. Dada una META (recurso deseado),
+        el sistema busca en su historia y en su red de conocimiento la ACCION que logro ese
+        resultado. Devuelve (accion_recomendada, plan) donde plan es la lista de acciones
+        de la historia hasta la meta (la secuencia compuesta). Planificacion sobre la
+        experiencia interna, no reaccion."""
+        # 1) historia interna: encontrar la accion que produjo la meta
+        acc_ok = None
+        for (_e, acc, res, _c) in reversed(self.historia):
+            if res and res.get(meta_recurso, 0) > 0:
+                acc_ok = acc
+                break
+        if acc_ok is not None:
+            # plan: las acciones de la historia SEMPRE hasta (incl) la que logro la meta
+            plan = []
+            for (_e, acc, res, _c) in self.historia:
+                plan.append(acc)
+                if res and res.get(meta_recurso, 0) > 0:
+                    break
+            return acc_ok, plan
+        # 2) si no en historia, buscar en la red de conocimiento (conexiones consolidadas)
+        nodo_rec = self._hash_recurso_a_nodo(meta_recurso)
+        for (i, j) in self.consolidadas:
+            if j == nodo_rec:
+                return i, [i]
+        return None, []
+
+    def compartir_conocimiento(self, otro, recurso):
+        """0156: COMUNICACIÓN EXPLICITA entre grafos. Un grafo transfiere a otro la conexion
+        que aprendio para producir 'recurso'. El otro incorpora esa conexion a su red (refuerza).
+        Es el cruce explícito: no solo observar (vicario) sino DICTAR el conocimiento aprendido.
+        Devuelve True si hubo algo que compartir."""
+        accion = self._meta_a_resultado(recurso)[0]
+        if accion is None:
+            # buscar en conexiones consolidadas
+            nodo_rec = self._hash_recurso_a_nodo(recurso)
+            for (i, j) in self.consolidadas:
+                if j == nodo_rec:
+                    accion = i
+                    break
+        if accion is None:
+            return False
+        # el otro aprende la conexion accion->recurso (comunicacion explicita)
+        nodo_rec = otro._hash_recurso_a_nodo(recurso)
+        otro.aprender_conexion(accion, nodo_rec)
+        otro.historia.append((0, accion, {recurso: 1}, "conocimiento_compartido"))
+        return True
 
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
