@@ -662,6 +662,51 @@ class SGMAgent:
         # si no hay preferencia, seguir con la homeostatica
         return metas_homeostaticas[0] if metas_homeostaticas else None
 
+    # ---------- 0163 (Fase 9-4): IDENTIDAD / AUTO-MODELO (narrativa del yo EMERGENTE) ----------
+    def auto_modelo(self):
+        """SINTETIZA una representacion de si mismo (identidad) desde SU PROPIA experiencia:
+        episodios salientes (memoria), valencia de recursos (gustos/aversiones) y conexiones
+        consolidadas. Nada de esto es hardcodeado: el agente construye su auto-modelo a partir
+        de lo que VIVIO. Devuelve dict con la estructura del yo emergente."""
+        n_episodios = len(self.episodios)
+        valencias = dict(sorted(self.valencia_recurso.items(), key=lambda kv: kv[1], reverse=True))
+        # recursos que mas valora (gustos), los que mas evita (aversiones)
+        gustos = [r for r, v in valencias.items() if v > 0][:3]
+        aversiones = [r for r, v in valencias.items() if v < 0][:3]
+        # acciones consolidadas (lo que aprendio a hacer) con el recurso que producen
+        acciones_aprendidas = []
+        for (i, j) in self.consolidadas:
+            # buscar a que recurso apunta j (invertir hash si es posible es caro, usamos la
+            # red de conocimiento: las conexiones mas fuertes al nodo 0 = acciones de vida)
+            if j == 0:
+                acciones_aprendidas.append(i)
+        return {
+            "n_episodios_recuerdo": n_episodios,
+            "gustos": gustos, "aversiones": aversiones,
+            "n_valencias": len(self.valencia_recurso),
+            "n_consolidadas": len(self.consolidadas),
+            "acciones_vitales_consolidadas": acciones_aprendidas,
+        }
+
+    def narrar_historia(self):
+        """Genera una NARRATIVA DEL YO (auto-relato) a partir de los datos reales del sistema.
+        No es texto hardcodeado: compone una oracion sintetica usando lo que el agente
+        realmente vivio (episodios, valencias, consolidaciones). Es la emergencia de una
+        'voz interior' que relata su propia experiencia."""
+        am = self.auto_modelo()
+        partes = []
+        if am["n_episodios_recuerdo"] > 0:
+            partes.append(f"recuerdo {am['n_episodios_recuerdo']} eventos que me importaron")
+        if am["gustos"]:
+            partes.append(f"valoro particularmente {', '.join(am['gustos'])}")
+        if am["aversiones"]:
+            partes.append(f"evito {', '.join(am['aversiones'])}")
+        if am["n_consolidadas"] > 0:
+            partes.append(f"tengo {am['n_consolidadas']} aprendizajes que me quedaron grabados")
+        if not partes:
+            partes.append("aun estoy descubriendo quien soy")
+        return "yo: " + "; ".join(partes) + "."
+
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
         """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.
