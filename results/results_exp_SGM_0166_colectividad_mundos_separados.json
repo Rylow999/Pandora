@@ -1,0 +1,58 @@
+{
+  "experiment_id": "exp_SGM_0166",
+  "experiment_name": "colectividad_mundos_separados_propagacion",
+  "phase": "Fase 9 - colectividad emergente: 2 grafos en mundos separados con propagacion de conocimiento",
+  "date": "2026-08-15",
+  "mision": "probar la colectividad SIN fragmentar la continuidad: cada grafo en su propio mundo; cuando UNO consolida un hito, lo PROPAGA al otro. El cruce emerge del conocimiento compartido, no de alternar un mismo cuerpo (lectura 0165).",
+  "hypothesis": "con mundos separados + propagacion, cada grafo conserva la continuidad para lograr mas, y el conocimiento se acumula en la colectividad (B adopta el hito de A).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_vidas_cada_uno": 12,
+    "seeds_A_B": [
+      42,
+      43
+    ],
+    "hitos_propagados": [
+      "wood_pickaxe",
+      "stone"
+    ]
+  },
+  "result": {
+    "A": {
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "paso_make": null,
+      "paso_eat": null,
+      "pasos": 2019
+    },
+    "B": {
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "paso_make": null,
+      "paso_eat": null,
+      "pasos": 1905
+    },
+    "conocimiento_propagado_a_B": {
+      "n_recursos": 0,
+      "recursos": {}
+    },
+    "nota_vicario": "vicario=0: ningun grafo logro wood_pickaxe/stone/comer, por lo que no habia hito observable que propagar al otro. El mecanismo de propagacion/modelo del otro esta verificado (ad-hoc PASS) pero quedo inactivo por ausencia de logros de composicion."
+  },
+  "script": "experiments/exp_SGM_0166_colectividad_mundos_separados.py",
+  "results_file": "results/results_exp_SGM_0166_colectividad_mundos_separados.json",
+  "variant_of": "exp_SGM_0165",
+  "lit_refs": [
+    "colectividad por propagacion de conocimiento",
+    "aprendizaje vicario Bandura",
+    "modelo del otro ToM"
+  ],
+  "notes": "Mundos separados (continuidad preservada) + propagacion de hitos entre grafos. El cruce emerge del conocimiento compartido, sin fragmentar la continuidad de ninguno. NOTA TECNICA: se arreglo el bug del 'set' no serializable (logros) con default=str; los datos reales se recuperaron del stdout del proceso.",
+  "notes_criollo": "Dos cerebros, cada uno en su propio mundo, que se pasan lo que van aprendiendo. Asi ninguno pierde su hilo, y el conocimiento se junta en el grupo."
+}

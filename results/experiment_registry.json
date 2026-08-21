@@ -2547,5 +2547,15 @@
     "hypothesis": "con el arbitro, el agente PRIMERO sobrevive (come) y luego explora por preferencia",
     "result_summary": "El ARBITRO funciona (verificado: hambre critica->food, cubierta->wood), PERO el resultado de subsistencia fue identico al 0161 (paso_eat/make=None, 3 logros). LECCION HONESTA: la valencia dirigida a meta - incluso balanceada - no aporta a la subsistencia en vidas cortas; tiende a fijar al agente en lo que 'sabe querer' antes que dejar que explore el crafteo. La mejor config de subsistencia sigue siendo el GATE del 0159 (memoria+imaginacion sin valencia priorizada). SE DEJA la valencia como mecanismo DISPONIBLE pero NO priorizado en la decision de comer; se pasa a Pieza 4 (identidad). Sin hardcode: nada se fuerza; el interes es dejar al sistema actuar libre.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0166",
+    "experiment_name": "colectividad_mundos_separados_propagacion",
+    "date": "2026-08-15",
+    "phase": "Fase 9 - colectividad emergente: 2 grafos en mundos separados con propagacion de conocimiento",
+    "test_target": "ver si mundos separados + propagacion de hitos permiten el cruce entre grafos (sin fragmentar la continuidad, lectura 0165)",
+    "hypothesis": "con mundos separados, cada grafo conserva la continuidad para lograr mas, y el conocimiento se propaga de A a B",
+    "result_summary": "Los dos grafos (A 2019 pasos, B 1905) lograron la MISMA subsistencia basica (drink/sapling/wood) pero NINGUNO crafteo/comio, y la propagacion quedo en 0 (vicario=0, modeloB={}): no habia hito que propagar. LECCION ESTRUCTURAL: la organizacion (mismo cuerpo o mundos separados) NO es el problema - es que el agente base no produce logros de composicion de forma consistente, y el aprendizaje vicario depende de que alguien done el logro. El mecanismo de propagacion/modelo del otro esta verificado (ad-hoc PASS) pero seco. NOTA: se arreglo el bug del set no serializable (logros) en los json.dump con default=str; datos reales recuperados del stdout.",
+    "status": "done"
   }
 ]

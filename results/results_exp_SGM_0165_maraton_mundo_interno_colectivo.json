@@ -1,0 +1,179 @@
+{
+  "experiment_id": "exp_SGM_0165",
+  "experiment_name": "maraton_mundo_interno_completo_colectividad",
+  "phase": "Fase 9 - Maratun del Mundo Interno completo + 2 grafos con aprendizaje vicario",
+  "date": "2026-08-14",
+  "mision": "escala temporal + Mundo Interno completo (5 piezas) + colectividad (los 2 grafos se cruzan por observacion/vicario, no dictado). Ver que emerge la subsistencia colectiva.",
+  "hypothesis": "con el mundo interno completo y aprendizaje vicario entre grafos, la subsistencia colectiva emerge: un grafo que aprende, el otro lo adopta por observacion.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 20,
+    "seed": 42,
+    "grafos": 2,
+    "control": "alternado cuerpo"
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 188,
+        "logros": 0,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 1,
+        "pasos": 230,
+        "logros": 0,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 2,
+        "pasos": 95,
+        "logros": 0,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 3,
+        "pasos": 162,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 4,
+        "pasos": 164,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 5,
+        "pasos": 185,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 6,
+        "pasos": 209,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 7,
+        "pasos": 173,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 8,
+        "pasos": 175,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 9,
+        "pasos": 199,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 10,
+        "pasos": 192,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 11,
+        "pasos": 191,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 12,
+        "pasos": 209,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 13,
+        "pasos": 150,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 14,
+        "pasos": 191,
+        "logros": 1,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 15,
+        "pasos": 179,
+        "logros": 2,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 16,
+        "pasos": 151,
+        "logros": 2,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 17,
+        "pasos": 168,
+        "logros": 2,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 18,
+        "pasos": 102,
+        "logros": 3,
+        "vicario": 0,
+        "modelo_B": {}
+      },
+      {
+        "vida": 19,
+        "pasos": 100,
+        "logros": 3,
+        "vicario": 0,
+        "modelo_B": {}
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood"
+    ],
+    "pasos": 3413,
+    "paso_make": null,
+    "paso_eat": null,
+    "observaciones_vicarias": 0
+  },
+  "script": "experiments/exp_SGM_0165_maraton_mundo_interno_colectivo.py",
+  "results_file": "results/results_exp_SGM_0165_maraton_mundo_interno_colectivo.json",
+  "variant_of": "exp_SGM_0159",
+  "lit_refs": [
+    "Fase 9 5 piezas",
+    "aprendizaje vicario Bandura",
+    "ToM modelo del otro"
+  ],
+  "notes": "Maratun: mundo interno completo + 2 grafos en el mismo cuerpo que se cruzan por observacion (vicario+modelo del otro). Busca que la colectividad supere al individuo.",
+  "notes_criollo": "El bicho completo con su mundo interno, y DOS cerebros compartiendo cuerpo que se aprenden el uno al otro mirandose. Vemos si la inteligencia colectiva subsiste mejor que uno solo, a lo largo de muchas vidas."
+}
