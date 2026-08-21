@@ -1392,6 +1392,79 @@ class SGMAgent:
         acc, plan = self.razonar_meta(meta)
         return acc, False
 
+    # ---------- 0171 (Fase 10): COMUNICACION BIDIRECCIONAL con el humano ----------
+    def generar_mensaje(self):
+        """SGM decide QUÉ comunicar según su mundo interno (intención, no ruido).
+        Prioriza: (1) necesidad crítica (hambre), (2) recuerdo saliente, (3) preferencia/
+        aversion fuerte (valencia), (4) creencia social (modelo del otro). Devuelve un dict
+        {tipo, texto, datos} con el mensaje mas relevante del momento. Es la EMERGENCIA
+        de la comunicacion: SGM habla cuando tiene algo que le importa, no por defecto."""
+        # (1) hambre critica -> reportar necesidad urgente
+        if getattr(self, '_hambre_real', 0) > 0.7:
+            return {"tipo": "necesidad", "texto": "tengo hambre, necesito comida",
+                    "datos": {"hambre": self._hambre_real}}
+        # (2) recuerdo saliente reciente
+        if self.episodios:
+            ep = self.episodios[-1]
+            recurso = ", ".join(ep["recurso_nuevo"].keys())[:40] if ep["recurso_nuevo"] else "algo"
+            return {"tipo": "recuerdo", "texto": f"recuerdo que obtuve {recurso}",
+                    "datos": {"recurso": recurso}}
+        # (3) valencia fuerte (gusto/aversion)
+        if self.valencia_recurso:
+            mejor = max(self.valencia_recurso, key=self.valencia_recurso.get)
+            peor = min(self.valencia_recurso, key=self.valencia_recurso.get)
+            if self.valencia_recurso[mejor] > 1.0:
+                return {"tipo": "preferencia", "texto": f"valoro particularmente {mejor}",
+                        "datos": {"gusto": mejor}}
+            if self.valencia_recurso[peor] < -1.0:
+                return {"tipo": "aversion", "texto": f"evito {peor}", "datos": {"aversion": peor}}
+        # (4) creencia social
+        if self.modelo_del_otro:
+            conocido = [r for r, n in self.modelo_del_otro.items() if n >= 2]
+            if conocido:
+                return {"tipo": "social", "texto": f"creo que el otro sabe producir {', '.join(conocido)}",
+                        "datos": {"sabe": conocido}}
+        # sin mensaje relevante -> no hablar (silencio, no ruido)
+        return None
+
+    def procesar_instruccion(self, texto):
+        """Interpreta la INSTRUCCION del humano en lenguaje natural simple y la convierte
+        en un efecto sobre el estado interno de SGM (direccion tu->SGM). Emergente: reconoce
+        palabras-clave del dominio (comida, madera, mesa, zombie/amenaza, valorar X) y las
+        vincula a su mundo interno -- p.ej. priorizar una meta, senalar un recurso, o
+        registrar algo como importante. Devuelve un dict {reconocida, efecto, texto}.
+        Si no reconoce, SGM lo dice honestamente (no inventa)."""
+        t = texto.lower()
+        efecto = {}
+        # reconocer meta de subsistencia
+        if any(w in t for w in ["coma", "comer", "food", "alimento", "vaca"]):
+            efecto = {"tipo": "meta", "recurso": "food"}
+        elif any(w in t for w in ["madera", "wood", "arbol"]):
+            efecto = {"tipo": "meta", "recurso": "wood"}
+        elif any(w in t for w in ["mesa", "craftear", "herramienta", "pico"]):
+            efecto = {"tipo": "meta", "recurso": "wood_pickaxe"}
+        # reconocer senal de amenaza
+        elif any(w in t for w in ["zombie", "enemigo", "peligro", "amenaza"]):
+            efecto = {"tipo": "amenaza"}
+        # reconocer valoracion (el humano le ensena que algo importa)
+        valorar = [w for w in ["madera", "comida", "food", "wood", "mesa", "pico",
+                               "zombie", "herramienta"] if w in t]
+        if "valora" in t or "importa" in t or "importante" in t:
+            if valorar:
+                efecto = {"tipo": "valorar", "recurso": "wood" if "madera" in valorar else valorar[0]}
+        if efecto:
+            # aplicar el efecto al mundo interno
+            if efecto.get("tipo") == "meta":
+                self._meta_sugerida = efecto.get("recurso")
+            elif efecto.get("tipo") == "amenaza":
+                self._amenaza = max(self._amenaza, 0.6)  # elevar la señal de amenaza
+            elif efecto.get("tipo") == "valorar":
+                r = efecto.get("recurso")
+                self.valencia_recurso[r] = self.valencia_recurso.get(r, 0) + 1.0  # valorar mas
+            return {"reconocida": True, "efecto": efecto, "texto": f"entiendo: {texto}"}
+        return {"reconocida": False, "efecto": {}, "texto": "no entiendo bien eso aun",
+                "sugerencia": "puedo interpretar: comer, madera, craftear, zombie, valorar X"}
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D
