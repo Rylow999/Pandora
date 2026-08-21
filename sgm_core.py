@@ -210,6 +210,15 @@ class SGMAgent:
         self.episodios = []         # [{"accion","recurso_nuevo","saliencia","estado_q","contexto"}]
         self.episodios_max = 50     # cuantos recuerdos salientes retener (memoria episodica)
         self.saliencia_umbral = 1   # minimo de cambio de recurso/homeostasis para ser episodio
+        # 0160 (Fase 9-3): VALOR HEDONICO POR OBJETO (valencia individualizada).
+        # El agente deja de ver 'food sube = bueno' (homeostasis global) y aprende que CADA
+        # recurso/objeto tiene una carga afectiva propia, segun sus experiencias pasadas.
+        # 'gustos' = a que le da valor (gusta obtenerlo), 'aversiones' = que le pesa (evita).
+        # Es el embrión de las PREFERENCIAS del agente (no solo que le funciona, sino que le
+        # importa - aproximacion de 'moi' a los objetos del mundo, Damasio 1999).
+        self.valencia_recurso = {}    # {recurso: score interoceptivo}, >0 gusta, <0 evita
+        self.valencia_tasa = 0.15     # aprendizaje de la valencia por experiencia
+        self._ultima_valencia_food = None  # para detectar mejora/deterioro al valorar
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
         # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
@@ -598,6 +607,39 @@ class SGMAgent:
         conf_trans = sum(trans.values()) if trans else 0
         # explotar si el estado es conocido y la transicion imaginada ocurrio al menos una vez
         return conf_trans > 0
+
+    # ---------- 0160 (Fase 9-3): VALOR HEDONICO POR OBJETO ----------
+    def actualizar_valencia(self, recurso, cambio, dolor=0.0):
+        """Aprende la VALENCIA individual de un objeto/recurso por experiencia (Damasio 1999).
+        Si obtener 'recurso' dio un cambio positivo, su valencia sube (gusta). Si la accion
+        relacionada causo dolor, la valencia del recurso baja (aversion). Es el 'gusto' del
+        agente por cada cosa del mundo, individualizado (no solo homeostasis global de food)."""
+        if recurso not in self.valencia_recurso:
+            self.valencia_recurso[recurso] = 0.0
+        # refuerzo: obtener el recurso (cambio>0) sube su valencia; se agota (cambio<0) la baja
+        self.valencia_recurso[recurso] += self.valencia_tasa * cambio
+        # dolor asociado -> aversion (el recurso 'cuesta' / se asocia a malestar)
+        if dolor > 0:
+            self.valencia_recurso[recurso] -= self.valencia_tasa * dolor
+        # clamp a rango razonable
+        self.valencia_recurso[recurso] = max(-3.0, min(3.0, self.valencia_recurso[recurso]))
+
+    def valor_recursos(self, metas_priorizadas=None):
+        """Devuelve los recursos ORDENADOS por su valencia individual (lo que MAS le importa
+        conseguir). 'metas_priorizadas' filtra/usine a un subconjunto. Es la preferencia del
+        agente: guia que recurso buscar segun cuanto lo valora (su 'apetito' preferencial)."""
+        items = list(self.valencia_recurso.items())
+        # solo los que valen (valencia > 0) o los explicitamente pedidos
+        if metas_priorizadas:
+            items = [r for r in items if r[0] in metas_priorizadas]
+        items.sort(key=lambda kv: kv[1], reverse=True)
+        return items
+
+    def recurso_mas_valorado(self, metas_priorizadas=None):
+        """El recurso con mayor valencia (el que mas desea obtener). Base para dirigir
+        la conducta hacia lo que mas le importa, no solo lo que la homeostasis dicta."""
+        ranked = self.valor_recursos(metas_priorizadas)
+        return ranked[0][0] if ranked else None
 
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
