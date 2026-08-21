@@ -2527,5 +2527,25 @@
     "hypothesis": "con el gate, el mundo interno guia sin reprimir la exploracion -> mejora la subsistencia",
     "result_summary": "PASS PARCIAL - MEJORA REAL. El gate (decidir_explotar) redujo el overuse de la imaginacion (461 vs 695 en 0158) y la subsistencia MEJORO: el agente COMIO VACA (eat_cow, paso 834, el logro mas dificil de la saga) + drink/sapling/wood = 4 logros. Confirma: explotar con confianza + explorar con incertidumbre es el equilibrio correcto. paso_make=None persiste (varianza; otro run podria craftear). LOS MECANISMOS DEL MUNDO INTERNO (memoria episodica + imaginacion + gate) estan verificados y muestran impacto positivo en la conducta de subsistencia.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0161",
+    "experiment_name": "mundo_interno_integrado_subsistencia",
+    "date": "2026-08-14",
+    "phase": "Fase 9 - Mundo Interno integrado (3 piezas) en subsistencia",
+    "test_target": "integrar memoria episodica + imaginacion/gate + valor hedonico, medir impacto combinado",
+    "hypothesis": "el agente con las 3 piezas del mundo interno sobrevive MEJOR",
+    "result_summary": "NO mejoro la subsistencia (logros minimos, paso_eat/make=None). La valencia PRIORIZADA como meta estricta (recurso_mas_valorado) DESVIO al agente hacia lo que valora (wood_pickaxe) descuidando el comer real -> obsesion. Leccion: la preferencia no debe secuestrar la supervivencia. Corregido en 0162 con arbitro preferencia-necesidad.",
+    "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0162",
+    "experiment_name": "balance_preferencia_necesidad_mundo_interno",
+    "date": "2026-08-14",
+    "phase": "Fase 9 - arbitro elegir_meta (balance preferencia-necesidad)",
+    "test_target": "que la hambre critica mande sobre la valencia, y la valencia solo guie la exploracioncuando la necesidad esta cubierta (Panksepp jerarquia motivacional)",
+    "hypothesis": "con el arbitro, el agente PRIMERO sobrevive (come) y luego explora por preferencia",
+    "result_summary": "El ARBITRO funciona (verificado: hambre critica->food, cubierta->wood), PERO el resultado de subsistencia fue identico al 0161 (paso_eat/make=None, 3 logros). LECCION HONESTA: la valencia dirigida a meta - incluso balanceada - no aporta a la subsistencia en vidas cortas; tiende a fijar al agente en lo que 'sabe querer' antes que dejar que explore el crafteo. La mejor config de subsistencia sigue siendo el GATE del 0159 (memoria+imaginacion sin valencia priorizada). SE DEJA la valencia como mecanismo DISPONIBLE pero NO priorizado en la decision de comer; se pasa a Pieza 4 (identidad). Sin hardcode: nada se fuerza; el interes es dejar al sistema actuar libre.",
+    "status": "done"
   }
 ]

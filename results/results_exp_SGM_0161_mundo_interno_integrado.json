@@ -1,0 +1,138 @@
+{
+  "experiment_id": "exp_SGM_0161",
+  "experiment_name": "mundo_interno_integrado_subsistencia",
+  "phase": "Fase 9 - Mundo Interno integrado (3 piezas) en subsistencia de Crafter",
+  "date": "2026-08-14",
+  "mision": "integrar memoria episodica + imaginacion/gate + valor hedonico, medir impacto combinado",
+  "hypothesis": "el agente con las 3 piezas del mundo interno sobrevive MEJOR (come, craftea, mas logros)",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 157,
+        "logros": 0,
+        "episodios": 50,
+        "valencias": {
+          "health": 0.15
+        },
+        "n_imagino": 54
+      },
+      {
+        "vida": 1,
+        "pasos": 259,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 0.15,
+          "sapling": 0.15,
+          "wood": 0.3,
+          "drink": 0.6
+        },
+        "n_imagino": 210
+      },
+      {
+        "vida": 2,
+        "pasos": 85,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 0.15,
+          "sapling": 0.15,
+          "wood": 0.75,
+          "drink": 0.6
+        },
+        "n_imagino": 210
+      },
+      {
+        "vida": 3,
+        "pasos": 263,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 0.15,
+          "sapling": 0.15,
+          "wood": 0.75,
+          "drink": 1.2
+        },
+        "n_imagino": 307
+      },
+      {
+        "vida": 4,
+        "pasos": 170,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 0.44999999999999996,
+          "sapling": 0.15,
+          "wood": 0.9,
+          "drink": 1.2
+        },
+        "n_imagino": 374
+      },
+      {
+        "vida": 5,
+        "pasos": 193,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 1.2,
+          "sapling": 0.44999999999999996,
+          "wood": 0.9,
+          "drink": 1.2
+        },
+        "n_imagino": 464
+      },
+      {
+        "vida": 6,
+        "pasos": 196,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 1.3499999999999999,
+          "sapling": 0.6,
+          "wood": 1.2,
+          "drink": 1.2
+        },
+        "n_imagino": 557
+      },
+      {
+        "vida": 7,
+        "pasos": 182,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "health": 1.4999999999999998,
+          "sapling": 0.6,
+          "wood": 1.2,
+          "drink": 1.6499999999999997
+        },
+        "n_imagino": 636
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood"
+    ],
+    "pasos": 1505,
+    "paso_make": null,
+    "paso_eat": null,
+    "n_imaginaciones": 636
+  },
+  "script": "experiments/exp_SGM_0161_mundo_interno_integrado.py",
+  "results_file": "results/results_exp_SGM_0161_mundo_interno_integrado.json",
+  "variant_of": "exp_SGM_0159",
+  "lit_refs": [
+    "memoria episodica",
+    "imaginacion Ha&Schmidhuber",
+    "valencia Damasio"
+  ],
+  "notes": "Las 3 piezas del Mundo Interno coordinadas: valor hedonico elige la meta, razonamiento la produce desde memoria episodica, imaginacion con gate decide explotar. Ver impacto combinado en la subsistencia emergente.",
+  "notes_criollo": "El bicho con TODO su mundo interno: valora que le importa (preferencia), recuerda como lograrlo (memoria), y se anima a probar solo cuando confia (imaginacion con gate). Vemos si asi sobrevive y come mejor que sin mundo interno."
+}

@@ -641,6 +641,27 @@ class SGMAgent:
         ranked = self.valor_recursos(metas_priorizadas)
         return ranked[0][0] if ranked else None
 
+    def elegir_meta(self, urgencia_necesidad, metas_homeostaticas, metas_apetito=None):
+        """0162-Fase9-3bis: ARBITRO PREFERENCIA-NECESIDAD.
+        Resuelve el balance entre HOMEOSTASIS (urgencia del cuerpo) y PREFERENCIA (valencia).
+        Principio (Panksepp, jerarquia motivacional): los drives homeostaticos CRITICOS
+        tienen prioridad absoluta; la valencia solo ordena que explorar cuando la necesidad
+        esta cubierta. Si urgencia_necesidad > umbral -> elige la meta homeostatica (comer);
+        si la necesidad esta cubierta -> elige segun lo que mas valora (apetito/preferencia).
+        Evita que la valencia secuestre la supervivencia (leccion 0161)."""
+        # urgencia homeostatica critica (p.ej. hambre) -> la meta es la necesidad, no la preferencia
+        if urgencia_necesidad > 0.6:  # hambre/sed critica
+            if metas_homeostaticas:
+                # la meta homeostatica mas urgente (primer recurso de la lista de necesidad)
+                return metas_homeostaticas[0]
+        # necesidad cubierta -> la valencia decide que apetito explorar
+        if metas_apetito:
+            valorado = self.recurso_mas_valorado(metas_apetito)
+            if valorado:
+                return valorado
+        # si no hay preferencia, seguir con la homeostatica
+        return metas_homeostaticas[0] if metas_homeostaticas else None
+
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
         """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.

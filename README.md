@@ -1050,3 +1050,23 @@ hedónico por objeto** (valencia individualizada: qué recurso/objeto le importa
 global).
 
 ---
+
+## FASE 9 — Pieza 3 (valencia) en acción: lección honesta y transición (14-08-2026)
+
+- **Pieza 3 implementada y verificada (0160)**: valencia individualizada por recurso (`actualizar_valencia`,
+  `valor_recursos`, `recurso_mas_valorado`) + **árbitro preferencia-necesidad** (`elegir_meta`, Panksepp:
+  la hambre crítica manda sobre la valencia). Verificado ad-hoc.
+- **Experimento 0161** (3 piezas integradas con valencia estricta): NO mejoró subsistencia — la valencia
+  PRIORIZADA como meta desvió al agente hacia lo que valora (wood_pickaxe) descuidando comer → obsesión.
+- **Experimento 0162** (arbitro elegir_meta): el árbitro es correcto pero el resultado fue idéntico
+  (paso_eat/make=None, 3 logros).
+
+**LECCIÓN HONESTA del bloque:** la valencia dirigida a meta — incluso balanceada con la necesidad — NO
+aporta a la subsistencia en vidas cortas; fija al agente en lo que "sabe querer" antes que dejar que
+explore el crafteo. La mejor configuración de subsistencia sigue siendo el **GATE del 0159** (memoria +
+imaginación, sin valencia priorizada). **Decisión:** la valencia queda como mecanismo DISPONIBLE pero NO
+priorizado en la decisión de comer. Sin hardcode: nada se fuerza; se deja al sistema actuar libremente.
+
+**Registry: 160 entradas.** Siguiente: **Pieza 4 — Identidad / auto-modelo** (narrativa del yo).
+
+---

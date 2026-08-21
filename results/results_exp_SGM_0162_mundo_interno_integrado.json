@@ -1,0 +1,139 @@
+{
+  "experiment_id": "exp_SGM_0162",
+  "experiment_name": "balance_preferencia_necesidad_mundo_interno",
+  "phase": "Fase 9 - balance preferencia-necesidad (arbitro elegir_meta) en subsistencia",
+  "date": "2026-08-14",
+  "mision": "refinar el balance entre valencia (preferencia) y homeostasis (necesidad): la hambre critica manda sobre lo que el agente valora; la valencia solo guia la exploracion cuando la necesidad esta cubierta. Corrige la obsesion por valencia del 0161.",
+  "hypothesis": "con el arbitro elegir_meta, el agente PRIMERO sobrevive (come) y luego explora por preferencia -> mejora la subsistencia vs 0161 (que priorizaba la valencia estricta)",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42
+  },
+  "result": {
+    "vidas": [
+      {
+        "vida": 0,
+        "pasos": 53,
+        "logros": 1,
+        "episodios": 50,
+        "valencias": {
+          "drink": 0.3,
+          "health": 0.15
+        },
+        "n_imagino": 0
+      },
+      {
+        "vida": 1,
+        "pasos": 167,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 0.3,
+          "health": 0.3,
+          "sapling": 0.75,
+          "wood": 0.15
+        },
+        "n_imagino": 64
+      },
+      {
+        "vida": 2,
+        "pasos": 192,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 0.3,
+          "health": 0.44999999999999996,
+          "sapling": 0.9,
+          "wood": 0.44999999999999996
+        },
+        "n_imagino": 153
+      },
+      {
+        "vida": 3,
+        "pasos": 172,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 0.75,
+          "health": 0.6,
+          "sapling": 0.9,
+          "wood": 0.44999999999999996
+        },
+        "n_imagino": 222
+      },
+      {
+        "vida": 4,
+        "pasos": 184,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 0.75,
+          "health": 0.75,
+          "sapling": 0.9,
+          "wood": 0.75
+        },
+        "n_imagino": 303
+      },
+      {
+        "vida": 5,
+        "pasos": 156,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 1.3499999999999999,
+          "health": 0.9,
+          "sapling": 1.05,
+          "wood": 0.9
+        },
+        "n_imagino": 356
+      },
+      {
+        "vida": 6,
+        "pasos": 401,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 1.9499999999999995,
+          "health": 0.9,
+          "sapling": 1.2,
+          "wood": 0.9
+        },
+        "n_imagino": 654
+      },
+      {
+        "vida": 7,
+        "pasos": 174,
+        "logros": 3,
+        "episodios": 50,
+        "valencias": {
+          "drink": 1.9499999999999995,
+          "health": 1.05,
+          "sapling": 1.3499999999999999,
+          "wood": 1.2
+        },
+        "n_imagino": 725
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood"
+    ],
+    "pasos": 1499,
+    "paso_make": null,
+    "paso_eat": null,
+    "n_imaginaciones": 725
+  },
+  "script": "experiments/exp_SGM_0162_mundo_interno_integrado.py",
+  "results_file": "results/results_exp_SGM_0162_mundo_interno_integrado.json",
+  "variant_of": "exp_SGM_0159",
+  "lit_refs": [
+    "memoria episodica",
+    "imaginacion Ha&Schmidhuber",
+    "valencia Damasio"
+  ],
+  "notes": "Las 3 piezas del Mundo Interno coordinadas: valor hedonico elige la meta, razonamiento la produce desde memoria episodica, imaginacion con gate decide explotar. Ver impacto combinado en la subsistencia emergente.",
+  "notes_criollo": "El bicho con TODO su mundo interno: valora que le importa (preferencia), recuerda como lograrlo (memoria), y se anima a probar solo cuando confia (imaginacion con gate). Vemos si asi sobrevive y come mejor que sin mundo interno."
+}
