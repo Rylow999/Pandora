@@ -2567,5 +2567,15 @@
     "hypothesis": "la falla es en la ACUMULACION de recursos, no en el conocimiento/decisioin",
     "result_summary": "DIAGNOSTICO CRISTALINO. El eslabon roto es ACUMULAR wood>=2: el agente junt\u00f3 wood en 288 pasos (>=1) pero solo LLEGO a wood>=2 en 2 pasos de 1405. Sin wood>=2 no puede colocar mesa sostenidamente ni gatillar el make (make_cond_ok=0, intentos_make=0). place_table s\u00ed funciona cuando llega (place_logrado=2), pero requiere wood:2 que casi nunca acumula. LECCION: EL PROBLEMA NUNCA FUE conocimiento/reorganizacion - es que el agente no acumula 2 unidades de wood de forma sostenida (muere y resetea inventario, explora arboles poco, o gasta el wood). Explica el patron de toda la saga (crafteo y colectividad bloqueados).",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0168",
+    "experiment_name": "drive_busqueda_comida_subsistencia",
+    "date": "2026-08-15",
+    "phase": "Fase 9 - SEEKING food drive (corregido a leve) + diagnostico del crafteo",
+    "test_target": "responder la preocupacion: '\u00bfel agente sigue comiendo vacas?' + ubicar el eslabon del crafteo",
+    "hypothesis": "un SEEKING food drive leve restaura la subsistencia sin anular la recoleccion",
+    "result_summary": "PROGRESO. Verso AGRESIVO del drive (reamplificado) FALLO: el agente solo deambulo buscando comida (1 logro, nunca junta madera) - el drive anulo la recoleccion. CORREGIDO a leve (umbral hambre 0.5, refuerzo 0.3*hambre, no amplificado): RESULTADO si restore la subsistencia - el agente COMIO VACA (eat_cow) + drink/sapling/wood + place_logrado=3. Responde la preocupacion: SI come vacas cuando el sistema no esta dominado por una pulsion excesiva. DIAGNOSTICO DEL CRAFTEO: el eslabon roto es el ACOPLA ESPACIAL mesa-crafteo (make_cond_w_fail_mesa=262: tiene wood y condicion de make pero la mesa NO esta cerca; make_cond_ok=0 siempre). El agente coloca la mesa (place_logrado=3) pero se ALEJA; cuando tiene wood para make, la mesa ya no esta adyacente -> nunca craftea. Se necesita re-encare del make hacia la mesa mas cercana.",
+    "status": "done"
   }
 ]

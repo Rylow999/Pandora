@@ -1195,6 +1195,19 @@ class SGMAgent:
                 if (meta_a is not None and a == meta_a and self._hambre_real > 0.2
                         and self._algo_enfrente == 0 and en_supervivencia):
                     score += self.reencare_fuerza * 0.8
+                # SEEKING food drive (0168): cuando el hambre es REAL y NO hay nada accionable
+                # enfrente NI objetivo de re-encare, el agente debe BUSCAR alimento (moverse a
+                # explorar), no quedarse deambulando o dispersarse en otro recurso. Panksepp:
+                # el SEEKING homeostatico dirige la busqueda ante la carencia. Sin hardcode de
+                # direccion: simplemente se refuerza el MOVIMIENTO de exploracion bajo hambre.
+                # AVISO 0168: el drive no debe ser tan fuerte como para ANULAR la exploracion/
+                # recoleccion (leccion 0168: con fuerza alta el agente solo deambulo y nunca
+                # junta madera). Se deja como un refuerzo LEVE que suma a la mezcla sin dominar.
+                if (self._hambre_real > 0.5 and self._algo_enfrente == 0
+                        and self._target_dir == (0, 0) and a in self.acciones_movimiento):
+                    # refuerzo leve (0.3 de base), NO amplificado en supervivencia para no
+                    # anular la recoleccion. Solo empuja ligeramente a seguir moviendose.
+                    score += 0.3 * self._hambre_real
                 if score > bv:
                     bv, best = score, a
         
