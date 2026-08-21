@@ -1333,11 +1333,17 @@ class SGMAgent:
         self.ultimo_food = food
 
     def cuantizar_estado(self, state_semantic):
-        """Cuantiza el estado sensorial a un bucket simple para el modelo del mundo."""
+        """Cuantiza el estado sensorial a un bucket simple para el modelo del mundo.
+        0169: se usan 18 dimensiones (16 semantic + 2 senales perceptuales al final:
+        bit 'mesa_cerca' y bit 'hay_comida' si el adaptador las incluye), para que el
+        modelo del mundo pueda distinguir estados con mesa cerca vs sin mesa (precondicion
+        espacial del crafteo) de forma EMERGENTE, sin reglas hardcodeadas."""
         if not state_semantic:
             return 0
         clave = 0
-        for i, v in enumerate(state_semantic[:16]):
+        n = min(18, len(state_semantic))
+        for i in range(n):
+            v = state_semantic[i]
             clave = clave * 2 + (1 if v > 0.5 else 0)
         return clave
 

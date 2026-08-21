@@ -1,0 +1,48 @@
+{
+  "experiment_id": "exp_SGM_0169",
+  "experiment_name": "percepcion_mesa_crafteo_emergente",
+  "phase": "Fase 9 - percepcion dela mesa: el crafteo emerja del modelo del mundo (sin hardcode)",
+  "date": "2026-08-15",
+  "mision": "que el agente perciba la mesa (senal en sv) y aprenda por su modelo del mundo que make requiere mesa cerca - EMERGENTE, sin regla 've a la mesa'. Sin prefiere_comp (libre).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42
+  },
+  "result": {
+    "diag": {
+      "steps_con_wood_ge1": 423,
+      "steps_con_wood_ge2": 141,
+      "steps_mesa_cerca": 0,
+      "intentos_place_table": 0,
+      "intentos_make": 0,
+      "make_cond_w_fail_mesa": 423,
+      "make_cond_w_fail_wood": 0,
+      "make_cond_ok": 0,
+      "make_ejecutado": 0,
+      "make_logrado": 0,
+      "place_ejecutado": 0,
+      "place_logrado": 0,
+      "gate_bloqueo_make": 0,
+      "gate_bloqueo_place": 0
+    },
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood",
+      "defeat_zombie"
+    ],
+    "pasos": 1491,
+    "comio_vaca": false,
+    "crafteo_alguna": false
+  },
+  "script": "experiments/exp_SGM_0169_percepcion_mesa_crafteo.py",
+  "results_file": "results/results_exp_SGM_0169_percepcion_mesa_crafteo.json",
+  "variant_of": "exp_SGM_0152",
+  "lit_refs": [
+    "diagnostico empirico del crafteo"
+  ],
+  "notes": "Instrumenta cada etapa de la cadena de crafteo (juntar wood, mesa cerca, intentar make/place, gate). El objetivo es ubicar ERROR del eslabon que impide la composicion.",
+  "notes_criollo": "Le ponemos contadores en cada paso del crafteo para ver donde se corta la cadena: si no junta madera, si no pone la mesa, si no gatilla el make, o si el make falla."
+}
