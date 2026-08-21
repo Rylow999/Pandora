@@ -2497,5 +2497,15 @@
     "hypothesis": "razonamiento (razonar_meta desde historia) + comunicacion explicita hacen fluir el conocimiento entre grafos y la subsistencia colectiva mas eficiente",
     "result_summary": "INFRA funciono: 2 grafos (A/B) coexistieron en el mismo cuerpo, ambos construyeron historia interna (histA/HLB llegaron al cap 200) y redes (connA=14, connB=11). Logros: drink/sapling/wood/defeat_zombie (4). PERO conexiones_compartidas=0: la comunicacion explicita no se activo porque ningun grafo logro craftear wood_pickaxe en este run (el disparador de la comparticion). El MECANISMO de comunicacion se verifico en test sintetico (A aprende, comparte a B, B razona la meta - PASS). El cruce real necesita que ocurra el hito de crafteo. Se correra mas vidas/seeds (0157).",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0157",
+    "experiment_name": "razonamiento_grafo_multigrafo_cruce_3seeds",
+    "date": "2026-08-14",
+    "phase": "Fase 8 - razonamiento multigrafo, cruce real en 3 seeds x 12 vidas",
+    "test_target": "capturar el CRUCE real entre grafos: que un grafo craftee y la comunicacion explicita transfiera conocimiento al otro (conexiones_compartidas>0)",
+    "hypothesis": "mas vidas y seeds aumentan que el crafteo ocurra y el conocimiento fluya entre grafos",
+    "result_summary": "FAIL de cruce. En las 3 seeds (42/7/2024, 12 vidas c/u, ~2K pasos), conexiones_compartidas=0 SIEMPRE. Ambos grafos coexisten (historia cap 200, conn crecen A:4->20, B:3->13) y logran subsistencia basica (drink/sapling/wood/defeat_zombie), PERO ninguno crafteo wood_pickaxe (el disparador de la comparticion), asi que no habia conocimiento que transferir. LECCION: la comunicacion entre grafos esta implementada y verificada sinteticamente (0156b), pero el cruce REAL depende de que un grafo logre un hito; el harness de 2 grafos alternando el mismo cuerpo puede fragmentar la continuidad (cada grafo la mitad de los pasos), dificultando encadenar la secuencia completa. Se requiere contexto/continuidad mejor para el cruce real.",
+    "status": "done"
   }
 ]

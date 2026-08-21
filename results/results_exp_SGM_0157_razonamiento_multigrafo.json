@@ -1,0 +1,393 @@
+{
+  "experiment_id": "exp_SGM_0157",
+  "experiment_name": "razonamiento_grafo_multigrafo_cruce_3seeds",
+  "phase": "Fase 8 - razonamiento sobre el grafo + 2 grafos en el mismo Crafter (3 seeds, 12 vidas)",
+  "date": "2026-08-14",
+  "mision": "Capturar el CRUCE REAL entre grafos: con mas vidas y seeds, que algun grafo logre craftear y la comunicacion explicita transfiera ese conocimiento al otro (conexiones_compartidas>0).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 12,
+    "seeds": [
+      42,
+      7,
+      2024
+    ],
+    "grafos": 2,
+    "control": "alternado (A par, B impar) sobre el mismo cuerpo/mundo"
+  },
+  "result": {
+    "seeds": [
+      {
+        "seed": 42,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 147,
+            "logros": 0,
+            "conn_A": 4,
+            "conn_B": 3,
+            "historia_A": 74,
+            "historia_B": 73
+          },
+          {
+            "vida": 1,
+            "pasos": 172,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 160,
+            "historia_B": 159
+          },
+          {
+            "vida": 2,
+            "pasos": 249,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 3,
+            "pasos": 161,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 4,
+            "pasos": 195,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 5,
+            "pasos": 148,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 6,
+            "pasos": 212,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 7,
+            "pasos": 199,
+            "logros": 1,
+            "conn_A": 9,
+            "conn_B": 6,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 8,
+            "pasos": 135,
+            "logros": 1,
+            "conn_A": 12,
+            "conn_B": 8,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 9,
+            "pasos": 70,
+            "logros": 1,
+            "conn_A": 12,
+            "conn_B": 8,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 10,
+            "pasos": 171,
+            "logros": 1,
+            "conn_A": 12,
+            "conn_B": 9,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 11,
+            "pasos": 155,
+            "logros": 1,
+            "conn_A": 12,
+            "conn_B": 9,
+            "historia_A": 200,
+            "historia_B": 200
+          }
+        ],
+        "logros": [
+          "collect_sapling"
+        ],
+        "pasos": 2014,
+        "conexiones_compartidas": 0
+      },
+      {
+        "seed": 7,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 190,
+            "logros": 0,
+            "conn_A": 4,
+            "conn_B": 3,
+            "historia_A": 95,
+            "historia_B": 95
+          },
+          {
+            "vida": 1,
+            "pasos": 160,
+            "logros": 1,
+            "conn_A": 12,
+            "conn_B": 10,
+            "historia_A": 175,
+            "historia_B": 175
+          },
+          {
+            "vida": 2,
+            "pasos": 187,
+            "logros": 1,
+            "conn_A": 14,
+            "conn_B": 10,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 3,
+            "pasos": 143,
+            "logros": 2,
+            "conn_A": 17,
+            "conn_B": 11,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 4,
+            "pasos": 187,
+            "logros": 4,
+            "conn_A": 18,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 5,
+            "pasos": 69,
+            "logros": 4,
+            "conn_A": 18,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 6,
+            "pasos": 192,
+            "logros": 4,
+            "conn_A": 18,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 7,
+            "pasos": 180,
+            "logros": 4,
+            "conn_A": 19,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 8,
+            "pasos": 192,
+            "logros": 4,
+            "conn_A": 19,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 9,
+            "pasos": 196,
+            "logros": 4,
+            "conn_A": 19,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 10,
+            "pasos": 183,
+            "logros": 4,
+            "conn_A": 20,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 11,
+            "pasos": 157,
+            "logros": 4,
+            "conn_A": 20,
+            "conn_B": 13,
+            "historia_A": 200,
+            "historia_B": 200
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "defeat_zombie"
+        ],
+        "pasos": 2036,
+        "conexiones_compartidas": 0
+      },
+      {
+        "seed": 2024,
+        "vidas": [
+          {
+            "vida": 0,
+            "pasos": 157,
+            "logros": 0,
+            "conn_A": 4,
+            "conn_B": 3,
+            "historia_A": 79,
+            "historia_B": 78
+          },
+          {
+            "vida": 1,
+            "pasos": 195,
+            "logros": 0,
+            "conn_A": 8,
+            "conn_B": 7,
+            "historia_A": 177,
+            "historia_B": 175
+          },
+          {
+            "vida": 2,
+            "pasos": 170,
+            "logros": 3,
+            "conn_A": 11,
+            "conn_B": 7,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 3,
+            "pasos": 169,
+            "logros": 4,
+            "conn_A": 12,
+            "conn_B": 9,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 4,
+            "pasos": 160,
+            "logros": 4,
+            "conn_A": 12,
+            "conn_B": 11,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 5,
+            "pasos": 162,
+            "logros": 4,
+            "conn_A": 12,
+            "conn_B": 11,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 6,
+            "pasos": 175,
+            "logros": 4,
+            "conn_A": 12,
+            "conn_B": 11,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 7,
+            "pasos": 40,
+            "logros": 4,
+            "conn_A": 14,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 8,
+            "pasos": 187,
+            "logros": 4,
+            "conn_A": 14,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 9,
+            "pasos": 201,
+            "logros": 4,
+            "conn_A": 14,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 10,
+            "pasos": 169,
+            "logros": 4,
+            "conn_A": 14,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          },
+          {
+            "vida": 11,
+            "pasos": 151,
+            "logros": 4,
+            "conn_A": 14,
+            "conn_B": 12,
+            "historia_A": 200,
+            "historia_B": 200
+          }
+        ],
+        "logros": [
+          "collect_drink",
+          "collect_sapling",
+          "collect_wood",
+          "defeat_zombie"
+        ],
+        "pasos": 1936,
+        "conexiones_compartidas": 0
+      }
+    ]
+  },
+  "script": "experiments/exp_SGM_0157_razonamiento_multigrafo.py",
+  "results_file": "results/results_exp_SGM_0157_razonamiento_multigrafo.json",
+  "variant_of": "exp_SGM_0155",
+  "lit_refs": [
+    "experiencia interna/historia (Luciano)",
+    "planificacion simbolica",
+    "comunicacion explicita entre agentes (multiagente)"
+  ],
+  "notes": "Razonamiento sobre el grafo (historia interna -> plan) + 2 grafos que alternan el mismo cuerpo en Crafter y se comunican conocimiento explicitamente. Busca que el conocimiento fluya entre grafos y la subsistencia colectiva sea mas eficiente.",
+  "notes_criollo": "Dos cerebros (A y B) compartiendo el mismo cuerpo por turnos en el mismo mundo, cada uno con su historia interna. Cuando uno aprende algo (hacer un pico) se lo cuenta al otro. Asi el conocimiento fluye entre ellos y no tienen que re-descubrir todo cada uno. Es el germen de la emergencia colectiva."
+}

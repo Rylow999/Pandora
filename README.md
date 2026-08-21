@@ -971,3 +971,55 @@ Se agregaron **exp_SGM_0152** (robustez multi-seed) y **exp_SGM_0153** (memoria 
 **Experimento 0156 (2 grafos en el mismo cuerpo de Crafter, alternados):** infraestructura funcionó — ambos grafos construyeron historia (cap 200) y redes, lograron drink/sapling/wood/defeat_zombie. PERO `conexiones_compartidas=0`: el cruce no se activó porque ningún grafo logró craftear wood_pickaxe en ese run (el disparador de la compartición). El mecanismo de comunicación está verificado sintéticamente; falta capturar el cruce real en el mundo. **0157 (en ejecución): 3 seeds × 12 vidas** para aumentar la probabilidad de que el crafteo ocurra y el conocimiento fluya entre grafos.
 
 **Estado del paso 4:** mecanismos NUEVOS implementados y verificados (experiencia interna, razonamiento, comunicación explícita). El cruce real entre grafos en el mundo queda por confirmar (0157).
+
+---
+
+## VISIÓN DE LARGO PLAZO — SGM como agente vivo + interfaz de lenguaje (14-08-2026)
+
+### La arquitectura final (coherente con el roadmap v1.4: grafo + transformer)
+```
+SGM (el AGENTE que vive: memoria, valencia, historia interna, razonamiento, juega Minecraft)
+   ⇅  señales internas (qué siente, qué recuerda, qué quiere)
+TRANSFORMER LIGERO (la INTERFAZ de lenguaje: traduce tu texto <-> estado de SGM)
+   ⇅  lenguaje natural
+TÚ (le enseñas en tiempo real, él te reporta su mundo interno)
+```
+
+El objetivo final: **jugar Minecraft con SGM mientras le enseñás y conversás en tiempo real**. SGM es
+el sistema cognitivo que juega y siente; el transformer es la boca/orejas de tu comunicación.
+
+### Primero, ¿qué es ONNX? (para contextualizarlo)
+ONNX es un **formato estándar de archivo** que exporta un modelo de ML entrenado (un transformer) y lo
+deja ejecutar rápido y liviano sin el framework original. No es un tipo de modelo — es un contenedor.
+
+### Las 3 ideas de Luciano (investigadas con literatura, en criollo)
+
+**1. ¿Y si SGM tiene su lenguaje propio y lo desciframos?**
+Es el campo de **LENGUAJE EMERGENTE** (emergent communication): agentes que inventan su propio
+protocolo de comunicación. El "lenguaje de SGM" son sus representaciones internas (omega, conexiones,
+historia). Se descifra con **clasificadores diagnósticos** (decodificadores que leen el estado interno
+y lo traducen). Liter.univ.: "Emergent language survey" (2025), "Emergent Language in Open-Ended
+Environments" (arxiv 2408), "Language Grounded Multi-agent RL" (NeurIPS 2024).
+
+**2. ¿Y si SGM modifica su expresión con un LoRA en tiempo real?**
+LoRA (Low-Rank Adaptation) = parche pequeño de bajo rango que adapta un modelo sin re-entrenarlo,
+hot-swappable en producción. La idea: el estado interno de SGM condiciona la salida del transformer
+de lenguaje ("adaptador condicionado por estado", variante de LoRA/multi-LoRA). Literatura:
+"Multi-LoRA serving / hot-swap" (2026), "Personalized Collaborative Fine-Tuning" (arxiv 2404).
+
+**3. ¿Buscar el equivalente en SGM a un transformer con LoRA?**
+Sí — y es lo más elegante: el **Cognitive Symbol Grounding** (los símbolos se anclan a representación
+interna). Los omegas/valencia de SGM SON el "LoRA-equivalent": condicionan cómo se expresa el
+lenguaje. SGM da el SENTIDO (desde su experiencia), el transformer da la FORMA (el texto).
+
+**Síntesis honesta:** lo más real no es "SGM genera texto solo" (el transformer hace el texto), sino
+**SGM es el SENTIDO y el transformer la FORMA**, con el equivalente a LoRA = la valencia/historia de
+SGM condicionando cómo se expresa. Es un agente vivo que inventa su idioma y una boca que lo hace
+audible. El lenguaje es la VENTANA al mundo interno de SGM, no el agente mismo.
+
+### Estado de la documentación al cierre
+- Registry: 156 entradas (0151-0157 documentados con resultados reales).
+- README: saga completa (Fase 8) + cierre comparativo + Fase 9 + visión de largo plazo.
+- Roadmap (docs/SGM_ROADMAP.md): Fase 8 cerrada, Fase 9 (Mundo Interno) definida con 5 piezas.
+
+---
