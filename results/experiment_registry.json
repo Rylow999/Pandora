@@ -2557,5 +2557,15 @@
     "hypothesis": "con mundos separados, cada grafo conserva la continuidad para lograr mas, y el conocimiento se propaga de A a B",
     "result_summary": "Los dos grafos (A 2019 pasos, B 1905) lograron la MISMA subsistencia basica (drink/sapling/wood) pero NINGUNO crafteo/comio, y la propagacion quedo en 0 (vicario=0, modeloB={}): no habia hito que propagar. LECCION ESTRUCTURAL: la organizacion (mismo cuerpo o mundos separados) NO es el problema - es que el agente base no produce logros de composicion de forma consistente, y el aprendizaje vicario depende de que alguien done el logro. El mecanismo de propagacion/modelo del otro esta verificado (ad-hoc PASS) pero seco. NOTA: se arreglo el bug del set no serializable (logros) en los json.dump con default=str; datos reales recuperados del stdout.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0167",
+    "experiment_name": "diagnostico_crafteo_un_grafo",
+    "date": "2026-08-15",
+    "phase": "Diagnostico - cuiello de botella del crafteo (cadena instrumentada en un grafo)",
+    "test_target": "encontrar con datos en que eslabon se corta la cadena de crafteo (wood->mesa->make)",
+    "hypothesis": "la falla es en la ACUMULACION de recursos, no en el conocimiento/decisioin",
+    "result_summary": "DIAGNOSTICO CRISTALINO. El eslabon roto es ACUMULAR wood>=2: el agente junt\u00f3 wood en 288 pasos (>=1) pero solo LLEGO a wood>=2 en 2 pasos de 1405. Sin wood>=2 no puede colocar mesa sostenidamente ni gatillar el make (make_cond_ok=0, intentos_make=0). place_table s\u00ed funciona cuando llega (place_logrado=2), pero requiere wood:2 que casi nunca acumula. LECCION: EL PROBLEMA NUNCA FUE conocimiento/reorganizacion - es que el agente no acumula 2 unidades de wood de forma sostenida (muere y resetea inventario, explora arboles poco, o gasta el wood). Explica el patron de toda la saga (crafteo y colectividad bloqueados).",
+    "status": "done"
   }
 ]
