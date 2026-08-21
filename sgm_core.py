@@ -219,6 +219,14 @@ class SGMAgent:
         self.valencia_recurso = {}    # {recurso: score interoceptivo}, >0 gusta, <0 evita
         self.valencia_tasa = 0.15     # aprendizaje de la valencia por experiencia
         self._ultima_valencia_food = None  # para detectar mejora/deterioro al valorar
+        # 0164 (Fase 9-5): MODELO DEL OTRO / TEORIA DE LA MENTE (emergente, sin hardcode).
+        # El agente NO recibe el modelo del otro: lo CONSTRUYE observando su comportamiento
+        # (que recursos obtiene), y forma creencias ('el otro sabe/ignora X'). Es Bandura
+        # (aprendizaje vicario) + ToM (creencia sobre el otro). Se alimenta del cruce
+        # multigrafo (0156): en vez de solo recibir coneccion dictada, el agente MODELIZA
+        # al que observa.
+        self.modelo_del_otro = {}   # {recurso: n_veces_que_observe_al_otro_obtenerlo}
+        self.otro_observaciones = 0  # cuántas veces observó al otro actuar
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
         # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
@@ -706,6 +714,43 @@ class SGMAgent:
         if not partes:
             partes.append("aun estoy descubriendo quien soy")
         return "yo: " + "; ".join(partes) + "."
+
+    # ---------- 0164 (Fase 9-5): MODELO DEL OTRO / TEORIA DE LA MENTE (emergente) ----------
+    def observar_otro(self, otro, accion_exitosa, recurso):
+        """APRENDIZAJE VICARIO + MODELO DEL OTRO. Cuando el agente VE a otro lograr un
+        recurso (comportamiento observable del otro):
+        (a) refuerza su propia red (vicario, Bandura): la conexion accion->recurso gana,
+        (b) registra en su MODELO del otro que 'el otro sabe producir ese recurso'.
+        No es dictado explicito (0156): es INFERENCIA por observacion. Sin hardcode."""
+        # (a) aprendizaje vicario: aprender de la accion exitosa del otro
+        nodo_rec = self._hash_recurso_a_nodo(recurso)
+        self.aprender_conexion(accion_exitosa, nodo_rec)
+        # (b) modelo del otro: creencia de que el otro puede producir el recurso
+        self.modelo_del_otro[recurso] = self.modelo_del_otro.get(recurso, 0) + 1
+        self.otro_observaciones += 1
+        # reflejar el exito en la valencia (si lo que el otro logro me sirve, me importa mas)
+        self.actualizar_valencia(recurso, 0.5)
+
+    def inferir_conocimiento_otro(self, recurso):
+        """Cuestiona el MODELO del otro: cree que el otro SABE producir 'recurso' si lo
+        observo lograrlo 2+ veces (confianza social minima). Devuelve True/False. Es la
+        creencia ToM: 'creo que el otro sabe/ignora X'. Sin hardcode: emerge de la
+        frecuencia de observaciones."""
+        return self.modelo_del_otro.get(recurso, 0) >= 2
+
+    def narrar_social(self):
+        """Narrativa SOCIAL del agente: lo que cree del otro, desde su modelo del otro.
+        Emergente: compone con los datos de cuantos recursos cree que el otro sabe."""
+        conocidos = [r for r, n in self.modelo_del_otro.items() if n >= 2]
+        vistos = [r for r in self.modelo_del_otro]
+        if not vistos:
+            return "aun no he interactuado con otros lo suficiente para formarme una idea."
+        texto = f"he observado al otro {self.otro_observaciones} veces"
+        if conocidos:
+            texto += f"; creo que sabe producir {', '.join(conocidos)}"
+        else:
+            texto += "; aun no estoy seguro de que sepa producir algo de forma confiable"
+        return texto + "."
 
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
