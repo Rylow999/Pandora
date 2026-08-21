@@ -203,6 +203,13 @@ class SGMAgent:
         self.historia = []          # [(estado_q, accion, resultado_recurso, contexto)]
         self.historia_max = 200     # tamano max del buffer episodico (memoria de trabajo)
         self.razonando = False      # si el agente esta en modo razonamiento (planificando)
+        # 0158 (Fase 9-1): MEMORIA EPISODICA RECUPERABLE. La historia (buffer) se llena y poda.
+        # Esta memoria SEPARA los eventos SALIENTES (los que tuvieron resultado significativo /
+        # logro / alto cambio en homeostasis) para poder RECUPERARLOS selectivamente al razonar.
+        # No es el buffer plano: es RECUERDO (episodios significativos reconstruibles).
+        self.episodios = []         # [{"accion","recurso_nuevo","saliencia","estado_q","contexto"}]
+        self.episodios_max = 50     # cuantos recuerdos salientes retener (memoria episodica)
+        self.saliencia_umbral = 1   # minimo de cambio de recurso/homeostasis para ser episodio
         # Homeostasis: ultimo valor de food visto, para detectar mejora.
         self.ultimo_food = None
         # Ventana reciente de (accion, food) para consolidacion Hebbiana (0126):
@@ -494,6 +501,76 @@ class SGMAgent:
         otro.aprender_conexion(accion, nodo_rec)
         otro.historia.append((0, accion, {recurso: 1}, "conocimiento_compartido"))
         return True
+
+    # ---------- 0158 (Fase 9-1): MEMORIA EPISODICA RECUPERABLE ----------
+    def _codificar_episodio(self, estado_q, accion, resultado_recurso, contexto):
+        """Selecciona y guarda un EPISODIO SALIENTE (recuerdo) si es significativo.
+        Un episodio es saliente si produjo un cambio notable de recurso/homeostasis
+        (por ej. craftear una herramienta, comer, obtener madera). Se guarda en memoria
+        episodica SEPARADA (recuerdos), no solo en el buffer de historia. Es la base de
+        la narrativa: 'recuerdo eventos que importaron', no todo."""
+        if not resultado_recurso:
+            return False
+        # saliencia = cantidad total de recursos nuevos obtenidos en este paso
+        saliencia = sum(v for v in resultado_recurso.values() if v > 0)
+        if saliencia >= self.saliencia_umbral:
+            self.episodios.append({
+                "estado_q": int(estado_q), "accion": int(accion),
+                "recurso_nuevo": dict(resultado_recurso), "saliencia": float(saliencia),
+                "contexto": str(contexto),
+                "historia_pos": len(self.historia),  # donde en la historia aconteció
+            })
+            if len(self.episodios) > self.episodios_max:
+                self.episodios.pop(0)  # olvidar el recuerdo más antiguo no-saliente
+            return True
+        return False
+
+    def recordar(self, recurso=None):
+        """Recupera la memoria episodica. Con 'recurso' filtra episodios que obtuvieron
+        ese recurso (recuerdo selectivo); sin filtro devuelve los episodios más salientes
+        recientes (narrativa de 'que me paso'). Recuerda = reconstruye desde memoria
+        episodica, no desde el buffer plano de historia."""
+        if recurso is not None:
+            return [e for e in reversed(self.episodios) if e["recurso_nuevo"].get(recurso, 0) > 0]
+        # top por saliencia (recientes)
+        return sorted(self.episodios, key=lambda e: e["saliencia"], reverse=True)
+
+    # ---------- 0158 (Fase 9-2): PROYECCION / IMAGINACION DE CONSECUENCIAS ----------
+    def imaginar(self, accion, estado_actual):
+        """Simula la consecuencia PROBABLE de ejecutar 'accion' en 'estado_actual', usando el
+        modelo del mundo aprendido ((estado_q, accion) -> siguiente_q). Devuelve el siguiente
+        estado q mas probable, o el actual si no hay experiencia. Es el plan PROYECTIVO:
+        el agente 'imagina' que pasara antes de actuar (imagination de Ha & Schmidhuber),
+        no solo razona sobre lo que ya vivio (retrospectivo)."""
+        clave = (estado_actual, accion)
+        trans = self.modelo_mundo.get(clave, {})
+        if not trans:
+            return estado_actual  # no imagino: volver al estado actual (sin modelo)
+        # el siguiente estado mas probable (max count)
+        return max(trans.items(), key=lambda kv: kv[1])[0]
+
+    def predecir_recompensa(self, accion, estado_actual, metas_priorizadas=None):
+        """Extension de la imaginacion: estima si la consecuencia imaginada mejora la
+        homeostasis (food/recursos). Compara el estado imaginado vs el actual. Si
+        metas_priorizadas (lista de recursos) se da, valora mas que imaginen obtenerlas.
+        Es el 'valor proyectivo': cuan BUENA sera la consecuencia de una accion, ayuda
+        a decidir entre acciones sin ejecutarlas."""
+        sig = self.imaginar(accion, estado_actual)
+        # proxy: en el modelo de mundo, la expectativa es el estado que se repite mas;
+        # no hay senal directa de food en 'q' (es un hash del estado). Usamos el largo
+        # de transiciones conocidas como confianza + si la accion produjo exito en la red.
+        conf = 1.0 if (estado_actual, accion) in self.modelo_mundo else 0.0
+        # bonus proyectivo: si la accion esta conectada a recursos en conexiones consolidadas
+        bonus = 0.0
+        nodo_rec = None
+        if metas_priorizadas:
+            # buscar si la accion produce algun recurso meta (en la red de conocimiento)
+            for meta in metas_priorizadas:
+                nodo = self._hash_recurso_a_nodo(meta)
+                if (accion, nodo) in self.consolidadas:
+                    bonus = 1.0  # la accion sabe producir una meta
+                    break
+        return sig, conf, bonus
 
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
