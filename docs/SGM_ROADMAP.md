@@ -536,3 +536,46 @@ millones de frames de la RL (y con ventajas de setting: semantic + mundo persist
 del mundo). El techo está en ~6-7 logros; faltan los avanzados (iron/diamond).
 
 ---
+
+## Fase 9 — MUNDO INTERNO (definida 14-08-2026, ANOTADA para continuar tras el 0157)
+
+El agente SGM actual es un explorador-reactivo-que-aprende: percibe, actúa por instinto/curiosidad,
+aprende qué produce qué, razona sobre su historia (0156) y se comunica entre grafos. **Lo que falta
+para un "agente completo" NO es más acción ni percepción — es MUNDO INTERNO.** Este es el salto de
+"procesar el mundo" a "generar un mundo interno".
+
+### Piezas que faltan (identificadas con Luciano 14-08-2026)
+
+1. **MEMORIA EPISÓDICA RECUPERABLE** — Tenemos historia interna (buffer de pasos, 0156) y memoria
+   semántica (conexiones consolidadas). Falta RECORDAR EVENTOS completos significativos con
+   reconstrucción de la secuencia, no solo el buffer que se llena. Conecta experiencia → narrativa.
+
+2. **PROYECCIÓN / IMAGINACIÓN DE CONSECUENCIAS** — La curiosidad usa PE de lo vivido, pero falta
+   SIMULAR el futuro ANTES de actuar (imagination de Ha & Schmidhuber). El razonamiento arma el plan
+   desde la historia (retrospectivo); falta el plan PROYECTIVO (simular qué pasará). Mundo interno
+   con tiempo interno.
+
+3. **VALOR HEDÓNICO POR OBJETO** — El agente sabe que "food sube = bueno" (homeostasis global),
+   pero NO tiene valor aprendido por objeto específico (cuál cow/árbol/caña es bueno/malo según lo
+   que le hizo). Falta la valencia individualizada que dirige hacia objetos salvadores y evita los
+   dañinos.
+
+4. **IDENTIDAD / AUTO-MODELO** — El nodo 0 funciona como cuerpo/identidad, pero falta que el agente
+   se represente A SÍ MISMO como entidad separada con estados, metas y una narrativa de "mi historia".
+   La historia interna (0156) es el germen; falta la síntesis en un MODELO DEL YO.
+
+5. **MODELO DEL OTRO / TEORÍA DE LA MENTE** — Los grafos se comunican explícitamente (0156, dictado
+   de conocimiento). Falta que un agente MODELE mentalmente al otro: anticipar qué sabe/hará B, y
+   aprender de él proactivamente. Para pasar de comunicación mecánica a colectividad social.
+
+### Objetivo de la Fase 9
+Cerrar el ciclo autopoiético: un agente que además de sobrevivir, tiene **experiencia subjetiva
+interna** (historia → narrativa del yo), **proyección** (imagina consecuencias), **valor
+individualizado** (qué le importa) y **modelo social** (entiende al otro). Solo con esto se vuelve
+un "agente completo" antes de la migración a Minecraft y del salto a la emergencia colectiva.
+
+### Próximo paso
+Terminar el 0157 (cruce real entre grafos en 3 seeds) y su registro, y atacar la pieza 1
+(memoria episódica recuperable) + pieza 2 (proyección/imaginación) como entrada al Mundo Interno.
+
+---
