@@ -1369,6 +1369,29 @@ class SGMAgent:
         if total > 1:
             self.incertidumbre_acum = max(0.0, self.incertidumbre_acum - 0.2)
 
+    def _deducir_precondicion(self, meta, condiciones_activas):
+        """0169-A: RAZONAMIENTO DE PRE-CONDICION (emergente, sin hardcode).
+        Cuando el agente quiere una META compuesta (p. ej. wood_pickaxe) pero su estado
+        NO tiene una condicion necesaria (p. ej. mesa cerca), deduce que necesita
+        ESTABLECER esa condicion ANTES de poder lograr la meta. Inferencia secuencial:
+        ver que make solo funciona junto a mesa (modelo del mundo) y generalizar
+        'para lograr M necesito primero C'."""
+        for cond, activa in condiciones_activas.items():
+            if not activa:
+                if cond == "mesa_cerca":
+                    return 8  # colocar mesa crea la condicion espacial del crafteo
+        return None
+
+    def razonar_meta_compuesta(self, meta, condiciones_activas):
+        """0169-A: decide si puede lograr la meta o si necesita preparar una condicion.
+        Devuelve (accion_a_ejecutar, es_precondicion): si falta condicion, ejecuta la que
+        la crea (es_precondicion=True); si la tiene, razona la meta normal."""
+        pre = self._deducir_precondicion(meta, condiciones_activas)
+        if pre is not None:
+            return pre, True
+        acc, plan = self.razonar_meta(meta)
+        return acc, False
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D

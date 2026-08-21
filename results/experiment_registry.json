@@ -2587,5 +2587,15 @@
     "hypothesis": "si el agente percibe la mesa, el crafteo emerge de la percepcion + aprendizaje",
     "result_summary": "AVANCE PARCIAL + HALLAZGO. La percepcion de mesa + libre decision MEJORO la recoleccion: steps_con_wood_ge1=423 (antes 288), steps_con_wood_ge2=141 (antes 2-7) - el agente ahora junta MUCHA madera (sin prefiere_comp no se desvia a poner mesa). PERO steps_mesa_cerca=0, intentos_place_table=0, make=0: NUNCA coloca la mesa porque ya no hay regla que lo haga, y NO aprende aun por si solo que colocar mesa es precondicion del crafteo. LA MESA NO EMERGE AUN: el agente recolecta infinitamente pero no da el paso intermedio (colocar mesa, que NO da recompensa inmediata) hacia el crafteo (recompensa al final). PROBLEMA DE RAZONAMIENTO SECUENCIAL: aprende acciones->recompensa directa, no pasos intermedios hacia meta compuesta. Solucion elegida (opcion A): deduccion emergente via modelo del mundo - que colocar mesa se conecte en la red a la meta 'poder craftear'.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0170",
+    "experiment_name": "deduccion_precondicion_mesa_crafteo",
+    "date": "2026-08-15",
+    "phase": "Fase 9 - deduccion emergente de pre-condicion para el crafteo",
+    "test_target": "cerrar la cadena recolectar->mesa->craftear de forma EMERGENTE: si el agente quiere wood_pickaxe y no hay mesa, deduce (razonar_meta_compuesta) colocar mesa",
+    "hypothesis": "la deduccion de pre-condicion (mesa que falta) completa el crafteo emergente",
+    "result_summary": "NO se completo el crafteo (intentos_place_table=0, make=0). HALLAZGO FUNDAMENTAL: COLD-START de la composicion. El agente junta MUCHA madera (381 pasos con >=2, mas que nunca) y percibe la mesa, PERO 'razonar_meta(wood_pickaxe)' devuelve None - porque nunca aprendio la conexion make->wood_pickaxe (nunca crafteo porque nunca coloco mesa) -> circulo vicioso. Para deducir 'necesito mesa' exige conocer make->wood_pickaxe, que requiere mesa. El conocimiento compositivo NO PUEDE ARRANCAR desde cero limpio en ciclo de subsistencia: es un problema de periodo sensible / primer disparo. El crafteo FUNCIONA cuando hay un disparo previo (0152 con mundo persistente) pero no se autogenera. DECISION: registrar hallazgo y pasar al LENGUAJE (objetivo: que SGM se comunique con Luciano - mas cerca de su vision). Retomar la composicion con la leccion del periodo sensible cuando corresponda.",
+    "status": "done"
   }
 ]

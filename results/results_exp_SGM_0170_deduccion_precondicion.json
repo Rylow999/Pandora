@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_SGM_0170",
+  "experiment_name": "deduccion_precondicion_mesa_crafteo",
+  "phase": "Fase 9 - deduccion emergente de la pre-condicion: para craftear coloca la mesa primero",
+  "date": "2026-08-15",
+  "mision": "cerrar la cadena recolectar->mesa->craftear de forma EMERGENTE: si el agente quiere wood_pickaxe y no hay mesa, DEDUCE (razonar_meta_compuesta) que necesita colocar mesa.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 8,
+    "seed": 42
+  },
+  "result": {
+    "diag": {
+      "steps_con_wood_ge1": 403,
+      "steps_con_wood_ge2": 381,
+      "steps_mesa_cerca": 0,
+      "intentos_place_table": 0,
+      "intentos_make": 0,
+      "make_cond_w_fail_mesa": 403,
+      "make_cond_w_fail_wood": 0,
+      "make_cond_ok": 0,
+      "make_ejecutado": 0,
+      "make_logrado": 0,
+      "place_ejecutado": 0,
+      "place_logrado": 0,
+      "gate_bloqueo_make": 0,
+      "gate_bloqueo_place": 0
+    },
+    "logros": [
+      "collect_drink",
+      "collect_sapling",
+      "collect_wood"
+    ],
+    "pasos": 1984,
+    "comio_vaca": false,
+    "crafteo_alguna": false
+  },
+  "script": "experiments/exp_SGM_0170_deduccion_precondicion.py",
+  "results_file": "results/results_exp_SGM_0170_deduccion_precondicion.json",
+  "variant_of": "exp_SGM_0152",
+  "lit_refs": [
+    "diagnostico empirico del crafteo"
+  ],
+  "notes": "Instrumenta cada etapa de la cadena de crafteo (juntar wood, mesa cerca, intentar make/place, gate). El objetivo es ubicar ERROR del eslabon que impide la composicion.",
+  "notes_criollo": "Le ponemos contadores en cada paso del crafteo para ver donde se corta la cadena: si no junta madera, si no pone la mesa, si no gatilla el make, o si el make falla."
+}
