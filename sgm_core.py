@@ -1609,6 +1609,107 @@ class SGMAgent:
                 "promovida": False, "revertida": True, "marcada_fuego": False,
                 "bloqueada_freno": False, "aplicada": False}
 
+    # ---------- TRAUMA NODAL (0021, integrado): singularidad + aislamiento + reintegracion ----------
+    # Hipótesis de Luciano (2026-08-02): un nodo sobrecargado (dolor acumulado) forma una
+    # "singularidad nodal" que atrae la caminata y no la suelta. Solucion: AISLARLO (cortar
+    # aristas, preservar omega) y REINTEGRARLO LENTAMENTE (activation debil -> fuerte), no
+    # amputarlo. Mecanica adaptada al grafo real (edges/vitalidad/omega del agente).
+
+    THETA_SING = 0.30   # score de atraccion local sobre este -> singularidad
+    K_ISOLATION = 8     # cuantos vecinos considerar para la medida local
+
+    def _score_atraccion_local(self, nodo_trauma, act_trauma):
+        """Score de singularidad LOCAL: promedio de P(de la caminata al nodo traumado | vecino)
+        sobre los k vecinos mas cercanos. Si supera THETA_SING, el nodo atrapa a quienes estan
+        cerca (dominancia de su vecindad). Usa las distancias de omega como en 0021."""
+        if not self.edges or nodo_trauma not in self.edges:
+            return 0.0
+        # vecinos mas cercanos en omega-space (excluyendo el propio traumado)
+        def _d(a, b):
+            return self._dist_omega(a, b)
+        others = [b for b in self.edges if b != nodo_trauma]
+        others.sort(key=lambda b: _d(nodo_trauma, b))
+        neigh = others[:self.K_ISOLATION]
+        total = 0.0
+        for s_n in neigh:
+            denom = 0.0; num = None
+            for b in self.edges:
+                if b == s_n:
+                    continue
+                act_b = act_trauma if b == nodo_trauma else getattr(self, '_actividad_nodo', {}).get(b, 0.5)
+                p = float(math.exp(-5.0 * _d(s_n, b))) * (1.0 + act_b)
+                denom += p
+                if b == nodo_trauma:
+                    num = p
+            if denom > 0 and num is not None:
+                total += num / denom
+        return total / max(1, len(neigh))
+
+    def _aislar_nodo(self, nodo):
+        """Aisla un nodo traumado: corta sus aristas (fuera de la caminata) PRESERVANDO su omega.
+        Devuelve True si lo aislo. Es el mecanismo del 0021: no amputar, aislar."""
+        if nodo not in self.edges:
+            return False
+        respaldo = {nodo: list(self.edges.get(nodo, []))}
+        # cortar todas las aristas que entran o salen del nodo
+        self.edges[nodo] = []  # sin salidas
+        for b in list(self.edges):
+            if nodo in self.edges[b]:
+                self.edges[b].remove(nodo)  # sin entradas
+        self._nodo_aislado = getattr(self, '_nodo_aislado', {})
+        self._nodo_aislado[nodo] = respaldo[nodo]  # guardar aristas para reintegrar + omega intacto
+        self._actividad_nodo = getattr(self, '_actividad_nodo', {})
+        self._actividad_nodo[nodo] = 0.05  # activation debil (reintegracion lenta)
+        return True
+
+    def _reintegrar_nodo(self, nodo):
+        """Reintegra lentamente un nodo aislado: restaura sus aristas si su activacion es
+        debil (alcanzable sin re-colapsar). Un nodo aislado ya NO domina la vecindad (sus
+        aristas estan cortadas), asi que la reintegracion segura es condicional a que su
+        activacion siga debil. Si la activacion sube, vuelve a dominar -> puede re-colapsar
+        (el agente decide si respirar de nuevo en la llamada siguiente)."""
+        aislado = getattr(self, '_nodo_aislado', {})
+        if nodo not in aislado:
+            return False
+        act = getattr(self, '_actividad_nodo', {}).get(nodo, 0.0)
+        # reintegracion LENTA: solo si la activacion no supera el umbral de dominancia.
+        # activacion debil -> vuelve a la caminata sin re-colapsar; alta -> sigue aislado.
+        if act < self.THETA_SING * 2.0:  # activacion debil (< ~0.6)
+            self.edges[nodo] = list(aislado[nodo])
+            for b in aislado[nodo]:
+                if nodo not in self.edges.get(b, []):
+                    self.edges[b].append(nodo)
+            del aislado[nodo]
+            return True
+        return False  # activacion alta: sigue aislado (evita re-colapso)
+
+    def aplicar_trauma_nodal(self, nodo, act_trauma):
+        """Trauma NODAL que SGM puede invocar: dado un nodo y su nivel de activacion,
+        detecta singularidades y las aísla/reintegra segun la hipótesis de Luciano (0021).
+        - Si ya estaba aislado y su activacion es debil: lo REINTEGRA lentamente.
+        - Si score > THETA_SING y nodo activo (no aislado): SINGULARIDAD -> lo aísla
+          (corta aristas, preserva omega).
+        - Devuelve dict {nodo, score, singularidad, aislado/reintegrado}."""
+        if not hasattr(self, '_nodo_aislado'):
+            self._nodo_aislado = {}
+        if not hasattr(self, '_actividad_nodo'):
+            self._actividad_nodo = {}
+        self._actividad_nodo[nodo] = act_trauma
+        # caso reintegracion: el nodo YA esta aislado -> decide por su activacion (no por
+        # el score, porque un nodo aislado no genera singularidad estructural).
+        if nodo in self._nodo_aislado:
+            ok_reint = self._reintegrar_nodo(nodo)
+            return {"nodo": nodo, "score": round(self._score_atraccion_local(nodo, act_trauma), 3),
+                    "singularidad": True, "aislado": not ok_reint, "reintegrado": ok_reint}
+        # caso singularidad: nodo activo y no aislado -> medir atraccion local
+        score = self._score_atraccion_local(nodo, act_trauma)
+        if score > self.THETA_SING:
+            ok_ais = self._aislar_nodo(nodo)
+            return {"nodo": nodo, "score": round(score, 3), "singularidad": True,
+                    "aislado": ok_ais, "reintegrado": False}
+        return {"nodo": nodo, "score": round(score, 3), "singularidad": False,
+                "aislado": False, "reintegrado": False}
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D
