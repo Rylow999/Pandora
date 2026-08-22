@@ -12,15 +12,15 @@
   },
   "result": {
     "diag": {
-      "steps_con_wood_ge1": 403,
-      "steps_con_wood_ge2": 381,
+      "steps_con_wood_ge1": 917,
+      "steps_con_wood_ge2": 573,
       "steps_mesa_cerca": 0,
       "intentos_place_table": 0,
-      "intentos_make": 0,
-      "make_cond_w_fail_mesa": 403,
+      "intentos_make": 1,
+      "make_cond_w_fail_mesa": 917,
       "make_cond_w_fail_wood": 0,
       "make_cond_ok": 0,
-      "make_ejecutado": 0,
+      "make_ejecutado": 1,
       "make_logrado": 0,
       "place_ejecutado": 0,
       "place_logrado": 0,
@@ -30,10 +30,12 @@
     "logros": [
       "collect_drink",
       "collect_sapling",
-      "collect_wood"
+      "collect_wood",
+      "defeat_zombie",
+      "eat_cow"
     ],
-    "pasos": 1984,
-    "comio_vaca": false,
+    "pasos": 2167,
+    "comio_vaca": true,
     "crafteo_alguna": false
   },
   "script": "experiments/exp_SGM_0170_deduccion_precondicion.py",

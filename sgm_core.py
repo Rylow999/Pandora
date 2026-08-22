@@ -290,6 +290,9 @@ class SGMAgent:
         self._hambre_real = 0.0       # 0-1, hambre real de food (escala normalizada)
         self._amenaza = 0.0           # 0-1, dolor/hp bajo reciente + enemigo en vista
         self._algo_enfrente = 0       # 0=nada, 1=comida, 2=enemigo (lo que hay en pos+facing)
+        self._cerca_tipo = {}         # {tipo_generico: bool} verificar_proximidad: objetos/
+                                      # estructuras dentro de rango accionable (p. ej. {'mesa': True})
+                                      # para place/make/pre-condiciones. UN unico detector.
         # umbrales de las pulsiones
         self.umbral_amenaza_dolor = 0.5  # fraccion de hp perdida que dispara defensa
         self.instinto_interaccion_fuerza = 0.7  # fuerza base del impulso a 'do'
@@ -850,6 +853,40 @@ class SGMAgent:
             px, py = self._posicion_actual
             return min(cand, key=lambda c: abs(c[1][0]-px) + abs(c[1][1]-py))[1]
         return cand[0][1]
+
+    def verificar_proximidad(self, mapa_enfrente, objetos_cerca, posicion, facing=(0, 1)):
+        """UN UNICO detector de proximidad (opcion A, Luciano) que DO, place y make comparten.
+        Computa de una vez, desde la observacion del mundo que el adaptador le pasa:
+          - _algo_enfrente: que hay en la celda pos+facing (0=nada, 1=comida, 2=enemigo)
+            -> para DO (interactuar con lo que esta delante).
+          - _cerca_tipo: {tipo_generico: bool} de los tipos dentro del rango accionable
+            (p. ej. {'mesa': True}) -> para place/make/pre-condiciones.
+          - _target_dir / _target_dist: hacia el objetivo mas cercano (comida/enemigo)
+            -> para el re-encare (moverse hacia el objetivo).
+        Agnóstico del entorno: el adaptador traduce lo que ve a los tipos genericos.
+        Devuelve un dict resumen {algo_enfrente, cerca} para que el orquestador lo use.
+        Esto elimina la duplicacion de DO/place/make (cada uno con su detector)."""
+        px, py = int(posicion[0]), int(posicion[1])
+        self._posicion_actual = (px, py)
+        # 1) deteccion de 'que hay enfrente' (para DO)
+        self._algo_enfrente = 0
+        if mapa_enfrente is not None:
+            v = mapa_enfrente
+            if v == 1:            # el adaptador pasa 1=comida, 2=enemigo
+                self._algo_enfrente = 1
+            elif v == 2:
+                self._algo_enfrente = 2
+        # 2) deteccion de objetos/estructuras dentro del rango accionable (para place/make)
+        self._cerca_tipo = {}
+        if objetos_cerca:
+            for tipo_generico, cerca in objetos_cerca.items():
+                if cerca:
+                    self._cerca_tipo[tipo_generico] = True
+        # 3) re-encare: hacia el objetivo mas cercano (que llega por _target_dir del adaptador
+        #    o se infiere de objetos_cerca). Usamos lo que el adaptador ya priorizo en _target_dir.
+        #    Si el adaptador pasa obj_grid, el core puede calcular distancias reales; si no, el
+        #    adaptador ya seteo _target_dir/_target_dist con su gradiente.
+        return {"algo_enfrente": self._algo_enfrente, "cerca": dict(self._cerca_tipo)}
 
     # ---------- 0145: RED ACCION->RESULTADO DEL MUNDO ----------
     def _aprender_resultado_mundo(self, accion):

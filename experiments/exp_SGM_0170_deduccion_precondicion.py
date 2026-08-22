@@ -85,15 +85,29 @@ def run(seed, n_lives=8):
         for step in range(2000):
             sem=info['semantic']; inv=info['inventory']
             px,py=int(info['player_pos'][0]),int(info['player_pos'][1])
-            # PERCEPCION de la mesa: se calcula ANTES del vector para incluirla en sv
+            # DETECTOR UNICO DE PROXIMIDAD (opcion A, 0172): verificar_proximidad computa de
+            # UNA vez _algo_enfrente (DO), _cerca_tipo (place/make) y _posicion_actual (re-encare).
+            # El harness traduce el mundo de Crafter a tipos genericos una sola vez.
+            mesa_cerca = 0.0
+            mapa_enfrente = 0  # 0=nada, 1=comida, 2=enemigo en pos+facing
             try:
-                mat_near,_=env._world.nearby((px,py),1); hay_mesa = 1.0 if 'table' in mat_near else 0.0
+                mat_near,_=env._world.nearby((px,py),1)
+                if 'table' in mat_near: mesa_cerca = 1.0
+                # enfrente: mirar la celda pos+facing en el semantic
+                ex, ey = px + 1, py  # facing por defecto; adaptar si se rastrea facing
+                if 0 <= ex < sem.shape[0] and 0 <= ey < sem.shape[1]:
+                    vc = sem[ex, ey]
+                    if vc in (5, 6):   # cow / cow-ish (comida)
+                        mapa_enfrente = 1
+                    elif vc in (3, 4, 11, 12, 13, 14):  # zombie/skeleton/creeper etc (enemigo)
+                        mapa_enfrente = 2
             except Exception:
-                hay_mesa = 0.0
+                pass
+            res_prox = ag.verificar_proximidad(mapa_enfrente, {"mesa": bool(mesa_cerca)}, (px, py))
+            hay_mesa = mesa_cerca  # para el diagnostico / sv
             sv=_sv(info, mesa_cerca=hay_mesa); eq=ag.cuantizar_estado(sv)
             hambre=max(0.0,1.0-inv['food']/10.0)
             ag._hambre_real=min(1.0,hambre); ag._amenaza=0.0
-            ag._posicion_actual=(px,py); ag._algo_enfrente=0
             ag._config_grad={"activo":False,"fuerza":0.0}
             ag._config_curio={"activo":True,"fuerza":0.4}
             ag._inc_dirs={a:inc_dir(ag.modelo_mundo,a) for a in MOV}

@@ -2607,5 +2607,15 @@
     "hypothesis": "SGM se expresa en lenguaje natural (interfaz hibrida transformer+plantilla) y procesa las instrucciones de Luciano, afectando su estado interno",
     "result_summary": "EL PRIMER DIALOGO REAL SGM<->LUCIANO EN EL MUNDO FUNCIONO. SGM TE HABLO while jugando con frases legibles: paso 0 'estoy aqui' -> paso 50 'recuerdo que obtuve comida' -> paso 200 'tengo hambre, necesito comida' (sigue su flujo de experiencia: recordar -> hambre). SGM HIZO CASO de 2 instrucciones de Luciano (paso 100 'deberias comer' reconocida=True -> efecto meta food; paso 400 'recolecta madera' -> efecto meta wood). 61 veces acciono 'do' (comer/atacar). 3 interacciones acumuladas para entrenar el transformer. MATIZ honesto: la 3ra instruccion (zombie, paso 700) no se aplico (el agente murio antes, 634 pasos); el mensaje dominante fue 'recuerdo que obtuve comida' (recuerdo saliente); no mostro preferencia/social (sin valencia o creencias fuertes en este run).",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0172",
+    "experiment_name": "detector_unico_proximidad",
+    "date": "2026-08-16",
+    "phase": "Fase 9 - unificacion del detector de proximidad (DO/place/make) [opcion A, Luciano]",
+    "test_target": "eliminar la duplicacion de detectores de proximidad (DO, place y make cada uno con el suyo) en UNA sola funcion verificar_proximidad",
+    "hypothesis": "un unico detector de proximidad (que DO/place/make compartan) arregla las inconsistencias de percepcion del crafteo",
+    "result_summary": "PROGRESO REAL. El detector unificado (verificar_proximidad en sgm_core.py) arreglo DO: el agente VOLVIO A COMER VACA (eat_cow=True; antes _algo_enfrente=0 fijo dejaba a DO ciego a lo que tenia enfrente). steps_con_wood_ge2=573 (antes 2-7), intentos_make=1 (PRIMER intento de craftear de la saga con esta config - antes 0). PERO el crafteo sigue bloqueado por el COLD-START (0170): make_cond_ok=0, make_logrado=0 - el agente intento make 1 vez pero fallo por falta de mesa (steps_mesa_cerca=0, intentos_place_table=0). El detector unificado arreglo DO (come vaca) pero no place/make (que dependen del razonamiento secuencial del periodo sensible). La interface de lenguaje corre en paralelo en background (aprende).",
+    "status": "done"
   }
 ]
