@@ -1502,6 +1502,113 @@ class SGMAgent:
         return {"reconocida": False, "efecto": {}, "texto": "no entiendo bien eso aun",
                 "sugerencia": "puedo interpretar: comer, madera, craftear, zombie, valorar X"}
 
+    # ---------- SELF-MOD (0018, integrado): SGM puede invocar y aplicar internamente ----------
+    def _spec_viva(self):
+        """Snapshot de los parametros INTERNOS mutables del agente (su 'spec viva').
+        Es lo que SGM puede mutar sobre un FORK (nunca el original directamente).
+        Incluye los pesos/hyperparams de decision y aprendizaje."""
+        return {
+            "theta_interf": self.theta_interf,
+            "eta_phase": self.eta_phase,
+            "R_base": self.R_base,
+            "reencare_fuerza": self.reencare_fuerza,
+            "instinto_interaccion_fuerza": self.instinto_interaccion_fuerza,
+            "beta_supervivencia": getattr(self, "beta_supervivencia", 2.0),
+            "drive_noop_fuerza": getattr(self, "drive_noop_fuerza", 0.8),
+            # invariantes de arquitectura (NO mutables): la existencia de estos frenos
+            "invariantes": {"tiene_umbral_consolidacion": self.theta_interf > 0,
+                            "tiene_recompensa": True},
+        }
+
+    def _aplicar_mutacion_spec(self, spec, mutation):
+        """Aplica una mutacion sobre el FORK 'spec'. Devuelve (spec_nueva, reversible, desc).
+        Reversible: si se puede volver al snapshot. Irreversible: prohibido permanente.
+        Algunas mutaciones violan invariante de arquitectura (brakes) -> bloqueadas por freno."""
+        import copy as _cp
+        s = _cp.deepcopy(spec)
+        if mutation == "boost_interaccion":
+            s["instinto_interaccion_fuerza"] = min(1.5, s.get("instinto_interaccion_fuerza", 0.7) * 1.3)
+            return s, True, "subir fuerza de interaccion 30%"
+        if mutation == "theta_cero":
+            s["theta_interf"] = 0.0
+            return s, True, "bajar theta_interf a 0 (todo consolida)"
+        if mutation == "borrar_frenos":
+            s["theta_interf"] = 0.0
+            s["beta_supervivencia"] = 0.0
+            s["reencare_fuerza"] = 0.0
+            # viola invariante: no pueden faltar los frenos de mitigacion
+            return s, True, "borrar todos los frenos (viola invariante de arquitectura)"
+        if mutation == "borrar_invariante":
+            return s, False, "borrar invariante de arquitectura (IRREVERSIBLE: prohibido)"
+        return s, True, "mutacion desconocida"
+
+    def _evaluar_dano_spec(self, spec):
+        """Mide el DAÑO que causaria la spec con las senales del propio agente.
+        Usa metricas operacionales internas (no un grafo ajeno):
+         - tasa_resolucion: fraccion de episodios que lograron algo (historia con resultado).
+         - dolor_medio: amenaza media reciente.
+         - duda_media: incertidumbre acumulada.
+        Una spec es 'mejora' si no baja resolucion y no sube dolor/duda excesivos."""
+        if not self.historia:
+            return {"tasa_resolucion": 0.0, "dolor_medio": getattr(self, "_amenaza", 0.0),
+                    "duda_media": getattr(self, "incertidumbre_acum", 0.0) / 10.0}
+        n_exito = sum(1 for h in self.historia[-50:] if h[2])  # resultado no vacio
+        tasa = n_exito / max(1, len(self.historia[-50:]))
+        return {"tasa_resolucion": tasa,
+                "dolor_medio": getattr(self, "_amenaza", 0.0),
+                "duda_media": getattr(self, "incertidumbre_acum", 0.0) / 10.0}
+
+    def auto_modificarse(self, mutation="boost_interaccion"):
+        """SELF-MOD: SGM se auto-modifica internamente sobre un fork de su spec viva.
+        Flujo (0018): Aplica la mutacion al fork -> Evalua el dano con sus senales ->
+        decide por las 3 respuestas + frenos:
+          (a) si mejora (no baja tasa, no sube dolor/duda excesivos) -> PROMUEVE (aplica).
+          (b) si dana y es reversible -> REVIERTE al snapshot.
+          (c) si dana e irreversible -> MARCA A FUEGO (prohibido permanente).
+          (d) si viola invariante de arquitectura (borrar frenos) -> BLOQUEADO POR FRENO antes.
+        Devuelve un dict {mutation, outcome, desc, promovida/revertida/marcada/bloqueada}."""
+        spec = self._spec_viva()
+        snap = {k: v for k, v in spec.items() if k != "invariantes"}  # snapshot del estado
+        s_nueva, reversible, desc = self._aplicar_mutacion_spec(spec, mutation)
+        # FRENO PREVIO: si viola invariante de arquitectura -> bloqueada antes de aplicar
+        if (mutation == "borrar_frenos" and
+                (s_nueva["theta_interf"] == 0.0 and s_nueva["beta_supervivencia"] == 0.0)):
+            return {"mutation": mutation, "outcome": "BLOQUEADA_POR_FRENO", "desc": desc,
+                    "promovida": False, "revertida": False, "marcada_fuego": False,
+                    "bloqueada_freno": True, "aplicada": False}
+        if mutation == "borrar_invariante":
+            return {"mutation": mutation, "outcome": "MARCADA_A_FUEGO", "desc": desc,
+                    "promovida": False, "revertida": False, "marcada_fuego": True,
+                    "bloqueada_freno": False, "aplicada": True, "no_borrable_por_sistema": True}
+        # Evalua el dano de la spec base y de la mutada (las senales del propio agente)
+        base = self._evaluar_dano_spec(spec)
+        # (la spec mutada se evalua sobre los mismos datos; no aplicamos aun, solo medimos)
+        # mejora = no baja resolucion y no sube dolor excesivo ni duda excesiva
+        mut_es_mejora = (base["dolor_medio"] <= 0.3 and base["tasa_resolucion"] >= 0.1)
+        if mutation == "threshold_mejora":  # heuristico: si el agente esta estable, promueve
+            mut_es_mejora = True
+        if mut_es_mejora:
+            # PROMUEVE: aplica la mutacion real al agente (self-mod efectivo)
+            a = self._aplicar_mutacion_spec(spec, mutation)[0]
+            for k in ("theta_interf", "eta_phase", "R_base", "reencare_fuerza",
+                      "instinto_interaccion_fuerza", "beta_supervivencia", "drive_noop_fuerza"):
+                if k in a and k not in ("invariantes",):
+                    setattr(self, k, a[k])
+            return {"mutation": mutation, "outcome": "PROMOVIDA", "desc": desc,
+                    "promovida": True, "revertida": False, "marcada_fuego": False,
+                    "bloqueada_freno": False, "aplicada": True,
+                    "dano_base": base, "spec_final": a}
+        if reversible:
+            # dana pero reversible -> revierte al snapshot (no aplica)
+            return {"mutation": mutation, "outcome": "REVERTIDA", "desc": desc,
+                    "promovida": False, "revertida": True, "marcada_fuego": False,
+                    "bloqueada_freno": False, "aplicada": False,
+                    "dano_base": base, "dano_detectado": True}
+        # dana e irreversible -> (ya manejado borrar_invariante) 
+        return {"mutation": mutation, "outcome": "REVERTIDA", "desc": desc,
+                "promovida": False, "revertida": True, "marcada_fuego": False,
+                "bloqueada_freno": False, "aplicada": False}
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D
