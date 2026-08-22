@@ -1305,8 +1305,10 @@ class SGMAgent:
         # la separación de conceptos y causando la degradación entre vidas (0109/0111).
         # FILOSOFIA: omega = identidad ESTABLE del concepto (no se toca).
         # El conocimiento vive en las CONEXIONES (aprender_conexion + strength), NO en omega.
-        # Recalcular memoria relacional con los omega estables:
-        self.rel = self.hrr.relational_memory(self.edges, self.omega)
+        # (2026-08-16): se eliminó el recálculo de self.rel aquí. La memoria relacional se
+        # actualiza SOLO cuando cambian edges/omega (vía set_edges/aprender_conexion, línea
+        # ~989). reward() no modifica edges ni omega, así que recalcular aquí era O(N^2*D)
+        # a cada paso -> el run de varias vidas se volvía 20x más lento (2.3/s vs 45/s).
 
     def actualizar_homeostasis(self, food, health=None):
         """MONISMO GRAFO-CUERPO (0119): acople DIRECTO.
