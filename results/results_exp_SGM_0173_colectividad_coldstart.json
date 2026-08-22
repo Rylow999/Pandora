@@ -1,0 +1,49 @@
+{
+  "experiment_id": "exp_SGM_0173",
+  "experiment_name": "colectividad_coldstart_crafteo",
+  "phase": "Fase 9 - colectividad emergente: 2 grafos en mundos separados con propagacion de conocimiento",
+  "date": "2026-08-15",
+  "mision": "probar la colectividad SIN fragmentar la continuidad: cada grafo en su propio mundo; cuando UNO consolida un hito, lo PROPAGA al otro. El cruce emerge del conocimiento compartido, no de alternar un mismo cuerpo (lectura 0165).",
+  "hypothesis": "con mundos separados + propagacion, cada grafo conserva la continuidad para lograr mas, y el conocimiento se acumula en la colectividad (B adopta el hito de A).",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_vidas_cada_uno": 12,
+    "seeds_A_B": [
+      42,
+      43
+    ],
+    "hitos_propagados": [
+      "wood_pickaxe",
+      "stone"
+    ]
+  },
+  "result": {
+    "A": {
+      "logros": "{'collect_sapling', 'collect_wood', 'collect_drink', 'defeat_zombie'}",
+      "paso_make": null,
+      "paso_eat": null,
+      "pasos": 2082
+    },
+    "B": {
+      "logros": "{'collect_sapling', 'collect_wood', 'collect_drink'}",
+      "paso_make": null,
+      "paso_eat": null,
+      "pasos": 2195
+    },
+    "conocimiento_propagado_a_B": {
+      "n_recursos": 0,
+      "recursos": {}
+    }
+  },
+  "script": "experiments/exp_SGM_0173_colectividad_coldstart.py",
+  "results_file": "results/results_exp_SGM_0173_colectividad_coldstart.json",
+  "variant_of": "exp_SGM_0165",
+  "lit_refs": [
+    "colectividad por propagacion de conocimiento",
+    "aprendizaje vicario Bandura",
+    "modelo del otro ToM"
+  ],
+  "notes": "Mundos separados (continuidad preservada) + propagacion de hitos entre grafos. El cruce emerge del conocimiento compartido, sin fragmentar la continuidad de ninguno.",
+  "notes_criollo": "Dos cerebros, cada uno en su propio mundo, que se pasan lo que van aprendiendo. Asi ninguno pierde su hilo, y el conocimiento se junta en el grupo."
+}

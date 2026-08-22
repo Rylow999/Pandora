@@ -2617,5 +2617,15 @@
     "hypothesis": "un unico detector de proximidad (que DO/place/make compartan) arregla las inconsistencias de percepcion del crafteo",
     "result_summary": "PROGRESO REAL. El detector unificado (verificar_proximidad en sgm_core.py) arreglo DO: el agente VOLVIO A COMER VACA (eat_cow=True; antes _algo_enfrente=0 fijo dejaba a DO ciego a lo que tenia enfrente). steps_con_wood_ge2=573 (antes 2-7), intentos_make=1 (PRIMER intento de craftear de la saga con esta config - antes 0). PERO el crafteo sigue bloqueado por el COLD-START (0170): make_cond_ok=0, make_logrado=0 - el agente intento make 1 vez pero fallo por falta de mesa (steps_mesa_cerca=0, intentos_place_table=0). El detector unificado arreglo DO (come vaca) pero no place/make (que dependen del razonamiento secuencial del periodo sensible). La interface de lenguaje corre en paralelo en background (aprende).",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0173",
+    "experiment_name": "colectividad_coldstart_crafteo",
+    "date": "2026-08-16",
+    "phase": "Fase 9 - cierre de la saga del crafteo: colectividad + cold-start + detector unificado",
+    "test_target": "retomar el 0166 (colectividad mundos separados) con detector unificado + cold-start roto de A: que A craftee la primera vez y propague el conocimiento a B (opcion b, Luciano)",
+    "hypothesis": "romper el cold-start de A (mesa+wood inicial) permite a A craftear y propagar el hito a B",
+    "result_summary": "CIERRE DE LA SAGA DEL CRAFTEO (hallazgo estructural y honesto, tras 5 experimentos de colectividad: 0156, 0157, 0165, 0166, 0173). Aun con cold-start roto (mesa colocada + 2 wood al inicio) y detector unificado, A nunca elegio craftear (make=None) ni comio (eat=None); B sin propagation (0 recursos -> {}). CONCLUSION: el problema NO es la proximidad (detector unificado la arreglo en 0170, donde si comio vaca por la senal mesa_cerca en sv, ausente en este _sv heredado del 0166), NI la organizacion (mundos separados/mismo cuerpo), NI el cold-start (romperlo no basto). El agente NO PRIORIZA la composicion (make/place) sobre subsistencia/exploracion/defensa en vidas cortas: la accion 11 y la 8 nunca superan a recolectar/explorar/defeat en el score del step. Es una propiedad del balance de instintos, no un bug. DECISION (Luciano): registrar como cierre y priorizar el LENGUAJE y MINECRAFT, donde con mas complejidad y tiempo el sistema puede desarrollar la composicion naturalmente.",
+    "status": "done"
   }
 ]
