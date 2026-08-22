@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_SGM_0171",
+  "experiment_name": "comunicacion_en_vivo_sgm_luciano",
+  "phase": "Fase 10 - comunicacion bidireccional SGM <-> Luciano en Crafter (en vivo)",
+  "date": "2026-08-15",
+  "mision": "validar la comunicacion bidireccional en accion: SGM reporta su estado mientras juega, Luciano le da instrucciones y SGM las aplica a su conducta.",
+  "config": {
+    "D": 128,
+    "N_NODES": 64,
+    "n_lives": 3,
+    "seed": 42,
+    "cuadros_msg": 50
+  },
+  "result": {
+    "mensajes": [
+      {
+        "paso": 0,
+        "categoria": "silencio",
+        "frase": "estoy aqu\u00ed",
+        "hambre": 0.1
+      },
+      {
+        "paso": 50,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.2
+      },
+      {
+        "paso": 100,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.4
+      },
+      {
+        "paso": 150,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.6
+      },
+      {
+        "paso": 200,
+        "categoria": "necesidad",
+        "frase": "tengo hambre, necesito comida",
+        "hambre": 0.8
+      },
+      {
+        "paso": 250,
+        "categoria": "necesidad",
+        "frase": "tengo hambre, necesito comida",
+        "hambre": 1.0
+      },
+      {
+        "paso": 271,
+        "categoria": "recuerdo",
+        "frase": "recuerdo algo que me import\u00f3",
+        "hambre": 0.1
+      },
+      {
+        "paso": 321,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.2
+      },
+      {
+        "paso": 371,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.4
+      },
+      {
+        "paso": 421,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.6
+      },
+      {
+        "paso": 450,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.1
+      },
+      {
+        "paso": 500,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.2
+      },
+      {
+        "paso": 550,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.4
+      },
+      {
+        "paso": 600,
+        "categoria": "recuerdo",
+        "frase": "recuerdo que obtuv\u00e9 comida",
+        "hambre": 0.6
+      }
+    ],
+    "logros": [
+      "collect_drink",
+      "collect_wood"
+    ],
+    "pasos": 634,
+    "n_do": 61,
+    "instrucciones_aplicadas": [
+      {
+        "paso": 100,
+        "texto": "deberias comer algo",
+        "reconocida": true,
+        "efecto": {
+          "tipo": "meta",
+          "recurso": "food"
+        }
+      },
+      {
+        "paso": 400,
+        "texto": "recolecta madera para craftear",
+        "reconocida": true,
+        "efecto": {
+          "tipo": "meta",
+          "recurso": "wood"
+        }
+      }
+    ],
+    "n_instrucciones": 2,
+    "interacciones_transformer": [
+      1,
+      2,
+      3
+    ]
+  },
+  "script": "experiments/exp_SGM_0171_comunicacion_vivo.py",
+  "results_file": "results/results_exp_SGM_0171_comunicacion_vivo.json",
+  "lit_refs": [
+    "comunicacion bidireccional VSA/HDC+transformer",
+    "lenguaje emergente"
+  ],
+  "notes": "SGM habla su mundo interno (frases legibles por la interfaz hibrida) mientras subsiste en Crafter, y procesa las instrucciones de Luciano (comer, madera, zombie) afectando su estado interno y conducta. Las interacciones acumuladas entrenan el transformer.",
+  "notes_criollo": "El bicho te va hablando mientras juega (tiene hambre, valora madera), y cuando le dec\u00eds algo (come, junta madera) lo tiene en cuenta. Es el primer dialogo real."
+}

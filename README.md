@@ -1070,3 +1070,42 @@ priorizado en la decisión de comer. Sin hardcode: nada se fuerza; se deja al si
 **Registry: 160 entradas.** Siguiente: **Pieza 4 — Identidad / auto-modelo** (narrativa del yo).
 
 ---
+
+
+## FASE 9 COMPLETA + FASE 10 (LENGUAJE/COMUNICACIÓN) — RESULTADOS (15-08-2026)
+
+### Cierre de la Fase 9 (5/5 piezas del Mundo Interno)
+- **Pieza 4 — Identidad / auto-modelo** (`auto_modelo`, `narrar_historia`): el agente sintetiza su "yo"
+  desde la experiencia (episodios, valencia, consolidaciones), sin hardcode. Verificado ad-hoc.
+- **Pieza 5 — Modelo del otro / Teoría de la Mente** (`observar_otro`, `inferir_conocimiento_otro`,
+  `narrar_social`): aprende vicariamente (Bandura) y forma creencias sobre el otro por observación
+  (ToM). Verificado ad-hoc.
+
+### Colectividad (0156-0166): misma lección estructural
+Tras 5 experimentos (mismo cuerpo 0156/0157/0165, mundos separados 0166), el cruce entre grafos
+**sigue en 0 (vicario=0)** porque ninguno produce logros de composición que propagar. **HALLAZGO**:
+el cuello de botella NO es la organización, es que el agente base casi nunca llega a wood>=2 (0167:
+solo 2 pasos de 1405). El crafteo quedó anclado al problema de **cold-start de la composición** (0170):
+para aprender make->wood_pickaxe necesita mesa, para colocar mesa necesita el conocimiento — circular.
+
+### Respuesta a la preocupación de Luciano: ¿sigue comiendo vacas?
+- **0168**: un SEEKING food drive AGRESIVO empeoró (solo deambulaba). Corregido a LEVE (umbral hambre
+  0.5, refuerzo 0.3*hambre) -> el agente **VOLVIÓ A COMER VACA (eat_cow)** + drink/sapling/wood +
+  place_logrado=3. Responde la preocupación: sí come cuando el sistema no está dominado por una
+  pulsión punitiva.
+
+### FASE 10 — Lenguaje & comunicación bidireccional SGM <-> Luciano (OBJETIVO DE LUCIANO)
+- **Diccionario base extensible** (55 tokens del mundo SGM) + serializador de estado->tokens +
+  vector de estado (condición / "LoRA-equiv"): cómo se expresa SGM depende de lo que siente/valora.
+- **Mini-transformer numpy propio** (sin pytorch): aprendió "hambre->comida" (30/30 semillas, robusto).
+- **Interfaz HÍBRIDA** (`sgm_lang_interfaz`): el transformer clasifica la CATEGORÍA de mensaje
+  (necesidad/recuerdo/preferencia/social/silencio) según el estado, y una plantilla arma la frase legible.
+- **0171 — Comunicación en vivo en Crafter**: PRIMER DIÁLOGO REAL. SGM te habló mientras jugaba
+  ("estoy aquí" -> "recuerdo que obtuve comida" -> "tengo hambre, necesito comida") y HIZO CASO de tus
+  instrucciones ("deberías comer"->meta food, "recolecta madera"->meta wood). Acumuló interacciones para
+  entrenar el transformer.
+
+**Registry: 166 entradas.** Hito: comunicación bidireccional SGM<->Luciano funcionando en el mundo.
+Retomar: (a) que el transformer aprenda más de interacciones reales, (b) el crafteo con la lección del
+"período sensible" (primer disparo para romper el cold-start compositivo).
+---

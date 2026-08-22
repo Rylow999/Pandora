@@ -2597,5 +2597,15 @@
     "hypothesis": "la deduccion de pre-condicion (mesa que falta) completa el crafteo emergente",
     "result_summary": "NO se completo el crafteo (intentos_place_table=0, make=0). HALLAZGO FUNDAMENTAL: COLD-START de la composicion. El agente junta MUCHA madera (381 pasos con >=2, mas que nunca) y percibe la mesa, PERO 'razonar_meta(wood_pickaxe)' devuelve None - porque nunca aprendio la conexion make->wood_pickaxe (nunca crafteo porque nunca coloco mesa) -> circulo vicioso. Para deducir 'necesito mesa' exige conocer make->wood_pickaxe, que requiere mesa. El conocimiento compositivo NO PUEDE ARRANCAR desde cero limpio en ciclo de subsistencia: es un problema de periodo sensible / primer disparo. El crafteo FUNCIONA cuando hay un disparo previo (0152 con mundo persistente) pero no se autogenera. DECISION: registrar hallazgo y pasar al LENGUAJE (objetivo: que SGM se comunique con Luciano - mas cerca de su vision). Retomar la composicion con la leccion del periodo sensible cuando corresponda.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0171",
+    "experiment_name": "comunicacion_en_vivo_sgm_luciano",
+    "date": "2026-08-15",
+    "phase": "Fase 10 - comunicacion bidireccional SGM <-> Luciano en Crafter (en vivo)",
+    "test_target": "validar la comunicacion bidireccional en accion: SGM reporta su estado mientras juega, Luciano le da instrucciones y SGM las aplica a su conducta",
+    "hypothesis": "SGM se expresa en lenguaje natural (interfaz hibrida transformer+plantilla) y procesa las instrucciones de Luciano, afectando su estado interno",
+    "result_summary": "EL PRIMER DIALOGO REAL SGM<->LUCIANO EN EL MUNDO FUNCIONO. SGM TE HABLO while jugando con frases legibles: paso 0 'estoy aqui' -> paso 50 'recuerdo que obtuve comida' -> paso 200 'tengo hambre, necesito comida' (sigue su flujo de experiencia: recordar -> hambre). SGM HIZO CASO de 2 instrucciones de Luciano (paso 100 'deberias comer' reconocida=True -> efecto meta food; paso 400 'recolecta madera' -> efecto meta wood). 61 veces acciono 'do' (comer/atacar). 3 interacciones acumuladas para entrenar el transformer. MATIZ honesto: la 3ra instruccion (zombie, paso 700) no se aplico (el agente murio antes, 634 pasos); el mensaje dominante fue 'recuerdo que obtuve comida' (recuerdo saliente); no mostro preferencia/social (sin valencia o creencias fuertes en este run).",
+    "status": "done"
   }
 ]
