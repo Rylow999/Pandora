@@ -130,6 +130,31 @@ class MiniTransformer:
 
         return -np.log(p[target])  # loss (para tracking)
 
+    def guardar(self, path):
+        """Guarda los pesos del modelo a un archivo .npz (persistencia en caliente).
+        Asi el aprendizaje del transformer sobrevive entre sesiones/procesos
+        (LUCIANO: que el lenguaje aprenda de interacciones poco a poco a lo largo del
+        tiempo, sin reentrenar de cero cada vez)."""
+        np.savez(path, We=self.We, Wq=self.Wq, Wk=self.Wk, Wv=self.Wv,
+                 Wc=self.Wc, W1=self.W1, b1=self.b1, W2=self.W2, b2=self.b2,
+                 Wo=self.Wo, bo=self.bo)
+
+    def cargar(self, path):
+        """Carga los pesos desde un .npz (caliente). Devuelve True si cargo bien."""
+        try:
+            d = np.load(path)
+            self.We = d["We"]; self.Wq = d["Wq"]; self.Wk = d["Wk"]; self.Wv = d["Wv"]
+            self.Wc = d["Wc"]; self.W1 = d["W1"]; self.b1 = d["b1"]
+            self.W2 = d["W2"]; self.b2 = d["b2"]; self.Wo = d["Wo"]; self.bo = d["bo"]
+            return True
+        except Exception:
+            return False
+
+    @staticmethod
+    def existe(path):
+        import os
+        return os.path.exists(path)
+
 
 if __name__ == "__main__":
     # smoke test: entrenar una regla trivial (estado hambre -> token comida)

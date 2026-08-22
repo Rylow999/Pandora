@@ -37,10 +37,20 @@ class InterfazLenguaje:
         # datos de entrenamiento acumulados: [(contexto_ids, estado_vector, target_id)]
         self.datos_train = []
         self.max_gen = 8  # longitud maxima de respuesta de SGM (tokens)
-        # pre-entrenar con el corpus basico del mundo interno (los estados prototipicos
-        # y su frase correcta) para que el transformer arranque generando frases
-        # coherentes (no tokens aleatorios). Luego aprende mas de las interacciones.
-        self._preentrenar_base()
+        # PERSISTENCIA EN CALIENTE: si existe el modelo persistido a disco, se carga
+        # (SGM conserva lo aprendido de interacciones previas, sin reentrenar de cero).
+        # Si no existe, pre-entrena con el corpus base la primera vez.
+        self.modelo_ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "sgm_lang_weights.npz")
+        if self.modelo.existe(self.modelo_ruta):
+            self.modelo.cargar(self.modelo_ruta)
+        else:
+            self._preentrenar_base()
+            self.modelo.guardar(self.modelo_ruta)  # guardar la base inicial
+
+    def guardar_modelo(self):
+        """Guarda los pesos del transformer a disco (persistencia del aprendizaje)."""
+        self.modelo.guardar(self.modelo_ruta)
 
     def _preentrenar_base(self):
         """Entrena el modelo con los estados prototipicos del mundo SGM y su frase
@@ -148,6 +158,9 @@ class InterfazLenguaje:
                 self.modelo.entrenar(ctx, estado_vec, target)
         # guardar el dato para futuro re-entrenamiento
         self.datos_train.append((ids, estado_vec))
+        # PERSISTENCIA EN CALIENTE: guardar los pesos tras cada interaccion aprendida,
+        # para que SGM conserve el aprendizaje entre sesiones (sin reentrenar de cero).
+        self.guardar_modelo()
         return 1
 
     # ---- humano -> SGM (tu entrada afecta su estado y el responde) ----

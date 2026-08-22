@@ -5,3 +5,6 @@ __pycache__/
 
 # Resultados de corridas temporales (mantener los JSON de resultados commiteados)
 *.tmp
+
+# Pesos del transformer persistidos (estado de aprendizaje, no se versionan)
+experiments/sgm_lang_weights.npz
