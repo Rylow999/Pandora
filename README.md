@@ -1134,3 +1134,63 @@ y tras entrenar se actualizan los pesos a disco. Regresión core PASS.
   entorno), (2) entrenar el transformer con más interacciones reales, (3) retomar el crafteo
   con la lección del "período sensible" (cold-start compositivo).
 ---
+
+
+## CIERRE DE LA HISTORIA DE CRAFTER — RESÚMEN COMPLETO (16-08-2026)
+
+### Lo que SGM tiene en resumidas cuentas (estado integrado)
+El sustrato SGM es **agnóstico de entorno** (VSA/HDC + HRR + PPR) y acumuló estos
+módulos cognitivos, todos verificados ad-hoc:
+
+**Instintos y homeostasis (base, Fases 0-8):**
+- Instintos independientes en el core (alimentación anclada a `food<3`, interacción
+  unificada en `do`(5) para comer Y atacar, gradiente homeostático 0123, exploración
+  por incertidumbre 0121, drive anti-noop 0128).
+- **Árbitro de modos (0140)**: MODO_SUPERVIVENCIA si hambre/amenaza crítica -> la pulsión
+  de supervivencia toma control exclusivo (contention scheduling, Norman & Shallice).
+- **SEEKING food drive leve (0168)**: bajo hambre real y sin nada enfrente, refuerza el
+  movimiento de búsqueda (Panksepp) sin anular la recolección.
+- Detector UNICO de proximidad (0172): `verificar_proximidad` computa de una vez
+  `_algo_enfrente` (DO), `_cerca_tipo` (place/make), y `_posicion_actual` (re-encare).
+
+**Mundo Interno (Fase 9, 5/5 piezas):**
+- **Memoria episódica** (0153): recupera episodios salientes (accion+recursos+saliencia).
+- **Imaginación + gate explotación-exploración** (0158/0159): proyección del modelo del
+  mundo; el gate decide explotar una meta recordada o explorar (la mejor config).
+- **Valencia hedónica por recurso** (0160/0161): gusto/aversión individualizado; el
+  arbitro preferencia-necesidad (elegir_meta) manda que la hambre crítica pese mas.
+- **Identidad / auto-modelo** (0163): el agente sintetiza su "yo" desde experiencia
+  (auto_modelo, narrar_historia, honesto sin experiencia).
+- **Modelo del otro / ToM** (0164): aprendizaje vicario (Bandura) y creencias sobre el
+  otro por observación (observar_otro, narrar_social).
+
+**Lenguaje y comunicación (Fase 10):**
+- **Diccionario base extensible** (55 tokens) + serializador estado->tokens + vector de
+  condición (el "LoRA-equiv": cómo se expresa SGM depende de lo que siente/valora).
+- **Mini-transformer numpy propio** con persistencia EN CALIENTE (aprende de
+  interacciones poco a poco, sin reentrenar de cero).
+- **Interfaz HÍBRIDA** (sgm_lang_interfaz): el transformer clasifica la CATEGORÍA de
+  mensaje (necesidad/recuerdo/preferencia/social/silencio) según el estado -> plantilla
+  arma la frase legible.
+- **0171**: PRIMER diálogo real SGM<->Luciano en vivo (Crafter). SGM te habló
+  ("estoy aquí" -> "recuerdo que obtuve comida" -> "tengo hambre, necesito comida")
+  y HIZO CASO de tus instrucciones ("deberías comer"->meta food, "recolecta madera"->meta wood).
+
+### Resultados de la saga del crafteo (CIERRE HONESTO)
+Tras 5 experimentos de colectividad (0156, 0157, 0165, 0166, 0173) y el diagnóstico
+instrumentado (0167-0170), la conclusión es clara y honesta:
+- **El agente NO PRIORIZA la composición** (make/place) sobre subsistencia/exploración/
+  defensa en vidas cortas: las acciones 8 y 11 nunca superan a recolectar/explorar/defeat
+  en el score del step. Es una propiedad del balance de instintos, no un bug.
+- **No bastó**: ni el detector unificado (0172, que sí arregló DO -> volvió a comer vaca
+  en 0170), ni la percepción de mesa en sv (0170), ni romper el cold-start con mesa+wood
+  inicial (0173). El crafteo emergente puro no se sostiene en vidas cortas de subsistencia.
+- **DECISIÓN**: registrar como cierre y pasar al LENGUAJE en MINECRAFT, donde con más
+  complejidad y tiempo el sistema puede desarrollar la composición naturalmente.
+
+### Decisión de infraestructura (16-08-2026)
+Luciano eligió instalar Java + un servidor Minecraft local vanilla para migrar SGM a un
+mundo más rico (habría con Node/npm disponible, sin Java ni servidor aún). El sustrato
+SGM es agnóstico: solo cambia el adaptador de entorno (observaciones + acciones).
+
+---
