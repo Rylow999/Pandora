@@ -1109,3 +1109,28 @@ para aprender make->wood_pickaxe necesita mesa, para colocar mesa necesita el co
 Retomar: (a) que el transformer aprenda más de interacciones reales, (b) el crafteo con la lección del
 "período sensible" (primer disparo para romper el cold-start compositivo).
 ---
+
+
+### Persistencia EN CALIENTE del aprendizaje del transformer (16-08-2026)
+Pregunta de Luciano: "¿el aprendizaje se carga en caliente o hay que reentrenar cada vez?"
+**Respuesta: se CARGA EN CALIENTE.** Antes los pesos del transformer morían al cerrar el
+proceso; ahora:
+- `MiniTransformer.guardar()/cargar()`: persiste los pesos numpy a `experiments/sgm_lang_weights.npz`.
+- `InterfazLenguaje.__init__`: si existe el `.npz` lo CARGA (SGM conserva lo aprendido entre
+  sesiones); si no, pre-entrena con el corpus base la primera vez y lo guarda.
+- `registrar_interaccion`: tras cada interacción aprendida, guarda los pesos a disco.
+- El `.npz` (estado de aprendizaje) se ignora en git; el código de persistencia se versiona.
+Verificado ad-hoc (PASS): guardar escribe, cargar restaura, la interfaz carga el persistido,
+y tras entrenar se actualizan los pesos a disco. Regresión core PASS.
+
+**ESTADO ACTUAL (16-08-2026):**
+- **Registry: 166 entradas.**
+- **Fase 1-9 completas**: comportamiento de subsistencia, memoria episódica, imaginación+gate,
+  valencia, identidad, modelo del otro.
+- **Fase 10 (lenguaje/comunicación) avanzada**: comunicación bidireccional SGM<->Luciano
+  funcionando en vivo (0171), diccionario base extensible, mini-transformer numpy con
+  persistencia en caliente, interfaz híbrida (transformer clasifica categoría -> plantilla frase).
+- **Pendiente roadmap**: (1) migrar el sustrato a MINECRAFT (mismo SGM, nuevo adaptador de
+  entorno), (2) entrenar el transformer con más interacciones reales, (3) retomar el crafteo
+  con la lección del "período sensible" (cold-start compositivo).
+---
