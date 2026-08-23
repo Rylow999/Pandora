@@ -20,7 +20,7 @@ La integracion guarda las interacciones (estado + frase de SGM) como datos de
 entrenamiento, para que el transformer MEJORE poco a poco con el uso real
 (el objetivo: que SGM aprenda a comunicarse de sus propias interacciones).
 """
-import sys, os, numpy as np
+import sys, os, json, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sgm_lang import (DICCIONARIO_BASE, TOKEN2ID, SOS, EOS, PAD, VOCAB_SIZE,
                       token_a_id, ids_a_tokens, estado_a_contexto_vector, estado_a_tokens)
@@ -51,6 +51,72 @@ class InterfazLenguaje:
     def guardar_modelo(self):
         """Guarda los pesos del transformer a disco (persistencia del aprendizaje)."""
         self.modelo.guardar(self.modelo_ruta)
+
+    def guardar_todo(self, ag, ruta=None):
+        """PERSISTE TODA la info del aprendizaje (no solo pesos) para sobrevivir a un stop:
+          - diccionario expandido (TOKEN2ID con tokens nuevos aprendidos)
+          - datos de entrenamiento acumulados (self.datos_train)
+          - estado del agente (historia, episodios, valencia, modelo del otro, meta sugerida)
+          - pesos del transformer (guardar_modelo)
+        Asi, si el proceso se detiene, se recupera TODO el aprendizaje, no solo el modelo."""
+        ruta = ruta or os.path.join(os.path.dirname(os.path.abspath(__file__)), "sgm_state.json")
+        # diccionario: tokens nuevos agregados al base
+        base_tokens = [t for t in ["<sos>","</sos>","<pad>","yo","y","pero","porque","comida",
+                                   "madera","mesa","pico","piedra","hierro","vaca","hambre","veo",
+                                   "recuerdo","valoro","evito","tengo","necesito","quiero","aprendi",
+                                   "bien","mal","peligro","zombie","enemigo","comer","craftear",
+                                   "explorar","soy","creo","el otro","sabe","puede","no","si"]]
+        base_tokens += [f"acc_{i}" for i in range(17)]
+        tokens_nuevos = [t for t in TOKEN2ID if t not in base_tokens]
+        # estado del agente: serializar lo persistible
+        estado_ag = {
+            "historia": list(getattr(ag, "historia", []) or [])[:getattr(ag, "historia_max", 200)],
+            "episodios": list(getattr(ag, "episodios", []) or [])[:getattr(ag, "episodios_max", 50)],
+            "valencia_recurso": dict(getattr(ag, "valencia_recurso", {}) or {}),
+            "modelo_del_otro": dict(getattr(ag, "modelo_del_otro", {}) or {}),
+            "meta_sugerida": getattr(ag, "_meta_sugerida", None),
+            "hambre_real": getattr(ag, "_hambre_real", 0.0),
+        }
+        payload = {
+            "tokens_nuevos": tokens_nuevos,
+            "datos_train": [[list(map(int, ids)), (est.tolist() if hasattr(est, "tolist") else list(est))]
+                     for ids, est in self.datos_train],
+            "estado_agente": estado_ag,
+            "contador": getattr(self, "contador", 0),
+        }
+        with open(ruta, "w") as f:
+            json.dump(payload, f, indent=2)
+        self.guardar_modelo()  # pesos aparte en .npz
+        return ruta
+
+    def cargar_todo(self, ag, ruta=None):
+        """Carga el estado persistido (guardar_todo) si existe. Devuelve True si cargo algo."""
+        ruta = ruta or os.path.join(os.path.dirname(os.path.abspath(__file__)), "sgm_state.json")
+        if not os.path.exists(ruta):
+            return False
+        try:
+            d = json.load(open(ruta))
+            # diccionario: registrar tokens nuevos
+            for t in d.get("tokens_nuevos", []):
+                token_a_id(t)
+            # datos de entrenamiento
+            self.datos_train = [(list(map(int, ids)), np.array(est)) for ids, est in d.get("datos_train", [])]
+            # estado del agente
+            ea = d.get("estado_agente", {})
+            if "historia" in ea and hasattr(ag, "historia"): ag.historia = list(ea["historia"])
+            if "episodios" in ea and hasattr(ag, "episodios"): ag.episodios = list(ea["episodios"])
+            if "valencia_recurso" in ea and hasattr(ag, "valencia_recurso"):
+                ag.valencia_recurso = dict(ea["valencia_recurso"])
+            if "modelo_del_otro" in ea and hasattr(ag, "modelo_del_otro"):
+                ag.modelo_del_otro = dict(ea["modelo_del_otro"])
+            if ea.get("meta_sugerida") is not None and hasattr(ag, "_meta_sugerida"):
+                ag._meta_sugerida = ea["meta_sugerida"]
+            if "hambre_real" in ea and hasattr(ag, "_hambre_real"):
+                ag._hambre_real = ea["hambre_real"]
+            self.contador = d.get("contador", 0)
+            return True
+        except Exception:
+            return False
 
     def _preentrenar_base(self):
         """Entrena el modelo con los estados prototipicos del mundo SGM y su frase
