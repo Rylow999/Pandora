@@ -2627,5 +2627,15 @@
     "hypothesis": "romper el cold-start de A (mesa+wood inicial) permite a A craftear y propagar el hito a B",
     "result_summary": "CIERRE DE LA SAGA DEL CRAFTEO (hallazgo estructural y honesto, tras 5 experimentos de colectividad: 0156, 0157, 0165, 0166, 0173). Aun con cold-start roto (mesa colocada + 2 wood al inicio) y detector unificado, A nunca elegio craftear (make=None) ni comio (eat=None); B sin propagation (0 recursos -> {}). CONCLUSION: el problema NO es la proximidad (detector unificado la arreglo en 0170, donde si comio vaca por la senal mesa_cerca en sv, ausente en este _sv heredado del 0166), NI la organizacion (mundos separados/mismo cuerpo), NI el cold-start (romperlo no basto). El agente NO PRIORIZA la composicion (make/place) sobre subsistencia/exploracion/defensa en vidas cortas: la accion 11 y la 8 nunca superan a recolectar/explorar/defeat en el score del step. Es una propiedad del balance de instintos, no un bug. DECISION (Luciano): registrar como cierre y priorizar el LENGUAJE y MINECRAFT, donde con mas complejidad y tiempo el sistema puede desarrollar la composicion naturalmente.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0174",
+    "experiment_name": "maraton_final_100_vidas_sgm_completo",
+    "date": "2026-08-16",
+    "phase": "Maraton final - SGM completo y libre antes de migrar a Minecraft",
+    "test_target": "dejar correr SGM COMPLETO (instintos + mundo interno Fase 9 + lenguaje Fase 10 + self-mod 0018 + trauma 0021 + detector unico de proximidad) y LIBRE (sin hardcode) durante 100 vidas, registrando todo",
+    "hypothesis": "el core consolidado sobrevive 100 vidas sin romperse y SGM muestra su repertorio completo",
+    "result_summary": "MARATON COMPLETADA: 100 vidas, 17737 pasos, 45.5 pasos/s (390s), 0 errores. Logros (6): drink, sapling, wood, defeat_skeleton, defeat_zombie, EAT_COW. Acciones dominantes: mover(1)=8127, interactuar(5)=3780, espera(0)=5829. self-mod invocado 2 veces libremente, trauma 0 (pasos cortos no alcanzaron step 900). Lenguaje OK (SGM se expreso toda la maraton). CONCLUSIONES honestas: (1) el core consolidado es ROBUSTO - 100 vidas sin un solo error tras integrar self-mod + trauma + fix de rendimiento; (2) los instintos de subsistencia/defensa operan (come vaca, vence enemigos); (3) el crafteo sigue sin emerger en vidas cortas (cold-start, consistente con la saga); (4) lo confirmado: listo para migrar a Minecraft con sustrato solido.",
+    "status": "done"
   }
 ]

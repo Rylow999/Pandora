@@ -1,0 +1,1129 @@
+{
+  "vidas": 100,
+  "total_pasos": 17737,
+  "logros": [
+    "collect_drink",
+    "collect_sapling",
+    "collect_wood",
+    "defeat_skeleton",
+    "defeat_zombie",
+    "eat_cow"
+  ],
+  "acciones": {
+    "0": 5829,
+    "1": 8127,
+    "5": 3780,
+    "13": 1
+  },
+  "selfmod_calls": 2,
+  "trauma_calls": 0,
+  "mensajes": [
+    {
+      "vida": 0,
+      "paso": 0,
+      "categoria": "silencio",
+      "frase": "estoy aqu\u00ed",
+      "hambre": 0.1
+    },
+    {
+      "vida": 1,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 2,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 3,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 4,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 5,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 6,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 7,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 8,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 9,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 10,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 11,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo algo que me import\u00f3",
+      "hambre": 0.1
+    },
+    {
+      "vida": 12,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 13,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 14,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 15,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 16,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 17,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 18,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 19,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 madera",
+      "hambre": 0.1
+    },
+    {
+      "vida": 20,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 21,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 22,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 23,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 24,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo algo que me import\u00f3",
+      "hambre": 0.1
+    },
+    {
+      "vida": 25,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 26,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 27,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 28,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 29,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 30,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 31,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 32,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 33,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 34,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 35,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 36,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 37,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 38,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    },
+    {
+      "vida": 39,
+      "paso": 0,
+      "categoria": "recuerdo",
+      "frase": "recuerdo que obtuv\u00e9 comida",
+      "hambre": 0.1
+    }
+  ],
+  "n_do": 3780,
+  "errores": [],
+  "vidas_det": [
+    {
+      "vida": 0,
+      "pasos": 173,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.0
+    },
+    {
+      "vida": 1,
+      "pasos": 174,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 1.36
+    },
+    {
+      "vida": 2,
+      "pasos": 211,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.11
+    },
+    {
+      "vida": 3,
+      "pasos": 159,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 0.85
+    },
+    {
+      "vida": 4,
+      "pasos": 193,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.08
+    },
+    {
+      "vida": 5,
+      "pasos": 41,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.21
+    },
+    {
+      "vida": 6,
+      "pasos": 178,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.17
+    },
+    {
+      "vida": 7,
+      "pasos": 216,
+      "logros": [
+        "collect_drink",
+        "defeat_zombie"
+      ],
+      "seg": 1.16
+    },
+    {
+      "vida": 8,
+      "pasos": 203,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.32
+    },
+    {
+      "vida": 9,
+      "pasos": 173,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 1.01
+    },
+    {
+      "vida": 10,
+      "pasos": 258,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.48
+    },
+    {
+      "vida": 11,
+      "pasos": 157,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.06
+    },
+    {
+      "vida": 12,
+      "pasos": 213,
+      "logros": [],
+      "seg": 1.21
+    },
+    {
+      "vida": 13,
+      "pasos": 184,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.32
+    },
+    {
+      "vida": 14,
+      "pasos": 189,
+      "logros": [],
+      "seg": 1.22
+    },
+    {
+      "vida": 15,
+      "pasos": 179,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.21
+    },
+    {
+      "vida": 16,
+      "pasos": 69,
+      "logros": [],
+      "seg": 0.39
+    },
+    {
+      "vida": 17,
+      "pasos": 169,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 0.96
+    },
+    {
+      "vida": 18,
+      "pasos": 401,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 2.65
+    },
+    {
+      "vida": 19,
+      "pasos": 49,
+      "logros": [],
+      "seg": 0.27
+    },
+    {
+      "vida": 20,
+      "pasos": 192,
+      "logros": [],
+      "seg": 1.43
+    },
+    {
+      "vida": 21,
+      "pasos": 159,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.87
+    },
+    {
+      "vida": 22,
+      "pasos": 161,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.94
+    },
+    {
+      "vida": 23,
+      "pasos": 241,
+      "logros": [],
+      "seg": 1.52
+    },
+    {
+      "vida": 24,
+      "pasos": 175,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 0.97
+    },
+    {
+      "vida": 25,
+      "pasos": 28,
+      "logros": [
+        "collect_sapling"
+      ],
+      "seg": 0.19
+    },
+    {
+      "vida": 26,
+      "pasos": 209,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.19
+    },
+    {
+      "vida": 27,
+      "pasos": 165,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.02
+    },
+    {
+      "vida": 28,
+      "pasos": 171,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 1.0
+    },
+    {
+      "vida": 29,
+      "pasos": 219,
+      "logros": [],
+      "seg": 1.27
+    },
+    {
+      "vida": 30,
+      "pasos": 187,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.24
+    },
+    {
+      "vida": 31,
+      "pasos": 212,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.23
+    },
+    {
+      "vida": 32,
+      "pasos": 158,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.05
+    },
+    {
+      "vida": 33,
+      "pasos": 172,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.0
+    },
+    {
+      "vida": 34,
+      "pasos": 161,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.34
+    },
+    {
+      "vida": 35,
+      "pasos": 196,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.16
+    },
+    {
+      "vida": 36,
+      "pasos": 191,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.32
+    },
+    {
+      "vida": 37,
+      "pasos": 246,
+      "logros": [
+        "collect_drink",
+        "collect_wood",
+        "eat_cow"
+      ],
+      "seg": 1.46
+    },
+    {
+      "vida": 38,
+      "pasos": 155,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 0.93
+    },
+    {
+      "vida": 39,
+      "pasos": 220,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.46
+    },
+    {
+      "vida": 40,
+      "pasos": 178,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.03
+    },
+    {
+      "vida": 41,
+      "pasos": 187,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 1.36
+    },
+    {
+      "vida": 42,
+      "pasos": 112,
+      "logros": [],
+      "seg": 0.66
+    },
+    {
+      "vida": 43,
+      "pasos": 240,
+      "logros": [],
+      "seg": 1.78
+    },
+    {
+      "vida": 44,
+      "pasos": 86,
+      "logros": [
+        "collect_sapling"
+      ],
+      "seg": 0.5
+    },
+    {
+      "vida": 45,
+      "pasos": 150,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 0.89
+    },
+    {
+      "vida": 46,
+      "pasos": 135,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 0.87
+    },
+    {
+      "vida": 47,
+      "pasos": 170,
+      "logros": [
+        "defeat_skeleton"
+      ],
+      "seg": 0.99
+    },
+    {
+      "vida": 48,
+      "pasos": 273,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.92
+    },
+    {
+      "vida": 49,
+      "pasos": 274,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.61
+    },
+    {
+      "vida": 50,
+      "pasos": 169,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.15
+    },
+    {
+      "vida": 51,
+      "pasos": 171,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.0
+    },
+    {
+      "vida": 52,
+      "pasos": 250,
+      "logros": [],
+      "seg": 1.84
+    },
+    {
+      "vida": 53,
+      "pasos": 161,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 0.92
+    },
+    {
+      "vida": 54,
+      "pasos": 138,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 0.81
+    },
+    {
+      "vida": 55,
+      "pasos": 227,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.63
+    },
+    {
+      "vida": 56,
+      "pasos": 228,
+      "logros": [
+        "collect_drink",
+        "collect_wood",
+        "defeat_zombie"
+      ],
+      "seg": 1.35
+    },
+    {
+      "vida": 57,
+      "pasos": 151,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.99
+    },
+    {
+      "vida": 58,
+      "pasos": 164,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 1.01
+    },
+    {
+      "vida": 59,
+      "pasos": 153,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.09
+    },
+    {
+      "vida": 60,
+      "pasos": 212,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.24
+    },
+    {
+      "vida": 61,
+      "pasos": 184,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 1.06
+    },
+    {
+      "vida": 62,
+      "pasos": 194,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.36
+    },
+    {
+      "vida": 63,
+      "pasos": 154,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 0.9
+    },
+    {
+      "vida": 64,
+      "pasos": 257,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.75
+    },
+    {
+      "vida": 65,
+      "pasos": 169,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 0.99
+    },
+    {
+      "vida": 66,
+      "pasos": 215,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.59
+    },
+    {
+      "vida": 67,
+      "pasos": 179,
+      "logros": [
+        "collect_sapling",
+        "collect_wood",
+        "defeat_skeleton"
+      ],
+      "seg": 0.99
+    },
+    {
+      "vida": 68,
+      "pasos": 218,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.44
+    },
+    {
+      "vida": 69,
+      "pasos": 149,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 0.86
+    },
+    {
+      "vida": 70,
+      "pasos": 183,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.04
+    },
+    {
+      "vida": 71,
+      "pasos": 157,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 1.12
+    },
+    {
+      "vida": 72,
+      "pasos": 37,
+      "logros": [
+        "defeat_zombie"
+      ],
+      "seg": 0.22
+    },
+    {
+      "vida": 73,
+      "pasos": 110,
+      "logros": [],
+      "seg": 0.68
+    },
+    {
+      "vida": 74,
+      "pasos": 178,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.11
+    },
+    {
+      "vida": 75,
+      "pasos": 76,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 0.45
+    },
+    {
+      "vida": 76,
+      "pasos": 171,
+      "logros": [
+        "collect_sapling"
+      ],
+      "seg": 1.4
+    },
+    {
+      "vida": 77,
+      "pasos": 204,
+      "logros": [
+        "collect_drink",
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.19
+    },
+    {
+      "vida": 78,
+      "pasos": 174,
+      "logros": [],
+      "seg": 1.24
+    },
+    {
+      "vida": 79,
+      "pasos": 205,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 1.18
+    },
+    {
+      "vida": 80,
+      "pasos": 172,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.97
+    },
+    {
+      "vida": 81,
+      "pasos": 139,
+      "logros": [
+        "collect_drink",
+        "collect_sapling"
+      ],
+      "seg": 0.96
+    },
+    {
+      "vida": 82,
+      "pasos": 172,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 1.01
+    },
+    {
+      "vida": 83,
+      "pasos": 99,
+      "logros": [],
+      "seg": 0.68
+    },
+    {
+      "vida": 84,
+      "pasos": 334,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.94
+    },
+    {
+      "vida": 85,
+      "pasos": 185,
+      "logros": [
+        "collect_sapling",
+        "collect_wood",
+        "eat_cow"
+      ],
+      "seg": 1.46
+    },
+    {
+      "vida": 86,
+      "pasos": 168,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.95
+    },
+    {
+      "vida": 87,
+      "pasos": 239,
+      "logros": [],
+      "seg": 1.57
+    },
+    {
+      "vida": 88,
+      "pasos": 159,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 0.97
+    },
+    {
+      "vida": 89,
+      "pasos": 151,
+      "logros": [],
+      "seg": 0.87
+    },
+    {
+      "vida": 90,
+      "pasos": 156,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 1.11
+    },
+    {
+      "vida": 91,
+      "pasos": 305,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.63
+    },
+    {
+      "vida": 92,
+      "pasos": 189,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.38
+    },
+    {
+      "vida": 93,
+      "pasos": 160,
+      "logros": [],
+      "seg": 0.93
+    },
+    {
+      "vida": 94,
+      "pasos": 180,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.08
+    },
+    {
+      "vida": 95,
+      "pasos": 167,
+      "logros": [
+        "collect_sapling",
+        "collect_wood"
+      ],
+      "seg": 1.07
+    },
+    {
+      "vida": 96,
+      "pasos": 205,
+      "logros": [
+        "collect_drink",
+        "collect_wood"
+      ],
+      "seg": 1.22
+    },
+    {
+      "vida": 97,
+      "pasos": 46,
+      "logros": [],
+      "seg": 0.36
+    },
+    {
+      "vida": 98,
+      "pasos": 219,
+      "logros": [
+        "collect_drink"
+      ],
+      "seg": 1.31
+    },
+    {
+      "vida": 99,
+      "pasos": 42,
+      "logros": [
+        "collect_wood"
+      ],
+      "seg": 0.38
+    }
+  ],
+  "seg_total": 390.1,
+  "velocidad_pasos_s": 45.5
+}

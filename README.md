@@ -1194,3 +1194,21 @@ mundo más rico (habría con Node/npm disponible, sin Java ni servidor aún). El
 SGM es agnóstico: solo cambia el adaptador de entorno (observaciones + acciones).
 
 ---
+
+
+### MARATÓN FINAL: SGM completo y libre, 100 vidas (exp_SGM_0174, 16-08-2026)
+**RESULTADO: 100 vidas, 17,737 pasos, 45.5 pasos/s, 0 errores.**
+- **Logros (6):** collect_drink, collect_sapling, collect_wood, defeat_skeleton, defeat_zombie, **eat_cow**.
+- **Acciones (libre):** mover(1)=8127, interactuar/do(5)=3780, espera(0)=5829.
+- **self-mod invocado 2 veces libremente; trauma 0 (vidas cortas no alcanzan el trigger).**
+- **Lenguaje:** SGM se expresó durante toda la maratón (recuerdos, necesidades) — la interfaz Fase 10 viva.
+- **Fix de rendimiento validado:** reward() sin recálculo O(N²·D) de relational_memory en cada paso → 45.5 pasos/s (antes ~2.3/s).
+
+**CONCLUSIONES:**
+1. El core consolidado es ROBUSTO: 100 vidas sin un solo error tras integrar self-mod + trauma + el fix.
+2. Los instintos de subsistencia/defensa operan (come vaca, vence enemigos).
+3. El crafteo sigue sin emerger en vidas cortas (cold-start), consistente con toda la saga — pendiente en Minecraft (mundo más rico).
+4. SGM está listo para migrar a Minecraft con un sustrato sólido y completo.
+
+**Registry: 169 entradas.**
+---
