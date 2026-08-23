@@ -37,6 +37,7 @@ class InterfazLenguaje:
         # datos de entrenamiento acumulados: [(contexto_ids, estado_vector, target_id)]
         self.datos_train = []
         self.max_gen = 8  # longitud maxima de respuesta de SGM (tokens)
+        self.contador = 0  # contador de ciclos (para persistencia del loop)
         # PERSISTENCIA EN CALIENTE: si existe el modelo persistido a disco, se carga
         # (SGM conserva lo aprendido de interacciones previas, sin reentrenar de cero).
         # Si no existe, pre-entrena con el corpus base la primera vez.
