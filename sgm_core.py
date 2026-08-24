@@ -1772,6 +1772,46 @@ class SGMAgent:
             return self.decoder_l2_rol(pr, excluir)
         return self.decoder_l2_contexto(contexto_ids, excluir)
 
+    # ---------- SUENO / RECONCILIACION (rem: consolidacion offline de memoria) ----------
+    # Mecanismo que Luciano pidio y que no existia: al final del dia (o periodicamente),
+    # SGM 'suena' para consolidar lo vivido. Replica la reconsolidacion de memoria:
+    #   - REFUERZA las conexiones mas usadas (historia del dia) -> se consolidan.
+    #   - PODA las conexiones que nunca se activaron y que no estan consolidadas.
+    #   - 'reconcilia' el grafo de conocimiento con la experiencia (frecuencia de uso).
+    # Es la fase OFFLINE de aprendizaje (como el replay en RL / la reconsolidacion en neuro).
+    def reconciliar_sueno(self, conteo_exitos=None, podar=True, umbral_poda=0.35):
+        """Reconsolidacion de la memoria durante el 'sueno' (offline).
+        - Refuerza las conexiones (accion,recurso) que el agente uso con exito hoy
+          (de conteo_exitos_conexion o la historia) -> entran en self.consolidadas.
+        - Poda aristas del grafo que nunca se activaron y no estan consolidadas (si podar).
+        Devuelve dict{n_refuerzos, n_poda} con lo que se consolido/podo en el suenio."""
+        # 1) reforzar conexiones exitosas del dia -> consolidar (memoria entre episodios)
+        cont = conteo_exitos if conteo_exitos is not None else getattr(self, 'conteo_exitos_conexion', {})
+        n_ref = 0
+        for (i, j), n in list(cont.items()):
+            if n >= 2 and i < len(self.omega) and j < len(self.omega):
+                # consolidar: entra la conexion al set de indestructibles
+                if (i, j) not in self.consolidadas:
+                    self.consolidadas.add((i, j))
+                    n_ref += 1
+        # 2) poda del grafo: aristas no consolidadas que no se usaron (si podar)
+        n_poda = 0
+        if podar:
+            usadas = set()
+            # de la historia, marcar aristas (estado,accion) como usadas
+            for (eq, acc, *_) in getattr(self, 'historia', []):
+                usadas.add((eq, acc))
+            for i in list(self.edges):
+                for j in list(self.edges[i]):
+                    clave = (i, j)
+                    if clave not in self.consolidadas and clave not in usadas:
+                        # arista nunca usada y no consolidada -> candidata a poda
+                        # poda SOLO si el nodo i no es la raiz/identidad (no se poda la identidad)
+                        if i != 0:
+                            self.edges[i].remove(j)
+                            n_poda += 1
+        return {"n_refuerzos": n_ref, "n_poda": n_poda}
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D
