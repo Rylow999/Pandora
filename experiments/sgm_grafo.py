@@ -189,7 +189,7 @@ class SGMAgent:
             return self._arbitro.elegir(self, valid_actions)
         
         # Fallback: PPR directo desde nodo 0
-        from sgm_ppr import ppr_route
+        from experiments.sgm_ppr import ppr_route
         rank = ppr_route(self.edges, 0, self._aff, alpha=0.15, iters=10)
         
         best, bv = -1, -2.0

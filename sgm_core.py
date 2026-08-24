@@ -118,6 +118,9 @@ class SGMAgentCore(SGMAgentGrafo):
             delta_food = food - self.ultimo_food
             if delta_food > 0 and self.instinto_alimentacion is not None:
                 self.reforzar_arista(self.instinto_alimentacion, 0, 0.05)
+                # Recordar dónde se resolvió el hambre (navegación a meta)
+                if self._posicion_actual is not None:
+                    self.meta_recordada = self._posicion_actual
         self.ultimo_food = food
 
     # ============ HOMEOSTASIS ============
@@ -390,6 +393,12 @@ class SGMAgentCore(SGMAgentGrafo):
         self.historial_campos.append(zona)
         self.historial_acciones_l2.append(accion)
         
+        # 12. Mutar place cell activo si se queda quieto (plasticidad local)
+        # La señal es la homeostasis normalizada (0-1), como en el monolito
+        if accion == 0 and self.place_activo >= 0:
+            señal = max(0.0, min(1.0, self.V_grafo))
+            self.mutar_omega_lugar(señal, tasa=self.mutacion_tasa)
+        
         return accion
 
     def _post_accion(self, accion):
@@ -404,11 +413,18 @@ class SGMAgentCore(SGMAgentGrafo):
             self.aprender_conexion(self.ultima_accion, accion)
         # Necesidad insatisfecha
         self.necesidad_insatisfecha = self._hambre_real > 0.3 and self.ultima_accion == self.instinto_alimentacion
-        # Repetición
-        self.conteo_repeticion = self.conteo_repeticion + 1 if accion == self.ultima_accion else 0
+        # Repetición → stagnation
+        if accion == self.ultima_accion:
+            self.conteo_repeticion += 1
+            self.stagnation_ticks += 1
+        else:
+            self.conteo_repeticion = 0
+            self.stagnation_ticks = 0
         self.ultima_accion = accion
-        # Duda
+        # Duda + recuperación
         if self.doubt_cooldown > 0: self.doubt_cooldown -= 1
+        if self.status == "INCONCLUSA" and self.stagnation_ticks < 5:
+            self.status = "ACTIVA"  # recuperación
         elif self.status == "ACTIVA" and self.stagnation_ticks > 20:
             self.status = "INCONCLUSA"; self.doubt_cooldown = 10
 

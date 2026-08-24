@@ -136,7 +136,8 @@ class PulsionGradiente(Pulsion):
         if grad_dir == (0, 0):
             return result
         
-        accion_grad = agente._direccion_a_accion(grad_dir[0], grad_dir[1])
+        grad_dir = grad_dir if len(grad_dir) == 3 else (*grad_dir, 0)
+        accion_grad = agente._direccion_a_accion(grad_dir[0], grad_dir[1], grad_dir[2])
         if accion_grad in valid_actions:
             factor = self._modo_factor(agente, modo_base=1.0, modo_sup=0.3)
             result[accion_grad] = config_grad.get('fuerza', 0.5) * factor
@@ -196,8 +197,8 @@ class PulsionReEncare(Pulsion):
             if accion_mov in valid_actions and accion_mov in agente.acciones_movimiento:
                 result[accion_mov] = mult * self.params['fuerza'] * necesidad
         
-        # Si está adyacente: interactuar
-        elif target_dist == 1 and accion_do is not None and accion_do in valid_actions:
+        # Si está adyacente: interactuar (distancia euclídea, no exacta)
+        elif target_dist <= 1.5 and accion_do is not None and accion_do in valid_actions:
             result[accion_do] = mult * necesidad * agente.instinto_interaccion_fuerza
         
         return result
