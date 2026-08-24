@@ -68,7 +68,8 @@ class SGMAgentCore(SGMAgentGrafo):
         self.acciones_interaccion = ACCIONES_INTERACCION
         self.theta_emerg_critico = 0.5
         self.auto_registrar_place = True; self.auto_navegar_meta = True
-        self.place_bucket = 4; self.mutacion_tasa = 0.05
+        self.place_bucket = 16  # un chunk de Minecraft (16x16x16 bloques)
+        self.mutacion_tasa = 0.05
         self.modo = "BASE"; self.modo_ticks = 0; self.ultima_accion = -1; self.conteo_repeticion = 0
         self._ultima_accion_ejec = -1; self.historial_acciones = []
         # L2 + modelo mundo + self-mod
@@ -77,11 +78,17 @@ class SGMAgentCore(SGMAgentGrafo):
         self.ultimo_food = None; self.conteo_induccion = {}
 
     # ============ DECAIMIENTO DE VITALIDAD (Eq.5) ============
-    def decaer_vitalidad(self):
+    def decaer_vitalidad(self, k=3):
+        # Recompensar los k nodos más cercanos a la percepción actual (top-k),
+        # no solo el seed exacto (evita el 'parpadeo' cuando la percepción varía
+        # y el seed salta entre nodos)
+        distancias = [(i, math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], self.omega[self._seed]))))
+                      for i in range(len(self.omega)) if i != self._seed]
+        distancias.sort(key=lambda x: x[1])
+        top_k = {self._seed} | {i for i, _ in distancias[:k]}
+
         for i in range(len(self.vitalidad)):
-            # Recompensar el nodo semilla (lo que el agente percibe ahora),
-            # no la acción ejecutada
-            A = 1.0 if i == self._seed else 0.0
+            A = 1.0 if i in top_k else 0.0
             self.vitalidad[i] = self.vitalidad[i] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
 
     # ============ PODA DE ARISTAS ============
@@ -332,7 +339,7 @@ class SGMAgentCore(SGMAgentGrafo):
         return 0  # NOOP
 
     def _elegir_accion_ppp(self, valid_actions):
-        rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=10)
+        rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=30)
         best, bv = -1, -2.0
         for a in valid_actions:
             if a in rank:
@@ -395,11 +402,19 @@ class SGMAgentCore(SGMAgentGrafo):
         self.historial_campos.append(zona)
         self.historial_acciones_l2.append(accion)
         
-        # 12. Mutar place cell activo si se queda quieto (plasticidad local)
-        # La señal es la homeostasis normalizada (0-1), como en el monolito
-        if accion == 0 and self.place_activo >= 0:
-            señal = max(0.0, min(1.0, self.V_grafo))
-            self.mutar_omega_lugar(señal, tasa=self.mutacion_tasa)
+        # 12. Mutar place cell activo si se está en el mismo lugar un rato
+        # (no solo si accion==noop; en MC puedes estar quieto cayendo, en agua, etc.)
+        if self.place_activo >= 0:
+            if not hasattr(self, '_place_ticks'): self._place_ticks = 0
+            if getattr(self, '_ultimo_place_activo', -1) == self.place_activo:
+                self._place_ticks += 1
+            else:
+                self._place_ticks = 0
+                self._ultimo_place_activo = self.place_activo
+            # Mutar solo si estuvimos en este lugar un rato (>= 3 pasos)
+            if self._place_ticks >= 3:
+                señal = max(0.0, min(1.0, self.V_grafo))
+                self.mutar_omega_lugar(señal, tasa=self.mutacion_tasa)
         
         return accion
 
