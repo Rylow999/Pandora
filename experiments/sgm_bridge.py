@@ -1,57 +1,38 @@
 #!/usr/bin/env python3
-"""sgm_bridge.py — Puente HTTP CHAT↔SGM + ACCIONES↔SGM (lado Python).
+"""sgm_bridge.py — Puente entre SGM (mente) y Minecraft (cuerpo).
+El SGM core es la mente. El bot es el cuerpo. Este archivo los conecta."""
 
-Sirve el sustrato SGM via HTTP local para que el bot de mineflayer
-(puente_minecraft_sgm.js) le pase:
-  - los mensajes de chat (tu -> SGM) y devuelva las respuestas.
-  - la percepcion del mundo (posicion, bloques, entidades) y devuelva la ACCION que
-    SGM decide (moverse/romper/interactuar) usando sgmo.SGMAgent.step() real.
-Usa la interfaz de lenguaje (InterfazLenguaje) y el core (SGMAgent). Sin dependencias.
-"""
-import sys, os, json, random
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import json, random, sys, os, math
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-SGM = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM")
+SGM = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, SGM)
 sys.path.insert(0, os.path.join(SGM, "experiments"))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm_core import SGMAgent
 from sgm_lang_interfaz import InterfazLenguaje
-# clasificador de INTENCION (charla/indicacion/pregunta/relato) con HRR/VSA + sgm_mundo
 from sgm_atencion import ClasificadorIntencion
 import sgm_mundo
 
-# DECODIFICADOR L2 (PURE-L2): W·ω + b → softmax → token
 from sgm_l2_decoder import L2Decoder
 from sgm_lang import ID2TOKEN
-
-# un agente SGM persistente para la sesion
-ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
-
-# CREADOR DE CONCEPTOS Y ACCIONES (crecimiento libre)
-from sgm_crecimiento import CreadorConceptos, CreadorAcciones, CreadorLenguaje
-creador = CreadorConceptos(ag)
-accion_creator = CreadorAcciones(ag)
-lenguaje_creator = CreadorLenguaje(ag)
-
-# METACOGNICIÓN: razonar sobre sí misma, dudar, experimentar
 from sgm_metacognicion import Metacognicion, Experimentador
-meta = Metacognicion(ag)
-experimentador = Experimentador(ag, meta)
 
-l2 = L2Decoder(D_sem=128, lr=0.05)
-print("[sgm_bridge] Decodificador L2 listo. Pesos en:", l2.ruta_pesos)
-
-# clasificador de intencion compartido (usa el HRR del sustrato)
+# LA MENTE: agente SGM con todas sus capacidades
+ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
 clasif = ClasificadorIntencion(agente=ag)
 ag.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
 il = InterfazLenguaje()
+l2 = L2Decoder(D_sem=128, lr=0.05)
+meta = Metacognicion(ag)
+experimentador = Experimentador(ag, meta)
+
+# Configurar el adaptador de Minecraft
+ag.instinto_alimentacion = 5  # acción de interactuar
+
 print("[sgm_bridge] SGM listo. Escuchando en :8790")
 
-# mapeo de accion de SGM (indice 0-16) a lo que el bot debe hacer
-# (coherente con las acciones del core de Crafter; el bot traduce a mineflayer)
-# 0=noop/espera, 1-4=mover(caminar), 5=do(interactuar), otros=acciones especiales
 ACCION_MC = {
     0: "noop", 1: "mover_norte", 2: "mover_sur", 3: "mover_oeste", 4: "mover_este",
     5: "interactuar", 6: "romper", 7: "recoger", 8: "colocar", 9: "craftear",
@@ -77,10 +58,8 @@ class Puente(BaseHTTPRequestHandler):
                 texto_lower = texto.lower().strip()
                 clasi = clasif.intencion(texto)
                 intencion = clasi.get("intencion", "charla")
-                resp = ""
                 payload = {"intencion": intencion}
 
-                # INDICACIONES DE ACCIÓN
                 palabras_accion = ["tala", "talar", "rompe", "romper", "mata", "matar", "ataca", "atacar",
                                    "mueve", "mover", "veni", "venir", "ven", "explora", "explorar",
                                    "craftea", "craftear", "recolecta", "recolectar", "recoge", "recoger",
@@ -105,14 +84,6 @@ class Puente(BaseHTTPRequestHandler):
                     if aprendidas:
                         payload["aprendidas"] = aprendidas
                         il.guardar_todo(ag)
-                        # CRECIMIENTO LIBRE: aprender de la experiencia
-                        todas_palabras = [w for w in texto_lower.split() if len(w) > 2]
-                        creador.aprender_experiencia(todas_palabras, 0.8)
-                        accion_creator.registrar_accion(
-                            texto_lower.replace(" ", "_"),
-                            [w for w in texto_lower.split() if len(w) > 2],
-                            aprendidas
-                        )
                     self._send(json.dumps(payload, ensure_ascii=False))
                     return
 
@@ -133,9 +104,6 @@ class Puente(BaseHTTPRequestHandler):
                     if aprendidas:
                         il.guardar_todo(ag)
                         resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
-                        # CRECIMIENTO LIBRE: aprender de la experiencia
-                        todas_palabras = [w for w in texto_lower.split() if len(w) > 2]
-                        creador.aprender_experiencia(todas_palabras, 0.8)
                     else:
                         resp = f"[relato] entendido, lo registro"
                 else:
@@ -157,35 +125,38 @@ class Puente(BaseHTTPRequestHandler):
                 ent_near = json.loads(ent_near) if isinstance(ent_near, str) else ent_near
                 peligro = 1.0 if any(e in ("zombie", "skeleton", "creeper", "spider") for e in ent_near) else 0.0
                 recurso = 1.0 if any(e in ("tree", "oak_log", "wood", "cow", "pig", "chicken") for e in ent_near) else 0.0
-                ag._hambre_real = min(1.0, hambre)
-                ag._amenaza = min(1.0, peligro)
+                
+                # Configurar el agente con las señales del mundo
+                ag._hambre_real = hambre
+                ag._amenaza = peligro
                 ag._posicion_actual = (int(x), int(z))
-                ag._config_grad = {"activo": False, "fuerza": 0.0}
+                ag._algo_enfrente = 1 if recurso > 0 else (2 if peligro > 0 else 0)
+                ag._hay_gradiente = recurso > 0 or peligro > 0
+                ag._gradiente_dir = (1, 0) if recurso > 0 else (0, 0)
+                ag._config_grad = {"activo": recurso > 0, "fuerza": recurso}
                 ag._config_curio = {"activo": True, "fuerza": 0.4}
                 ag._inc_dirs = {a: 1.0 for a in (1, 2, 3, 4)}
-                ag._hay_gradiente = False
-                sv = [float(v) for v in (
+                
+                # Crear state_semantic de 18 dimensiones (como en Crafter)
+                sv = [
                     x / 50.0, z / 50.0, hambre, peligro, recurso,
-                    health / 20.0, food / 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
-                eq = ag.cuantizar_estado(sv)
-                a = ag.step(sv, list(range(17)))
+                    health / 20.0, food / 20.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+                ]
+                
+                # Ejecutar el step real del SGMAgent
+                valid_actions = list(range(17))
+                a = ag.step(sv, valid_actions)
                 accion = ACCION_MC.get(a, "noop")
-                self._send(json.dumps({"accion": accion, "indice": a, "hambre": round(ag._hambre_real, 2),
-                                       "amenaza": round(ag._amenaza, 2)}))
-            elif u.path == "/metacognicion":
-                # METACOGNICIÓN: Pandora razona sobre sí misma, duda, experimenta
-                try:
-                    reflexion = meta.reflexionar()
-                    analisis = meta.razonar_sobre_si_mismo()
-                    duda_texto = meta.generar_duda_texto()
-                    payload = {
-                        "reflexion": reflexion,
-                        "auto_razonamiento": analisis,
-                        "duda": duda_texto,
-                    }
-                    self._send(json.dumps(payload, ensure_ascii=False))
-                except Exception as e:
-                    self._send(json.dumps({"error": str(e)}))
+                
+                self._send(json.dumps({
+                    "accion": accion, 
+                    "indice": a, 
+                    "hambre": round(ag._hambre_real, 2),
+                    "amenaza": round(ag._amenaza, 2),
+                    "V_grafo": round(ag.V_grafo, 3),
+                    "modo": getattr(ag, 'modo', 'BASE'),
+                }))
             elif u.path == "/hablar_l2":
                 omega_json = q.get("omega", "[]")[0] if q.get("omega") else "[]"
                 omega = json.loads(omega_json) if isinstance(omega_json, str) else omega_json
@@ -198,6 +169,15 @@ class Puente(BaseHTTPRequestHandler):
                     top = l2.decodificar(omega_np, topk=3, temperatura=0.8)
                     tokens = [(ID2TOKEN.get(t, "??"), "%.3f" % p) for t, p in top]
                     self._send(json.dumps({"tokens": tokens}))
+            elif u.path == "/metacognicion":
+                try:
+                    reflexion = meta.reflexionar()
+                    analisis = meta.razonar_sobre_si_mismo()
+                    duda_texto = meta.generar_duda_texto()
+                    payload = {"reflexion": reflexion, "auto_razonamiento": analisis, "duda": duda_texto}
+                    self._send(json.dumps(payload, ensure_ascii=False))
+                except Exception as e:
+                    self._send(json.dumps({"error": str(e)}))
             else:
                 self._send("ok - sgm_bridge")
         except Exception as e:
@@ -211,4 +191,6 @@ class Puente(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     port = 8790
-    HTTPServer(("127.0.0.1", port), Puente).serve_forever()
+    httpd = HTTPServer(("127.0.0.1", port), Puente)
+    print(f"[sgm_bridge] escuchando en :{port}")
+    httpd.serve_forever()
