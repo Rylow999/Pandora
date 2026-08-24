@@ -33,6 +33,104 @@ DICCIONARIO_ACCIONES_MC = [
 ]
 # es tambien el 'vocabulario de acciones' que SGM conoce de su mundo
 
+# DICCIONARIO ANCLADO AL MUNDO DE MINECRAFT (Luciano: relacionar mundo con lenguaje).
+# Cada ACCION y cada OBJETO/BLOQUE/ENTIDAD del juego con sus palabras espanolas + sinonimos.
+# Esto es lo que permite a SGM vincular lenguaje <-> mundo: "rompe el arbol" ->
+#   action "romper" + objeto "arbol"(arbol,roble,tronco,oak) + relacion "romper_arbol -> madera".
+# Y usar la SINTAXIS (sujeto/verbo/objeto) + el grafo para entender de verdad.
+DICCIONARIO_MUNDO_MC = {
+    # ------- ACCIONES: palabra -> accion del repertorio -------
+    "acciones": {
+        "mover": ["mover", "moverse", "caminar", "andar", "ir", "desplazar", "venir", "acercarse", "seguir", "vete", "anda"],
+        "saltar": ["saltar", "brincar", "salta"],
+        "romper": ["romper", "quebrar", "destruir", "talar", "picar", "minar", "rompe", "rompé", "tala", "tirá"],
+        "colocar": ["colocar", "poner", "construir", "coloca", "poné", "construí"],
+        "recolectar": ["recolectar", "recoger", "juntar", "cosechar", "reunir", "obtener", "recolecta", "recogé", "cosecha"],
+        "craftear": ["craftear", "fabricar", "crear", "hacer", "elaborar", "craftea", "fabricá"],
+        "atacar": ["atacar", "pegar", "golpear", "dañar", "matar", "defender", "atacá", "pega", "matá"],
+        "comer": ["comer", "alimentarse", "tomar", "ingerir", "devorar", "come", "comé", "como", "comer"],
+        "explorar": ["explorar", "buscar", "investigar", "recorrer", "descubrir", "explora", "busca", "recorre"],
+        "huir": ["huir", "escapar", "correr", "alejarse", "retirarse", "esquivar", "huí", "escape", "corré"],
+    },
+    # ------- OBJETOS / BLOQUES / RECURSOS -------
+    "objetos": {
+        "arbol": ["arbol", "roble", "tronco", "oak", "madera_natural", "planta", "bosque"],
+        "madera": ["madera", "tabla", "leña", "tronco_transformado", "wood"],
+        "piedra": ["piedra", "roca", "mineral", "canto", "stone"],
+        "hierro": ["hierro", "metal", "mineral_de_hierro", "iron"],
+        "comida": ["comida", "alimento", "carne", "fruta", "manzana", "pan", "bizcocho"],
+        "mesa": ["mesa", "mesa_de_crafteo", "crafting", "banco_de_trabajo", "workbench"],
+        "herramienta": ["herramienta", "pico", "espada", "hacha", "azada", "pala"],
+        "pico": ["pico", "pico_de_piedra", "pico_de_madera", "pickaxe"],
+        "espada": ["espada", "arma", "sword"],
+        "bloque": ["bloque", "cubo", "bloque_de_oro", "bloque_de_hierro"],
+    },
+    # ------- ENTIDADES / CRIATURAS / JUGADOR -------
+    "entidades": {
+        "vaca": ["vaca", "res", "juvenil"],
+        "cerdo": ["cerdo", "chancho", "cerdito"],
+        "pollo": ["pollo", "gallina", "pollo_muerto"],
+        "zombie": ["zombie", "zombi", "muerto_viviente", "monstruo", "enemigo", "no_vivo"],
+        "esqueleto": ["esqueleto", "huesos_vivientes", "esquelet", "monstruo"],
+        "creeper": ["creeper", "explosivo", "verde", "monstruo_explosivo"],
+        "araña": ["araña", "arana", "monstruo"]
+    },
+}
+
+# SINTAXIS: tipos de palabra / roles. SGM usa estos para distinguir SUJETO/VERBO/OBJETO
+# y CONECTORES, de modo que "yo rompo arbol" != "arbol rompe yo".
+TIPOS_PALABRA = {
+    "verbo": ["romper", "mover", "comer", "recoger", "craftear", "atacar", "colocar", "saltar", "explorar", "huir"],
+    "sujeto": ["yo", "el", "ella", "sgm", "tu", "vos", "usted", "jugador", "humano"],
+    "objeto_mundo": ["arbol", "madera", "piedra", "hierro", "comida", "mesa", "herramienta", "pico",
+                     "espada", "bloque", "vaca", "cerdo", "pollo", "zombie", "esqueleto", "creeper", "araña"],
+    "conector": ["el", "la", "los", "las", "un", "una", "de", "a", "hacia", "y", "para", "en"],
+}
+
+
+def palabra_a_accion(palabra):
+    """Mapea una palabra espanola a la ACCION del repertorio (via DICCIONARIO_MUNDO_MC).
+    Devuelve el nombre de accion (p.ej. 'romper') o None si la palabra no es una accion."""
+    p = palabra.lower()
+    for accion, palabras in DICCIONARIO_MUNDO_MC["acciones"].items():
+        if p in palabras or p == accion:
+            return accion
+    return None
+
+
+def palabra_a_objeto(palabra):
+    """Mapea una palabra espanola a un OBJETO/recurso/entidad del mundo.
+    Devuelve el nombre canonico (p.ej. 'arbol') o None si no es un objeto conocido."""
+    p = palabra.lower()
+    for cat in ("objetos", "entidades"):
+        for obj, palabras in DICCIONARIO_MUNDO_MC[cat].items():
+            if p in palabras or p == obj:
+                return obj
+    return None
+
+
+def analizar_instruccion(texto):
+    """SINTAXIS esencial: descompone una instruccion en (accion, objeto, sujeto).
+    Ej: "rompe el arbol del bosque" -> (accion='romper', objeto='arbol', sujeto=None).
+    Usa DICCIONARIO_MUNDO_MC + TIPOS_PALABRA. Devuelve un dict {accion, objeto, sujeto,
+    conectores, palabras_no_reconocidas}."""
+    import re as _re
+    palabras = _re.findall(r"[a-záéíóúñ]+", texto.lower())
+    accion, objeto, sujeto = None, None, None
+    para_palabra = TIPOS_PALABRA
+    for p in palabras:
+        # acciones
+        if accion is None:
+            accion = palabra_a_accion(p)
+        # objetos del mundo
+        if objeto is None:
+            objeto = palabra_a_objeto(p)
+        # sujetos
+        if p in para_palabra["sujeto"]:
+            sujeto = p
+    return {"accion": accion, "objeto": objeto, "sujeto": sujeto,
+            "palabras": palabras}
+
 # GRAFO SEMANTICO DEL DOMINIO: conexiones entre conceptos del mundo de SGM.
 # Es el 'diccionario con conexiones' que decoder_l2 rutea por rol. Formato:
 #   nodo: lista de (vecino, rol) donde rol = tipo de relacion.
