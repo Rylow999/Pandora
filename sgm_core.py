@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-sgm_core_min.py — SGM core MINIMO (baseline verificado).
-SOLO los mecanismos que demostraron funcionar en exp_SGM_0096 (v2):
-- HDC, HRR, PPR, BigramDecoder, build_nested_K3
-- Vitalidad V_i (gamma=0.01)
-- check_stagnation(), handle_doubt()
-- verify_contradiction() (E_acumulado > theta_refut)
-- reset_episodio (reset suave entre episodios)
+sgm_core.py — SGM: Synthetic Graph Mind (Motor Cognitivo).
 
-SIN omega_root_intero, SIN bonus de raiz, SIN modos, SIN conn_type,
-SIN hibernacion, SIN trauma, SIN proteccion de raiz.
+Arquitectura de grafo cognitivo con:
+- HDC (Hierarchical Distributed Codings) / SensorBridge
+- HRR (Holographic Reduced Representation): bind/unbind, memoria relacional
+- PPR (Personalized PageRank): propagación de información sobre el grafo
+- Kuramoto: sincronización de fases (relevancia cognitiva)
+- NoUS (Eq. 8-12): ventana dinámica, densidad contextual, herencia conceptual
+- Instintos: hambre, exploración, defensa, desplazamiento
+- Memoria episódica + place cells
+- Razonamiento: inducción, deducción, abducción
+- Homeostasis: acople directo grafo-cuerpo (salud del player = vitalidad del grafo)
 
-Este es el punto de partida para la auditoria parte por parte.
+El core es AGNÓSTICO del entorno. El adaptador (harness) provee las señales
+(posición, salud, entidades) y ejecuta las acciones devueltas por step().
 """
 import math, random, re
 
@@ -251,9 +254,9 @@ class SGMAgent:
         # y se apaga al saciarse (V_grafo restaurado) -> no se obsesiona.
         # NO pre-juzga si comer es bueno: eso lo aprende la experiencia.
         # INSTINTO DE INTERACCION (0132): accion operativa para la pulsion.
-        # AGNOSTICO DEL ENTORNO: NO se hardcodea el indice de Crafter aqui. El adaptador del
+        # AGNOSTICO DEL ENTORNO: NO se hardcodea el indice de accion aqui. El adaptador del
         # entorno (harness) setea `instinto_alimentacion` a la accion real de 'interactuar con
-        # lo que hay enfrente' (en Crafter es 5=do, en Minecraft u otro entorno sera otra).
+        # lo que hay enfrente' (en Minecraft u otro entorno sera otra).
         # El sustrato solo tiene una pulsion (hambre/amenaza) y una categoria de accion
         # operativa; el mapeo indice->accion lo hace el adaptador. LECCION 0131+0136: el
         # mapeo del entorno (acciones, objetos) vive en el adaptador, NUNCA en el core.
@@ -319,7 +322,7 @@ class SGMAgent:
         self.reencare_fuerza = 0.8    # fuerza del empuje a moverse hacia el objetivo para reencarar
         # 0138: PLACE CELLS EMERGENTES + NODOS QUE MUTAN (B2, Luciano 2026-08-11).
         # El sustrato construye su propio mapa del entorno de forma AGNOSTICA (no asume
-        # Crafter ni ningun entorno). Cuando el agente llega a una observacion NO familiar,
+        # ningun entorno). Cuando el agente llega a una observacion NO familiar,
         # crea un NODO-LUGAR (place cell) cuyo omega codifica esa situacion. El decoder usa
         # estos nodos-lugar para aprender transiciones (lugar+accion->resultado) e interpretar
         # el espacio de forma emergente, como hacen los RL con la imagen cruda (ver teoria).
@@ -354,7 +357,7 @@ class SGMAgent:
         # affordances de Gibson). Agnóstico del entorno: solo ve "objeto de tipo T en pos P".
         self.objetos = {}   # id_objeto -> {tipo, pos_hist:[(t,x,y)...], velocidad, estado}
         self.objeto_next_id = 0
-        # senales que el adaptador setea: qué objeto hay y dónde (genérico, no Crafter)
+        # senales que el adaptador setea: qué objeto hay y dónde (genérico, no específico)
         self._objetos_vistos = []   # lista de (tipo_generico, x, y) que el adaptador provee
         # 0145: RED ACCION->RESULTADO DEL MUNDO (Luciano). Si el agente no sabe QUÉ acciones
         # existen y QUÉ producen, nunca logra nada (no conoce el espacio de posibilidades).
@@ -769,7 +772,7 @@ class SGMAgent:
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
         """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.
-        Agnóstico del entorno (no asume Crafter): 'obs_clave' es una etiqueta generica de la
+        Agnóstico del entorno (no asume ningún engine): 'obs_clave' es una etiqueta generica de la
         situacion que setea el adaptador. Si el lugar ya existe, devuelve su indice; si no,
         crea un omega nuevo (mutante) y lo agrega al sustrato dinamicamente.
         'posicion' (opcional, (x,y)) la guarda el sustrato para NAVEGACION dirigida a meta:
