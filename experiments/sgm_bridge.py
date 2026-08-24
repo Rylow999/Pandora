@@ -66,8 +66,9 @@ class Puente(BaseHTTPRequestHandler):
                 clasi = clasif.intencion(texto)
                 intencion = clasi.get("intencion", "charla")
                 resp = ""
+                payload = {"intencion": intencion}
 
-                # INDICACIONES DE ACCIÓN (reconocer verbos de Minecraft)
+                # INDICACIONES DE ACCIÓN
                 palabras_accion = ["tala", "talar", "rompe", "romper", "mata", "matar", "ataca", "atacar",
                                    "mueve", "mover", "veni", "venir", "ven", "explora", "explorar",
                                    "craftea", "craftear", "recolecta", "recolectar", "recoge", "recoger",
@@ -79,14 +80,13 @@ class Puente(BaseHTTPRequestHandler):
                 es_indicacion = any(p in texto_lower for p in palabras_accion)
 
                 if es_indicacion or intencion == "indicacion":
-                    # Extraer el objeto de la acción
                     res_inst = ag.procesar_instruccion(texto)
                     analisis = sgm_mundo.analizar_instruccion(texto)
                     plan = None
                     if analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir", "colocar", "interactuar", "equipar"):
                         plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
                     resp = f"[indicacion] entiendo: {texto}"
-                    payload = {"texto": resp, "intencion": "indicacion"}
+                    payload["texto"] = resp
                     if plan:
                         payload["ejecutar"] = plan
                     aprendidas = res_inst.get("palabras_nuevas", [])
@@ -121,10 +121,11 @@ class Puente(BaseHTTPRequestHandler):
                     aprendidas = res_inst.get("palabras_nuevas", [])
                     if aprendidas:
                         il.guardar_todo(ag)
-                self._send(resp)
+                payload["texto"] = resp
+                self._send(json.dumps(payload, ensure_ascii=False))
             elif u.path == "/estado":
                 frase, cat, _ = il.expresarse(ag)
-                self._send(f"[SGM:{cat}] {frase}")
+                self._send(json.dumps({"texto": f"[SGM:{cat}] {frase}", "hambre": ag._hambre_real, "amenaza": ag._amenaza}))
             elif u.path == "/accion":
                 x = float(q.get("x", ["0"])[0]); y = float(q.get("y", ["0"])[0]); z = float(q.get("z", ["0"])[0])
                 food = float(q.get("food", ["20"])[0]); health = float(q.get("health", ["20"])[0])
