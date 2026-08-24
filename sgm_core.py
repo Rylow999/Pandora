@@ -13,7 +13,7 @@ if _RAIZ not in sys.path: sys.path.insert(0, _RAIZ)
 from experiments.sgm_hdc import HDC, SensorBridge
 from experiments.sgm_hrr import HRR
 from experiments.sgm_ppr import ppr_route, ppr_inverso
-from experiments.sgm_kuramoto import kuramoto_step, interferencia, campo_interferencia, promedio_ponderado, step_k_cadenas
+from experiments.sgm_kuramoto import interferencia, campo_interferencia
 from experiments.sgm_grafo import SGMAgent as SGMAgentGrafo
 from experiments.sgm_lang import ID2TOKEN, TOKEN2ID
 from experiments.minecraft_actions import ACCIONES_MOVIMIENTO, ACCIONES_INTERACCION, NOMBRE
@@ -272,8 +272,13 @@ class SGMAgentCore(SGMAgentGrafo):
         total = C.sum()
         if total == 0: return np.zeros_like(C)
         P = C / total; Pi = C.sum(axis=1) / total; Pj = C.sum(axis=0) / total
-        pmi = P / (Pi[:, None] * Pj[None, :] + eps)
-        return np.log(pmi + eps)
+        ratio = P / (Pi[:, None] * Pj[None, :] + eps)
+        # PPMI: log del ratio, truncando a 0 los no-positivos
+        # (log(ratio<=1) < 0 = ruido; PPMI los mapea a 0 exacto)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            ppm = np.log(ratio + eps)
+        ppm[ppm < 0] = 0.0
+        return ppm
 
     def _tsne_puro(self, X, n_components=2, perplexity=30, n_iter=300, lr=200):
         n = X.shape[0]; Y = np.random.randn(n, n_components) * 0.01

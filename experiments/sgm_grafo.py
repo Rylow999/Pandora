@@ -183,24 +183,6 @@ class SGMAgent:
         """Configura el arbitro externo."""
         self._arbitro = arbitro
     
-    def elegir_accion(self, valid_actions):
-        """Elige acción usando el arbitro o PPR directo."""
-        if self._arbitro is not None:
-            return self._arbitro.elegir(self, valid_actions)
-        
-        # Fallback: PPR directo desde nodo 0
-        from experiments.sgm_ppr import ppr_route
-        rank = ppr_route(self.edges, 0, self._aff, alpha=0.15, iters=10)
-        
-        best, bv = -1, -2.0
-        for a in valid_actions:
-            if a in rank:
-                score = rank[a] * self.vitalidad[a]
-                if score > bv:
-                    bv, best = score, a
-        
-        return best if best >= 0 else valid_actions[0]
-    
     def _aff(self, a, b):
         """Afinidad entre nodos (para PPR). No colapsa a 0 ante vitalidad baja."""
         if a >= len(self.omega) or b >= len(self.omega):

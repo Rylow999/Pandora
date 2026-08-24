@@ -22,14 +22,12 @@ SGM es un sistema de inteligencia artificial basado en grafos cognitivos donde c
 │    sgm_hrr.py        → HRR bind/unbind, memoria relacional │
 │    sgm_ppr.py        → PPR + PPR inverso                   │
 │    sgm_kuramoto.py   → Kuramoto + interferencia            │
-│    sgm_homeostasis.py→ Homeostasis grafo-cuerpo             │
-│    sgm_memoria.py    → Episódica + NOUS + lugar            │
-│    sgm_instintos.py  → Instintos biológicos                │
 │    sgm_l2_system.py  → Rosetta + L2 + DecodeL2             │
 │    sgm_pulsiones.py  → 10 plugins + Arbitro modos          │
-│    sgm_bridge.py     → Adaptador HTTP                      │
+│    minecraft_actions.py → Mapeo acciones MC 3D             │
+│    minecraft_perception.py → Def. state_semantic           │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_lang.py (487 tokens)   → Diccionario MC 1.20.4        │
+│  sgm_lang.py (486 tokens)   → Diccionario MC 1.20.4        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -83,16 +81,16 @@ Cada pulsión es un plugin independiente que devuelve `{accion: peso_crudo}`:
 2. Promedio ponderado de omega
 3. Fallback L1 → L2 → softmax → sample
 
-### 4. Homeostasis (`sgm_homeostasis.py`)
+### 4. Homeostasis (`sgm_core.py` — inline)
 
 - `V_grafo = media(vitalidad) × factor_cuerpo(food, health)`
 - `_hambre_real = 1 - food/20`
 - `V_grafo` sube/baja con salud del player
 
-### 5. Memoria y Navegación (`sgm_memoria.py`)
+### 5. Memoria y Navegación (`sgm_core.py` — inline)
 
 - **Memoria episódica**: Buffer de eventos salientes
-- **Place cells**: Nodos-lugar emergentes con posición espacial
+- **Place cells**: Nodos-lugar emergentes con posición espacial (3D con contexto)
 - **Modelo de objetos**: Predicción de posición futura (object permanence)
 - **Navegación a meta**: Ir a lugar recordado donde se resolvió antes
 
@@ -119,7 +117,11 @@ print(f'Acción: {ag.step(sv, list(range(17)))}, Modo: {ag.modo}')
 
 ### Verificación completa
 ```bash
-python3 /tmp/hermes-verify-omega-l2.py
+# Verificación ad-hoc del core (script temporal en /tmp):
+# python3 /tmp/hermes-verify-final.py
+cd ~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
+source ~/crafter-env/bin/activate
+python3 -c "from sgm_core import SGMAgentCore; print('core OK')"
 ```
 
 ---
@@ -131,7 +133,7 @@ python3 /tmp/hermes-verify-omega-l2.py
 | `sgm_core.py` | ✅ Estable, modular, flujo completo |
 | `sgm_pulsiones.py` (10 plugins) | ✅ Integrado |
 | `sgm_l2_system.py` | ✅ Entrenado, 6/6 correctos |
-| `sgm_lang.py` (487 tokens) | ✅ Diccionario MC 1.20.4 |
+| `sgm_lang.py` (486 tokens) | ✅ Diccionario MC 1.20.4 |
 | Experimentos verificados | 170+ |
 
 ---
