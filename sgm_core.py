@@ -195,6 +195,13 @@ class SGMAgent:
         # la 'memoria de sobrevivir' persista entre vidas sin re-descubrir cada vez.
         self.conteo_exitos_conexion = {}  # (i,j) -> veces que esa conexion fue reforzada por exito
         self.conteo_induccion = {}   # (i,j) -> veces que se OBSERVO A->B (evidencia para inducir)
+        # === NOUS (Eq. 8-12): ecuaciones del documento Arquitectura_Pure_L2_Pandora ===
+        self.kappa_W = 2.0            # sensibilidad de ventana a valencia (Eq. 8)
+        self.context_window = []      # buffer de pasos recientes (para W(t) y rho)
+        self.current_density = 0.0    # rho(t) densidad contextual (Eq. 9, tiempo subjetivo)
+        self.effective_learning_rate = 0.10  # beta_eff(t) aprendizaje ponderado (Eq. 10)
+        self.scope_depth = [0] * n_nodes  # profundidad de especializacion (Eq. 11-12)
+        self.parent_of = {}           # {nodo: padre} para herencia conceptual (Eq. 11)
         self.theta_interf_min = 0.45      # umbral de consolidacion minimo (facilitacion maxima)
         self.facilitacion_por_exito = 0.03  # cuanta baja el umbral por cada exito repetido
         # 0156: EXPERIENCIA INTERNA / HISTORIA (Luciano). El sistema crea su PROPIA historia:
@@ -1588,6 +1595,12 @@ class SGMAgent:
         enriched.sort(key=lambda x: -x[1])
         return enriched[:topk]
 
+    def _norm(self, v):
+        """Normaliza un vector in-place (norma L2)."""
+        n = math.sqrt(sum(x * x for x in v))
+        if n > 0:
+            for i in range(len(v)): v[i] /= n
+
     def razonar_meta_compuesta(self, meta, condiciones_activas):
         """0169-A: decide si puede lograr la meta o si necesita preparar una condicion.
         Devuelve (accion_a_ejecutar, es_precondicion): si falta condicion, ejecuta la que
@@ -1597,6 +1610,79 @@ class SGMAgent:
             return pre, True
         acc, plan = self.razonar_meta(meta)
         return acc, False
+
+    # ---------- NOUS (Eq. 8-12): ecuaciones del documento Arquitectura_Pure_L2_Pandora ----------
+    # Eq. 8: W(t) = W_base / (1 + kappa_W * E_root) — ventana dinamica (se contrae bajo estres)
+    # Eq. 9: rho(t) = |E_active| / (W * N_active) — densidad contextual (tiempo subjetivo)
+    # Eq. 10: beta_eff(t) = beta * (1 + rho) — aprendizaje ponderado por densidad
+    # Eq. 11: herencia conceptual — omega_child = omega_parent + delta_specialization
+    # Eq. 12: correccion acotada por scope — solo hacia especializaciones, no a fundamentos
+
+    def W(self):
+        """Eq. 8: ventana de contexto dinamica. Se contrae bajo estres (E_root alto)
+        y se expande en calma. E_root ~ la valencia/amenaza actual del sistema."""
+        E_root = max(0.0, self.E_acumulado)
+        return self.W_base / (1.0 + self.kappa_W * E_root)
+
+    def rho(self):
+        """Eq. 9: densidad contextual = |E_active| / (W * N_active).
+        Tiempo subjetivo: cuando muchas conexiones estan activas, el tiempo
+        subjetivo se 'acelera' (hay mas por unidad de paso)."""
+        W = self.W()
+        E_active = len([i for i, v in enumerate(self.vitalidad) if v > 0.1])
+        N_active = len(self.context_window[-int(W):]) if W > 0 else 1
+        if W == 0 or N_active == 0:
+            return 0.0
+        return E_active / (W * N_active)
+
+    def beta_eff(self):
+        """Eq. 10: aprendizaje ponderado por densidad contextual.
+        Cuando la densidad es alta (muchas conexiones activas), el aprendizaje
+        se intensifica: el sistema aprende mas rapido cuando el mundo es denso."""
+        return self.alpha * (1.0 + self.rho())
+
+    def actualizar_contexto(self):
+        """Actualiza la ventana de contexto (Eq. 8) y la densidad (Eq. 9).
+        Se invoca en cada paso para que W(t) y rho(t) reflejen el estado actual."""
+        W = self.W()
+        self.context_window = self.context_window[-int(W):]
+        self.current_density = self.rho()
+        self.effective_learning_rate = self.beta_eff()
+
+    def heredar_concepto(self, padre, nombre_hijo=None):
+        """Eq. 11: herencia conceptual. Cuando un nuevo nodo se crea como
+        especializacion de un padre, su omega = omega_padre + pequenio ruido
+        (delta_specialization ~ N(0, sigma_her=0.10)).
+        Devuelve el ID del nuevo nodo hijo."""
+        import hashlib
+        rng = __import__('random').Random((padre + hash(nombre_hijo or '')) % (2**32))
+        if nombre_hijo is None:
+            nombre_hijo = 'hijo_de_%d' % padre
+        hijo_id = int(hashlib.md5(nombre_hijo.encode()).hexdigest(), 16) % (len(self.omega) * 10)
+        if hijo_id >= len(self.omega):
+                    # expandir omega y estructuras hasta alcanzar hijo_id
+                    while len(self.omega) <= hijo_id:
+                        self.omega.append([0.0] * self.D)
+                        self.vitalidad.append(0.5)
+                        self.edges[len(self.omega) - 1] = []
+                        self.phi.append(0.0)
+                        self.scope_depth.append(0)
+        padre_vec = self.omega[padre] if padre < len(self.omega) else [0.0] * self.D
+        delta = [rng.gauss(0, 0.10) for _ in range(self.D)]
+        hijo_vec = [(padre_vec[i] + delta[i]) for i in range(self.D)]
+        self._norm(hijo_vec)
+        self.omega[hijo_id] = hijo_vec
+        self.scope_depth[hijo_id] = self.scope_depth[padre] + 1
+        self.parent_of[hijo_id] = padre
+        return hijo_id
+
+    def corregir_acotado(self, nodo_corrected, nodo_objetivo):
+        """Eq. 12: correccion acotada por alcance. Solo se corrige hacia
+        especializaciones (scope_depth mayor), no hacia fundamentos.
+        Si el objetivo es un padre/fundamento del corregido, NO se propaga."""
+        if self.scope_depth[nodo_objetivo] > self.scope_depth[nodo_corrected]:
+            return True
+        return False
 
     # ---------- 0171 (Fase 10): COMUNICACION BIDIRECCIONAL con el humano ----------
     def generar_mensaje(self):
