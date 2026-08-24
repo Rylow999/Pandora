@@ -1575,13 +1575,22 @@ class SGMAgent:
           2. Reconstruye el CAMINO explicativo desde la causa hasta el resultado.
           3. Normaliza el score a confianza interpretable [0,1].
         Devuelve [(causa_id, confianza, camino)] topk."""
+        # grafo transpuesto: aristas invertidas (apuntan hacia las causas)
         inv_edges = {}
+        all_nodes = set(self.edges.keys())
         for i in self.edges:
             for j in self.edges[i]:
+                all_nodes.add(j)
                 if j not in inv_edges: inv_edges[j] = []
                 if i not in inv_edges[j]: inv_edges[j].append(i)
-        rank = ppr_route(inv_edges if resultado in inv_edges else self.edges,
-                         resultado, self._aff, alpha=self.alpha, iters=15)
+        # asegurar que TODOS los nodos esten como claves (para ppr_route)
+        for n in all_nodes:
+            if n not in inv_edges: inv_edges[n] = []
+        grafo = inv_edges if resultado in inv_edges else self.edges
+        # si el grafo no tiene todos los nodos, agregar los faltantes
+        for n in all_nodes:
+            if n not in grafo: grafo[n] = []
+        rank = ppr_route(grafo, resultado, self._aff, alpha=self.alpha, iters=15)
         candidates = [(n, s) for n, s in rank.items() if n != resultado]
         ctx_ids = self._contexto_ids() if usar_contexto else set()
         enriched = []
@@ -1683,6 +1692,70 @@ class SGMAgent:
         if self.scope_depth[nodo_objetivo] > self.scope_depth[nodo_corrected]:
             return True
         return False
+
+    # ---------- K_CADENAS (PURE-L2): K=10 cadenas paralelas que recorren el grafo ----------
+    # Cada cadena evalúa afinidad semántica con vecinos (Eq. 2), selecciona siguiente
+    # nodo por softmax, y actualiza ω (Eq. 1), φ (Eq. 3), V (Eq. 5), interferencia
+    # (Eq. 7). Es el flujo de información paralelo del documento.
+
+    K = 10  # número de cadenas paralelas (documento: K=10)
+
+    def step_k_cadenas(self, input_signal):
+        """Ejecuta K=10 cadenas paralelas que recorren el grafo por afinidad
+        semántica. Cada cadena: evalúa afinidad con vecinos → softmax → mueve →
+        actualiza ω, φ, V, interferencia. Devuelve los nodos visitados por cadena
+        y la zona activa (nodos con interferencia > umbral)."""
+        zona_activa = {}  # nodo -> interferencia
+        visitados = []
+        for k in range(self.K):
+            # nodo inicial: el más cercano a input_signal (o el 0 si no hay señal)
+            if input_signal is not None and len(input_signal) == self.D:
+                actual = self._nodo_mas_cercano(input_signal)
+            else:
+                actual = 0
+            # recorrido de la cadena: 3-5 saltos por cadena
+            for _ in range(3):
+                vecinos = self.edges.get(actual, [])
+                if not vecinos:
+                    break
+                # afinidad semántica (Eq. 2): exp(-α * dist(ω_vecino, ω_actual))
+                afinidades = []
+                for v in vecinos:
+                    dist = self._dist_omega(self.omega[actual], self.omega[v])
+                    afinidades.append(math.exp(-self.alpha * dist))
+                # softmax de afinidades
+                suma = sum(afinidades) or 1.0
+                probs = [a / suma for a in afinidades]
+                # seleccionar siguiente (argmax determinista para reproducibilidad)
+                siguiente = vecinos[probs.index(max(probs))]
+                # actualizar ω del nodo visitado (Eq. 1): ω(t+1) = (1-β)·ω(t) + β·input
+                beta = self.effective_learning_rate
+                for i in range(self.D):
+                    self.omega[siguiente][i] = (1 - beta) * self.omega[siguiente][i] + beta * (input_signal[i] if input_signal else 0.0)
+                # actualizar fase (Eq. 3): φ(t+1) = [φ(t) + η·R·sin(φ_root - φ)] mod 2π
+                delta_phi = math.sin(self.phi_root - self.phi[siguiente])
+                R = 1.0 / (1.0 + self._dist_omega(self.omega[siguiente], self.omega[0]))
+                self.phi[siguiente] = (self.phi[siguiente] + self.eta_phase * R * delta_phi) % (2 * math.pi)
+                # actualizar vitalidad (Eq. 5): V(t+1) = V·e^(-γ) + A·(1-e^(-γ))
+                A = 1.0  # actividad = 1 porque la cadena lo visitó
+                self.vitalidad[siguiente] = self.vitalidad[siguiente] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
+                # evaluar interferencia (Eq. 7): I = ||ω|| · cos(φ - φ_root)
+                norm = math.sqrt(sum(x * x for x in self.omega[siguiente]))
+                interferencia = norm * math.cos(self.phi[siguiente] - self.phi_root)
+                if interferencia > self.theta_interf:
+                    zona_activa[siguiente] = interferencia
+                actual = siguiente
+            visitados.append(actual)
+        return visitados, zona_activa
+
+    def _nodo_mas_cercano(self, signal):
+        """Devuelve el ID del nodo cuyo ω es más cercano a signal (vector)."""
+        mejor = 0; mejor_dist = float('inf')
+        for i, w in enumerate(self.omega):
+            d = math.sqrt(sum((a - b) ** 2 for a, b in zip(w, signal)))
+            if d < mejor_dist:
+                mejor_dist = d; mejor = i
+        return mejor
 
     # ---------- 0171 (Fase 10): COMUNICACION BIDIRECCIONAL con el humano ----------
     def generar_mensaje(self):
