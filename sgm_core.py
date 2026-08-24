@@ -1524,28 +1524,69 @@ class SGMAgent:
         # evidencia insuficiente: aun no generaliza (induccion honesta, no prematura)
         return {"evidencia": evidencia, "consolidada": False, "fuerza": evidencia}
 
-    def abducir(self, resultado, topk=5):
-        """ABDUCCION (Peirce): dado un RESULTADO observado, inferir las CAUSAS/explicaciones
-        mas plausibles. Usa PPR INVERSO: ranquea nodos sobre el GRAFO TRANSPUESTO desde el
-        resultado, de modo que los nodos-causa mas probables (los que mas propagan al
-        resultado) salen primero. Devuelve [(causa_id, score)] topk."""
-        # grafo transpuesto: aristas invertidas (apuntan hacia las causas)
+    def _reconstruir_camino(self, desde, hasta, prof_max=5):
+        """BFS sobre el grafo desde 'desde' buscando 'hasta'. Devuelve el camino
+        [desde,...,hasta] o None. Es la explicacion del 'por que' causal."""
+        if desde == hasta:
+            return [desde]
+        visitados = {desde}; cola = [desde]; anterior = {desde: None}
+        for _ in range(prof_max):
+            if not cola: break
+            siguiente = []
+            for actual in cola:
+                for vec in self.edges.get(actual, []):
+                    if vec in visitados: continue
+                    visitados.add(vec); anterior[vec] = actual; siguiente.append(vec)
+                    if vec == hasta:
+                        camino = [hasta]; n = hasta
+                        while anterior.get(n) is not None: n = anterior[n]; camino.append(n)
+                        camino.reverse(); return camino
+            cola = siguiente
+        return None
+
+    def _contexto_ids(self):
+        """IDs de nodos que corresponden a recursos/entidades que el agente percibe
+        ahora (el mundo Minecraft donde vive). Para abduccion contextual."""
+        ids = set()
+        if not hasattr(self, '_hash_recurso_a_nodo'): return ids
+        for e in getattr(self, 'entidades_near', []):
+            try:
+                nid = self._hash_recurso_a_nodo(e)
+                if nid is not None: ids.add(nid)
+            except Exception: pass
+        for b in getattr(self, 'bloques_near', []):
+            try:
+                nid = self._hash_recurso_a_nodo(b)
+                if nid is not None: ids.add(nid)
+            except Exception: pass
+        return ids
+
+    def abducir(self, resultado, topk=5, usar_contexto=True):
+        """ABDUCCION COMPLETA (Peirce): dado un RESULTADO observado, inferir las CAUSAS/
+        explicaciones mas plausibles. Usa PPR INVERSO sobre el grafo transpuesto, y ademas:
+          1. Pondera por contexto actual (+50% si la causa coincide con lo percibido).
+          2. Reconstruye el CAMINO explicativo desde la causa hasta el resultado.
+          3. Normaliza el score a confianza interpretable [0,1].
+        Devuelve [(causa_id, confianza, camino)] topk."""
         inv_edges = {}
         for i in self.edges:
             for j in self.edges[i]:
                 if j not in inv_edges: inv_edges[j] = []
-                if i not in inv_edges[j]:
-                    inv_edges[j].append(i)
-        if resultado not in inv_edges:
-            # el resultado existe como nodo pero sin causas conocidas -> listo
-            # correr PPR sobre el transpuesto desde el resultado (si hay causas)
-            rank = ppr_route(self.edges, resultado, self._aff, alpha=self.alpha, iters=15)
-        else:
-            rank = ppr_route(inv_edges, resultado, self._aff, alpha=self.alpha, iters=15)
-        # excluir el propio resultado y quedarse con el top-k (causas mas probables)
+                if i not in inv_edges[j]: inv_edges[j].append(i)
+        rank = ppr_route(inv_edges if resultado in inv_edges else self.edges,
+                         resultado, self._aff, alpha=self.alpha, iters=15)
         candidates = [(n, s) for n, s in rank.items() if n != resultado]
-        candidates.sort(key=lambda x: -x[1])
-        return candidates[:topk]
+        ctx_ids = self._contexto_ids() if usar_contexto else set()
+        enriched = []
+        for n, s in candidates:
+            score_total = s * (1.5 if n in ctx_ids else 1.0)
+            camino = self._reconstruir_camino(n, resultado)
+            enriched.append((n, score_total, camino))
+        if not enriched: return []
+        max_score = max(s for _, s, _ in enriched) or 1.0
+        enriched = [(n, round(s / max_score, 3), c) for n, s, c in enriched]
+        enriched.sort(key=lambda x: -x[1])
+        return enriched[:topk]
 
     def razonar_meta_compuesta(self, meta, condiciones_activas):
         """0169-A: decide si puede lograr la meta o si necesita preparar una condicion.
