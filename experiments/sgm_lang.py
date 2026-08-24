@@ -112,6 +112,11 @@ TOKEN2ID = {t: i for i, t in enumerate(DICCIONARIO_BASE)}
 ID2TOKEN = {i: t for t, i in TOKEN2ID.items()}
 VOCAB_SIZE = len(DICCIONARIO_BASE)
 
+# Constantes de estructura (compatibilidad con sgm_lang_interfaz)
+SOS = TOKEN2ID.get("<sos>", 0)
+EOS = TOKEN2ID.get("</sos>", 1)
+PAD = TOKEN2ID.get("<pad>", 2)
+
 
 def token_a_id(token):
     """Devuelve el ID de un token, agregándolo al diccionario si no existe."""

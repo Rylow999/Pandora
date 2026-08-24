@@ -146,11 +146,21 @@ class InterfazLenguaje:
     # Asi el transformer integra lenguaje (aprende QUEE querer decir) y la frase sale
     # coherente. Es lo honestamente alcanzable con el mini-modelo numpy; con el tiempo
     # y mas interacciones, el transformer podria mejorar hacia generar mas de la frase.
-    CATEGORIAS = ["necesidad", "recuerdo", "preferencia", "social", "silencio"]
+    CATEGORIAS = ["necesidad", "recuerdo", "preferencia", "social", "duda", "curiosidad", "silencio"]
 
     def _categoria_del_estado(self, ag):
         """Categoria real del mensaje segun el mundo interno de SGM (usada como objetivo
-        de entrenamiento y como clasificacion cuando el modelo aun no es confiable)."""
+        de entrenamiento y como clasificacion cuando el modelo aun no es confiable).
+        Expresa lo que SGM siente por su propia construccion: necesidad, recuerdo,
+        preferencia, social, DUDA (incertidumbre) y CURIOSIDAD (querer saber)."""
+        # DUDA: predicciones fallidas / incertidumbre alta -> SGM no esta seguro
+        if getattr(ag, "incertidumbre_acum", 0) > 2.5:
+            return "duda"
+        if getattr(ag, "doubt_count", 0) > 3:
+            return "duda"
+        # CURIOSIDAD: drive_noop / querer actuar -> SGM quiere saber/explorar
+        if getattr(ag, "drive_noop", 0) > 0.8:
+            return "curiosidad"
         if getattr(ag, "_hambre_real", 0) > 0.7:
             return "necesidad"
         if ag.episodios:
@@ -190,6 +200,11 @@ class InterfazLenguaje:
                 if conocido:
                     return f"creo que el otro sabe producir {', '.join(conocido)}"
             return "he estado observando al otro"
+        if categoria == "duda":
+            inc = getattr(ag, "incertidumbre_acum", 0)
+            return f"no estoy seguro ({inc:.1f}), algo no me cuadra"
+        if categoria == "curiosidad":
+            return "quiero saber qué hay alla, voy a explorar"
         return "estoy aquí"  # silencio (SGM no tiene nada urgente)
 
     def expresarse(self, ag, n_tokens=6):

@@ -57,85 +57,68 @@ class Puente(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        u = urlparse(self.path)
-        q = parse_qs(u.query)
-        if u.path == "/hablar":
-            texto = q.get("texto", [""])[0]
-            # 1) CLASIFICAR INTENCION (charla/indicacion/pregunta/relato) con HRR del sustrato
-            clasi = clasif.intencion(texto)
-            intencion = clasi.get("intencion", "charla")
-            # 2) responder SEGUN el tipo de acto conversacional (no siempre 'estoy aqui')
-            resp = ""
-            if intencion == "charla":
-                # charla social: SGM se presenta/comparte su estado de forma informal
-                frase, cat, _ = il.expresarse(ag)
-                resp = f"[charla] hola, {frase}".strip()
-            elif intencion == "pregunta":
-                # pregunta: SGM responde informativamente (estado, lo que percibe)
-                # usa sgm_mundo.analizar_instruccion para saber de que habla
-                analisis = sgm_mundo.analizar_instruccion(texto)
-                if analisis["objeto"]:
-                    resp = f"[pregunta] sobre {analisis['objeto']}: " + (
-                        f"tengo {ag._hambre_real:.2f} hambre" if ag._hambre_real > 0.3 else "estoy estable, siento el mundo")
+        try:
+            u = urlparse(self.path)
+            q = parse_qs(u.query)
+            if u.path == "/hablar":
+                texto = q.get("texto", [""])[0]
+                clasi = clasif.intencion(texto)
+                intencion = clasi.get("intencion", "charla")
+                resp = ""
+                if intencion == "charla":
+                    frase, cat, _ = il.expresarse(ag)
+                    resp = f"[charla] hola, {frase}".strip()
+                elif intencion == "pregunta":
+                    analisis = sgm_mundo.analizar_instruccion(texto)
+                    if analisis["objeto"]:
+                        resp = f"[pregunta] sobre {analisis['objeto']}: " + (
+                            f"tengo {ag._hambre_real:.2f} hambre" if ag._hambre_real > 0.3 else "estoy estable, siento el mundo")
+                    else:
+                        res_inst = ag.procesar_instruccion(texto)
+                        resp = f"[pregunta] " + res_inst["texto"]
+                elif intencion == "relato":
+                    res_inst = ag.procesar_instruccion(texto)
+                    aprendidas = res_inst.get("palabras_nuevas", [])
+                    if aprendidas:
+                        il.guardar_todo(ag)
+                        resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
+                    else:
+                        resp = f"[relato] entendido, lo registro"
                 else:
                     res_inst = ag.procesar_instruccion(texto)
-                    resp = f"[pregunta] " + res_inst["texto"]
-            elif intencion == "relato":
-                # relato/afirmacion: SGM aprende lo que el humano le ensena
-                res_inst = ag.procesar_instruccion(texto)
-                aprendidas = res_inst.get("palabras_nuevas", [])
-                if aprendidas:
-                    il.guardar_todo(ag)  # persistir vocabulario nuevo aprendido
-                    resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
-                else:
-                    resp = f"[relato] entendido, lo registro"
-            else:  # indicacion: SGM ejecuta la instruccion y confirma + devuelve plan de accion
-                res_inst = ag.procesar_instruccion(texto)
-                aprendidas = res_inst.get("palabras_nuevas", [])
-                # SINTAXIS + PLAN DE EJECUCION: analizar (accion, objeto) con sgm_mundo
-                analisis = sgm_mundo.analizar_instruccion(texto)
-                plan = None
-                accion_mc = analisis["accion"] and analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir")
-                if accion_mc:
-                    # plan de accion fisica para el bot (entendimiento -> ejecucion real)
-                    plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
+                    aprendidas = res_inst.get("palabras_nuevas", [])
+                    analisis = sgm_mundo.analizar_instruccion(texto)
+                    plan = None
+                    if analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir"):
+                        plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
                     resp = f"[indicacion] {res_inst['texto']}"
-                else:
-                    resp = f"[indicacion] {res_inst['texto']}"
-                # devolvemos JSON con la respuesta lingüistica + el plan de ejecucion (si hay)
-                payload = {"texto": resp, "intencion": intencion}
-                if plan:
-                    payload["ejecutar"] = plan
-                if aprendidas:
-                    payload["aprendidas"] = aprendidas
-                    il.guardar_todo(ag)  # persistir vocabulario nuevo
-                self._send(json.dumps(payload, ensure_ascii=False))
-        elif u.path == "/estado":
-            frase, cat, _ = il.expresarse(ag)
-            self._send(f"[SGM:{cat}] {frase}")
-        elif u.path == "/accion":
-            # PERCEPCION del mundo desde el bot -> SGM decide la ACCION.
-            # Params: x,y,z, food, health, entidades_near (json), bloque_enfrente
-            try:
+                    payload = {"texto": resp, "intencion": intencion}
+                    if plan:
+                        payload["ejecutar"] = plan
+                    if aprendidas:
+                        payload["aprendidas"] = aprendidas
+                        il.guardar_todo(ag)
+                    self._send(json.dumps(payload, ensure_ascii=False))
+                    return
+                self._send(resp)
+            elif u.path == "/estado":
+                frase, cat, _ = il.expresarse(ag)
+                self._send(f"[SGM:{cat}] {frase}")
+            elif u.path == "/accion":
                 x = float(q.get("x", ["0"])[0]); y = float(q.get("y", ["0"])[0]); z = float(q.get("z", ["0"])[0])
                 food = float(q.get("food", ["20"])[0]); health = float(q.get("health", ["20"])[0])
-                # estado semantic (vector chico como el de Crafter): posicion + hambre + recursos + senales
-                hambre = max(0.0, 1.0 - food / 20.0)   # food 0-20, hambre normalizada
-                # entidades cerca / bloque enfrente -> senales
+                hambre = max(0.0, 1.0 - food / 20.0)
                 ent_near = q.get("entidades", "[]")[0] if q.get("entidades") else "[]"
                 ent_near = json.loads(ent_near) if isinstance(ent_near, str) else ent_near
                 peligro = 1.0 if any(e in ("zombie", "skeleton", "creeper", "spider") for e in ent_near) else 0.0
                 recurso = 1.0 if any(e in ("tree", "oak_log", "wood", "cow", "pig", "chicken") for e in ent_near) else 0.0
-                # construir estado semantic 18-dim (como el core espera) + signales
                 ag._hambre_real = min(1.0, hambre)
                 ag._amenaza = min(1.0, peligro)
                 ag._posicion_actual = (int(x), int(z))
-                # inc dirs / config de exploracion (minima)
                 ag._config_grad = {"activo": False, "fuerza": 0.0}
                 ag._config_curio = {"activo": True, "fuerza": 0.4}
                 ag._inc_dirs = {a: 1.0 for a in (1, 2, 3, 4)}
                 ag._hay_gradiente = False
-                # vector de estado: [semantic 8d] + [health,food,recurso,peligro, x,z peque]
                 sv = [float(v) for v in (
                     x / 50.0, z / 50.0, hambre, peligro, recurso,
                     health / 20.0, food / 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
@@ -144,12 +127,7 @@ class Puente(BaseHTTPRequestHandler):
                 accion = ACCION_MC.get(a, "noop")
                 self._send(json.dumps({"accion": accion, "indice": a, "hambre": round(ag._hambre_real, 2),
                                        "amenaza": round(ag._amenaza, 2)}))
-            except Exception as e:
-                self._send(json.dumps({"accion": "noop", "error": str(e)}))
-        elif u.path == "/hablar_l2":
-            # DECODIFICADOR L2: generar lenguaje desde el grafo (no plantillas)
-            # Params: omega (json array de floats), interferencia (float, def 1.0)
-            try:
+            elif u.path == "/hablar_l2":
                 omega_json = q.get("omega", "[]")[0] if q.get("omega") else "[]"
                 omega = json.loads(omega_json) if isinstance(omega_json, str) else omega_json
                 interferencia = float(q.get("interferencia", ["1.0"])[0])
@@ -161,10 +139,13 @@ class Puente(BaseHTTPRequestHandler):
                     top = l2.decodificar(omega_np, topk=3, temperatura=0.8)
                     tokens = [(ID2TOKEN.get(t, "??"), "%.3f" % p) for t, p in top]
                     self._send(json.dumps({"tokens": tokens}))
-            except Exception as e:
+            else:
+                self._send("ok - sgm_bridge")
+        except Exception as e:
+            try:
                 self._send(json.dumps({"error": str(e)}))
-        else:
-            self._send("ok - sgm_bridge")
+            except Exception:
+                pass
 
     def log_message(self, *a):
         pass

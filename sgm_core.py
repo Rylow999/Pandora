@@ -147,6 +147,7 @@ class SGMAgent:
         # Capas de resolución: cada nodo tiene un nivel (0=básico, 1=intermedio, 2=abstracto)
         self.resolucion_nivel = [0] * n_nodes
         self.resolucion_dims = {0: D // 4, 1: D // 2, 2: D}
+        self.hdc = HDC(rng, D)
         self.hrr = HRR(D, rng, n_nodes)
         self.rel = {}
         self.E = 0.0
