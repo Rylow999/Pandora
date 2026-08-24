@@ -73,6 +73,23 @@ class SGMAgentCore(SGMAgentGrafo):
         self._seed = 0
         self.objetos = {}  # {id: {tipo, pos_hist}}
         self.meta_recordada = None  # (x, y) recordado por memoria
+        
+        # Atributos para pulsiones (desacoplados de Homeostasis/Instintos)
+        self.instinto_alimentacion = None
+        self.incertidumbre_acum = 0.0
+        self.instinto_explorar_umbral = 3
+        self.instinto_umbral_carencia = 0.3
+        self.instinto_interaccion_fuerza = 0.7
+        self.beta_supervivencia = 2.0
+        self.beta_otras_compo = 0.3
+        self.reencare_fuerza = 0.8
+        self.acciones_movimiento = {1, 2, 3, 4}
+        self.drive_noop = 0.0
+        self.drive_noop_umbral = 1.5
+        self.drive_noop_fuerza = 1.0
+        self.drive_noop_tasa = 0.1
+        self.drive_noop_descarga = 0.5
+        self.stagnation_ticks = 0
     
     def set_arbitro(self, arbitro):
         self._arbitro = arbitro
