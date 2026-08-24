@@ -2637,5 +2637,15 @@
     "hypothesis": "el core consolidado sobrevive 100 vidas sin romperse y SGM muestra su repertorio completo",
     "result_summary": "MARATON COMPLETADA: 100 vidas, 17737 pasos, 45.5 pasos/s (390s), 0 errores. Logros (6): drink, sapling, wood, defeat_skeleton, defeat_zombie, EAT_COW. Acciones dominantes: mover(1)=8127, interactuar(5)=3780, espera(0)=5829. self-mod invocado 2 veces libremente, trauma 0 (pasos cortos no alcanzaron step 900). Lenguaje OK (SGM se expreso toda la maraton). CONCLUSIONES honestas: (1) el core consolidado es ROBUSTO - 100 vidas sin un solo error tras integrar self-mod + trauma + fix de rendimiento; (2) los instintos de subsistencia/defensa operan (come vaca, vence enemigos); (3) el crafteo sigue sin emerger en vidas cortas (cold-start, consistente con la saga); (4) lo confirmado: listo para migrar a Minecraft con sustrato solido.",
     "status": "done"
+  },
+  {
+    "experiment_id": "exp_SGM_0175",
+    "experiment_name": "fase10_mundo_repertorio_sueno",
+    "date": "2026-08-16",
+    "phase": "Fase 10 - mundo SGM para Minecraft: repertorio de acciones + grafo semantico + suenio",
+    "test_target": "darle a SGM el catalogo de acciones de Minecraft + el grafo de conexiones del dominio (diccionario con enlaces) para que aprenda por su cuenta + interacciones, y el mecanismo de reconciliacion/sueno (consolidacion offline)",
+    "hypothesis": "con el repertorio + grafo semantico + suenio, SGM puede aprender de tus interacciones y consolidar la memoria offline",
+    "result_summary": "FASE 10 AVANZADA (idea de Luciano implementada). sgm_mundo.py define el REPERTORIO DE ACCIONES MINECRAFT (24: mover, romper, recoger, craftear, social, defensa) y el GRAFO SEMANTICO del dominio (21 conceptos -> 38 nodos, 40 aristas, 24 roles de conexion) que decoder_l2 rutea por rol/contexto - el 'diccionario con conexiones' que pedio. sgm_core.reconciliar_sueno() implementa el SUENO/RECONCILIACION (consolidacion offline: refuerza conexiones exitosas consolidadas, poda no usadas, protege raiz y reciente). Verificado ad-hoc (PASS). NOTA (Luciano): aumentar D y n_nodos del grafo se planea en la migracion a Rust. Proximo: adaptador de acciones para que SGM actuara en Minecraft, y aprender de las interacciones de Luciano. Escalar a Rust despues de validar en Python.",
+    "status": "done"
   }
 ]

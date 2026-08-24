@@ -8,3 +8,6 @@ __pycache__/
 
 # Pesos del transformer persistidos (estado de aprendizaje, no se versionan)
 experiments/sgm_lang_weights.npz
+
+# Estado de aprendizaje del loop de lenguaje (runtime)
+experiments/sgm_state.json

@@ -1212,3 +1212,30 @@ SGM es agnóstico: solo cambia el adaptador de entorno (observaciones + acciones
 
 **Registry: 169 entradas.**
 ---
+
+
+## FASE 10 — MUNDO SGM PARA MINECRAFT: repertorio + grafo de conocimiento + sueño (16-08-2026)
+
+**Idea de Luciano implementada:** enseñarle a SGM todos los movimientos/acciones de Minecraft y
+darle un "diccionario de la lengua con conexiones" para que aprenda por su cuenta + las interacciones.
+
+### 1. Repertorio de acciones Minecraft (`sgm_mundo.py`)
+24 acciones que SGM conoce de su mundo: mover (caminar N/S/E/O), saltar, agacharse, romper
+(árbol/piedra/hierro/tierra/bloque), colocar, recoger (madera/piedra/comida), craftear
+(mesa/pico/espada), social (saludar/expresarse/seguir_humano), defensa (atacar zombie/esqueleto/huir).
+
+### 2. Grafo semántico del dominio (`sgm_mundo.py`)
+21 conceptos (`arbol, madera, comida, pico, zombie, hambre, valoro, humano, aprender, grafo...`)
+>> 38 nodos, 40 aristas, 24 roles de conexión (el "diccionario con conexiones"). El `decoder_l2`
+(rol/contexto HRR) lo rutea para generar/comprender mejor. Es la base del aprendizaje por interacciones.
+
+### 3. Sueño / Reconciliación (`sgm_core.reconciliar_sueno`)
+**Mecanismo que no existía (nuevo):** consolidación OFFLINE de la memoria (reconsolidación, como el
+replay en RL / la reconsolidación en neurociencia). Al final del día SGM "sueña": refuerza las
+conexiones exitosas (las consolida), poda las no usadas, protege la raíz/identidad y lo reciente.
+
+**Registry: 170 entradas.** PENDIENTE (Luciano): aumentar las DIMENSIONES del grafo y la cantidad de
+nodos se hará al migrar todo a RUST (el sustrato Python es para validar; Rust permitirá escalar D y N).
+Proceso de la Fase 10: SGM aprende del catálogo + grafo + tus interacciones; vos empezás a vivir con
+SGM y a enseñarle cuando CADA pieza esté funcional. Después el adaptador de acciones completo + Rust.
+---
