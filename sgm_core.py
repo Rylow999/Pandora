@@ -1712,6 +1712,66 @@ class SGMAgent:
         return {"nodo": nodo, "score": round(score, 3), "singularidad": False,
                 "aislado": False, "reintegrado": False}
 
+    # ---------- DECODER L2 AVANZADO (0046 relacional + 0047 contextual, integrado) ----------
+    # Variantes avanzadas del BigramDecoder base (0022/0026) que quedaron en experiments.
+    # 0046: sucesor por ruteo por ROL sobre rel_mem (HRR bind). 0047: CONTEXTO ACUMULADO
+    # (bind de la ventana completa, atencion = binding HRR). Esto NO es omega plano: usa el
+    # grafo ruteado por composicion relacional (rel_mem del HRR).
+    def decoder_l2_rol(self, prev, excluir=None):
+        """0046: predice el sucesor de 'prev' por ruteo por ROL sobre rel_mem.
+        Desde prev, el candidato = vecino k cuya HRR(rol_k, omega_k) tenga mayor coseno con
+        rel_mem[prev] bajo el rol. Desambigua por rol (0028/0030). Devuelve nodo-id o None."""
+        rel = getattr(self, 'rel', {})
+        edges = getattr(self, 'edges', {})
+        if not rel or prev not in rel or not edges.get(prev):
+            return None
+        best, bi = -2.0, None
+        for k in edges[prev]:
+            if k == excluir:
+                continue
+            b = self.hrr.bind(self.hrr.role(k), self.omega[k])
+            c = self.hrr.cos(rel[prev], b)
+            if c > best:
+                best, bi = c, k
+        return bi
+
+    def decoder_l2_contexto(self, contexto_ids, excluir=None):
+        """0047: CONTEXTO ACUMULADO. El contexto = HRR-bind de TODA la ventana de ids previos
+        (no 1 paso). Proyecta el contexto sobre los omegas y elige el sucesor por similitud,
+        vie modo route(signal, mode hrr). Usa todo el contexto (atencion = binding de ventana),
+        no solo la palabra inmediata. Devuelve sinon predicho (nodo-id) o None."""
+        if not contexto_ids:
+            return None
+        # bind acumulado de la ventana de contextoo
+        acc = [0.0] * self.hrr.D
+        for cid in contexto_ids:
+            if 0 <= cid < len(self.omega):
+                b = self.hrr.bind(self.hrr.role(cid % len(self.hrr.roles)), self.omega[cid])
+                for j in range(self.hrr.D):
+                    acc[j] += b[j]
+        self.hrr._norm(acc)
+        # sucesor: el omega con mayor coseno al contexto proyectado (excluyendo contexto)
+        excl = set(contexto_ids)
+        if excluir is not None:
+            excl.add(excluir)
+        best, bi = -2.0, None
+        for i in range(len(self.omega)):
+            if i in excl:
+                continue
+            c = self.hrr.cos(self.omega[i], acc)
+            if c > best:
+                best, bi = c, i
+        return bi
+
+    def decoder_l2(self, contexto_ids, modo='contexto', excluir=None):
+        """Decoder L2 AVANZADO unificado: dada una ventana de contexto (ids), predice el
+        proximo nodo/token usando rel_mem ruteado por rol (0046) o contexto acumulado HRR (0047).
+        `modo`='rol' usa solo el ultimo previo; 'contexto' usa la ventana completa (default)."""
+        pr = contexto_ids[-1] if contexto_ids else None
+        if modo == 'rol' and pr is not None:
+            return self.decoder_l2_rol(pr, excluir)
+        return self.decoder_l2_contexto(contexto_ids, excluir)
+
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):
     packed = [0.0] * hrr.D
