@@ -62,9 +62,40 @@ class Puente(BaseHTTPRequestHandler):
             q = parse_qs(u.query)
             if u.path == "/hablar":
                 texto = q.get("texto", [""])[0]
+                texto_lower = texto.lower().strip()
                 clasi = clasif.intencion(texto)
                 intencion = clasi.get("intencion", "charla")
                 resp = ""
+
+                # INDICACIONES DE ACCIÓN (reconocer verbos de Minecraft)
+                palabras_accion = ["tala", "talar", "rompe", "romper", "mata", "matar", "ataca", "atacar",
+                                   "mueve", "mover", "veni", "venir", "ven", "explora", "explorar",
+                                   "craftea", "craftear", "recolecta", "recolectar", "recoge", "recoger",
+                                   "defiende", "defender", "huir", "escapa", "escapar", "corre", "correr",
+                                   "come", "comer", "bebe", "beber", "salta", "saltar", "mina", "minar",
+                                   "pica", "picar", "coloca", "colocar", "pon", "poner", "activa", "activar",
+                                   "abre", "abrir", "usa", "usar", "equipa", "equipar", "ponte", "ponerse"]
+
+                es_indicacion = any(p in texto_lower for p in palabras_accion)
+
+                if es_indicacion or intencion == "indicacion":
+                    # Extraer el objeto de la acción
+                    res_inst = ag.procesar_instruccion(texto)
+                    analisis = sgm_mundo.analizar_instruccion(texto)
+                    plan = None
+                    if analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir", "colocar", "interactuar", "equipar"):
+                        plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
+                    resp = f"[indicacion] entiendo: {texto}"
+                    payload = {"texto": resp, "intencion": "indicacion"}
+                    if plan:
+                        payload["ejecutar"] = plan
+                    aprendidas = res_inst.get("palabras_nuevas", [])
+                    if aprendidas:
+                        payload["aprendidas"] = aprendidas
+                        il.guardar_todo(ag)
+                    self._send(json.dumps(payload, ensure_ascii=False))
+                    return
+
                 if intencion == "charla":
                     frase, cat, _ = il.expresarse(ag)
                     resp = f"[charla] hola, {frase}".strip()
@@ -86,20 +117,10 @@ class Puente(BaseHTTPRequestHandler):
                         resp = f"[relato] entendido, lo registro"
                 else:
                     res_inst = ag.procesar_instruccion(texto)
+                    resp = f"[indicacion] " + res_inst["texto"]
                     aprendidas = res_inst.get("palabras_nuevas", [])
-                    analisis = sgm_mundo.analizar_instruccion(texto)
-                    plan = None
-                    if analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir"):
-                        plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
-                    resp = f"[indicacion] {res_inst['texto']}"
-                    payload = {"texto": resp, "intencion": intencion}
-                    if plan:
-                        payload["ejecutar"] = plan
                     if aprendidas:
-                        payload["aprendidas"] = aprendidas
                         il.guardar_todo(ag)
-                    self._send(json.dumps(payload, ensure_ascii=False))
-                    return
                 self._send(resp)
             elif u.path == "/estado":
                 frase, cat, _ = il.expresarse(ag)
