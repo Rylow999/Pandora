@@ -1274,12 +1274,12 @@ Pandora es el ser que envuelve el núcleo SGM y le da cuerpo (percepción MC), s
 
 ### Lo que falta para FASE 11 completa
 
-| Pendiente | Descripción |
-|-----------|-------------|
-| **Ecuaciones NOUS (Eq. 8-12)** | W(t) dinámica, ρ(t) densidad contextual, β_eff aprendizaje ponderado, herencia conceptual (Eq. 11-12) |
-| **K_cadenas** | 10 cadenas de información paralelas (análogo al loop actual, no explícito) |
-| **Decodificador L2 ONNX** | Proyección lineal aprendida W·ω+b → token, entrenado offline |
-| **Dimensionalidades dependientes de la necesidad** | D variable por tipo de concepto (no implementado; D fijo ∈ [64,1536]) |
+| Pendiente | Descripción | Estado |
+|-----------|-------------|--------|
+| **Ecuaciones NOUS (Eq. 8-12)** | W(t), ρ(t), β_eff, herencia conceptual, corrección acotada | ✅ COMPLETADO |
+| **K_cadenas** | 10 cadenas de información paralelas | FALTAN |
+| **Decodificador L2 ONNX** | Proyección lineal aprendida W·ω+b → token | FALTAN |
+| **Dimensionalidades dependientes** | D variable por tipo de concepto | FALTAN |
 
 ### Literatura anclada
 
