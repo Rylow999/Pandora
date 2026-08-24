@@ -25,11 +25,18 @@ import sgm_mundo
 # DECODIFICADOR L2 (PURE-L2): W·ω + b → softmax → token
 from sgm_l2_decoder import L2Decoder
 from sgm_lang import ID2TOKEN
-l2 = L2Decoder(D_sem=128, lr=0.05)
-print("[sgm_bridge] Decodificador L2 listo. Pesos en:", l2.ruta_pesos)
 
 # un agente SGM persistente para la sesion
 ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
+
+# CREADOR DE CONCEPTOS Y ACCIONES (crecimiento libre)
+from sgm_crecimiento import CreadorConceptos, CreadorAcciones, CreadorLenguaje
+creador = CreadorConceptos(ag)
+accion_creator = CreadorAcciones(ag)
+lenguaje_creator = CreadorLenguaje(ag)
+
+l2 = L2Decoder(D_sem=128, lr=0.05)
+print("[sgm_bridge] Decodificador L2 listo. Pesos en:", l2.ruta_pesos)
 
 # clasificador de intencion compartido (usa el HRR del sustrato)
 clasif = ClasificadorIntencion(agente=ag)
@@ -93,6 +100,14 @@ class Puente(BaseHTTPRequestHandler):
                     if aprendidas:
                         payload["aprendidas"] = aprendidas
                         il.guardar_todo(ag)
+                        # CRECIMIENTO LIBRE: aprender de la experiencia
+                        todas_palabras = [w for w in texto_lower.split() if len(w) > 2]
+                        creador.aprender_experiencia(todas_palabras, 0.8)
+                        accion_creator.registrar_accion(
+                            texto_lower.replace(" ", "_"),
+                            [w for w in texto_lower.split() if len(w) > 2],
+                            aprendidas
+                        )
                     self._send(json.dumps(payload, ensure_ascii=False))
                     return
 
@@ -113,6 +128,9 @@ class Puente(BaseHTTPRequestHandler):
                     if aprendidas:
                         il.guardar_todo(ag)
                         resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
+                        # CRECIMIENTO LIBRE: aprender de la experiencia
+                        todas_palabras = [w for w in texto_lower.split() if len(w) > 2]
+                        creador.aprender_experiencia(todas_palabras, 0.8)
                     else:
                         resp = f"[relato] entendido, lo registro"
                 else:
