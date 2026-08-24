@@ -12,20 +12,24 @@ SGM es un sistema de inteligencia artificial basado en grafos cognitivos donde c
 ┌─────────────────────────────────────────────────────────────┐
 │                    SGM Cognitive Core                        │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_core.py          │  Motor principal (HDC, HRR, PPR,    │
-│                       │  Kuramoto, instintos, memoria,      │
-│                       │  place cells, arbitro de pulsiones) │
+│  sgm_core.py (198 líneas)                                    │
+│    SGMAgentCore: step() + hook arbitro                      │
+│    Componentes: HDC, HRR, PPR, Kuramoto, grafo, homeo      │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_pulsiones.py     │  Plugins de pulsiones independientes │
-│                       │  + Arbitro de modos (BASE/SUPERV.)  │
+│  experiments/                                                │
+│    sgm_grafo.py (100L)      → Nodos, aristas, place cells  │
+│    sgm_hdc.py (50L)         → HDC + SensorBridge           │
+│    sgm_hrr.py (80L)         → HRR bind/unbind              │
+│    sgm_ppr.py (30L)         → PPR + PPR inverso            │
+│    sgm_kuramoto.py (60L)    → Kuramoto + interferencia      │
+│    sgm_homeostasis.py (80L) → Homeostasis grafo-cuerpo      │
+│    sgm_memoria.py (100L)    → Episódica + NOUS + lugar     │
+│    sgm_instintos.py (120L)  → Instintos biológicos         │
+│    sgm_l2_system.py (120L)  → Rosetta + L2 + DecodeL2      │
+│    sgm_pulsiones.py (130L)  → 10 plugins + Arbitro modos   │
+│    sgm_bridge.py (213L)     → Adaptador HTTP               │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_l2_system.py     │  Decodificador L2: Piedra Rosetta   │
-│                       │  (L1) + Proyección Lineal (L2)     │
-├─────────────────────────────────────────────────────────────┤
-│  sgm_lang.py          │  Diccionario base (487 tokens)      │
-├─────────────────────────────────────────────────────────────┤
-│  sgm_bridge.py        │  Adaptador HTTP para entornos      │
-│                       │  externos (Minecraft, Crafter)     │
+│  sgm_lang.py (487 tokens)   → Diccionario MC 1.20.4        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -33,7 +37,7 @@ SGM es un sistema de inteligencia artificial basado en grafos cognitivos donde c
 
 ## Componentes Principales
 
-### 1. Nodos del Grafo (`sgm_core.py`)
+### 1. Nodos del Grafo (`sgm_grafo.py`)
 
 Cada nodo tiene:
 - **omega** (`Vec<D>`): Vector semántico de identidad
@@ -83,7 +87,7 @@ Si un omega está cerca de un token conocido, se usa directamente sin proyecció
 3. Fallback L1 (Piedra Rosetta)
 4. Proyección L2 → softmax → sample
 
-### 4. Instintos y Drives
+### 4. Instintos y Drives (`sgm_instintos.py`)
 
 | Mecanismo | Descripción |
 |-----------|-------------|
@@ -93,27 +97,6 @@ Si un omega está cerca de un token conocido, se usa directamente sin proyecció
 | Drive noop (SEEKING) | Energía libre que empuja a actuar |
 | Desplazamiento | Reacción a necesidad insatisfecha local |
 
-### 5. Memoria y Aprendizaje
-
-- **Memoria episódica**: Buffer de eventos salientes (logros, crafteo, comida)
-- **Place cells**: Nodos-lugar emergentes con posición espacial
-- **Modelo de objetos**: Predicción de posición futura (object permanence)
-- **Herencia conceptual**: Nuevos conceptos como hijos del más cercano (Eq.11)
-- **Consolidación**: Conexiones se fortalecen por sincronización Kuramoto
-
----
-
-## Estado Actual
-
-| Componente | Estado |
-|-----------|--------|
-| `sgm_core.py` (2250 líneas) | ✅ Estable, verificado |
-| `sgm_pulsiones.py` (10 plugins) | ✅ Integrado, tests pasando |
-| `sgm_l2_system.py` | ✅ Entrenado, 6/6 correctos |
-| `sgm_lang.py` (487 tokens) | ✅ Diccionario MC 1.20.4 |
-| `sgm_bridge.py` | ✅ Adaptador HTTP |
-| Experimentos verificados | 170+ en registry |
-
 ---
 
 ## Ejecución
@@ -121,26 +104,18 @@ Si un omega está cerca de un token conocido, se usa directamente sin proyecció
 ### Test rápido del core
 ```bash
 cd ~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
+source ~/crafter-env/bin/activate
 python3 -c "
-from sgm_core import SGMAgent
-import random
-ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
+from sgm_core import SGMAgentCore
+ag = SGMAgentCore(random.Random(42), 128, n_nodes=64, gamma=0.01)
 ag.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
 ag.instinto_alimentacion = 5
 ag._hambre_real = 0.7; ag._amenaza = 0.1; ag._algo_enfrente = 1
 ag._posicion_actual = (10, 10); ag._hay_gradiente = True
 ag._gradiente_dir = (1, 0); ag._config_grad = {'activo': True, 'fuerza': 0.8}
-ag._config_curio = {'activo': True, 'fuerza': 0.4}
-ag._inc_dirs = {1: 1.0, 2: 0.5, 3: 0.5, 4: 0.5}
 sv = [0.2, 0.2, 0.7, 0.1, 0.8, 1.0, 1.0] + [0.0] * 11
-a = ag.step(sv, list(range(17)))
-print(f'Acción: {a}, Modo: {ag.modo}')
+print(f'Acción: {ag.step(sv, list(range(17)))}, Modo: {ag.modo}')
 "
-```
-
-### Entrenar L2
-```bash
-python3 /tmp/entrenar_l2.py
 ```
 
 ### Verificación completa
@@ -150,43 +125,16 @@ python3 /tmp/hermes-verify-omega-l2.py
 
 ---
 
-## Experimentos Clave
+## Estado Actual
 
-| ID | Nombre | Resultado | Hallazgo |
-|----|--------|-----------|----------|
-| 0159 | Gate exploración | PASS | Memoria episódica + imaginación mejoran subsistencia |
-| 0125 | Kuramoto habituación | PASS | Sincronización consolida conexiones |
-| 0126 | Hebbian consolidación | PASS | Co-ocurrencia actividad-resultado refuerza |
-| 0127 | Instinto hambre real | PASS | food<3 → pulsión a comer |
-| 0128 | Drive noop | PASS | Energía libre empuja a actuar |
-| 0140 | Arbitro modos | PASS | SUPERVIVENCIA amplifica supervivencia |
-| 0143 | Place cells | PASS | Mapa emergente autónomo |
-| 0144 | Modelo objetos | PASS | Predicción posición futura |
-| 0153 | Memoria episodios | PASS | Recuerdos salientes recuperables |
-| 0156 | Experiencia interna | PASS | Buffer episodico de trayectoria |
-| 0158 | Memoria recuperable | PASS | Episodios significativos reconstruibles |
-| 0160 | Valor hedónico | PASS | Preferencias individualizadas por objeto |
-| 0164 | Modelo del otro | PASS | Teoría de la mente emergente |
-| 0168 | Drive búsqueda | PASS | SEEKING homeostático bajo hambre |
-
----
-
-## Próximos Pasos
-
-1. **Minecraft**: Adaptación del bridge para entorno real (bot JS + core Python)
-2. **L2 online**: Entrenamiento continuo con feedback del entorno
-3. **Composición relacional**: HRR para planes multi-paso
-4. **Identidad persistente**: Hilbert Thread entre sesiones
-5. **Metacognición**: Reflexión sobre el propio conocimiento
-
----
-
-## Referencias
-
-- **Documento técnico**: `docs/Arquitectura_Pure_L2_Pandora.md`
-- **NOUS (teoría)**: `NOUS/`
-- **Documentos DSCN-G**: `docs/DSCN-G/`
-- **Literatura**: `docs/SGM_literature_index.md`
+| Componente | Estado |
+|-----------|--------|
+| `sgm_core.py` (198 líneas) | ✅ Estable, modular |
+| `sgm_pulsiones.py` (10 plugins) | ✅ Integrado, tests pasando |
+| `sgm_l2_system.py` | ✅ Entrenado, 6/6 correctos |
+| `sgm_lang.py` (487 tokens) | ✅ Diccionario MC 1.20.4 |
+| `sgm_bridge.py` | ✅ Adaptador HTTP |
+| Experimentos verificados | 170+ en registry |
 
 ---
 
@@ -196,4 +144,4 @@ Proyecto de investigación — NOUS: The Pandora Research.
 
 ---
 
-*Última actualización: 2026-08-24 — Core v0.8-sgm-stable, Arbitro de Pulsiones, Sistema L2 completo.*
+*Última actualización: 2026-08-24 — Core modularizado + Sistema L2 + Arbitro de Pulsiones.*
