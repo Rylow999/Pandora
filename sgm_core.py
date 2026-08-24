@@ -144,7 +144,9 @@ class SGMAgent:
         self.omega = [[rng.gauss(0, 1) for _ in range(D)] for _ in range(n_nodes)]
         self.vitalidad = [1.0 for _ in range(n_nodes)]
         self.edges = {i: [] for i in range(n_nodes)}
-        self.hdc = HDC(rng, D)
+        # Capas de resolución: cada nodo tiene un nivel (0=básico, 1=intermedio, 2=abstracto)
+        self.resolucion_nivel = [0] * n_nodes
+        self.resolucion_dims = {0: D // 4, 1: D // 2, 2: D}
         self.hrr = HRR(D, rng, n_nodes)
         self.rel = {}
         self.E = 0.0
@@ -2177,6 +2179,68 @@ class SGMAgent:
                             self.edges[i].remove(j)
                             n_poda += 1
         return {"n_refuerzos": n_ref, "n_poda": n_poda}
+
+    # ---------- SERIALIZACIÓN DEL HILBERT THREAD (continuidad del "yo") ----------
+    def serializar_hilbert_thread(self):
+        """Serializa el estado completo del grafo para que el "yo" persista.
+        Incluye: nodos (omega, phi, vitalidad, resolucion_nivel), aristas,
+        trayectoria de los hilos K, fases, y metadatos."""
+        import json
+        data = {
+            "D": self.D,
+            "n_nodes": len(self.omega),
+            "resolucion_nivel": self.resolucion_nivel,
+            "resolucion_dims": self.resolucion_dims,
+            "omega": self.omega,
+            "phi": self.phi,
+            "phi_root": self.phi_root,
+            "vitalidad": self.vitalidad,
+            "edges": {str(k): v for k, v in self.edges.items()},
+            "consolidadas": [list(p) for p in self.consolidadas],
+            "scope_depth": getattr(self, "scope_depth", [0] * len(self.omega)),
+            "E_acumulado": self.E_acumulado,
+            "V_grafo": self.V_grafo,
+            "historial_len": len(getattr(self, "historia", [])),
+            "k_cadenas_visitados": getattr(self, "_k_visitados", []),
+        }
+        return data
+
+    def cargar_hilbert_thread(self, data):
+        """Restaura el estado del grafo desde una serialización.
+        Recupera la continuidad del "yo" tras un stop/reinicio."""
+        if data.get("D") != self.D:
+            return False
+        n = data.get("n_nodes", len(self.omega))
+        if n != len(self.omega):
+            return False
+        self.resolucion_nivel = data.get("resolucion_nivel", self.resolucion_nivel)
+        self.resolucion_dims = {int(k): v for k, v in data.get("resolucion_dims", {}).items()}
+        self.omega = data.get("omega", self.omega)
+        self.phi = data.get("phi", self.phi)
+        self.phi_root = data.get("phi_root", 0.0)
+        self.vitalidad = data.get("vitalidad", self.vitalidad)
+        self.edges = {int(k): v for k, v in data.get("edges", {}).items()}
+        self.consolidadas = set(tuple(p) for p in data.get("consolidadas", []))
+        self.scope_depth = data.get("scope_depth", [0] * n)
+        self.E_acumulado = data.get("E_acumulado", 0.0)
+        self.V_grafo = data.get("V_grafo", 1.0)
+        self._k_visitados = data.get("k_cadenas_visitados", [])
+        return True
+
+    def guardar_estado(self, ruta):
+        """Guarda el estado completo en JSON."""
+        import json
+        data = self.serializar_hilbert_thread()
+        with open(ruta, "w") as f:
+            json.dump(data, f)
+        return ruta
+
+    def cargar_estado(self, ruta):
+        """Carga el estado completo desde JSON."""
+        import json
+        with open(ruta) as f:
+            data = json.load(f)
+        return self.cargar_hilbert_thread(data)
 
 # 6. Anidado profundo (0059g)
 def build_nested_K3(hrr, parent_vec, child_fact, role_parent, role_child):

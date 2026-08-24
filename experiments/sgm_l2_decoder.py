@@ -108,6 +108,115 @@ class L2Decoder:
                 pass  # si hay error, usar inicialización aleatoria
 
 
+# ---------- PIPELINE L2 ONNX (offline training + export) ----------
+
+def generar_dataset_alineacion(D_sem=128, n_ejemplos=500):
+    """Genera un dataset de alineación (omega -> token) para entrenar L2 offline.
+    Usa patrones semánticos coherentes con el mundo de Minecraft."""
+    dataset = []
+    rng = random.Random(42)
+
+    # Mapeo semántica -> token
+    ejemplos = [
+        ([1.0, 0.5] + [0.0]*126, TOKEN2ID['hambre']),
+        ([0.8, 0.8] + [0.0]*126, TOKEN2ID['comida']),
+        ([0.9, 0.3] + [0.0]*126, TOKEN2ID['necesito']),
+        ([0.7, 0.7] + [0.0]*126, TOKEN2ID['comer']),
+        ([0.6, 0.9] + [0.0]*126, TOKEN2ID['quiero']),
+        ([0.5, 1.0] + [0.0]*126, TOKEN2ID['madera']),
+        ([0.3, 0.8] + [0.0]*126, TOKEN2ID['oak_log']),
+        ([0.2, 0.6] + [0.0]*126, TOKEN2ID['wooden_pickaxe']),
+        ([0.1, 0.4] + [0.0]*126, TOKEN2ID['piedra']),
+        ([0.4, 0.7] + [0.0]*126, TOKEN2ID['crafting_table']),
+        ([0.0, 0.9] + [0.0]*126, TOKEN2ID['diamond']),
+        ([0.1, 0.8] + [0.0]*126, TOKEN2ID['iron_ingot']),
+        ([0.0, 1.0] + [0.0]*126, TOKEN2ID['peligro']),
+        ([0.1, 0.9] + [0.0]*126, TOKEN2ID['zombie']),
+        ([0.0, 0.8] + [0.0]*126, TOKEN2ID['enemigo']),
+        ([0.3, 0.6] + [0.0]*126, TOKEN2ID['creeper']),
+        ([0.4, 0.5] + [0.0]*126, TOKEN2ID['vaca']),
+        ([1.0, 0.0] + [0.0]*126, TOKEN2ID['soy']),
+        ([0.9, 0.1] + [0.0]*126, TOKEN2ID['creo']),
+        ([0.8, 0.2] + [0.0]*126, TOKEN2ID['puede']),
+        ([0.6, 0.3] + [0.0]*126, TOKEN2ID['talar']),
+        ([0.5, 0.5] + [0.0]*126, TOKEN2ID['romper']),
+        ([0.3, 0.3] + [0.0]*126, TOKEN2ID['explorar']),
+        ([0.2, 0.2] + [0.0]*126, TOKEN2ID['atacar']),
+        ([0.4, 0.4] + [0.0]*126, TOKEN2ID['mover']),
+        ([0.7, 0.4] + [0.0]*126, TOKEN2ID['colocar']),
+        ([0.3, 0.7] + [0.0]*126, TOKEN2ID['recolectar']),
+        ([0.1, 0.6] + [0.0]*126, TOKEN2ID['escapar']),
+        ([0.6, 0.6] + [0.0]*126, TOKEN2ID['saltar']),
+        ([0.5, 0.3] + [0.0]*126, TOKEN2ID['interactuar']),
+        ([0.4, 0.6] + [0.0]*126, TOKEN2ID['equipar']),
+        ([0.8, 0.5] + [0.0]*126, TOKEN2ID['beber']),
+    ]
+
+    for _ in range(n_ejemplos):
+        base, tid = random.choice(ejemplos)
+        omega = np.array(base, dtype=float) + np.random.randn(D_sem) * 0.05
+        dataset.append((omega, tid))
+
+    return dataset
+
+
+def entrenar_l2_offline(D_sem=128, epochs=100, lr=0.05, n_ejemplos=500):
+    """Entrena L2 offline con dataset de alineación. Devuelve el decoder entrenado."""
+    dec = L2Decoder(D_sem=D_sem, lr=lr)
+    dataset = generar_dataset_alineacion(D_sem, n_ejemplos)
+
+    print(f"Entrenando L2 offline: {len(dataset)} ejemplos, {epochs} epochs...")
+    for epoch in range(epochs):
+        random.shuffle(dataset)
+        losses = []
+        for omega, tid in dataset:
+            loss = dec.entrenar(omega, tid, lr)
+            losses.append(loss)
+        if epoch % 20 == 0:
+            print(f"  epoch {epoch}: loss medio = {np.mean(losses):.4f}")
+
+    return dec
+
+
+def exportar_l2_a_onnx(decoder, ruta_salida):
+    """Exporta los pesos W y b del decoder L2 a formato ONNX."""
+    import onnx
+    from onnx import helper, TensorProto
+
+    # Crear grafo ONNX: input omega[D] -> MatMul(W) -> Add(b) -> Softmax -> output[V]
+    W_tensor = helper.make_tensor(
+        name="W", data_type=TensorProto.FLOAT,
+        dims=list(decoder.W.shape), vals=decoder.W.flatten().tolist()
+    )
+    b_tensor = helper.make_tensor(
+        name="b", data_type=TensorProto.FLOAT,
+        dims=list(decoder.b.shape), vals=decoder.b.flatten().tolist()
+    )
+
+    # Nodos del grafo
+    matmul_node = helper.make_node("MatMul", ["omega", "W"], ["matmul_out"])
+    add_node = helper.make_node("Add", ["matmul_out", "b"], ["add_out"])
+    softmax_node = helper.make_node("Softmax", ["add_out"], ["probs"], axis=1)
+
+    # Grafo
+    graph = helper.make_graph(
+        [matmul_node, add_node, softmax_node],
+        "L2Decoder",
+        inputs=[helper.make_tensor_value_info("omega", TensorProto.FLOAT, [1, decoder.D])],
+        outputs=[helper.make_tensor_value_info("probs", TensorProto.FLOAT, [1, decoder.vocab_size])],
+        initializer=[W_tensor, b_tensor]
+    )
+
+    # Modelo
+    model = helper.make_model(graph, producer_name="PandoraSGM")
+    model.opset_import[0].version = 13
+
+    # Guardar
+    onnx.save(model, ruta_salida)
+    print(f"L2 exportado a ONNX: {ruta_salida}")
+    return ruta_salida
+
+
 def generar_mensaje_l2(decoder, palabras_activas, max_len=6):
     """Genera un mensaje completo usando el decodificador L2.
     palabras_activas: lista de (omega, interferencia) — los nodos activos del grafo.
@@ -132,40 +241,47 @@ def generar_mensaje_l2(decoder, palabras_activas, max_len=6):
 
 
 if __name__ == "__main__":
-    # Demo: crear el decodificador y entrenar con ejemplos
-    dec = L2Decoder(D_sem=128, lr=0.05)
-    rng = random.Random(42)
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--export-onnx":
+        # Pipeline offline completo + export ONNX
+        print("=== PIPELINE L2 OFFLINE ONNX ===")
+        dec = entrenar_l2_offline(D_sem=128, epochs=100, lr=0.05, n_ejemplos=500)
+        dec.guardar()
+        exportar_l2_a_onnx(dec, "experiments/l2_decoder.onnx")
+        print("Pipeline completado.")
+    else:
+        # Demo: crear el decodificador y entrenar con ejemplos
+        dec = L2Decoder(D_sem=128, lr=0.05)
+        rng = random.Random(42)
 
-    # Ejemplos de entrenamiento: (omega, token_id)
-    # Simulamos que ciertos patrones de omega deberían producir ciertos tokens
-    print("Entrenando L2 con ejemplos...")
-    for epoch in range(50):
-        losses = []
-        for token_name, base_vector in [
-            ("hambre", [1.0, 0.5] + [0.0]*126),
-            ("comida", [0.8, 0.8] + [0.0]*126),
-            ("necesito", [0.6, 0.9] + [0.0]*126),
-            ("tengo", [0.9, 0.3] + [0.0]*126),
-            ("comer", [0.7, 0.7] + [0.0]*126),
-        ]:
-            omega = np.array(base_vector[:128], dtype=float)
-            # agregar ruido
-            omega += np.random.randn(128) * 0.05
-            tid = TOKEN2ID.get(token_name)
-            if tid is not None:
-                loss = dec.entrenar(omega, tid)
-                losses.append(loss)
-        if epoch % 10 == 0:
-            print("  epoch %d: loss medio = %.4f" % (epoch, np.mean(losses) if losses else 0))
+        # Ejemplos de entrenamiento: (omega, token_id)
+        print("Entrenando L2 con ejemplos...")
+        for epoch in range(50):
+            losses = []
+            for token_name, base_vector in [
+                ("hambre", [1.0, 0.5] + [0.0]*126),
+                ("comida", [0.8, 0.8] + [0.0]*126),
+                ("necesito", [0.6, 0.9] + [0.0]*126),
+                ("tengo", [0.9, 0.3] + [0.0]*126),
+                ("comer", [0.7, 0.7] + [0.0]*126),
+            ]:
+                omega = np.array(base_vector[:128], dtype=float)
+                omega += np.random.randn(128) * 0.05
+                tid = TOKEN2ID.get(token_name)
+                if tid is not None:
+                    loss = dec.entrenar(omega, tid)
+                    losses.append(loss)
+            if epoch % 10 == 0:
+                print("  epoch %d: loss medio = %.4f" % (epoch, np.mean(losses) if losses else 0))
 
-    # Test: decodificar un omega
-    print("\nTest de decodificacion:")
-    test_omega = np.array([1.0, 0.5] + [0.0]*126)
-    test_omega += np.random.randn(128) * 0.03
-    top5 = dec.decodificar(test_omega, topk=5, temperatura=0.8)
-    print("  omega [1.0, 0.5, ...] -> ", [(ID2TOKEN.get(t, '?'), "%.3f" % p) for t, p in top5])
+        # Test
+        print("\nTest de decodificacion:")
+        test_omega = np.array([1.0, 0.5] + [0.0]*126)
+        test_omega += np.random.randn(128) * 0.03
+        top5 = dec.decodificar(test_omega, topk=5, temperatura=0.8)
+        print("  omega [1.0, 0.5, ...] -> ", [(ID2TOKEN.get(t, '?'), "%.3f" % p) for t, p in top5])
 
-    # Guardar
-    ruta = dec.guardar()
-    print("\nGuardado en:", ruta)
-    print("Decodificador L2 LISTO.")
+        # Guardar
+        ruta = dec.guardar()
+        print("\nGuardado en:", ruta)
+        print("Decodificador L2 LISTO.")
