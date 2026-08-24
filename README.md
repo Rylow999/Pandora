@@ -12,22 +12,22 @@ SGM es un sistema de inteligencia artificial basado en grafos cognitivos donde c
 ┌─────────────────────────────────────────────────────────────┐
 │                    SGM Cognitive Core                        │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_core.py (198 líneas)                                    │
+│  sgm_core.py (~200 líneas)                                   │
 │    SGMAgentCore: step() + hook arbitro                      │
 │    Componentes: HDC, HRR, PPR, Kuramoto, grafo, homeo      │
 ├─────────────────────────────────────────────────────────────┤
 │  experiments/                                                │
-│    sgm_grafo.py (100L)      → Nodos, aristas, place cells  │
-│    sgm_hdc.py (50L)         → HDC + SensorBridge           │
-│    sgm_hrr.py (80L)         → HRR bind/unbind              │
-│    sgm_ppr.py (30L)         → PPR + PPR inverso            │
-│    sgm_kuramoto.py (60L)    → Kuramoto + interferencia      │
-│    sgm_homeostasis.py (80L) → Homeostasis grafo-cuerpo      │
-│    sgm_memoria.py (100L)    → Episódica + NOUS + lugar     │
-│    sgm_instintos.py (120L)  → Instintos biológicos         │
-│    sgm_l2_system.py (120L)  → Rosetta + L2 + DecodeL2      │
-│    sgm_pulsiones.py (130L)  → 10 plugins + Arbitro modos   │
-│    sgm_bridge.py (213L)     → Adaptador HTTP               │
+│    sgm_grafo.py      → Nodos, aristas, place cells         │
+│    sgm_hdc.py        → HDC + SensorBridge                  │
+│    sgm_hrr.py        → HRR bind/unbind, memoria relacional │
+│    sgm_ppr.py        → PPR + PPR inverso                   │
+│    sgm_kuramoto.py   → Kuramoto + interferencia            │
+│    sgm_homeostasis.py→ Homeostasis grafo-cuerpo             │
+│    sgm_memoria.py    → Episódica + NOUS + lugar            │
+│    sgm_instintos.py  → Instintos biológicos                │
+│    sgm_l2_system.py  → Rosetta + L2 + DecodeL2             │
+│    sgm_pulsiones.py  → 10 plugins + Arbitro modos          │
+│    sgm_bridge.py     → Adaptador HTTP                      │
 ├─────────────────────────────────────────────────────────────┤
 │  sgm_lang.py (487 tokens)   → Diccionario MC 1.20.4        │
 └─────────────────────────────────────────────────────────────┘
@@ -48,7 +48,6 @@ Cada nodo tiene:
 **Inmutabilidad de omega:**
 - Los **conceptos** (nodos base, recursos, herencias) tienen `omega` **inmutable** después de la creación
 - Los **place cells** (nodos-lugar emergentes) tienen `omega` **mutable** (plasticidad local)
-- El helper `_mutar_omega()` protege esta invariante
 
 ### 2. Arbitro de Pulsiones (`sgm_pulsiones.py`)
 
@@ -73,35 +72,35 @@ Cada pulsión es un plugin independiente que devuelve `{accion: peso_crudo}`:
 
 ### 3. Decodificador L2 (`sgm_l2_system.py`)
 
-**Piedra Rosetta (L1):** Diccionario directo token ↔ omega determinístico (hash-based).
-Si un omega está cerca de un token conocido, se usa directamente sin proyección.
+**Piedra Rosetta (L1):** Diccionario directo token ↔ omega determinístico.
 
 **Proyección L2:** `W·ω + b → softmax → token`
-- Entrenada offline con corpus generado desde la Piedra Rosetta
-- Loss: cross-entropy con SGD
+- Entrenada offline con corpus desde Piedra Rosetta
 - Guardada en `l2_projection.npz`
 
 **Pipeline de decodificación:**
 1. Campo de interferencia (Eq.7) → nodos relevantes
 2. Promedio ponderado de omega
-3. Fallback L1 (Piedra Rosetta)
-4. Proyección L2 → softmax → sample
+3. Fallback L1 → L2 → softmax → sample
 
-### 4. Instintos y Drives (`sgm_instintos.py`)
+### 4. Homeostasis (`sgm_homeostasis.py`)
 
-| Mecanismo | Descripción |
-|-----------|-------------|
-| Instinto de alimentación | Fuerza modulada por hambre real |
-| Instinto de exploración | Curiosidad dirigida por incertidumbre |
-| Instinto de defensa | Respuesta a amenaza/dolor |
-| Drive noop (SEEKING) | Energía libre que empuja a actuar |
-| Desplazamiento | Reacción a necesidad insatisfecha local |
+- `V_grafo = media(vitalidad) × factor_cuerpo(food, health)`
+- `_hambre_real = 1 - food/20`
+- `V_grafo` sube/baja con salud del player
+
+### 5. Memoria y Navegación (`sgm_memoria.py`)
+
+- **Memoria episódica**: Buffer de eventos salientes
+- **Place cells**: Nodos-lugar emergentes con posición espacial
+- **Modelo de objetos**: Predicción de posición futura (object permanence)
+- **Navegación a meta**: Ir a lugar recordado donde se resolvió antes
 
 ---
 
 ## Ejecución
 
-### Test rápido del core
+### Test rápido
 ```bash
 cd ~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
 source ~/crafter-env/bin/activate
@@ -129,12 +128,11 @@ python3 /tmp/hermes-verify-omega-l2.py
 
 | Componente | Estado |
 |-----------|--------|
-| `sgm_core.py` (198 líneas) | ✅ Estable, modular |
-| `sgm_pulsiones.py` (10 plugins) | ✅ Integrado, tests pasando |
+| `sgm_core.py` | ✅ Estable, modular, flujo completo |
+| `sgm_pulsiones.py` (10 plugins) | ✅ Integrado |
 | `sgm_l2_system.py` | ✅ Entrenado, 6/6 correctos |
 | `sgm_lang.py` (487 tokens) | ✅ Diccionario MC 1.20.4 |
-| `sgm_bridge.py` | ✅ Adaptador HTTP |
-| Experimentos verificados | 170+ en registry |
+| Experimentos verificados | 170+ |
 
 ---
 
@@ -144,4 +142,4 @@ Proyecto de investigación — NOUS: The Pandora Research.
 
 ---
 
-*Última actualización: 2026-08-24 — Core modularizado + Sistema L2 + Arbitro de Pulsiones.*
+*Última actualización: 2026-08-24 — Core flujo completo + modular.*

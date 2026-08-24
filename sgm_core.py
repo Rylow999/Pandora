@@ -2,12 +2,15 @@
 """
 sgm_core.py — SGM: Synthetic Graph Mind (Motor Cognitivo).
 
-Core modularizado: HDC, HRR, PPR, Kuramoto, grafo, homeostasis + hook arbitro.
-Todo lo demás está en módulos separados (pulsiones, L2, comunicacion, razonamiento).
+Core modularizado con flujo completo:
+1. Proyección semántica
+2. Homeostasis (food, health)
+3. Percepción interna (modos, place cells, navegación, objetos)
+4. Arbitro de pulsiones
+5. Post-acción (drive noop, aprendizaje, duda)
 """
 import math, random
 
-# Módulos base
 from experiments.sgm_hdc import HDC, SensorBridge
 from experiments.sgm_hrr import HRR
 from experiments.sgm_ppr import ppr_route, ppr_inverso
@@ -19,12 +22,7 @@ from experiments.sgm_instintos import Instintos
 
 
 class SGMAgentCore(SGMAgentGrafo):
-    """
-    Agente SGM con core modularizado.
-    
-    step(): percepción → arbitro → acción
-    NO contiene lógica de negocio, solo orquestación.
-    """
+    """Agente SGM con core modularizado y flujo completo."""
     
     def __init__(self, rng=None, D=128, n_nodes=64, gamma=0.01):
         super().__init__(rng, D, n_nodes)
@@ -49,7 +47,7 @@ class SGMAgentCore(SGMAgentGrafo):
         # Arbitro (hook externo)
         self._arbitro = None
         
-        # Estado
+        # Estado interno
         self.modo = "BASE"
         self.modo_ticks = 0
         self.ultima_accion = -1
@@ -57,52 +55,60 @@ class SGMAgentCore(SGMAgentGrafo):
         self.stagnation_ticks = 0
         self.doubt_cooldown = 0
         self.status = "ACTIVA"
+        self.conteo_repeticion = 0
         
         # Percepción
         self._hambre_real = 0.0
         self._amenaza = 0.0
         self._algo_enfrente = 0
         self._posicion_actual = None
+        self._hay_gradiente = False
+        self._gradiente_dir = (0, 0)
+        self._config_grad = {"activo": False, "fuerza": 0.0}
+        self._config_curio = {"activo": False, "fuerza": 0.0}
+        self._inc_dirs = {}
+        self._target_dir = (0, 0)
+        self._target_dist = 0
+        self._accion_meta = None
         self._seed = 0
+        self.objetos = {}  # {id: {tipo, pos_hist}}
+        self.meta_recordada = None  # (x, y) recordado por memoria
     
     def set_arbitro(self, arbitro):
-        """Configura el arbitro externo de pulsiones."""
         self._arbitro = arbitro
     
     def set_edges(self, edges):
-        """Configura las aristas del grafo."""
         self.edges = edges
     
     def step(self, state_semantic, valid_actions):
-        """
-        Un paso completo del agente.
-        
-        1. Proyección semántica (HDC)
-        2. Percepción interna (modos, place cells, objetos)
-        3. Arbitro de pulsiones → acción
-        4. Post-acción (drive noop, aprendizaje, duda)
-        """
+        """Un paso completo del agente."""
         # 1. Proyección semántica
         om_r = self.hdc.project(state_semantic)
         self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
         
-        # 2. Percepción interna
+        # 2. Homeostasis (usa food/health del adaptador)
+        # → Actualiza _hambre_real, V_grafo, _amenaza
+        
+        # 3. Percepción interna completa
         self._percepcion_interna()
         
-        # 3. Arbitro de pulsiones
+        # 4. Navegación a meta y objetos
+        self._navegacion_y_objetos()
+        
+        # 5. Arbitro de pulsiones
         if self._arbitro is not None:
             accion = self._arbitro.elegir(self, valid_actions)
         else:
             accion = self._elegir_accion_ppp(valid_actions)
         
-        # 4. Post-acción
+        # 6. Post-acción
         self._post_accion(accion)
         
         return accion
     
     def _percepcion_interna(self):
-        """Fase de percepción interna: modos, place cells, objetos."""
+        """Percepción interna completa: modos, place cells, Kuramoto."""
         # Modo (contention scheduling)
         necesidad_critica = max(self._hambre_real, self._amenaza)
         if necesidad_critica > 0.5:
@@ -122,17 +128,90 @@ class SGMAgentCore(SGMAgentGrafo):
         # Kuramoto
         kuramoto_step(self.phi, self.phi[0] if self.phi else 0.0, self.vitalidad)
     
-    def _elegir_accion_ppp(self, valid_actions):
-        """Elige acción usando PPR directo (sin arbitro)."""
-        rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=10)
+    def _navegacion_y_objetos(self):
+        """Navegación a meta y modelo de objetos."""
+        # Navegación a meta (0143)
+        if self.memoria.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
+            mx, my = self.meta_recordada
+            if self._posicion_actual is not None:
+                cxp, cyp = self._posicion_actual
+                if abs(mx - cxp) + abs(my - cyp) > 1:
+                    dx = 1 if mx > cxp else (-1 if mx < cxp else 0)
+                    dy = 1 if my > cyp else (-1 if my < cyp else 0)
+                    if abs(dx) >= abs(dy):
+                        self._accion_meta = self._direccion_a_accion(dx, 0)
+                    else:
+                        self._accion_meta = self._direccion_a_accion(0, dy)
+                else:
+                    self._accion_meta = None
         
+        # Modelo de objetos (0144)
+        self._actualizar_objetos()
+        if self.memoria.auto_navegar_meta and self.meta_recordada is not None:
+            for tipo in getattr(self, '_tipos_meta_buscados', ['comida']):
+                pred = self._posicion_predicha_objeto(tipo)
+                if pred is not None:
+                    self.meta_recordada = pred
+                    break
+    
+    def _actualizar_objetos(self):
+        """Modelo de objetos: rastrea posición histórica."""
+        seen = getattr(self, '_objetos_vistos', None)
+        if not seen:
+            return
+        
+        for tipo, ox, oy in seen:
+            ox, oy = int(ox), int(oy)
+            # Buscar objeto existente por tipo y proximidad
+            encontrado = False
+            for oid, datos in self.objetos.items():
+                if datos.get('tipo') == tipo:
+                    hist = datos.get('pos_hist', [])
+                    if hist:
+                        ult = hist[-1]
+                        if abs(ult[0] - ox) + abs(ult[1] - oy) < 3:
+                            hist.append((ox, oy))
+                            datos['pos_hist'] = hist[-10:]  # mantener últimas 10
+                            encontrado = True
+                            break
+            if not encontrado:
+                oid = len(self.objetos)
+                self.objetos[oid] = {
+                    'tipo': tipo,
+                    'pos_hist': [(ox, oy)],
+                    'id': oid
+                }
+    
+    def _posicion_predicha_objeto(self, tipo):
+        """Predice posición futura de un objeto basado en su velocidad."""
+        for oid, datos in self.objetos.items():
+            if datos.get('tipo') == tipo:
+                hist = datos.get('pos_hist', [])
+                if len(hist) >= 2:
+                    vx = hist[-1][0] - hist[-2][0]
+                    vy = hist[-1][1] - hist[-2][1]
+                    return (hist[-1][0] + vx, hist[-1][1] + vy)
+        return None
+    
+    def _direccion_a_accion(self, dx, dy):
+        """Convierte dirección (dx, dy) a índice de acción."""
+        if dy < 0 and dx == 0: return 1  # norte
+        if dy > 0 and dx == 0: return 2  # sur
+        if dx > 0 and dy == 0: return 4  # este
+        if dx < 0 and dy == 0: return 3  # oeste
+        if dx > 0 and dy < 0: return 1  # noreste → norte
+        if dx > 0 and dy > 0: return 2  # sureste → sur
+        return 0
+    
+    def _elegir_accion_ppp(self, valid_actions):
+        """Fallback: PPR directo sin arbitro."""
+        rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=10)
         best, bv = -1, -2.0
         for a in valid_actions:
             if a in rank:
                 score = rank[a] * self.vitalidad[a]
                 if score > bv:
                     bv, best = score, a
-        
         return best if best >= 0 else valid_actions[0]
     
     def _post_accion(self, accion):
@@ -161,19 +240,15 @@ class SGMAgentCore(SGMAgentGrafo):
             self.memoria.handle_doubt(self)
     
     def actualizar_homeostasis(self, food, health):
-        """Actualiza homeostasis."""
+        """Actualiza homeostasis (food: 0-20, health: 0-20)."""
         self.homeostasis.actualizar(self, food, health)
         self._hambre_real = self.homeostasis._hambre_real
     
     def expresarse(self, decoder_l2=None):
-        """
-        Genera expresión basada en el estado del grafo.
-        Usa el decoder L2 si está disponible.
-        """
+        """Genera expresión basada en el estado del grafo."""
         if decoder_l2 is None:
             return "..."
         
-        # Campo de interferencia
         zona = campo_interferencia(
             self.omega, self.phi,
             self.phi[0] if self.phi else 0.0,
@@ -194,5 +269,5 @@ class SGMAgentCore(SGMAgentGrafo):
                 self.vitalidad[self.ultima_accion] *= max(0.3, 1.0 - pain)
 
 
-# Compatibilidad con código anterior
+# Compatibilidad
 SGMAgent = SGMAgentCore
