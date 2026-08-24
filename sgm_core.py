@@ -146,6 +146,7 @@ class SGMAgent:
         self.W_base = W_base
         self.omega = [[rng.gauss(0, 1) for _ in range(D)] for _ in range(n_nodes)]
         self.vitalidad = [1.0 for _ in range(n_nodes)]
+        self.es_place_cell = [False for _ in range(n_nodes)]  # True solo para nodos-lugar mutables
         self.edges = {i: [] for i in range(n_nodes)}
         # Capas de resolución: cada nodo tiene un nivel (0=básico, 1=intermedio, 2=abstracto)
         self.resolucion_nivel = [0] * n_nodes
@@ -431,8 +432,17 @@ class SGMAgent:
         delta = math.sin(self.phi_root - self.phi[i])
         self.phi[i] = (self.phi[i] + self.eta_phase * R_i * signo * delta) % (2 * math.pi)
 
-    def _dist_omega(self, i, j):
-        return math.sqrt(sum((x - y) ** 2 for x, y in zip(self.omega[i], self.omega[j])))
+    def _mutar_omega(self, nuevo, idx, es_place_cell=False):
+        """Mutar omega de forma segura. Solo place cells pueden mutar su omega.
+        Los conceptos (es_place_cell=False) son INMUTABLES."""
+        if idx >= len(self.omega):
+            return
+        if es_place_cell or (idx < len(self.es_place_cell) and self.es_place_cell[idx]):
+            self.omega[idx] = nuevo
+        # else: concepto inmutable, no se modifica omega
+    
+    def _dist_omega(self, a, b):
+        return math.sqrt(sum((x - y) ** 2 for x, y in zip(self.omega[a], self.omega[b])))
 
     def sincronizacion(self, i):
         """Eq.7 interferencia: I_i = cos(phi_i - phi_root). Proxy de relevancia sincronizada."""
@@ -772,22 +782,20 @@ class SGMAgent:
     # ---------- PLACE CELLS EMERGENTES + NODOS QUE MUTAN (0138, B2) ----------
     def _registrar_place_cell(self, obs_clave, posicion=None):
         """Crea un NODO-LUGAR emergente cuando se llega a una observacion no familiar.
-        Agnóstico del entorno (no asume ningún engine): 'obs_clave' es una etiqueta generica de la
-        situacion que setea el adaptador. Si el lugar ya existe, devuelve su indice; si no,
-        crea un omega nuevo (mutante) y lo agrega al sustrato dinamicamente.
-        'posicion' (opcional, (x,y)) la guarda el sustrato para NAVEGACION dirigida a meta:
-        cuando el agente recuerda que un lugar tiene comida, puede rutear hacia esa posicion.
+        Agnóstico del entorno: 'obs_clave' es una etiqueta generica de la situacion.
+        Los place cells son MUTABLES (omega puede cambiar con la experiencia).
         """
         if obs_clave in self.place_cells:
             idx = self.place_cells[obs_clave]
             self.place_activo = idx
             return idx
-        # lugar nuevo: crear omega (identidad) + vitalidad + participantes
+        # lugar nuevo: crear omega (identidad) + vitalidad + participante
         idx = len(self.omega)
         nuevo = [random.gauss(0, 1) for _ in range(self.D)]
         n = math.sqrt(sum(x * x for x in nuevo))
         self.omega.append([x / n for x in nuevo] if n > 0 else nuevo)
         self.vitalidad.append(1.0)
+        self.es_place_cell.append(True)  # Los place cells son MUTABLES
         self.edges[idx] = []
         self.place_cells[obs_clave] = idx
         if posicion is not None:
@@ -798,17 +806,17 @@ class SGMAgent:
 
     def _mutar_omega_lugar(self, señal_resultado):
         """MUTACION LOCAL del omega del nodo-lugar activo (plasticidad de identidad).
-        El place cell activo ajusta su identidad hacia la señal de resultado util (reward/
-        restauracion), SIN tocar los demas omegas (leccion 0109-0111). Es como una place cell
-        que se especializa: un lugar donde se come bien 'adquiere' la identidad de subspistencia.
+        El place cell activo ajusta su identidad hacia la señal de resultado util.
+        Solo muta si es un place cell (es_place_cell=True).
         """
         if self.place_activo < 0 or self.place_activo >= len(self.omega):
             return
+        # Solo mutar si es place cell
+        if not (self.place_activo < len(self.es_place_cell) and self.es_place_cell[self.place_activo]):
+            return
         om = self.omega[self.place_activo]
         for j in range(self.D):
-            # mover el omega un paso hacia la señal (que llega en 0-1 normalizada)
             om[j] += self.mutacion_tasa * (señal_resultado - om[j])
-        # renormalizar para no degradar
         n = math.sqrt(sum(x * x for x in om))
         if n > 0:
             for j in range(self.D):
@@ -946,6 +954,7 @@ class SGMAgent:
             nuevo = [random.gauss(0, 1) for _ in range(self.D)]
             self.omega.append(nuevo)
             self.vitalidad.append(1.0)
+            self.es_place_cell.append(False)  # Recurso = concepto inmutable
             self.edges[idx] = []
             # IMPORTANTE: el HRR tiene 'roles' de tamaño fijo en el init. Al agregar nodos
             # dinamicamente, hay que ampliar roles para que relational_memory no falle
@@ -1564,6 +1573,7 @@ class SGMAgent:
                     while len(self.omega) <= hijo_id:
                         self.omega.append([0.0] * self.D)
                         self.vitalidad.append(0.5)
+                        self.es_place_cell.append(False)  # Concepto inmutable
                         self.edges[len(self.omega) - 1] = []
                         self.phi.append(0.0)
                         self.scope_depth.append(0)
@@ -1571,7 +1581,10 @@ class SGMAgent:
         delta = [rng.gauss(0, 0.10) for _ in range(self.D)]
         hijo_vec = [(padre_vec[i] + delta[i]) for i in range(self.D)]
         self._norm(hijo_vec)
-        self.omega[hijo_id] = hijo_vec
+        # Asignación inicial del concepto (después es inmutable)
+        if hijo_id < len(self.es_place_cell):
+            self.omega[hijo_id] = hijo_vec
+            self.es_place_cell[hijo_id] = False  # Concepto inmutable
         self.scope_depth[hijo_id] = self.scope_depth[padre] + 1
         self.parent_of[hijo_id] = padre
         return hijo_id
@@ -1620,9 +1633,11 @@ class SGMAgent:
                 # seleccionar siguiente (argmax determinista para reproducibilidad)
                 siguiente = vecinos[probs.index(max(probs))]
                 # actualizar ω del nodo visitado (Eq. 1): ω(t+1) = (1-β)·ω(t) + β·input
-                beta = self.effective_learning_rate
-                for i in range(self.D):
-                    self.omega[siguiente][i] = (1 - beta) * self.omega[siguiente][i] + beta * (input_signal[i] if input_signal else 0.0)
+                # SOLO si es un place cell (conceptos son inmutables)
+                if siguiente < len(self.es_place_cell) and self.es_place_cell[siguiente]:
+                    beta = self.effective_learning_rate
+                    for i in range(self.D):
+                        self.omega[siguiente][i] = (1 - beta) * self.omega[siguiente][i] + beta * (input_signal[i] if input_signal else 0.0)
                 # actualizar fase (Eq. 3): φ(t+1) = [φ(t) + η·R·sin(φ_root - φ)] mod 2π
                 delta_phi = math.sin(self.phi_root - self.phi[siguiente])
                 R = 1.0 / (1.0 + self._dist_omega(self.omega[siguiente], self.omega[0]))
