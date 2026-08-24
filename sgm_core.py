@@ -15,7 +15,25 @@ from experiments.sgm_hrr import HRR
 from experiments.sgm_ppr import ppr_route, ppr_inverso
 from experiments.sgm_kuramoto import kuramoto_step, interferencia, campo_interferencia, promedio_ponderado, step_k_cadenas
 from experiments.sgm_grafo import SGMAgent as SGMAgentGrafo
-from experiments.sgm_lang import ID2TOKEN
+from experiments.sgm_lang import ID2TOKEN, TOKEN2ID
+from experiments.minecraft_actions import ACCIONES_MOVIMIENTO, ACCIONES_INTERACCION, NOMBRE
+
+# Mapeo acción de Minecraft → token semántico (para entrenar L2)
+ACCION2TOKEN = {
+    0:  TOKEN2ID.get('quieto', 0),
+    1:  TOKEN2ID.get('adelante', 0),
+    2:  TOKEN2ID.get('atras', 0),
+    3:  TOKEN2ID.get('izquierda', 0),
+    4:  TOKEN2ID.get('derecha', 0),
+    5:  TOKEN2ID.get('saltar', 0),
+    6:  TOKEN2ID.get('agacharse', 0),
+    7:  TOKEN2ID.get('atacar', 0),
+    8:  TOKEN2ID.get('usar', 0),
+    9:  TOKEN2ID.get('craftear', 0),
+    10: TOKEN2ID.get('equipar', 0),
+    11: TOKEN2ID.get('minar', 0),
+    12: TOKEN2ID.get('colocar', 0),
+}
 
 
 class SGMAgentCore(SGMAgentGrafo):
@@ -39,30 +57,31 @@ class SGMAgentCore(SGMAgentGrafo):
         self.consolidadas = set(); self.theta_emerg_critico = 0.5
         # Pulsiones
         self.instinto_alimentacion = None; self.incertidumbre_acum = 0.0
-        self.instinto_explorar_umbral = 3; self.instinto_umbral_carencia = 0.3
+        self.instinto_explorar_umbral = 0.5; self.instinto_umbral_carencia = 0.3
         self.instinto_interaccion_fuerza = 0.7; self.beta_supervivencia = 2.0
         self.beta_otras_compo = 0.3; self.reencare_fuerza = 0.8
         self.drive_noop = 0.0; self.drive_noop_umbral = 1.5; self.drive_noop_fuerza = 1.0
         self.drive_noop_tasa = 0.1; self.drive_noop_descarga = 0.5
         self.stagnation_ticks = 0; self.doubt_cooldown = 0; self.status = "ACTIVA"
         self.necesidad_insatisfecha = False
-        self.acciones_movimiento = {1, 2, 3, 4}
+        self.acciones_movimiento = ACCIONES_MOVIMIENTO
+        self.acciones_interaccion = ACCIONES_INTERACCION
         self.theta_emerg_critico = 0.5
         self.auto_registrar_place = True; self.auto_navegar_meta = True
         self.place_bucket = 4; self.mutacion_tasa = 0.05
         self.modo = "BASE"; self.modo_ticks = 0; self.ultima_accion = -1; self.conteo_repeticion = 0
         self._ultima_accion_ejec = -1; self.historial_acciones = []
-        # L2 + modelo mundo + self-mod + comunicación
+        # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
         self.modelo_mundo = {}; self.ultimo_estado_q = None
         self.ultimo_food = None; self.conteo_induccion = {}
-        self.auto_registrar_place = True; self.auto_navegar_meta = True
-        self.place_bucket = 4; self.mutacion_tasa = 0.05
 
     # ============ DECAIMIENTO DE VITALIDAD (Eq.5) ============
     def decaer_vitalidad(self):
         for i in range(len(self.vitalidad)):
-            A = 1.0 if self.historial_acciones and self.historial_acciones[-1] == i else 0.0
+            # Recompensar el nodo semilla (lo que el agente percibe ahora),
+            # no la acción ejecutada
+            A = 1.0 if i == self._seed else 0.0
             self.vitalidad[i] = self.vitalidad[i] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
 
     # ============ PODA DE ARISTAS ============
@@ -87,7 +106,11 @@ class SGMAgentCore(SGMAgentGrafo):
             I = interferencia(self.omega[i], self.phi[i], self.phi_root)
             if I > self.theta_interf:
                 for j in self.edges.get(i, []):
-                    self.consolidadas.add((i, j)); self.consolidadas.add((j, i))
+                    clave = (i, j)
+                    strength = self.conn_type.get(clave, {}).get("strength", 0)
+                    if strength > 0.2:  # solo consolidar aristas con uso real
+                        self.consolidadas.add(clave)
+                        self.consolidadas.add((j, i))
 
     # ============ HEBB EN HOMEOSTASIS ============
     def hebb_homeostasis(self, food, health):
@@ -196,7 +219,13 @@ class SGMAgentCore(SGMAgentGrafo):
         PMI = self._computar_pmi(C)
         U, S, _ = np.linalg.svd(PMI, full_matrices=False); vv = U[:, :min(32, n)] * S[:min(32, n)]
         if usar_sklearn:
-            Y = TSNE(n_components=2, perplexity=min(30, n-1), n_iter=500, random_state=42).fit_transform(vv)
+            import inspect
+            kwargs = {"n_components": 2, "perplexity": min(30, n-1), "random_state": 42}
+            # Compatibilidad: n_iter (sklearn<1.1) vs max_iter (sklearn>=1.1)
+            tsne_params = inspect.signature(TSNE.__init__).parameters
+            if "max_iter" in tsne_params: kwargs["max_iter"] = 500
+            else: kwargs["n_iter"] = 500
+            Y = TSNE(**kwargs).fit_transform(vv)
             labels = KMeans(n_clusters=min(10, n), random_state=42, n_init=10).fit_predict(Y)
         else:
             Y = self._tsne_puro(vv, perplexity=min(30, n-1)); labels = self._kmeans(Y, k=min(10, n))
@@ -204,10 +233,13 @@ class SGMAgentCore(SGMAgentGrafo):
         for c in range(len(set(labels))):
             acciones_c = [a for z, a in zip(self.historial_campos, self.historial_acciones_l2)
                           if z for nid, _, _ in z if nid < len(labels) and labels[nid] == c]
-            if acciones_c: cluster_tokens[c] = max(set(acciones_c), key=acciones_c.count) % len(ID2TOKEN)
+            if acciones_c:
+                accion_mas_comun = max(set(acciones_c), key=acciones_c.count)
+                cluster_tokens[c] = ACCION2TOKEN.get(accion_mas_comun, TOKEN2ID.get('explorar', 0))
         from experiments.sgm_l2_system import L2Decoder
-        dec = L2Decoder(128, len(ID2TOKEN), lr)
-        pares = [(omega, cluster_tokens.get(labels[nid], 0)) for z, a in zip(self.historial_campos, self.historial_acciones_l2)
+        dec = L2Decoder(128, lr)
+        pares = [(omega, cluster_tokens.get(labels[nid], TOKEN2ID.get('explorar', 0)))
+                 for z, a in zip(self.historial_campos, self.historial_acciones_l2)
                  for nid, omega, _ in z if nid < len(labels)]
         if not pares: return None
         for _ in range(epochs):
@@ -228,7 +260,8 @@ class SGMAgentCore(SGMAgentGrafo):
         total = C.sum()
         if total == 0: return np.zeros_like(C)
         P = C / total; Pi = C.sum(axis=1) / total; Pj = C.sum(axis=0) / total
-        return np.log(P / (Pi[:, None] * Pj[None, :] + eps) + eps)
+        pmi = P / (Pi[:, None] * Pj[None, :] + eps)
+        return np.log(pmi + eps)
 
     def _tsne_puro(self, X, n_components=2, perplexity=30, n_iter=300, lr=200):
         n = X.shape[0]; Y = np.random.randn(n, n_components) * 0.01
@@ -265,21 +298,33 @@ class SGMAgentCore(SGMAgentGrafo):
     # ============ NAVEGACIÓN ============
     def _navegacion_y_objetos(self):
         if self.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
-            mx, my = self.meta_recordada
+            mx, my, mz = self.meta_recordada[:3] if len(self.meta_recordada) == 3 else (*self.meta_recordada, 0)
             if self._posicion_actual is not None:
-                cxp, cyp = self._posicion_actual
-                if abs(mx - cxp) + abs(my - cyp) > 1:
+                cxp, cyp, czp = self._posicion_actual[:3] if len(self._posicion_actual) == 3 else (*self._posicion_actual, 0)
+                if abs(mx - cxp) + abs(my - cyp) + abs(mz - czp) > 1:
                     dx = 1 if mx > cxp else (-1 if mx < cxp else 0)
                     dy = 1 if my > cyp else (-1 if my < cyp else 0)
-                    self._accion_meta = self._direccion_a_accion(dx if abs(dx) >= abs(dy) else 0, dy if abs(dy) >= abs(dx) else 0)
+                    dz = 1 if mz > czp else (-1 if mz < czp else 0)
+                    self._accion_meta = self._direccion_a_accion(dx, dy, dz)
                 else: self._accion_meta = None
 
-    def _direccion_a_accion(self, dx, dy):
-        if dy < 0 and dx == 0: return 1
-        if dy > 0 and dx == 0: return 2
-        if dx > 0 and dy == 0: return 4
-        if dx < 0 and dy == 0: return 3
-        return 0
+    def _direccion_a_accion(self, dx, dy, dz=0):
+        """
+        Convierte dirección 3D a acción de movimiento de Minecraft.
+        Prioriza el eje de mayor desplazamiento.
+        """
+        abs_dx, abs_dy, abs_dz = abs(dx), abs(dy), abs(dz)
+        # Prioridad: y (arriba/abajo) > x/z (plano)
+        if abs_dy >= max(abs_dx, abs_dz):
+            if dy > 0: return 5   # JUMP (subir)
+            if dy < 0: return 6   # SNEAK (bajar/agacharse)
+        if abs_dx >= abs_dz:
+            if dx > 0: return 4   # RIGHT (este)
+            if dx < 0: return 3   # LEFT (oeste)
+        if abs_dz > 0:
+            if dz > 0: return 1   # FORWARD (sur)
+            if dz < 0: return 2   # BACK (norte)
+        return 0  # NOOP
 
     def _elegir_accion_ppp(self, valid_actions):
         rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=10)
@@ -309,11 +354,13 @@ class SGMAgentCore(SGMAgentGrafo):
         self.modo = "SUPERVIVENCIA" if necesidad_critica > self.theta_emerg_critico else "BASE"
         self.modo_ticks += 1
         
-        # 4. Place cells
+        # 4. Place cells (3D)
         if self.auto_registrar_place and self._posicion_actual:
-            px, py = self._posicion_actual
-            bucket = (px // self.place_bucket, py // self.place_bucket)
-            self.registrar_place_cell(f"P{bucket[0]}_{bucket[1]}|enf={self._algo_enfrente}", (px, py))
+            px, py, pz = self._posicion_actual[:3] if len(self._posicion_actual) == 3 else (*self._posicion_actual, 0)
+            bucket = (px // self.place_bucket, py // self.place_bucket, pz // self.place_bucket)
+            # Incluir contexto para diferenciar lugares (bioma, hora, bloque enfrente)
+            contexto = f"P{bucket[0]}_{bucket[1]}_{bucket[2]}|bioma={getattr(self, '_bioma', 'plains')}|hora={getattr(self, '_hora', 0)}|enf={self._algo_enfrente}"
+            self.registrar_place_cell(contexto, (px, py, pz))
         
         # 5. Decaimiento + Kuramoto
         self.decaer_vitalidad(); self.actualizar_kuramoto()

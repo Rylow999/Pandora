@@ -202,8 +202,9 @@ class SGMAgent:
         return best if best >= 0 else valid_actions[0]
     
     def _aff(self, a, b):
-        """Afinidad entre nodos (para PPR)."""
+        """Afinidad entre nodos (para PPR). No colapsa a 0 ante vitalidad baja."""
         if a >= len(self.omega) or b >= len(self.omega):
             return 0.0
         dist = math.sqrt(sum((x - y) ** 2 for x, y in zip(self.omega[a], self.omega[b])))
-        return math.exp(-5.0 * dist) * self.vitalidad[b]
+        # Afinidad semántica + mínimo piso de vitalidad para que PPR no colapse
+        return math.exp(-5.0 * dist) * max(self.vitalidad[b], 0.1)

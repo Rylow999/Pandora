@@ -191,7 +191,8 @@ class PulsionReEncare(Pulsion):
         
         # Si está lejos: moverse hacia el objetivo
         if target_dist > 1:
-            accion_mov = agente._direccion_a_accion(target_dir[0], target_dir[1])
+            target_dir = target_dir if len(target_dir) == 3 else (*target_dir, 0)
+            accion_mov = agente._direccion_a_accion(target_dir[0], target_dir[1], target_dir[2])
             if accion_mov in valid_actions and accion_mov in agente.acciones_movimiento:
                 result[accion_mov] = mult * self.params['fuerza'] * necesidad
         
