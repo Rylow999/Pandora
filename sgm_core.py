@@ -1091,8 +1091,9 @@ class SGMAgent:
         return (0, 1 if dy > 0 else -1 if dy < 0 else 0)
 
     def step(self, state_semantic, valid_actions):
+        # 1. PROYECCIÓN SEMÁNTICA
         om_r = self.hdc.project(state_semantic)
-        seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
+        self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
         
         self.tick(1)
@@ -1100,16 +1101,8 @@ class SGMAgent:
         if self.doubt_cooldown > 0:
             self.doubt_cooldown -= 1
         
-        rank = ppr_route(self.edges, seed, self._aff, alpha=self.alpha, iters=10)
-        
-        best, bv = -1, -2.0
-        # 0140: ARBITRO DE MODOS. Computar la necesidad critica (estres) que dispara el modo.
-        # hambre_real y amenaza llegan del adaptador (genericas). Si alguna es critica, el
-        # sistema entra en MODO_SUPERVIVENCIA: la pulsion de supervivencia toma el control
-        # EXCLUSIVO del canal (beta_supervivencia amplifica, beta_otras atenua las demas).
-        # Es contention scheduling (Norman & Shallice 1986): el arbitro decide quien mueve
-        # el cuerpo, mientras los demas procesos siguen corriendo sin mando. Al satisfacerse,
-        # vuelve al modo base (STRESS_HIGH baja, spec v1.4 5.2).
+        # 2. FASE DE PERCEPCIÓN INTERNA
+        # 2a. Arbitro de modos (contention scheduling)
         necesidad_critica = max(self._hambre_real, self._amenaza)
         if necesidad_critica > self.theta_emerg_critico:
             self.modo = "SUPERVIVENCIA"
@@ -1117,17 +1110,15 @@ class SGMAgent:
         else:
             self.modo = "BASE"
             self.modo_ticks = 0
-        en_supervivencia = (self.modo == "SUPERVIVENCIA")
-        # 0143: MAPA EMERGENTE AUTONOMO. Registrar place cell y navegar a meta de forma
-        # INTERNA (sin depender de que el harness lo orqueste). Usa _posicion_actual y
-        # _meta_espacial que el adaptador setea (señales basicas del entorno, agnostico).
+        
+        # 2b. Place cells emergentes
         if self.auto_registrar_place and getattr(self, '_posicion_actual', None) is not None:
             px, py = self._posicion_actual
             bucket = (px // self.place_bucket, py // self.place_bucket)
             clave = f"P{bucket[0]}_{bucket[1]}|enf={self._algo_enfrente}"
             self._registrar_place_cell(clave, posicion=(px, py))
-        # NAVEGACION A META (0143): si hay hambre y una meta recordada, empujar el movimiento
-        # que acerca a esa meta. La meta la autogenera el mapa (donde se resolvio antes).
+        
+        # 2c. Navegación a meta
         if self.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
             mx, my = self.meta_recordada
             if getattr(self, '_posicion_actual', None) is not None:
@@ -1137,163 +1128,57 @@ class SGMAgent:
                     accion_meta = self._direccion_a_accion(dir_m[0], dir_m[1])
                     self._accion_meta = accion_meta
                 else:
-                    self._accion_meta = None  # adyacente: la logica de interaccion decide
-        # 0144: MODELO DE OBJETO PREDICTIVO. Procesar los objetos vistos (aprender dinamica,
-        # predecir posicion futura). El adaptador lleno _objetos_vistos. Interno, no harness.
+                    self._accion_meta = None
+        
+        # 2d. Modelo de objeto predictivo
         self._actualizar_objetos()
-        # Si hay una meta_recordada y ahora PODEMOS predecir donde estara el objeto, ajustar
-        # la meta a la PREDICCION (compensar movimiento del objeto, object permanence).
         if self.auto_navegar_meta and self.meta_recordada is not None:
             for tipo in getattr(self, '_tipos_meta_buscados', ['comida']):
                 pred = self._posicion_predicha_objeto(tipo)
                 if pred is not None:
                     self.meta_recordada = pred
                     break
-        # INSTINTO DE ESPECIE - ALIMENTACION (0120): fuerza modulada por la carencia real.
+        
+        # 3. ARBITRO DE PULSIONES
+        if not hasattr(self, '_arbitro'):
+            from experiments.sgm_pulsiones import crear_arbitro_default
+            self._arbitro = crear_arbitro_default()
+        
+        # Pre-computar valores compartidos por las pulsiones
         en_carencia = self.V_grafo < self.instinto_umbral_carencia
-        fuerza_instinto = 0.0
-        if en_carencia:
-            fuerza_instinto = self.instinto_fuerza_base * (self.instinto_umbral_carencia - self.V_grafo)
-        # INSTINTO DE ESPECIE - GRADIENTE HOMEOSTATICO (0123): cuando hay hambre Y recurso visible,
-        # las acciones de movimiento HACIA el recurso reciben un sesgo. Quimiotaxis simple.
-        hay_gradiente = getattr(self, '_hay_gradiente', False)
-        grad_dir = getattr(self, '_gradiente_dir', (0, 0))
-        config_grad = getattr(self, '_config_grad', {})
-        grad_activo = hay_gradiente and config_grad.get('activo', False) and en_carencia
-        accion_grad = None
-        if grad_activo:
-            accion_grad = self._direccion_a_accion(grad_dir[0], grad_dir[1])
-        # INSTINTO DE EXPLORACION (0121): curiosidad dirigida al mundo.
-        quiere_explorar = self.incertidumbre_acum >= self.instinto_explorar_umbral
-        fuerza_explorar = 0.0
-        if quiere_explorar:
-            fuerza_explorar = self.instinto_explorar_fuerza
-        inc_dirs = getattr(self, '_inc_dirs', {})
-        config_curio = getattr(self, '_config_curio', {})
-        curio_activa = quiere_explorar and config_curio.get('activo', False)
-        dir_mas_inc = None
-        if inc_dirs:
-            try:
-                dir_mas_inc = max(inc_dirs, key=inc_dirs.get)
-            except ValueError:
-                dir_mas_inc = None
-        # INSTINTO DE DESPLAZAMIENTO (0122): reactivo a necesidad insatisfecha local.
-        en_carencia_grave = self.V_grafo < self.devaluar_umbral
-        necesidad_insat = en_carencia_grave and (self.ultima_accion == self.instinto_alimentacion)
-        self.necesidad_insatisfecha = necesidad_insat
-        # 0128: DRIVE DE ACCION (SEEEKING). Si la energia libre acumulada por noop
-        # supera el umbral, se activa un empuje que sesga CONTRA quedarse quieto
-        # (noop=0): las acciones no-noop ganan fuerza. Es energia que se descarga al actuar.
-        drive_dispara = self.drive_noop >= self.drive_noop_umbral
-        for a in valid_actions:
-            if a in rank:
-                score = rank[a] * self.vitalidad[a]
-                # ARBITRO DE MODOS (0140): en modo SUPERVIVENCIA, la pulsion de interactuar
-                # se amplifica y las pulsiones de exploracion/curiosidad/drive se atenuan.
-                # Es el "control exclusivo" del canal: la supervivencia domina la accion.
-                # Las demas pulsiones siguen (duda, dolor) pero no compiten por el cuerpo.
-                f_override = getattr(self, '_fuerza_instinto_eat_override', None)
-                # INSTINTO DE INTERACCION (0132/0133): el 'do'(5) interactua con lo enfrente.
-                es_interaccion = (a == self.instinto_alimentacion)
-                es_exploracion = (a in self.acciones_movimiento)
-                if es_interaccion and en_supervivencia:
-                    # supervivencia: interactuar (do) amplificado (control exclusivo)
-                    necesidad = max(self._hambre_real, self._amenaza)
-                    if self._algo_enfrente > 0 and necesidad > 0.05:
-                        score += self.beta_supervivencia * max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
-                    elif f_override:
-                        score += self.beta_supervivencia * f_override
-                elif es_interaccion:
-                    # modo base: interaccion normal (aditiva, compite)
-                    necesidad = max(self._hambre_real, self._amenaza)
-                    if self._algo_enfrente > 0 and necesidad > 0.05:
-                        score += max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
-                    elif f_override:
-                        score += f_override
-                # RE-ENCARE (0133/0135): mover hacia el objetivo en la secuencia de supervivencia
-                necesidad = max(self._hambre_real, self._amenaza)
-                mult_reencare = self.beta_supervivencia if en_supervivencia else 1.0
-                if necesidad > 0.05 and self._target_dir != (0, 0):
-                    dist_t = getattr(self, '_target_dist', 0)
-                    if dist_t == 1 and a == self.instinto_alimentacion:
-                        score += mult_reencare * max(necesidad * self.instinto_interaccion_fuerza, f_override or 0.0)
-                    elif dist_t > 1 and a in self.acciones_movimiento:
-                        dx, dy = self._target_dir
-                        if a == self._direccion_a_accion(dx, dy):
-                            score += mult_reencare * self.reencare_fuerza * necesidad
-                # DRIVE NOOP (0128): atenuado en supervivencia (la supervivencia decide la accion)
-                if drive_dispara and a != 0:
-                    mult_drive = self.beta_otras_compo if en_supervivencia else 1.0
-                    score += mult_drive * self.drive_noop_fuerza * (self.drive_noop / self.drive_noop_umbral)
-                # (reencare ya manejado arriba con sesgos de modo)
-                if en_carencia and a == self.instinto_alimentacion:
-                    score += fuerza_instinto
-                # Instinto gradiente homeostatico (0123)
-                if grad_activo and a == accion_grad:
-                    score += config_grad.get('fuerza', 0.5) * (1.0 if not en_supervivencia else self.beta_otras_compo)
-                # Instinto exploracion (0121/0124)
-                if curio_activa and a == dir_mas_inc and inc_dirs[dir_mas_inc] > 0:
-                    score += config_curio.get('fuerza', 0.3) * (1.0 if not en_supervivencia else self.beta_otras_compo)
-                # Desplazamiento reactivo (0122 base)
-                if necesidad_insat:
-                    if a not in self.acciones_movimiento:
-                        score -= self.devaluar_fuerza
-                    elif a in self.acciones_movimiento:
-                        score += self.instinto_desplazar_fuerza
-                # NAVEGACION A META (0143): si hay una meta guardada y hambre, empujar el
-                # movimiento hacia ella (cuando no hay nada accionable enfrente).
-                meta_a = getattr(self, '_accion_meta', None)
-                if (meta_a is not None and a == meta_a and self._hambre_real > 0.2
-                        and self._algo_enfrente == 0 and en_supervivencia):
-                    score += self.reencare_fuerza * 0.8
-                # SEEKING food drive (0168): cuando el hambre es REAL y NO hay nada accionable
-                # enfrente NI objetivo de re-encare, el agente debe BUSCAR alimento (moverse a
-                # explorar), no quedarse deambulando o dispersarse en otro recurso. Panksepp:
-                # el SEEKING homeostatico dirige la busqueda ante la carencia. Sin hardcode de
-                # direccion: simplemente se refuerza el MOVIMIENTO de exploracion bajo hambre.
-                # AVISO 0168: el drive no debe ser tan fuerte como para ANULAR la exploracion/
-                # recoleccion (leccion 0168: con fuerza alta el agente solo deambulo y nunca
-                # junta madera). Se deja como un refuerzo LEVE que suma a la mezcla sin dominar.
-                if (self._hambre_real > 0.5 and self._algo_enfrente == 0
-                        and self._target_dir == (0, 0) and a in self.acciones_movimiento):
-                    # refuerzo leve (0.3 de base), NO amplificado en supervivencia para no
-                    # anular la recoleccion. Solo empuja ligeramente a seguir moviendose.
-                    score += 0.3 * self._hambre_real
-                if score > bv:
-                    bv, best = score, a
         
-        if best < 0:
-            viables = [a for a in valid_actions if self.vitalidad[a] > 0.1]
-            best = viables[0] if viables else valid_actions[0]
+        # Calcular pulsiones vía Arbitro
+        scores = self._arbitro.computar(self, valid_actions)
         
+        # 4. ELECCIÓN DE ACCIÓN
+        best = self._arbitro.elegir(self, valid_actions)
+        
+        # 5. POST-ACCIÓN
         self.historial_acciones.append(best)
         
-        # Guardar anterior ANTES de pisar
+        # Drive noop
+        if best == 0:
+            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + self.drive_noop_tasa)
+        else:
+            self.drive_noop = max(0.0, self.drive_noop - self.drive_noop_descarga)
+        
+        # Aprender conexión
         anterior = self.ultima_accion
+        if anterior >= 0 and best != anterior:
+            self.aprender_conexion(anterior, best)
         
         if best == self.ultima_accion:
             self.conteo_repeticion += 1
         else:
             self.conteo_repeticion = 0
         self.ultima_accion = best
-
-        # 0128: actualizar DRIVE NOOP. Si se ejecuto noop, la energia libre acumula
-        # (noop deja de ser gratis); si se ejecuto una accion, se descarga. Autolimitativo.
-        if best == 0:
-            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + self.drive_noop_tasa)
-        else:
-            self.drive_noop = max(0.0, self.drive_noop - self.drive_noop_descarga)
-
-        # Aprender conexion entre la accion anterior y la actual
-        if anterior >= 0 and best != anterior:
-            self.aprender_conexion(anterior, best)
+        
+        self._ultima_accion_ejec = best
         
         if self.doubt_cooldown == 0 and self.status == "ACTIVA":
             if self.check_stagnation():
                 self.handle_doubt()
         
-        # 0145: guardar la accion elegida para que el adaptador reporte su resultado.
-        self._ultima_accion_ejec = best
         return best
 
     def reward(self, r, pain=0.0, beta=0.10):
