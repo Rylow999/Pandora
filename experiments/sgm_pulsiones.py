@@ -39,7 +39,7 @@ class PulsionPPR(Pulsion):
         super().__init__('PPR', {'alpha': 0.15, 'iters': 10})
     
     def computar(self, agente, valid_actions):
-        from sgm_ppr import ppr_route
+        from experiments.sgm_ppr import ppr_route
         rank = ppr_route(agente.edges, agente._seed, agente._aff,
                         alpha=self.params['alpha'], iters=self.params['iters'])
         result = {}

@@ -36,6 +36,10 @@ class PiedraRosetta:
         norm = math.sqrt(sum(x*x for x in vec)) or 1.0
         return [x/norm for x in vec]
     
+    def obtener_omega(self, tid):
+        """Devuelve el omega de un token."""
+        return self.token2omega.get(tid)
+    
     def buscar(self, omega, umbral=0.85):
         mejor_tid, mejor_cos = None, -1.0
         for tid, tok_omega in self.token2omega.items():
