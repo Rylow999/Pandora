@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""sgm_bridge.py — Puente HTTP CHAT↔SGM (lado Python).
+"""sgm_bridge.py — Puente HTTP CHAT↔SGM + ACCIONES↔SGM (lado Python).
 
 Sirve el sustrato SGM via HTTP local para que el bot de mineflayer
-(puente_minecraft_sgm.js) le pase los mensajes de chat y devuelva las respuestas.
-  - GET /hablar?texto=...  -> ag.procesar_instruccion(texto)  (tu -> SGM) y luego SGM se expresa
-  - GET /estado            -> SGM genera un mensaje espontaneo (SGM -> tu)
+(puente_minecraft_sgm.js) le pase:
+  - los mensajes de chat (tu -> SGM) y devuelva las respuestas.
+  - la percepcion del mundo (posicion, bloques, entidades) y devuelva la ACCION que
+    SGM decide (moverse/romper/interactuar) usando sgmo.SGMAgent.step() real.
 Usa la interfaz de lenguaje (InterfazLenguaje) y el core (SGMAgent). Sin dependencias.
 """
 import sys, os, json, random
@@ -17,12 +18,28 @@ sys.path.insert(0, os.path.join(SGM, "experiments"))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm_core import SGMAgent
 from sgm_lang_interfaz import InterfazLenguaje
+# clasificador de INTENCION (charla/indicacion/pregunta/relato) con HRR/VSA + sgm_mundo
+from sgm_atencion import ClasificadorIntencion
+import sgm_mundo
 
 # un agente SGM persistente para la sesion
 ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
+
+# clasificador de intencion compartido (usa el HRR del sustrato)
+clasif = ClasificadorIntencion(agente=ag)
 ag.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
 il = InterfazLenguaje()
 print("[sgm_bridge] SGM listo. Escuchando en :8790")
+
+# mapeo de accion de SGM (indice 0-16) a lo que el bot debe hacer
+# (coherente con las acciones del core de Crafter; el bot traduce a mineflayer)
+# 0=noop/espera, 1-4=mover(caminar), 5=do(interactuar), otros=acciones especiales
+ACCION_MC = {
+    0: "noop", 1: "mover_norte", 2: "mover_sur", 3: "mover_oeste", 4: "mover_este",
+    5: "interactuar", 6: "romper", 7: "recoger", 8: "colocar", 9: "craftear",
+    10: "saludar", 11: "explorar", 12: "atacar", 13: "huir", 14: "saltar",
+    15: "agacharse", 16: "expresarse",
+}
 
 class Puente(BaseHTTPRequestHandler):
     def _send(self, txt):
@@ -38,15 +55,77 @@ class Puente(BaseHTTPRequestHandler):
         q = parse_qs(u.query)
         if u.path == "/hablar":
             texto = q.get("texto", [""])[0]
-            # tu -> SGM: procesar la instruccion (afecta su estado)
-            r_inst = ag.procesar_instruccion(texto)
-            # SGM responde expresando su estado (lo que quiere decir tras tu instruccion)
-            frase, cat, _ = il.expresarse(ag)
-            resp = f"[SGM:{cat}] {frase}"
+            # 1) CLASIFICAR INTENCION (charla/indicacion/pregunta/relato) con HRR del sustrato
+            clasi = clasif.intencion(texto)
+            intencion = clasi.get("intencion", "charla")
+            # 2) responder SEGUN el tipo de acto conversacional (no siempre 'estoy aqui')
+            resp = ""
+            if intencion == "charla":
+                # charla social: SGM se presenta/comparte su estado de forma informal
+                frase, cat, _ = il.expresarse(ag)
+                resp = f"[charla] hola, {frase}".strip()
+            elif intencion == "pregunta":
+                # pregunta: SGM responde informativamente (estado, lo que percibe)
+                # usa sgm_mundo.analizar_instruccion para saber de que habla
+                analisis = sgm_mundo.analizar_instruccion(texto)
+                if analisis["objeto"]:
+                    resp = f"[pregunta] sobre {analisis['objeto']}: " + (
+                        f"tengo {ag._hambre_real:.2f} hambre" if ag._hambre_real > 0.3 else "estoy estable, siento el mundo")
+                else:
+                    res_inst = ag.procesar_instruccion(texto)
+                    resp = f"[pregunta] " + res_inst["texto"]
+            elif intencion == "relato":
+                # relato/afirmacion: SGM aprende lo que el humano le ensena
+                res_inst = ag.procesar_instruccion(texto)
+                aprendidas = res_inst.get("palabras_nuevas", [])
+                if aprendidas:
+                    il.guardar_todo(ag)  # persistir vocabulario nuevo aprendido
+                    resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
+                else:
+                    resp = f"[relato] entendido, lo registro"
+            else:  # indicacion: SGM ejecuta la instruccion y confirma
+                res_inst = ag.procesar_instruccion(texto)
+                aprendidas = res_inst.get("palabras_nuevas", [])
+                resp = f"[indicacion] " + res_inst["texto"]
+                if aprendidas:
+                    il.guardar_todo(ag)
             self._send(resp)
         elif u.path == "/estado":
             frase, cat, _ = il.expresarse(ag)
             self._send(f"[SGM:{cat}] {frase}")
+        elif u.path == "/accion":
+            # PERCEPCION del mundo desde el bot -> SGM decide la ACCION.
+            # Params: x,y,z, food, health, entidades_near (json), bloque_enfrente
+            try:
+                x = float(q.get("x", ["0"])[0]); y = float(q.get("y", ["0"])[0]); z = float(q.get("z", ["0"])[0])
+                food = float(q.get("food", ["20"])[0]); health = float(q.get("health", ["20"])[0])
+                # estado semantic (vector chico como el de Crafter): posicion + hambre + recursos + senales
+                hambre = max(0.0, 1.0 - food / 20.0)   # food 0-20, hambre normalizada
+                # entidades cerca / bloque enfrente -> senales
+                ent_near = q.get("entidades", "[]")[0] if q.get("entidades") else "[]"
+                ent_near = json.loads(ent_near) if isinstance(ent_near, str) else ent_near
+                peligro = 1.0 if any(e in ("zombie", "skeleton", "creeper", "spider") for e in ent_near) else 0.0
+                recurso = 1.0 if any(e in ("tree", "oak_log", "wood", "cow", "pig", "chicken") for e in ent_near) else 0.0
+                # construir estado semantic 18-dim (como el core espera) + signales
+                ag._hambre_real = min(1.0, hambre)
+                ag._amenaza = min(1.0, peligro)
+                ag._posicion_actual = (int(x), int(z))
+                # inc dirs / config de exploracion (minima)
+                ag._config_grad = {"activo": False, "fuerza": 0.0}
+                ag._config_curio = {"activo": True, "fuerza": 0.4}
+                ag._inc_dirs = {a: 1.0 for a in (1, 2, 3, 4)}
+                ag._hay_gradiente = False
+                # vector de estado: [semantic 8d] + [health,food,recurso,peligro, x,z peque]
+                sv = [float(v) for v in (
+                    x / 50.0, z / 50.0, hambre, peligro, recurso,
+                    health / 20.0, food / 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)]
+                eq = ag.cuantizar_estado(sv)
+                a = ag.step(sv, list(range(17)))
+                accion = ACCION_MC.get(a, "noop")
+                self._send(json.dumps({"accion": accion, "indice": a, "hambre": round(ag._hambre_real, 2),
+                                       "amenaza": round(ag._amenaza, 2)}))
+            except Exception as e:
+                self._send(json.dumps({"accion": "noop", "error": str(e)}))
         else:
             self._send("ok - sgm_bridge")
 
