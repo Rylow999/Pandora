@@ -2,14 +2,10 @@
 """
 sgm_core.py — SGM: Synthetic Graph Mind (Motor Cognitivo).
 
-Core modularizado con flujo completo:
-1. Proyección semántica
-2. Homeostasis (food, health)
-3. Percepción interna (modos, place cells, navegación, objetos)
-4. Arbitro de pulsiones
-5. Post-acción (drive noop, aprendizaje, duda)
+Core modularizado con flujo completo + persistencia + L2 integrado + t-SNE.
 """
-import math, random
+import math, random, os
+import numpy as np
 
 from experiments.sgm_hdc import HDC, SensorBridge
 from experiments.sgm_hrr import HRR
@@ -71,10 +67,10 @@ class SGMAgentCore(SGMAgentGrafo):
         self._target_dist = 0
         self._accion_meta = None
         self._seed = 0
-        self.objetos = {}  # {id: {tipo, pos_hist}}
-        self.meta_recordada = None  # (x, y) recordado por memoria
+        self.objetos = {}
+        self.meta_recordada = None
         
-        # Atributos para pulsiones (desacoplados de Homeostasis/Instintos)
+        # Atributos para pulsiones
         self.instinto_alimentacion = None
         self.incertidumbre_acum = 0.0
         self.instinto_explorar_umbral = 3
@@ -90,6 +86,11 @@ class SGMAgentCore(SGMAgentGrafo):
         self.drive_noop_tasa = 0.1
         self.drive_noop_descarga = 0.5
         self.stagnation_ticks = 0
+        
+        # Persistencia: historial para L2
+        self.historial_campos = []
+        self.historial_acciones_l2 = []
+        self.l2_decoder = None
     
     def set_arbitro(self, arbitro):
         self._arbitro = arbitro
@@ -97,15 +98,16 @@ class SGMAgentCore(SGMAgentGrafo):
     def set_edges(self, edges):
         self.edges = edges
     
-    def step(self, state_semantic, valid_actions):
-        """Un paso completo del agente."""
+    def step(self, state_semantic, valid_actions, food=None, health=None):
+        """Un paso completo del agente con homeostasis + percepción + arbitro."""
         # 1. Proyección semántica
         om_r = self.hdc.project(state_semantic)
         self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
         
-        # 2. Homeostasis (usa food/health del adaptador)
-        # → Actualiza _hambre_real, V_grafo, _amenaza
+        # 2. Homeostasis (integrada)
+        if food is not None and health is not None:
+            self.actualizar_homeostasis(food, health)
         
         # 3. Percepción interna completa
         self._percepcion_interna()
@@ -125,7 +127,7 @@ class SGMAgentCore(SGMAgentGrafo):
         return accion
     
     def _percepcion_interna(self):
-        """Percepción interna completa: modos, place cells, Kuramoto."""
+        """Percepción interna: modos, place cells, Kuramoto."""
         # Modo (contention scheduling)
         necesidad_critica = max(self._hambre_real, self._amenaza)
         if necesidad_critica > 0.5:
@@ -136,7 +138,7 @@ class SGMAgentCore(SGMAgentGrafo):
             self.modo_ticks = 0
         
         # Place cells
-        if self.memoria.auto_registrar_place and self._posicion_actual:
+        if hasattr(self.memoria, 'auto_registrar_place') and self.memoria.auto_registrar_place and self._posicion_actual:
             px, py = self._posicion_actual
             bucket = (px // self.memoria.place_bucket, py // self.memoria.place_bucket)
             clave = f"P{bucket[0]}_{bucket[1]}|enf={self._algo_enfrente}"
@@ -147,8 +149,7 @@ class SGMAgentCore(SGMAgentGrafo):
     
     def _navegacion_y_objetos(self):
         """Navegación a meta y modelo de objetos."""
-        # Navegación a meta (0143)
-        if self.memoria.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
+        if hasattr(self.memoria, 'auto_navegar_meta') and self.memoria.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
             mx, my = self.meta_recordada
             if self._posicion_actual is not None:
                 cxp, cyp = self._posicion_actual
@@ -162,9 +163,8 @@ class SGMAgentCore(SGMAgentGrafo):
                 else:
                     self._accion_meta = None
         
-        # Modelo de objetos (0144)
         self._actualizar_objetos()
-        if self.memoria.auto_navegar_meta and self.meta_recordada is not None:
+        if hasattr(self.memoria, 'auto_navegar_meta') and self.memoria.auto_navegar_meta and self.meta_recordada is not None:
             for tipo in getattr(self, '_tipos_meta_buscados', ['comida']):
                 pred = self._posicion_predicha_objeto(tipo)
                 if pred is not None:
@@ -179,7 +179,6 @@ class SGMAgentCore(SGMAgentGrafo):
         
         for tipo, ox, oy in seen:
             ox, oy = int(ox), int(oy)
-            # Buscar objeto existente por tipo y proximidad
             encontrado = False
             for oid, datos in self.objetos.items():
                 if datos.get('tipo') == tipo:
@@ -188,7 +187,7 @@ class SGMAgentCore(SGMAgentGrafo):
                         ult = hist[-1]
                         if abs(ult[0] - ox) + abs(ult[1] - oy) < 3:
                             hist.append((ox, oy))
-                            datos['pos_hist'] = hist[-10:]  # mantener últimas 10
+                            datos['pos_hist'] = hist[-10:]
                             encontrado = True
                             break
             if not encontrado:
@@ -236,11 +235,12 @@ class SGMAgentCore(SGMAgentGrafo):
         self.historial_acciones.append(accion)
         
         # Drive noop
-        self.instintos.actualizar_drive_noop(accion)
+        if hasattr(self.instintos, 'actualizar_drive_noop') and self.instintos:
+            self.instintos.actualizar_drive_noop(accion)
         
         # Aprender conexión
         if self.ultima_accion >= 0 and accion != self.ultima_accion:
-            self.reforzar_arista(self.ultima_accion, accion)
+            self.aprender_conexion(self.ultima_accion, accion)
         
         # Repetición
         if accion == self.ultima_accion:
@@ -250,21 +250,23 @@ class SGMAgentCore(SGMAgentGrafo):
         
         self.ultima_accion = accion
         
-        # Duda
+        # Duda (verificar que memoria tenga los métodos)
         if self.doubt_cooldown > 0:
             self.doubt_cooldown -= 1
-        elif self.status == "ACTIVA" and self.memoria.check_stagnation(self):
+        elif self.status == "ACTIVA" and hasattr(self.memoria, 'check_stagnation') and self.memoria.check_stagnation(self):
             self.memoria.handle_doubt(self)
     
     def actualizar_homeostasis(self, food, health):
-        """Actualiza homeostasis (food: 0-20, health: 0-20)."""
+        """Actualiza homeostasis."""
         self.homeostasis.actualizar(self, food, health)
         self._hambre_real = self.homeostasis._hambre_real
     
     def expresarse(self, decoder_l2=None):
         """Genera expresión basada en el estado del grafo."""
-        if decoder_l2 is None:
+        if decoder_l2 is None and self.l2_decoder is None:
             return "..."
+        
+        decoder = decoder_l2 or self.l2_decoder
         
         zona = campo_interferencia(
             self.omega, self.phi,
@@ -275,7 +277,7 @@ class SGMAgentCore(SGMAgentGrafo):
         if not zona:
             return "..."
         
-        return decoder_l2.decode(zona, max_palabras=5)
+        return decoder.decode(zona, max_palabras=5)
     
     def reward(self, r, pain=0.0):
         """Actualiza vitalidad basado en reward/pain."""
@@ -284,6 +286,155 @@ class SGMAgentCore(SGMAgentGrafo):
                 self.vitalidad[self.ultima_accion] = min(1.0, self.vitalidad[self.ultima_accion] + r * 0.5)
             if pain > 0:
                 self.vitalidad[self.ultima_accion] *= max(0.3, 1.0 - pain)
+    
+    # ============ PERSISTENCIA ============
+    
+    def guardar(self, ruta):
+        """Guarda estado completo."""
+        data = {
+            "omega": self.omega,
+            "phi": self.phi,
+            "vitalidad": self.vitalidad,
+            "es_place_cell": self.es_place_cell,
+            "edges": self.edges,
+            "conn_type": self.conn_type,
+            "scope_depth": self.scope_depth,
+            "parent_of": self.parent_of,
+            "place_cells": self.place_cells,
+            "place_pos": self.place_pos,
+            "V_grafo": self.V_grafo,
+            "historial_campos": self.historial_campos[-1000:],
+            "historial_acciones_l2": self.historial_acciones_l2[-1000:],
+        }
+        np.save(ruta, data)
+        return ruta
+    
+    def cargar(self, ruta):
+        """Carga estado completo."""
+        if not os.path.exists(ruta):
+            return False
+        data = np.load(ruta, allow_pickle=True).item()
+        self.omega = data.get("omega", self.omega)
+        self.phi = data.get("phi", self.phi)
+        self.vitalidad = data.get("vitalidad", self.vitalidad)
+        self.es_place_cell = data.get("es_place_cell", self.es_place_cell)
+        self.edges = data.get("edges", self.edges)
+        self.conn_type = data.get("conn_type", self.conn_type)
+        self.scope_depth = data.get("scope_depth", self.scope_depth)
+        self.parent_of = data.get("parent_of", self.parent_of)
+        self.place_cells = data.get("place_cells", self.place_cells)
+        self.place_pos = data.get("place_pos", self.place_pos)
+        self.V_grafo = data.get("V_grafo", self.V_grafo)
+        self.historial_campos = data.get("historial_campos", [])
+        self.historial_acciones_l2 = data.get("historial_acciones_l2", [])
+        return True
+    
+    # ============ L2 CON t-SNE ============
+    
+    def configurar_l2(self, l2_decoder):
+        """Configura el decoder L2."""
+        self.l2_decoder = l2_decoder
+    
+    def procesar_l2(self, epochs=50, lr=0.05):
+        """Entrena L2 con los datos recolectados + t-SNE."""
+        if len(self.historial_campos) < 10:
+            print("  [L2] No hay suficientes datos")
+            return None
+        
+        try:
+            from sklearn.manifold import TSNE
+            from sklearn.cluster import KMeans
+        except ImportError:
+            print("  [L2] sklearn no disponible")
+            return None
+        
+        # 1. Co-ocurrencia
+        C = self._construir_coocurrencia()
+        n = C.shape[0]
+        
+        # 2. PMI
+        PMI = self._computar_pmi(C)
+        
+        # 3. SVD
+        k = min(32, n)
+        U, S, _ = np.linalg.svd(PMI, full_matrices=False)
+        vv = U[:, :k] * S[:k]
+        
+        # 4. t-SNE
+        print(f"  [L2] t-SNE sobre {n} nodos...")
+        tsne = TSNE(n_components=2, perplexity=min(30, n-1), n_iter=500, random_state=42)
+        Y = tsne.fit_transform(vv)
+        
+        # 5. K-means
+        n_clusters = min(10, n)
+        km = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+        labels = km.fit_predict(Y)
+        
+        # 6. Asignar tokens
+        cluster_tokens = {}
+        for c in range(n_clusters):
+            acciones_c = []
+            for i, (zona, accion) in enumerate(zip(self.historial_campos, self.historial_acciones_l2)):
+                if not zona: continue
+                for nid, _, _ in zona:
+                    if nid < len(labels) and labels[nid] == c:
+                        acciones_c.append(accion)
+            if acciones_c:
+                from collections import Counter
+                accion_comun = Counter(acciones_c).most_common(1)[0][0]
+                cluster_tokens[c] = accion_comun % len(TOKEN2ID)
+            else:
+                cluster_tokens[c] = 0
+        
+        # 7. Entrenar decoder
+        from experiments.train_l2_real import L2Decoder
+        V = len(TOKEN2ID)
+        dec = L2Decoder(128, V, lr)
+        
+        pares = []
+        for zona, accion in zip(self.historial_campos, self.historial_acciones_l2):
+            if not zona: continue
+            for nid, omega, _ in zona:
+                if nid < len(labels):
+                    tid = cluster_tokens.get(labels[nid], 0)
+                    pares.append((np.array(omega, dtype=float), tid))
+        
+        if not pares:
+            return None
+        
+        for ep in range(epochs):
+            random.shuffle(pares)
+            losses = [dec.train(x, t) for x, t in pares]
+            if ep % 10 == 0:
+                print(f"  [L2] Epoch {ep}: loss={np.mean(losses):.4f}")
+        
+        self.l2_decoder = dec
+        print(f"  [L2] Decoder entrenado con {n_clusters} clusters")
+        return dec
+    
+    def _construir_coocurrencia(self):
+        C = np.zeros((len(self.omega), len(self.omega)))
+        for zona in self.historial_campos:
+            if not zona: continue
+            nodos = [n for n, _, _ in zona]
+            for i in nodos:
+                for j in nodos:
+                    if i < len(self.omega) and j < len(self.omega):
+                        C[i, j] += 1
+        return C
+    
+    def _computar_pmi(self, C, eps=1e-10):
+        total = C.sum()
+        if total == 0: return np.zeros_like(C)
+        P_ij = C / total
+        P_i = C.sum(axis=1) / total
+        P_j = C.sum(axis=0) / total
+        PMI = np.zeros_like(C)
+        for i in range(C.shape[0]):
+            for j in range(C.shape[1]):
+                if P_ij[i,j] > eps and P_i[i] > eps and P_j[j] > eps:
+                    PMI[i,j] = math.log(P_ij[i,j] / (P_i[i] * P_j[j]))
+        return PMI
 
 
 # Compatibilidad
