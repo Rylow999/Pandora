@@ -1279,7 +1279,9 @@ Pandora es el ser que envuelve el núcleo SGM y le da cuerpo (percepción MC), s
 | **Ecuaciones NOUS (Eq. 8-12)** | W(t), ρ(t), β_eff, herencia conceptual, corrección acotada | ✅ COMPLETADO |
 | **K_cadenas** | 10 cadenas de información paralelas | ✅ COMPLETADO |
 | **Decodificador L2 ONNX** | Proyección lineal aprendida W·ω+b → token | ✅ COMPLETADO |
-| **Dimensionalidades dependientes** | D variable por tipo de concepto | FALTAN |
+| **Dimensionalidades dependientes** | D variable por tipo de concepto | ✅ COMPLETADO |
+| **Hilbert Thread serializable** | Serialización del "yo" para continuidad | ✅ COMPLETADO |
+| **Diccionario MC 1.20.4** | 434 tokens (bloques, items, entidades) | ✅ COMPLETADO |
 
 ### Literatura anclada
 
