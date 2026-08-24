@@ -2,7 +2,19 @@
 """
 sgm_core.py — SGM: Synthetic Graph Mind (Motor Cognitivo).
 
-Core modularizado con flujo completo + persistencia + L2 integrado + t-SNE.
+Core modularizado con TODOS los mecanismos integrados:
+- HDC, HRR, PPR, Kuramoto
+- Grafo con omega inmutable (conceptos) / mutable (place cells)
+- Decaimiento de vitalidad (gamma_nodo, Eq.5)
+- Poda de aristas (strength < umbral)
+- Consolidación Kuramoto (phi, Eq.3)
+- Hebb en homeostasis (co-ocurrencia acciones que mejoran)
+- Modelo de mundo (predictivo)
+- Razonamiento (inducir, deducir, abducir)
+- Trauma nodal (sobrecarga → aislar)
+- Comunicación (texto desde estado)
+- Self-mod (frenos operacionales)
+- Sueño/reconciliación
 """
 import math, random, os
 import numpy as np
@@ -12,9 +24,6 @@ from experiments.sgm_hrr import HRR
 from experiments.sgm_ppr import ppr_route, ppr_inverso
 from experiments.sgm_kuramoto import kuramoto_step, interferencia, campo_interferencia, promedio_ponderado, step_k_cadenas
 from experiments.sgm_grafo import SGMAgent as SGMAgentGrafo
-from experiments.sgm_homeostasis import Homeostasis
-from experiments.sgm_memoria import Memoria
-from experiments.sgm_instintos import Instintos
 
 
 class SGMAgentCore(SGMAgentGrafo):
@@ -31,29 +40,14 @@ class SGMAgentCore(SGMAgentGrafo):
         self.hrr = HRR(D, self.rng, n_nodes)
         self.sensor = SensorBridge(D)
         
-        # Homeostasis
-        self.homeostasis = Homeostasis(D)
-        
-        # Memoria
-        self.memoria = Memoria(D)
-        
-        # Instintos
-        self.instintos = Instintos()
-        
-        # Arbitro (hook externo)
+        # Arbitro
         self._arbitro = None
         
-        # Estado interno
-        self.modo = "BASE"
-        self.modo_ticks = 0
-        self.ultima_accion = -1
-        self.historial_acciones = []
-        self.stagnation_ticks = 0
-        self.doubt_cooldown = 0
-        self.status = "ACTIVA"
-        self.conteo_repeticion = 0
-        
-        # Percepción
+        # Homeostasis (decaimiento + Hebb)
+        self.gamma_nodo = gamma
+        self.gamma_conocimiento = 0.001
+        self.E = 0.0
+        self.E_acumulado = 0.0
         self._hambre_real = 0.0
         self._amenaza = 0.0
         self._algo_enfrente = 0
@@ -69,6 +63,14 @@ class SGMAgentCore(SGMAgentGrafo):
         self._seed = 0
         self.objetos = {}
         self.meta_recordada = None
+        
+        # Kuramoto (consolidación)
+        self.phi_root = 0.0
+        self.eta_phase = 0.05
+        self.R_base = 1.0
+        self.theta_interf = 0.70
+        self.consolidadas = set()
+        self.conteo_exitos_conexion = {}
         
         # Atributos para pulsiones
         self.instinto_alimentacion = None
@@ -86,11 +88,57 @@ class SGMAgentCore(SGMAgentGrafo):
         self.drive_noop_tasa = 0.1
         self.drive_noop_descarga = 0.5
         self.stagnation_ticks = 0
+        self.doubt_cooldown = 0
+        self.status = "ACTIVA"
         
-        # Persistencia: historial para L2
+        # Modelo de mundo
+        self.modelo_mundo = {}  # (estado_q, accion) -> {siguiente_q: count}
+        self.ultimo_estado_q = None
+        
+        # Memoria episódica
+        self.episodios = []
+        self.episodios_max = 50
+        self.context_window = []
+        self.W_base = 50
+        self.kappa_W = 2.0
+        self.current_density = 0.0
+        self.effective_learning_rate = 0.10
+        self.parent_of = {}
+        self.scope_depth = [0] * n_nodes
+        
+        # Trauma nodal
+        self.theta_emerg_critico = 0.5
+        
+        # Self-mod
+        self.historial_food = []
+        self.ultimo_food = None
+        
+        # L2 decoder
+        self.l2_decoder = None
         self.historial_campos = []
         self.historial_acciones_l2 = []
-        self.l2_decoder = None
+        
+        # Comunicación
+        self.valencia_recurso = {}
+        self.valencia_tasa = 0.15
+        self._ultima_valencia_food = None
+        self.modelo_del_otro = {}
+        self.otro_observaciones = 0
+        self.obs_activa = None
+        self.auto_registrar_place = True
+        self.auto_navegar_meta = True
+        self.auto_mutar_omega = True
+        self.place_bucket = 4
+        self.mutacion_tasa = 0.05
+        self.acciones_movimiento = {1, 2, 3, 4}
+        
+        # Estado del ciclo
+        self.modo = "BASE"
+        self.modo_ticks = 0
+        self.ultima_accion = -1
+        self.conteo_repeticion = 0
+        self.stagnation_ticks = 0
+        self._ultima_accion_ejec = -1
     
     def set_arbitro(self, arbitro):
         self._arbitro = arbitro
@@ -98,58 +146,264 @@ class SGMAgentCore(SGMAgentGrafo):
     def set_edges(self, edges):
         self.edges = edges
     
+    # ============ DECAIMIENTO DE VITALIDAD (Eq.5) ============
+    
+    def decaer_vitalidad(self):
+        """V_i(t+1) = V_i·e^(-γ) + A_i·(1-e^(-γ)). A_i = 1 si fue visitado, si no 0."""
+        for i in range(len(self.vitalidad)):
+            A = 1.0 if self.historial_acciones and self.historial_acciones[-1] == i else 0.0
+            self.vitalidad[i] = self.vitalidad[i] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
+    
+    # ============ PODA DE ARISTAS ============
+    
+    def podar_aristas(self, umbral=0.01):
+        """Elimina aristas con strength < umbral (no consolidadas)."""
+        a_eliminar = []
+        for clave, datos in self.conn_type.items():
+            if clave not in self.consolidadas:
+                datos["age"] += 1
+                datos["strength"] *= 0.999  # decaimiento lento
+                if datos["strength"] < umbral and datos["age"] > 100:
+                    a_eliminar.append(clave)
+        
+        for clave in a_eliminar:
+            del self.conn_type[clave]
+            a, b = clave
+            if b in self.edges.get(a, []):
+                self.edges[a].remove(b)
+            if a in self.edges.get(b, []):
+                self.edges[b].remove(a)
+    
+    # ============ KURAMOTO (Eq.3) ============
+    
+    def actualizar_kuramoto(self):
+        """φ(t+1) = [φ(t) + η·R·sin(φ_root - φ)] mod 2π."""
+        for i in range(len(self.phi)):
+            R = 1.0 / (1.0 + math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], self.omega[0])))) if self.omega else 1.0
+            delta = math.sin(self.phi_root - self.phi[i])
+            signo = 1 if self.E > 0 else -1
+            self.phi[i] = (self.phi[i] + self.eta_phase * R * signo * delta) % (2 * math.pi)
+            
+            # Consolidación por interferencia > umbral
+            I = interferencia(self.omega[i], self.phi[i], self.phi_root)
+            if I > self.theta_interf:
+                for j in range(len(self.omega)):
+                    if i != j and j < len(self.consolidadas):
+                        self.consolidadas.add((i, j))
+                        self.consolidadas.add((j, i))
+    
+    # ============ HEBB EN HOMEOSTASIS ============
+    
+    def hebb_homeostasis(self, food, health):
+        """Refuerza conexiones entre acciones que co-ocurren con mejora de homeostasis."""
+        if self.ultimo_food is not None:
+            delta_food = food - self.ultimo_food
+            if delta_food > 0:
+                # Refuerzar conexiones entre últimas acciones
+                for i in range(min(5, len(self.historial_acciones))):
+                    a = self.historial_acciones[-(i+1)]
+                    for j in range(min(5, len(self.historial_acciones))):
+                        b = self.historial_acciones[-(j+1)]
+                        if a != b:
+                            clave = (a, b)
+                            if clave not in self.conn_type:
+                                self.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 1.0, "age": 0}
+                            self.conn_type[clave]["count"] += 1
+                            self.conn_type[clave]["strength"] = min(1.0, self.conn_type[clave]["strength"] + 0.05)
+        self.ultimo_food = food
+    
+    # ============ MODELO DE MUNDO ============
+    
+    def actualizar_modelo_mundo(self, estado_q, accion, siguiente_q):
+        """Aprende transiciones estado→acción→estado."""
+        clave = (estado_q, accion)
+        if clave not in self.modelo_mundo:
+            self.modelo_mundo[clave] = {}
+        self.modelo_mundo[clave][siguiente_q] = self.modelo_mundo[clave].get(siguiente_q, 0) + 1
+    
+    def predecir_transicion(self, estado_q, accion):
+        """Predice siguiente estado según modelo del mundo."""
+        clave = (estado_q, accion)
+        if clave in self.modelo_mundo:
+            transiciones = self.modelo_mundo[clave]
+            if transiciones:
+                return max(transiciones, key=transiciones.get)
+        return None
+    
+    def incertidumbre(self):
+        """Calcula incertidumbre basada en predicciones fallidas."""
+        total = sum(sum(v.values()) for v in self.modelo_mundo.values())
+        if total == 0: return 1.0
+        known = sum(1 for v in self.modelo_mundo.values() if len(v) == 1)
+        return 1.0 - (known / max(1, len(self.modelo_mundo)))
+    
+    # ============ RAZONAMIENTO ============
+    
+    def inducir(self, a, b):
+        """Inducción: observar A→B repetidas veces → generalizar."""
+        clave = (a, b)
+        if clave not in self.conteo_induccion:
+            self.conteo_induccion[clave] = 0
+        self.conteo_induccion[clave] += 1
+        if self.conteo_induccion[clave] >= 3:  # umbral
+            self.reforzar_arista(a, b, 0.15)
+            return {"evidencia": self.conteo_induccion[clave], "consolidada": True, "fuerza": 0.15}
+        return {"evidencia": self.conteo_induccion[clave], "consolidada": False, "fuerza": 0.0}
+    
+    def deducir(self, a, b):
+        """Deducción: A→B y B→C → verificar A→C (transitividad)."""
+        if b not in self.edges.get(a, []):
+            return False, []
+        for vecino in self.edges.get(b, []):
+            if vecino in self.edges.get(a, []):
+                return True, [a, b, vecino]
+        return False, []
+    
+    def abducir(self, resultado, topk=5):
+        """Abducción: dado un resultado, encontrar causas más plausibles."""
+        return ppr_inverso(self.edges, resultado, alpha=0.15, iters=30)
+    
+    # ============ TRAUMA NODAL ============
+    
+    def verificar_trauma(self):
+        """Verifica si hay nodos con sobrecarga (dolor)."""
+        for i in range(len(self.vitalidad)):
+            if self.vitalidad[i] > 0.9 and i < len(self.phi):
+                # Aislar nodo: reducir vitalidad de vecinos
+                for vecino in self.edges.get(i, []):
+                    if vecino < len(self.vitalidad):
+                        self.vitalidad[vecino] *= 0.95
+                return True
+        return False
+    
+    # ============ SELF-MOD ============
+    
+    def auto_modificar(self, accion, resultado):
+        """Auto-modificación: ajustar comportamiento basado en resultado."""
+        if resultado > 0:
+            self.vitalidad[accion] = min(1.0, self.vitalidad[accion] + resultado * 0.1)
+        elif resultado < 0:
+            self.vitalidad[accion] = max(0.0, self.vitalidad[accion] + resultado * 0.1)
+    
+    # ============ SUEÑO/RECONCILIACIÓN ============
+    
+    def reconciliar(self):
+        """Sueño: consolidar memoria, resetear fases, limpiar ruido."""
+        # Reset de fases
+        for i in range(len(self.phi)):
+            self.phi[i] = self.rng.uniform(0, 2 * math.pi)
+        # Limpiar nodos con vitalidad muy baja
+        for i in range(len(self.vitalidad)):
+            if self.vitalidad[i] < 0.05:
+                self.vitalidad[i] = 0.0
+    
+    # ============ COMUNICACIÓN ============
+    
+    def generar_texto(self):
+        """Genera texto basado en estado interno usando L2."""
+        if self.l2_decoder is None:
+            return "..."
+        
+        zona = campo_interferencia(self.omega, self.phi, self.phi_root, self.vitalidad)
+        if not zona:
+            return "..."
+        
+        palabras = []
+        for nid, omega, I in zona[:5]:
+            omega_full = self.omega[nid] if nid < len(self.omega) else omega
+            top = self.l2_decoder.decode(np.array(omega_full) * I, topk=1)
+            if top:
+                palabras.append(ID2TOKEN.get(top[0][0], "?"))
+        
+        return " ".join(palabras) if palabras else "..."
+    
+    # ============ HOMEOSTASIS ============
+    
+    def actualizar_homeostasis(self, food, health):
+        """Actualiza homeostasis (food: 0-20, health: 0-20)."""
+        food = float(food)
+        health = float(health) if health is not None else 20.0
+        
+        factor_cuerpo = max(0.05, health / 20.0)
+        if self.omega:
+            self.V_grafo = (sum(self.vitalidad) / len(self.vitalidad)) * factor_cuerpo
+        else:
+            self.V_grafo = factor_cuerpo
+        
+        self._hambre_real = max(0.0, 1.0 - food / 20.0)
+        self._amenaza = max(0.0, (20.0 - health) / 20.0) if health < 15 else 0.0
+        self.E = max(0.0, self._hambre_real + self._amenaza)
+        self.E_acumulado = self.E_acumulado * 0.95 + self.E
+        
+        # Hebb
+        self.hebb_homeostasis(food, health)
+        
+        # Trauma
+        self.verificar_trauma()
+    
+    # ============ STEP COMPLETO ============
+    
     def step(self, state_semantic, valid_actions, food=None, health=None):
-        """Un paso completo del agente con homeostasis + percepción + arbitro."""
-        # 1. Proyección semántica
+        """Un paso completo del agente."""
+        # 1. Proyección
         om_r = self.hdc.project(state_semantic)
         self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
         
-        # 2. Homeostasis (integrada)
+        # 2. Homeostasis
         if food is not None and health is not None:
             self.actualizar_homeostasis(food, health)
         
-        # 3. Percepción interna completa
+        # 3. Percepción interna
         self._percepcion_interna()
         
-        # 4. Navegación a meta y objetos
+        # 4. Decaimiento + Kuramoto
+        self.decaer_vitalidad()
+        self.actualizar_kuramoto()
+        
+        # 5. Navegación
         self._navegacion_y_objetos()
         
-        # 5. Arbitro de pulsiones
+        # 6. Arbitro
         if self._arbitro is not None:
             accion = self._arbitro.elegir(self, valid_actions)
         else:
             accion = self._elegir_accion_ppp(valid_actions)
         
-        # 6. Post-acción
+        # 7. Post-acción
         self._post_accion(accion)
+        
+        # 8. Auto-mod
+        if food is not None:
+            delta = food - (self.ultimo_food or food)
+            self.auto_modificar(accion, delta)
+        
+        # 9. Guardar historial L2
+        zona = campo_interferencia(self.omega, self.phi, self.phi_root, self.vitalidad)
+        self.historial_campos.append(zona)
+        self.historial_acciones_l2.append(accion)
         
         return accion
     
     def _percepcion_interna(self):
-        """Percepción interna: modos, place cells, Kuramoto."""
-        # Modo (contention scheduling)
         necesidad_critica = max(self._hambre_real, self._amenaza)
-        if necesidad_critica > 0.5:
+        if necesidad_critica > self.theta_emerg_critico:
             self.modo = "SUPERVIVENCIA"
             self.modo_ticks += 1
         else:
             self.modo = "BASE"
             self.modo_ticks = 0
         
-        # Place cells
-        if hasattr(self.memoria, 'auto_registrar_place') and self.memoria.auto_registrar_place and self._posicion_actual:
+        if self.auto_registrar_place and self._posicion_actual:
             px, py = self._posicion_actual
-            bucket = (px // self.memoria.place_bucket, py // self.memoria.place_bucket)
+            bucket = (px // self.place_bucket, py // self.place_bucket)
             clave = f"P{bucket[0]}_{bucket[1]}|enf={self._algo_enfrente}"
             self.registrar_place_cell(clave, posicion=(px, py))
         
-        # Kuramoto
         kuramoto_step(self.phi, self.phi[0] if self.phi else 0.0, self.vitalidad)
     
     def _navegacion_y_objetos(self):
-        """Navegación a meta y modelo de objetos."""
-        if hasattr(self.memoria, 'auto_navegar_meta') and self.memoria.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
+        if self.auto_navegar_meta and self._hambre_real > 0.2 and self.meta_recordada is not None:
             mx, my = self.meta_recordada
             if self._posicion_actual is not None:
                 cxp, cyp = self._posicion_actual
@@ -162,65 +416,15 @@ class SGMAgentCore(SGMAgentGrafo):
                         self._accion_meta = self._direccion_a_accion(0, dy)
                 else:
                     self._accion_meta = None
-        
-        self._actualizar_objetos()
-        if hasattr(self.memoria, 'auto_navegar_meta') and self.memoria.auto_navegar_meta and self.meta_recordada is not None:
-            for tipo in getattr(self, '_tipos_meta_buscados', ['comida']):
-                pred = self._posicion_predicha_objeto(tipo)
-                if pred is not None:
-                    self.meta_recordada = pred
-                    break
-    
-    def _actualizar_objetos(self):
-        """Modelo de objetos: rastrea posición histórica."""
-        seen = getattr(self, '_objetos_vistos', None)
-        if not seen:
-            return
-        
-        for tipo, ox, oy in seen:
-            ox, oy = int(ox), int(oy)
-            encontrado = False
-            for oid, datos in self.objetos.items():
-                if datos.get('tipo') == tipo:
-                    hist = datos.get('pos_hist', [])
-                    if hist:
-                        ult = hist[-1]
-                        if abs(ult[0] - ox) + abs(ult[1] - oy) < 3:
-                            hist.append((ox, oy))
-                            datos['pos_hist'] = hist[-10:]
-                            encontrado = True
-                            break
-            if not encontrado:
-                oid = len(self.objetos)
-                self.objetos[oid] = {
-                    'tipo': tipo,
-                    'pos_hist': [(ox, oy)],
-                    'id': oid
-                }
-    
-    def _posicion_predicha_objeto(self, tipo):
-        """Predice posición futura de un objeto basado en su velocidad."""
-        for oid, datos in self.objetos.items():
-            if datos.get('tipo') == tipo:
-                hist = datos.get('pos_hist', [])
-                if len(hist) >= 2:
-                    vx = hist[-1][0] - hist[-2][0]
-                    vy = hist[-1][1] - hist[-2][1]
-                    return (hist[-1][0] + vx, hist[-1][1] + vy)
-        return None
     
     def _direccion_a_accion(self, dx, dy):
-        """Convierte dirección (dx, dy) a índice de acción."""
-        if dy < 0 and dx == 0: return 1  # norte
-        if dy > 0 and dx == 0: return 2  # sur
-        if dx > 0 and dy == 0: return 4  # este
-        if dx < 0 and dy == 0: return 3  # oeste
-        if dx > 0 and dy < 0: return 1  # noreste → norte
-        if dx > 0 and dy > 0: return 2  # sureste → sur
+        if dy < 0 and dx == 0: return 1
+        if dy > 0 and dx == 0: return 2
+        if dx > 0 and dy == 0: return 4
+        if dx < 0 and dy == 0: return 3
         return 0
     
     def _elegir_accion_ppp(self, valid_actions):
-        """Fallback: PPR directo sin arbitro."""
         rank = ppr_route(self.edges, self._seed, self._aff, alpha=0.15, iters=10)
         best, bv = -1, -2.0
         for a in valid_actions:
@@ -231,12 +435,13 @@ class SGMAgentCore(SGMAgentGrafo):
         return best if best >= 0 else valid_actions[0]
     
     def _post_accion(self, accion):
-        """Post-acción: drive noop, aprendizaje, duda."""
         self.historial_acciones.append(accion)
         
         # Drive noop
-        if hasattr(self.instintos, 'actualizar_drive_noop') and self.instintos:
-            self.instintos.actualizar_drive_noop(accion)
+        if accion == 0:
+            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + self.drive_noop_tasa)
+        else:
+            self.drive_noop = max(0.0, self.drive_noop - self.drive_noop_descarga)
         
         # Aprender conexión
         if self.ultima_accion >= 0 and accion != self.ultima_accion:
@@ -244,75 +449,38 @@ class SGMAgentCore(SGMAgentGrafo):
         
         # Repetición
         if accion == self.ultima_accion:
-            self.stagnation_ticks += 1
+            self.conteo_repeticion += 1
         else:
-            self.stagnation_ticks = 0
+            self.conteo_repeticion = 0
         
         self.ultima_accion = accion
         
-        # Duda (verificar que memoria tenga los métodos)
+        # Duda
         if self.doubt_cooldown > 0:
             self.doubt_cooldown -= 1
-        elif self.status == "ACTIVA" and hasattr(self.memoria, 'check_stagnation') and self.memoria.check_stagnation(self):
-            self.memoria.handle_doubt(self)
+        elif self.status == "ACTIVA" and self.stagnation_ticks > 20:
+            self.status = "INCONCLUSA"
+            self.doubt_cooldown = 10
     
-    def actualizar_homeostasis(self, food, health):
-        """Actualiza homeostasis."""
-        self.homeostasis.actualizar(self, food, health)
-        self._hambre_real = self.homeostasis._hambre_real
-    
-    def expresarse(self, decoder_l2=None):
-        """Genera expresión basada en el estado del grafo."""
-        if decoder_l2 is None and self.l2_decoder is None:
-            return "..."
-        
-        decoder = decoder_l2 or self.l2_decoder
-        
-        zona = campo_interferencia(
-            self.omega, self.phi,
-            self.phi[0] if self.phi else 0.0,
-            self.vitalidad
-        )
-        
-        if not zona:
-            return "..."
-        
-        return decoder.decode(zona, max_palabras=5)
-    
-    def reward(self, r, pain=0.0):
-        """Actualiza vitalidad basado en reward/pain."""
-        if self.ultima_accion >= 0 and self.ultima_accion < len(self.vitalidad):
-            if r > 0:
-                self.vitalidad[self.ultima_accion] = min(1.0, self.vitalidad[self.ultima_accion] + r * 0.5)
-            if pain > 0:
-                self.vitalidad[self.ultima_accion] *= max(0.3, 1.0 - pain)
+    def aprender_conexion(self, a, b):
+        self.reforzar_arista(a, b, 0.1)
     
     # ============ PERSISTENCIA ============
     
     def guardar(self, ruta):
-        """Guarda estado completo."""
         data = {
-            "omega": self.omega,
-            "phi": self.phi,
-            "vitalidad": self.vitalidad,
-            "es_place_cell": self.es_place_cell,
-            "edges": self.edges,
-            "conn_type": self.conn_type,
-            "scope_depth": self.scope_depth,
-            "parent_of": self.parent_of,
-            "place_cells": self.place_cells,
-            "place_pos": self.place_pos,
-            "V_grafo": self.V_grafo,
+            "omega": self.omega, "phi": self.phi, "vitalidad": self.vitalidad,
+            "es_place_cell": self.es_place_cell, "edges": self.edges,
+            "conn_type": self.conn_type, "scope_depth": self.scope_depth,
+            "place_cells": self.place_cells, "place_pos": self.place_pos,
+            "V_grafo": self.V_grafo, "E_acumulado": self.E_acumulado,
             "historial_campos": self.historial_campos[-1000:],
             "historial_acciones_l2": self.historial_acciones_l2[-1000:],
         }
         np.save(ruta, data)
-        return ruta
     
     def cargar(self, ruta):
-        """Carga estado completo."""
-        if not os.path.exists(ruta):
-            return False
+        if not os.path.exists(ruta): return False
         data = np.load(ruta, allow_pickle=True).item()
         self.omega = data.get("omega", self.omega)
         self.phi = data.get("phi", self.phi)
@@ -321,121 +489,16 @@ class SGMAgentCore(SGMAgentGrafo):
         self.edges = data.get("edges", self.edges)
         self.conn_type = data.get("conn_type", self.conn_type)
         self.scope_depth = data.get("scope_depth", self.scope_depth)
-        self.parent_of = data.get("parent_of", self.parent_of)
         self.place_cells = data.get("place_cells", self.place_cells)
         self.place_pos = data.get("place_pos", self.place_pos)
         self.V_grafo = data.get("V_grafo", self.V_grafo)
+        self.E_acumulado = data.get("E_acumulado", self.E_acumulado)
         self.historial_campos = data.get("historial_campos", [])
         self.historial_acciones_l2 = data.get("historial_acciones_l2", [])
         return True
     
-    # ============ L2 CON t-SNE ============
-    
-    def configurar_l2(self, l2_decoder):
-        """Configura el decoder L2."""
-        self.l2_decoder = l2_decoder
-    
-    def procesar_l2(self, epochs=50, lr=0.05):
-        """Entrena L2 con los datos recolectados + t-SNE."""
-        if len(self.historial_campos) < 10:
-            print("  [L2] No hay suficientes datos")
-            return None
-        
-        try:
-            from sklearn.manifold import TSNE
-            from sklearn.cluster import KMeans
-        except ImportError:
-            print("  [L2] sklearn no disponible")
-            return None
-        
-        # 1. Co-ocurrencia
-        C = self._construir_coocurrencia()
-        n = C.shape[0]
-        
-        # 2. PMI
-        PMI = self._computar_pmi(C)
-        
-        # 3. SVD
-        k = min(32, n)
-        U, S, _ = np.linalg.svd(PMI, full_matrices=False)
-        vv = U[:, :k] * S[:k]
-        
-        # 4. t-SNE
-        print(f"  [L2] t-SNE sobre {n} nodos...")
-        tsne = TSNE(n_components=2, perplexity=min(30, n-1), n_iter=500, random_state=42)
-        Y = tsne.fit_transform(vv)
-        
-        # 5. K-means
-        n_clusters = min(10, n)
-        km = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
-        labels = km.fit_predict(Y)
-        
-        # 6. Asignar tokens
-        cluster_tokens = {}
-        for c in range(n_clusters):
-            acciones_c = []
-            for i, (zona, accion) in enumerate(zip(self.historial_campos, self.historial_acciones_l2)):
-                if not zona: continue
-                for nid, _, _ in zona:
-                    if nid < len(labels) and labels[nid] == c:
-                        acciones_c.append(accion)
-            if acciones_c:
-                from collections import Counter
-                accion_comun = Counter(acciones_c).most_common(1)[0][0]
-                cluster_tokens[c] = accion_comun % len(TOKEN2ID)
-            else:
-                cluster_tokens[c] = 0
-        
-        # 7. Entrenar decoder
-        from experiments.train_l2_real import L2Decoder
-        V = len(TOKEN2ID)
-        dec = L2Decoder(128, V, lr)
-        
-        pares = []
-        for zona, accion in zip(self.historial_campos, self.historial_acciones_l2):
-            if not zona: continue
-            for nid, omega, _ in zona:
-                if nid < len(labels):
-                    tid = cluster_tokens.get(labels[nid], 0)
-                    pares.append((np.array(omega, dtype=float), tid))
-        
-        if not pares:
-            return None
-        
-        for ep in range(epochs):
-            random.shuffle(pares)
-            losses = [dec.train(x, t) for x, t in pares]
-            if ep % 10 == 0:
-                print(f"  [L2] Epoch {ep}: loss={np.mean(losses):.4f}")
-        
-        self.l2_decoder = dec
-        print(f"  [L2] Decoder entrenado con {n_clusters} clusters")
-        return dec
-    
-    def _construir_coocurrencia(self):
-        C = np.zeros((len(self.omega), len(self.omega)))
-        for zona in self.historial_campos:
-            if not zona: continue
-            nodos = [n for n, _, _ in zona]
-            for i in nodos:
-                for j in nodos:
-                    if i < len(self.omega) and j < len(self.omega):
-                        C[i, j] += 1
-        return C
-    
-    def _computar_pmi(self, C, eps=1e-10):
-        total = C.sum()
-        if total == 0: return np.zeros_like(C)
-        P_ij = C / total
-        P_i = C.sum(axis=1) / total
-        P_j = C.sum(axis=0) / total
-        PMI = np.zeros_like(C)
-        for i in range(C.shape[0]):
-            for j in range(C.shape[1]):
-                if P_ij[i,j] > eps and P_i[i] > eps and P_j[j] > eps:
-                    PMI[i,j] = math.log(P_ij[i,j] / (P_i[i] * P_j[j]))
-        return PMI
+    def set_l2_decoder(self, decoder):
+        self.l2_decoder = decoder
 
 
-# Compatibilidad
 SGMAgent = SGMAgentCore
