@@ -35,6 +35,11 @@ creador = CreadorConceptos(ag)
 accion_creator = CreadorAcciones(ag)
 lenguaje_creator = CreadorLenguaje(ag)
 
+# METACOGNICIÓN: razonar sobre sí misma, dudar, experimentar
+from sgm_metacognicion import Metacognicion, Experimentador
+meta = Metacognicion(ag)
+experimentador = Experimentador(ag, meta)
+
 l2 = L2Decoder(D_sem=128, lr=0.05)
 print("[sgm_bridge] Decodificador L2 listo. Pesos en:", l2.ruta_pesos)
 
@@ -167,6 +172,20 @@ class Puente(BaseHTTPRequestHandler):
                 accion = ACCION_MC.get(a, "noop")
                 self._send(json.dumps({"accion": accion, "indice": a, "hambre": round(ag._hambre_real, 2),
                                        "amenaza": round(ag._amenaza, 2)}))
+            elif u.path == "/metacognicion":
+                # METACOGNICIÓN: Pandora razona sobre sí misma, duda, experimenta
+                try:
+                    reflexion = meta.reflexionar()
+                    analisis = meta.razonar_sobre_si_mismo()
+                    duda_texto = meta.generar_duda_texto()
+                    payload = {
+                        "reflexion": reflexion,
+                        "auto_razonamiento": analisis,
+                        "duda": duda_texto,
+                    }
+                    self._send(json.dumps(payload, ensure_ascii=False))
+                except Exception as e:
+                    self._send(json.dumps({"error": str(e)}))
             elif u.path == "/hablar_l2":
                 omega_json = q.get("omega", "[]")[0] if q.get("omega") else "[]"
                 omega = json.loads(omega_json) if isinstance(omega_json, str) else omega_json
