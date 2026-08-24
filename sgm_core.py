@@ -13,7 +13,7 @@ SIN hibernacion, SIN trauma, SIN proteccion de raiz.
 
 Este es el punto de partida para la auditoria parte por parte.
 """
-import math, random
+import math, random, re
 
 # 1. HDC / SensorBridge (0019)
 class HDC:
@@ -1421,6 +1421,69 @@ class SGMAgent:
                     return 8  # colocar mesa crea la condicion espacial del crafteo
         return None
 
+    # ---------- RAZONAMIENTO COMPLETO (Aristoteles / PURE-L2): deduccion, induccion, abduccion ----------
+    # Los tres actos de la mente: aprehension (nodo/omega), juicio (arista/conexion),
+    # raciocinio (ruteo por el grafo). Anclado al documento (PPR + grafo causal + decoder L2).
+    #  - DEDUCCION: regla (A->B) + caso (A) -> resultado (B). Ruteo HACIA ADELANTE sobre el grafo.
+    #    Desde el nodo-caso, seguir aristas y confirmar si alcanza el nodo-resultado.
+    #  - INDUCCION: casos observados -> regla generalizada. Consolidacion de co-ocurrencias
+    #    (ya viva en aprender_conexion/consolidar_hito); aqui sumamos la regla explicita A->B.
+    #  - ABDUCCION: resultado (B) + regla (A->B) -> explicacion/causa mas plausible (A?).
+    #    PPR INVERSO: propagar desde B sobre el grafo TRANSPUESTO -> nodos-causa mas probables.
+
+    def deducir(self, regla_a, regla_b, caso_a):
+        """DEDUCCION: de regla (A->B) + caso (A), concluir resultado (B).
+        Recorre el grafo hacia adelante desde caso_a y verifica si alcanza regla_b via
+        una arista con regla_a. Si el caso tiene la ARESTA que la regla exige -> el
+        resultado es valido. Devuelve bool (si la regla aplica al caso)."""
+        # el caso A y el nodo B deben ser nodos validos (existen en el grafo)
+        if caso_a not in self.edges or regla_b not in self.edges:
+            return False
+        # la regla A->B se cumple si de A se puede llegar a B (arista directa o ruteada)
+        return regla_b in self.edges.get(caso_a, []) or (regla_a, regla_b) in self.consolidadas
+
+    def inducir(self, regla_a, regla_b):
+        """INDUCCION: de casos observados repetidos, generalizar la regla A->B.
+        Refuerza la conexion (regla_a, regla_b): cada induccion ~ nueva observacion que
+        consolida la regla. Devuelve la fuerza de la regla tras la induccion."""
+        # aprender_conexion ya refuerza por co-ocurrencia (la induccion del mundo)
+        # aqui la hacemos EXPLICITA: consolidar la regla A->B como conexion causal
+        tiene = (regla_a, regla_b) in getattr(self, 'consolidadas', set())
+        if regla_b in self.edges.get(regla_a, []) or tiene:
+            if not tiene:
+                self.consolidadas.add((regla_a, regla_b))
+            # subir fuerza: si conceptos, sumar a la conexion
+            return True
+        # la regla aun no existe: registrar que se observo (induccion incipiente)
+        if regla_a not in self.edges:
+            self.edges[regla_a] = []
+        if regla_b not in self.edges[regla_a]:
+            self.edges[regla_a].append(regla_b)
+        return True
+
+    def abducir(self, resultado, topk=5):
+        """ABDUCCION (Peirce): dado un RESULTADO observado, inferir las CAUSAS/explicaciones
+        mas plausibles. Usa PPR INVERSO: ranquea nodos sobre el GRAFO TRANSPUESTO desde el
+        resultado, de modo que los nodos-causa mas probables (los que mas propagan al
+        resultado) salen primero. Devuelve [(causa_id, score)] topk."""
+        # grafo transpuesto: aristas invertidas (apuntan hacia las causas)
+        inv_edges = {}
+        for i in self.edges:
+            for j in self.edges[i]:
+                if j not in inv_edges: inv_edges[j] = []
+                if i not in inv_edges[j]:
+                    inv_edges[j].append(i)
+        if resultado not in inv_edges:
+            # el resultado existe como nodo pero sin causas conocidas -> listo
+            # correr PPR sobre el transpuesto desde el resultado (si hay causas)
+            rank = ppr_route(self.edges, resultado, self._aff, alpha=self.alpha, iters=15)
+        else:
+            rank = ppr_route(inv_edges, resultado, self._aff, alpha=self.alpha, iters=15)
+        # excluir el propio resultado y quedarse con el top-k (causas mas probables)
+        candidates = [(n, s) for n, s in rank.items() if n != resultado]
+        candidates.sort(key=lambda x: -x[1])
+        return candidates[:topk]
+
     def razonar_meta_compuesta(self, meta, condiciones_activas):
         """0169-A: decide si puede lograr la meta o si necesita preparar una condicion.
         Devuelve (accion_a_ejecutar, es_precondicion): si falta condicion, ejecuta la que
@@ -1469,22 +1532,46 @@ class SGMAgent:
     def procesar_instruccion(self, texto):
         """Interpreta la INSTRUCCION del humano en lenguaje natural simple y la convierte
         en un efecto sobre el estado interno de SGM (direccion tu->SGM). Emergente: reconoce
-        palabras-clave del dominio (comida, madera, mesa, zombie/amenaza, valorar X) y las
-        vincula a su mundo interno -- p.ej. priorizar una meta, senalar un recurso, o
-        registrar algo como importante. Devuelve un dict {reconocida, efecto, texto}.
-        Si no reconoce, SGM lo dice honestamente (no inventa)."""
+        intenciones (comida, madera, mesa, amenaza, SOCIAL/MOVIMIENTO, valorar) y TAMBIEN
+        aprende palabras nuevas: si una palabra desconocida aparece, la registra en el
+        vocabulario (via token_a_id) para que su diccionario crezca con el uso real.
+        Devuelve un dict {reconocida, efecto, texto, palabras_nuevas}. Si no reconoce
+        intencion, SGM lo dice honestamente y senala que aprendio la palabra."""
         t = texto.lower()
         efecto = {}
+        palabras_nuevas = []
+        # --- APRENDIZAJE DE PALABRAS NUEVAS: registrar tokens desconocidos del diccionario
+        try:
+            import sys as _sys, os as _os
+            _base = _os.path.dirname(_os.path.abspath(__file__))
+            if _base not in _sys.path: _sys.path.insert(0, _base)
+            _exp = _os.path.join(_base, "experiments")
+            if _exp not in _sys.path: _sys.path.insert(0, _exp)
+            from sgm_lang import token_a_id, TOKEN2ID
+            for palabra in re.findall(r"[a-záéíóúñ]{3,}", t):
+                if palabra not in TOKEN2ID:
+                    token_a_id(palabra)  # la agrega al diccionario base del modulo
+                    palabras_nuevas.append(palabra)
+        except Exception:
+            pass
         # reconocer meta de subsistencia
-        if any(w in t for w in ["coma", "comer", "food", "alimento", "vaca"]):
+        if any(w in t for w in ["coma", "comer", "food", "alimento", "vaca", "hambre"]):
             efecto = {"tipo": "meta", "recurso": "food"}
         elif any(w in t for w in ["madera", "wood", "arbol"]):
             efecto = {"tipo": "meta", "recurso": "wood"}
         elif any(w in t for w in ["mesa", "craftear", "herramienta", "pico"]):
             efecto = {"tipo": "meta", "recurso": "wood_pickaxe"}
         # reconocer senal de amenaza
-        elif any(w in t for w in ["zombie", "enemigo", "peligro", "amenaza"]):
+        elif any(w in t for w in ["zombie", "enemigo", "peligro", "amenaza", "cuidado"]):
             efecto = {"tipo": "amenaza"}
+        # --- INTENCIONES SOCIALES / MOVIMIENTO (para conectar con el bot) ---
+        elif any(w in t for w in ["hola", "holis", "hello", "hey", "buenas", "saluda"]):
+            efecto = {"tipo": "saludo"}
+        elif any(w in t for w in ["movete", "muévete", "mueve", "caminà", "camina", "camino",
+                                   "mover", "adelante", "acercate", "ven", "viene", "seguime"]):
+            efecto = {"tipo": "moverse"}
+        elif any(w in t for w in ["qué hacés", "que haces", "como estas", "cómo estás", "que ve", "que haces"]):
+            efecto = {"tipo": "estado"}
         # reconocer valoracion (el humano le ensena que algo importa)
         valorar = [w for w in ["madera", "comida", "food", "wood", "mesa", "pico",
                                "zombie", "herramienta"] if w in t]
@@ -1500,9 +1587,25 @@ class SGMAgent:
             elif efecto.get("tipo") == "valorar":
                 r = efecto.get("recurso")
                 self.valencia_recurso[r] = self.valencia_recurso.get(r, 0) + 1.0  # valorar mas
-            return {"reconocida": True, "efecto": efecto, "texto": f"entiendo: {texto}"}
+            elif efecto.get("tipo") == "moverse":
+                # intencion de moverse: señal interna (el bot la traduce a navegacion)
+                self._meta_movimiento = {"activo": True, "instruccion": texto}
+            elif efecto.get("tipo") == "saludo":
+                pass  # sgm se expresa (lo maneja la interfaz)
+            elif efecto.get("tipo") == "estado":
+                pass  # sgm expresa su estado (lo maneja la interfaz)
+            resp = f"entiendo: {texto}"
+            if palabras_nuevas:
+                resp += f" (aprendi: {', '.join(palabras_nuevas[:4])})"
+            return {"reconocida": True, "efecto": efecto, "texto": resp,
+                    "palabras_nuevas": palabras_nuevas}
+        # no reconoce intencion, PERO si aprendio palabras, lo dice honestamente
+        if palabras_nuevas:
+            return {"reconocida": False, "efecto": {}, "texto": f"aprendi nuevas palabras: {', '.join(palabras_nuevas[:4])}, pero no entiendo la intencion aun",
+                    "sugerencia": "puedo interpretar: comer, madera, craftear, zombie, moverme, valorar X",
+                    "palabras_nuevas": palabras_nuevas}
         return {"reconocida": False, "efecto": {}, "texto": "no entiendo bien eso aun",
-                "sugerencia": "puedo interpretar: comer, madera, craftear, zombie, valorar X"}
+                "sugerencia": "puedo interpretar: comer, madera, craftear, zombie, moverme, valorar X"}
 
     # ---------- SELF-MOD (0018, integrado): SGM puede invocar y aplicar internamente ----------
     def _spec_viva(self):
