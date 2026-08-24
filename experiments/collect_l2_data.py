@@ -30,7 +30,7 @@ def simular_percepcion(rng, step):
     
     pos = (rng.randint(0, 50), rng.randint(0, 50))
     
-    return sv, pos, food, health
+    return sv, pos, comida, salud
 
 def colectar(n_pasos=3600, semilla=42, verbose=True):
     """Colecta n_pasos de datos del agente."""
@@ -44,19 +44,19 @@ def colectar(n_pasos=3600, semilla=42, verbose=True):
     ag.set_arbitro(arbitro)
     
     datos = {
-        "campos": [],      # Lista de [(nodo_id, omega, interferencia)]
-        "acciones": [],    # Lista de int
-        "resultados": [],  # Lista de [Δfood, Δhealth, ΔV_grafo]
-        "positions": [],   # Lista of (x, y)
+        "campos": [],
+        "acciones": [],
+        "resultados": [],
+        "positions": [],
+        "omegas": [],  # Omega original de cada nodo en cada paso
     }
     
     food_prev, health_prev = 20.0, 20.0
     t0 = time.time()
     
     for step in range(n_pasos):
-        sv, pos = simular_percepcion(rng, step)[:2]
-        food = float(10 + rng.random() * 10)
-        health = float(15 + rng.random() * 5)
+        sv_raw, pos, food, health = simular_percepcion(rng, step)
+        sv = sv_raw
         
         ag._posicion_actual = pos
         ag._hambre_real = sv[2]
@@ -67,6 +67,9 @@ def colectar(n_pasos=3600, semilla=42, verbose=True):
         ag._config_grad = {"activo": sv[4] > 0.3, "fuerza": sv[4]}
         ag._config_curio = {"activo": True, "fuerza": 0.4}
         ag._inc_dirs = {1: rng.random(), 2: rng.random(), 3: rng.random(), 4: rng.random()}
+        
+        # Homeostasis real
+        ag.actualizar_homeostasis(food, health)
         
         # Guardar estado antes
         V_prev = ag.V_grafo
@@ -87,6 +90,7 @@ def colectar(n_pasos=3600, semilla=42, verbose=True):
         datos["acciones"].append(accion)
         datos["resultados"].append([delta_food, delta_health, delta_V])
         datos["positions"].append(pos)
+        datos["omegas"].append(ag.omega.copy())
         
         food_prev, health_prev = food, health
         
