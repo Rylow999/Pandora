@@ -25,6 +25,8 @@ DICCIONARIO_BASE = [
     "huir", "escapar", "correr", "alejarse", "retirarse", "esquivar",
     "interactuar", "usar", "utilizar", "abrir", "activar", "presionar",
     "equipar", "ponerse", "vestir",
+    # direcciones/movimiento (para mapeo de acciones Minecraft 3D)
+    "quieto", "adelante", "atras", "izquierda", "derecha", "agacharse",
     "beber", "tragar", "masticar",
     # negacion / afirmacion
     "no", "si",
@@ -138,8 +140,9 @@ def estado_a_tokens(ag, max_len=12):
     tokens = []
     if getattr(ag, "_hambre_real", 0) > 0.5:
         tokens.append("hambre")
-    if ag.valencia_recurso:
-        for r, v in ag.valencia_recurso.items():
+    valencias = getattr(ag, "valencia_recurso", None)
+    if valencias:
+        for r, v in valencias.items():
             if v > 0.5:
                 tokens.append(r)
     return tokens[:max_len]

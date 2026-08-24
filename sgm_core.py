@@ -118,8 +118,10 @@ class SGMAgentCore(SGMAgentGrafo):
             delta_food = food - self.ultimo_food
             if delta_food > 0 and self.instinto_alimentacion is not None:
                 self.reforzar_arista(self.instinto_alimentacion, 0, 0.05)
-                # Recordar dónde se resolvió el hambre (navegación a meta)
-                if self._posicion_actual is not None:
+                # Recordar dónde se comió SOLO si la acción previa fue comer
+                # (no sobreescribir por regeneración natural de comida en MC)
+                if (self._posicion_actual is not None
+                        and self.ultima_accion == self.instinto_alimentacion):
                     self.meta_recordada = self._posicion_actual
         self.ultimo_food = food
 
