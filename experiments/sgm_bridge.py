@@ -22,6 +22,12 @@ from sgm_lang_interfaz import InterfazLenguaje
 from sgm_atencion import ClasificadorIntencion
 import sgm_mundo
 
+# DECODIFICADOR L2 (PURE-L2): W·ω + b → softmax → token
+from sgm_l2_decoder import L2Decoder
+from sgm_lang import ID2TOKEN
+l2 = L2Decoder(D_sem=128, lr=0.05)
+print("[sgm_bridge] Decodificador L2 listo. Pesos en:", l2.ruta_pesos)
+
 # un agente SGM persistente para la sesion
 ag = SGMAgent(random.Random(42), 128, n_nodes=64, gamma=0.01)
 
@@ -83,13 +89,27 @@ class Puente(BaseHTTPRequestHandler):
                     resp = f"[relato] aprendi: {', '.join(aprendidas[:5])}"
                 else:
                     resp = f"[relato] entendido, lo registro"
-            else:  # indicacion: SGM ejecuta la instruccion y confirma
+            else:  # indicacion: SGM ejecuta la instruccion y confirma + devuelve plan de accion
                 res_inst = ag.procesar_instruccion(texto)
                 aprendidas = res_inst.get("palabras_nuevas", [])
-                resp = f"[indicacion] " + res_inst["texto"]
+                # SINTAXIS + PLAN DE EJECUCION: analizar (accion, objeto) con sgm_mundo
+                analisis = sgm_mundo.analizar_instruccion(texto)
+                plan = None
+                accion_mc = analisis["accion"] and analisis["accion"] in ("romper", "mover", "comer", "atacar", "recolectar", "craftear", "explorar", "saltar", "huir")
+                if accion_mc:
+                    # plan de accion fisica para el bot (entendimiento -> ejecucion real)
+                    plan = {"accion": analisis["accion"], "objeto": analisis["objeto"]}
+                    resp = f"[indicacion] {res_inst['texto']}"
+                else:
+                    resp = f"[indicacion] {res_inst['texto']}"
+                # devolvemos JSON con la respuesta lingüistica + el plan de ejecucion (si hay)
+                payload = {"texto": resp, "intencion": intencion}
+                if plan:
+                    payload["ejecutar"] = plan
                 if aprendidas:
-                    il.guardar_todo(ag)
-            self._send(resp)
+                    payload["aprendidas"] = aprendidas
+                    il.guardar_todo(ag)  # persistir vocabulario nuevo
+                self._send(json.dumps(payload, ensure_ascii=False))
         elif u.path == "/estado":
             frase, cat, _ = il.expresarse(ag)
             self._send(f"[SGM:{cat}] {frase}")
@@ -126,6 +146,23 @@ class Puente(BaseHTTPRequestHandler):
                                        "amenaza": round(ag._amenaza, 2)}))
             except Exception as e:
                 self._send(json.dumps({"accion": "noop", "error": str(e)}))
+        elif u.path == "/hablar_l2":
+            # DECODIFICADOR L2: generar lenguaje desde el grafo (no plantillas)
+            # Params: omega (json array de floats), interferencia (float, def 1.0)
+            try:
+                omega_json = q.get("omega", "[]")[0] if q.get("omega") else "[]"
+                omega = json.loads(omega_json) if isinstance(omega_json, str) else omega_json
+                interferencia = float(q.get("interferencia", ["1.0"])[0])
+                if len(omega) != ag.D:
+                    self._send(json.dumps({"error": "omega dim %d != D %d" % (len(omega), ag.D)}))
+                else:
+                    import numpy as np
+                    omega_np = np.array(omega, dtype=float) * interferencia
+                    top = l2.decodificar(omega_np, topk=3, temperatura=0.8)
+                    tokens = [(ID2TOKEN.get(t, "??"), "%.3f" % p) for t, p in top]
+                    self._send(json.dumps({"tokens": tokens}))
+            except Exception as e:
+                self._send(json.dumps({"error": str(e)}))
         else:
             self._send("ok - sgm_bridge")
 
