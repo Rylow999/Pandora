@@ -194,6 +194,7 @@ class SGMAgent:
         # la fase no necesita estar tan alineada con la raiz para persistir. Es lo que hace que
         # la 'memoria de sobrevivir' persista entre vidas sin re-descubrir cada vez.
         self.conteo_exitos_conexion = {}  # (i,j) -> veces que esa conexion fue reforzada por exito
+        self.conteo_induccion = {}   # (i,j) -> veces que se OBSERVO A->B (evidencia para inducir)
         self.theta_interf_min = 0.45      # umbral de consolidacion minimo (facilitacion maxima)
         self.facilitacion_por_exito = 0.03  # cuanta baja el umbral por cada exito repetido
         # 0156: EXPERIENCIA INTERNA / HISTORIA (Luciano). El sistema crea su PROPIA historia:
@@ -1431,35 +1432,97 @@ class SGMAgent:
     #  - ABDUCCION: resultado (B) + regla (A->B) -> explicacion/causa mas plausible (A?).
     #    PPR INVERSO: propagar desde B sobre el grafo TRANSPUESTO -> nodos-causa mas probables.
 
-    def deducir(self, regla_a, regla_b, caso_a):
-        """DEDUCCION: de regla (A->B) + caso (A), concluir resultado (B).
-        Recorre el grafo hacia adelante desde caso_a y verifica si alcanza regla_b via
-        una arista con regla_a. Si el caso tiene la ARESTA que la regla exige -> el
-        resultado es valido. Devuelve bool (si la regla aplica al caso)."""
-        # el caso A y el nodo B deben ser nodos validos (existen en el grafo)
+    def deducir(self, regla_a, regla_b, caso_a, prof_max=5):
+        """DEDUCCION (completa): de regla (A->B) + caso (A), concluir resultado (B).
+        Encadena reglas: recorre el grafo hacia adelante desde `caso_a` y verifica si se
+        puede ALCANZAR `regla_b` (directo o via A->B->C->... el cierre transitivo). Si el
+        caso satisface la condicion de la regla, el resultado es valido. Devuelve
+        (bool_valido, camino) donde camino = la cadena de nodos que llevan de caso a B."""
         if caso_a not in self.edges or regla_b not in self.edges:
-            return False
-        # la regla A->B se cumple si de A se puede llegar a B (arista directa o ruteada)
-        return regla_b in self.edges.get(caso_a, []) or (regla_a, regla_b) in self.consolidadas
+            return False, []
+        # BFS acotado por prof_max desde caso_a; la arista/consolidadas guia.
+        visitados = set([caso_a]); cola = [caso_a]; anterior = {caso_a: None}
+        encontrado = False
+        for _ in range(prof_max):
+            if not cola: break
+            siguiente = []
+            for actual in cola:
+                # vecinos reales de actual (aristas del grafo = reglas aplicables)
+                for vec in self.edges.get(actual, []):
+                    if vec in visitados: continue
+                    visitados.add(vec); anterior[vec] = actual; siguiente.append(vec)
+                    # si la regla establece que desde `actual` se llega al resultado,
+                    # y vec==regla_b, encontramos el resultado por la regla
+                    if vec == regla_b:
+                        # validar que hace falta la condicion: si (actual) satisface la
+                        # regla (regla_a==actual o la arista viene de regla_a), es valido
+                        encontrado = True
+            cola = siguiente
+            if encontrado: break
+        if not encontrado:
+            # fallback: la regla directa consolidada A->B (sin necesidad de camino)
+            if (regla_a, regla_b) in getattr(self, 'consolidadas', set()):
+                return True, [regla_a, regla_b]
+            return False, []
+        # reconstruir el camino desde caso_a hasta regla_b
+        camino = [regla_b]
+        n = regla_b
+        while anterior.get(n) is not None:
+            n = anterior[n]; camino.append(n)
+        camino.reverse()
+        return True, camino
 
-    def inducir(self, regla_a, regla_b):
-        """INDUCCION: de casos observados repetidos, generalizar la regla A->B.
-        Refuerza la conexion (regla_a, regla_b): cada induccion ~ nueva observacion que
-        consolida la regla. Devuelve la fuerza de la regla tras la induccion."""
-        # aprender_conexion ya refuerza por co-ocurrencia (la induccion del mundo)
-        # aqui la hacemos EXPLICITA: consolidar la regla A->B como conexion causal
-        tiene = (regla_a, regla_b) in getattr(self, 'consolidadas', set())
-        if regla_b in self.edges.get(regla_a, []) or tiene:
-            if not tiene:
-                self.consolidadas.add((regla_a, regla_b))
-            # subir fuerza: si conceptos, sumar a la conexion
-            return True
-        # la regla aun no existe: registrar que se observo (induccion incipiente)
-        if regla_a not in self.edges:
-            self.edges[regla_a] = []
-        if regla_b not in self.edges[regla_a]:
-            self.edges[regla_a].append(regla_b)
-        return True
+    def consecuencias_de(self, caso, prof_max=5):
+        """DEDUCCION hacia adelante: dado un caso/estado, devuelve TODAS las
+        consecuencias deducibles (lo que se sigue por las reglas del grafo). Util para
+        comprension profunda: 'si tengo X, que puedo lograr/conseguir'. Devuelve [(nodo,
+                camino)] con las consecuencias alcanzables."""
+        res = []
+        visitados = set([caso])
+        cola = [caso]; camino = {caso: [caso]}
+        for _ in range(prof_max):
+            if not cola: break
+            siguiente = []
+            for actual in cola:
+                for vec in self.edges.get(actual, []):
+                    if vec in visitados: continue
+                    visitados.add(vec)
+                    camino[vec] = camino[actual] + [vec]
+                    siguiente.append(vec)
+            cola = siguiente
+        # todas las consecuencias alcanzables menos el propio caso
+        for n in visitados:
+            if n != caso and len(camino[n]) <= prof_max:
+                res.append((n, camino[n]))
+        return res
+
+    def inducir(self, regla_a, regla_b, umbral=3):
+        """INDUCCION (de verdad): generalizar la regla A->B SOLO despues de observar
+        A->B repetidas veces (patron), no de una coincidencia. Cada llamada registra
+        una observacion de co-ocurrencia; al acumular `umbral` observaciones (def 3),
+        consolida la regla en el grafo. Devuelve dict {evidencia, consolidada, fuerza}."""
+        # sumar evidencia de la co-ocurrencia observada
+        self.conteo_induccion[(regla_a, regla_b)] = self.conteo_induccion.get((regla_a, regla_b), 0) + 1
+        evidencia = self.conteo_induccion[(regla_a, regla_b)]
+        # ya estaba consolidada -> solo reforzar y devolver
+        if (regla_a, regla_b) in getattr(self, 'consolidadas', set()):
+            return {"evidencia": evidencia, "consolidada": True, "fuerza": evidencia}
+        # la regla A->B ya existia como arista en el grafo (aprendida de otra forma ->
+        # la observacion la confirma, consolidar directamente)
+        if regla_b in self.edges.get(regla_a, []):
+            self.consolidadas.add((regla_a, regla_b))
+            return {"evidencia": evidencia, "consolidada": True, "fuerza": evidencia}
+        # aun no existe la regla: solo se consolida al superar el umbral (induccion real)
+        if evidencia >= umbral:
+            # crear la arista y consolidarla como regla causal inductiva
+            if regla_a not in self.edges:
+                self.edges[regla_a] = []
+            if regla_b not in self.edges[regla_a]:
+                self.edges[regla_a].append(regla_b)
+            self.consolidadas.add((regla_a, regla_b))
+            return {"evidencia": evidencia, "consolidada": True, "fuerza": evidencia}
+        # evidencia insuficiente: aun no generaliza (induccion honesta, no prematura)
+        return {"evidencia": evidencia, "consolidada": False, "fuerza": evidencia}
 
     def abducir(self, resultado, topk=5):
         """ABDUCCION (Peirce): dado un RESULTADO observado, inferir las CAUSAS/explicaciones
