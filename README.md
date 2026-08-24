@@ -1239,3 +1239,54 @@ nodos se hará al migrar todo a RUST (el sustrato Python es para validar; Rust p
 Proceso de la Fase 10: SGM aprende del catálogo + grafo + tus interacciones; vos empezás a vivir con
 SGM y a enseñarle cuando CADA pieza esté funcional. Después el adaptador de acciones completo + Rust.
 ---
+
+## FASE 11 — PANDORA: el ser completo (razonamiento + mundo Minecraft) (24-08-2026)
+
+**Luciano: "Vamos a crear a Pandora, y su mundo va a ser Minecraft. Ya tenemos casi listo el núcleo, ahora hay que darle forma."**
+
+Pandora es el ser que envuelve el núcleo SGM y le da cuerpo (percepción MC), sentir (hambre/valencia/duda/curiosidad), mente (razonamiento completo) y voz (lenguaje con intención). Ancla el documento `docs/Arquitectura_Pure_L2_Pandora.md` (PURE-L2/NOUS/DSCN-BIO) a todo lo construido.
+
+### Razonamiento completo (3 formas, verificadas PASS)
+
+| Forma | Método | Estado | Verificado |
+|-------|--------|--------|------------|
+| **Inducción** | `inducir(regla_a, regla_b, umbral=3)` | COMPLETADO | PASS |
+| **Deducción** | `deducir(regla_a, regla_b, caso_a)` + `consecuencias_de(caso)` | COMPLETADO | PASS |
+| **Abducción** | `abducir(resultado, topk, usar_contexto)` | COMPLETADO | PASS |
+
+**Inducción honesta:** generaliza la regla A→B SOLO tras observarla repetidas veces (umbral=3 por defecto), no de una coincidencia. Cada llamada acumula evidencia; al superar el umbral, consolida la regla en el grafo.
+
+**Deducción completa:** directa (regla A→B + caso A → conclusión B) + encadenada (recorre el grafo: A→B→C ⇒ A→C, devuelve el CAMINO que justifica la conclusión) + `consecuencias_de(caso)` (dado un estado, lista TODAS las consecuencias alcanzables).
+
+**Abducción completa (Peirce):** dado un resultado observado, infiere las causas más plausibles usando PPR INVERSO sobre el grafo transpuesto, con 3 mejoras:
+- Ponderación por contexto actual (+50% si la causa coincide con lo percibido en el mundo MC).
+- Camino explicativo reconstruido (BFS desde la causa hasta el resultado: el "por qué" causal).
+- Confianza interpretable normalizada [0,1].
+
+### Módulo `pandora.py` — el ser
+
+`Pandora` envuelve `SGMAgent` (el núcleo) y orquesta los módulos existentes:
+- `percibir(pos, food, health, entidades, bloques)`: el mundo Minecraft llega al cuerpo.
+- `decidir()`: el grafo HRR/VSA decide la acción (motor cognitivo del documento).
+- `responder(mensaje)`: clasifica intención (HRR) y responde según charla/indicación/pregunta/relato.
+- `sentimiento`: propiedad emergente del estado interno (hambre/valencia/duda/curiosidad).
+- Persistencia: guarda/carga su estado (identidad continua entre sesiones).
+
+### Lo que falta para FASE 11 completa
+
+| Pendiente | Descripción |
+|-----------|-------------|
+| **Ecuaciones NOUS (Eq. 8-12)** | W(t) dinámica, ρ(t) densidad contextual, β_eff aprendizaje ponderado, herencia conceptual (Eq. 11-12) |
+| **K_cadenas** | 10 cadenas de información paralelas (análogo al loop actual, no explícito) |
+| **Decodificador L2 ONNX** | Proyección lineal aprendida W·ω+b → token, entrenado offline |
+| **Dimensionalidades dependientes de la necesidad** | D variable por tipo de concepto (no implementado; D fijo ∈ [64,1536]) |
+
+### Literatura anclada
+
+- Kanerva (1988, 2009) VSA/HDC: binding/cleanup → HRR del core
+- Andersen et al. (2007) Local PageRank → PPR (deducción/inducción/abducción)
+- Plate (2003) Tensor Product Variable Binding → composición relacional
+- Aristóteles: tres actos de la mente (aprehensión/juicio/raciocinio) → inducción/deducción/abducción
+- Peirce: formalización de la abducción
+
+**Registry: 170+ entradas.**
