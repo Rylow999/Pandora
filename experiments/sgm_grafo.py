@@ -54,6 +54,7 @@ class SGMAgent:
         
         # Arbitro (hook externo)
         self._arbitro = None
+        self.conn_type = {}  # {(nodo, vecino): {"count", "tipo", "strength", "age"}}
     
     def set_edges(self, edges):
         """Configura las aristas del grafo."""
@@ -87,11 +88,39 @@ class SGMAgent:
             self.edges[b].append(a)
     
     def reforzar_arista(self, a, b, fuerza=0.1):
-        """Refuerza una arista y vitalidad de los nodos."""
+        """
+        Refuerza una arista: crea si no existe, incrementa strength y tipo.
+        Lógica de conn_type: Functional (0) → Causal (1) por uso repetido.
+        """
         if a >= len(self.omega) or b >= len(self.omega):
             return
+        
+        # Crear arista si no existe
+        self.crear_arista(a, b)
+        
+        # Reforzar vitalidad
         self.vitalidad[a] = min(1, self.vitalidad[a] + fuerza)
         self.vitalidad[b] = min(1, self.vitalidad[b] + fuerza)
+        
+        # Lógica de conn_type
+        clave = (a, b)
+        if clave not in self.conn_type:
+            self.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 1.0, "age": 0}
+        
+        self.conn_type[clave]["count"] += 1
+        c = self.conn_type[clave]["count"]
+        
+        if c > 5:
+            self.conn_type[clave]["tipo"] = 1  # Causal
+        elif c > 2:
+            self.conn_type[clave]["tipo"] = 0  # Functional
+        
+        self.conn_type[clave]["strength"] = min(1.0, self.conn_type[clave]["strength"] + fuerza)
+        self.conn_type[clave]["age"] = 0
+    
+    def aprender_conexion(self, a, b):
+        """Aprende conexión entre acción a y accion b (co-ocurrencia)."""
+        self.reforzar_arista(a, b, 0.1)
     
     def _mutar_omega(self, nuevo, idx, es_place_cell=False):
         """Mutar omega de forma segura. Solo place cells pueden mutar."""
