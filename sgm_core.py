@@ -136,7 +136,15 @@ class SGMAgentCore(SGMAgentGrafo):
     def actualizar_homeostasis(self, food, health):
         food = float(food); health = float(health) if health is not None else 20.0
         factor_cuerpo = max(0.05, health / 20.0)
-        self.V_grafo = (sum(self.vitalidad) / len(self.vitalidad)) * factor_cuerpo if self.omega else factor_cuerpo
+        # V_grafo: promedio de los nodos ACTIVOS (vitalidad > umbral).
+        # Promediar TODOS los nodos colapsa V_grafo a piso porque los conceptos
+        # dormidos decaen naturalmente a 0, arrastrando la homeostasis -> dispara
+        # 'comer' infinitamente aunque el agente tenga comida.
+        activos = [v for v in self.vitalidad if v > 0.1]
+        if activos:
+            self.V_grafo = (sum(activos) / len(activos)) * factor_cuerpo
+        else:
+            self.V_grafo = factor_cuerpo  # nada activo: solo cuerpo
         self._hambre_real = max(0.0, 1.0 - food / 20.0)
         self._amenaza = max(0.0, (20.0 - health) / 20.0) if health < 15 else 0.0
         self.E = max(0.0, self._hambre_real + self._amenaza)

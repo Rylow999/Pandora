@@ -79,11 +79,13 @@ if os.path.exists(RUTA_ESTADO):
         print(f"[bridge] Error cargando estado: {e}")
 _ultimo_guardado = time.time()
 _pasos = 0
+_ultimas_acciones = []  # buffer de diagnostico: ultimas acciones decididas
+_ultima_percep = {}      # diagnostico: percepcion del ultimo tick
 
 
 def _procesar_pose(data):
     """Aplica una pose del bot al core y devuelve la accion decidida + info."""
-    global _ultimo_guardado, _pasos
+    global _ultimo_guardado, _pasos, _ultimas_acciones, _ultima_percep
     pos = data.get('pos', [0, 64, 0])
     food = data.get('food', 20)
     health = data.get('health', 20)
@@ -145,6 +147,17 @@ def _procesar_pose(data):
                      altura=pos[1], hora=hora)
     accion = _ag.step(sv, list(range(17)), food=food, health=health)
     _pasos += 1
+    _ultimas_acciones.append(accion)
+    if len(_ultimas_acciones) > 20:
+        _ultimas_acciones.pop(0)
+    # diagnostico: guardar percepcion local de este tick (para /estado)
+    _ultima_percep = {
+        "hambre": round(_ag._hambre_real, 2),
+        "algo_enfrente": _ag._algo_enfrente,
+        "recursos": [r.get('name') for r in recursos],
+        "target": _ag._target_dir,
+        "estancado": _ultimas_acciones.count(_ultimas_acciones[-1]) if _ultimas_acciones else 0,
+    }
 
     # ---- Persistencia periodica + sueño/consolidacion
     if time.time() - _ultimo_guardado > AUTO_GUARDAR_S:
@@ -185,6 +198,8 @@ def _estado():
         "texto": _ag.generar_texto(),
         "posicion": str(_ag._posicion_actual),      # posicion percibida por el core
         "inc_dirs": _ag._inc_dirs,                   # incertidumbre por direccion
+        "ultimas_acciones": list(_ultimas_acciones),  # diagnostico: ultimas acciones
+        "percepcion": _ultima_percep,             # diagnostico: percepcion del tick
     }
 
 
