@@ -132,7 +132,10 @@ def _procesar_pose(data):
     for acc, (vx, vz) in vecinos.items():
         nv = visitado.get(f"c{vx}_{vz}", 0)
         _ag._inc_dirs[acc] = 1.0 / (1.0 + nv)
-    _ag._config_curio = {'activo': _ag._amenaza == 0, 'fuerza': 0.4}
+    # Curiosidad activa siempre que no haya peligro; se refuerza si el agente
+    # esta empantanado (mismo chunk, homeostasis baja -> debe explorar)
+    estancado = visitado[clave] >= 3 and _ag.V_grafo < 0.2
+    _ag._config_curio = {'activo': _ag._amenaza == 0, 'fuerza': 0.8 if estancado else 0.4}
 
     # ---- state_semantic y STEP
     sv = build_state(food, health,
@@ -180,6 +183,8 @@ def _estado():
         "modo": _ag.modo,
         "meta": str(_ag.meta_recordada),
         "texto": _ag.generar_texto(),
+        "posicion": str(_ag._posicion_actual),      # posicion percibida por el core
+        "inc_dirs": _ag._inc_dirs,                   # incertidumbre por direccion
     }
 
 

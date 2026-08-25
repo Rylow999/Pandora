@@ -64,7 +64,17 @@ class PulsionInteraccion(Pulsion):
         necesidad = max(agente._hambre_real, agente._amenaza)
         algo_enfrente = getattr(agente, '_algo_enfrente', 0)
         
+        # Solo interaccion si hay algo REAL comestible/interactuable enfrente.
+        # 'usar' en un bloque de decoracion (mesa, cofre) NO resuelve el hambre,
+        # asi que no debe disparar la pulsion -> evita bucle de 'usar' sin exito.
         if algo_enfrente <= 0 or necesidad <= 0.05:
+            return result
+        
+        # `algo_enfrente` debe indicar la accion correcta; si es un bloque
+        # decorativo (4) y la necesidad es hambre, NO es comida real -> no
+        # debe imponer 'do' sobre exploracion. (En el adaptador, 8=comida real)
+        accion_esperada = algo_enfrente if isinstance(algo_enfrente, int) else 0
+        if accion_esperada != accion_do:
             return result
         
         fuerza = necesidad * self.params['fuerza']
