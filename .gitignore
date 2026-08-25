@@ -11,6 +11,15 @@ experiments/sgm_lang_weights.npz
 
 # Pesos del decodificador L2 (estado de aprendizaje, no se versionan)
 experiments/l2_decoder.npz
+experiments/l2_projection.npz
 
 # Estado de aprendizaje del loop de lenguaje (runtime)
 experiments/sgm_state.json
+
+# Estado del bridge de Minecraft (runtime: se regenera al correr)
+experiments/sgm_estado.npy
+
+# Datos crudos y pesos del entrenamiento L2 (runtime, no se versionan)
+experiments/l2_raw_data.npy
+experiments/l2_real.npz
+experiments/l2_dataset.npy
