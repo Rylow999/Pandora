@@ -62,6 +62,7 @@ class SGMAgentCore(SGMAgentGrafo):
         self.beta_otras_compo = 0.3; self.reencare_fuerza = 0.8
         self.drive_noop = 0.0; self.drive_noop_umbral = 1.5; self.drive_noop_fuerza = 1.0
         self.drive_noop_tasa = 0.1; self.drive_noop_descarga = 0.5
+        self.conteo_noop = 0
         self.stagnation_ticks = 0; self.doubt_cooldown = 0; self.status = "ACTIVA"
         self.necesidad_insatisfecha = False
         self.acciones_movimiento = ACCIONES_MOVIMIENTO
@@ -433,10 +434,15 @@ class SGMAgentCore(SGMAgentGrafo):
 
     def _post_accion(self, accion):
         self.historial_acciones.append(accion)
-        # Drive noop
+        # Drive noop (SEEKING): urgencia creciente con noops consecutivos.
+        # Cada noop acumula mas (2x, 3x...), para que el empuje a moverse
+        # supere al descanso aunque haya un 'adelante' ocasional que descargue.
         if accion == 0:
-            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + self.drive_noop_tasa)
+            self.conteo_noop = getattr(self, 'conteo_noop', 0) + 1
+            incremento = self.drive_noop_tasa * min(3, self.conteo_noop)  # 0.1, 0.2, 0.3
+            self.drive_noop = min(self.drive_noop_umbral * 3, self.drive_noop + incremento)
         else:
+            self.conteo_noop = 0
             self.drive_noop = max(0.0, self.drive_noop - self.drive_noop_descarga)
         # Aprender conexión
         if self.ultima_accion >= 0 and accion != self.ultima_accion:
