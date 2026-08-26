@@ -109,6 +109,27 @@ def _procesar_pose(data):
         hdir, hdist = dir_a_entidad(pos, entidades, HOSTILES)
         target_dir = (-hdir[0], hdir[1], -hdir[2]) if hdir != (0, 0, 0) else (0, 0, 0)
         target_dist = hdist
+    # ---- Girar al estancarse: si el bot no avanza (muro) pese a moverse,
+    #      cambiar de direccion. Funciona AUNQUE target_dir sea (0,0,0) (caso
+    #      'vagar sin objetivo'), porque el estancamiento = hay obstaculo.
+    divs = ((-1, 0, 1), (1, 0, 1), (1, 0, -1), (-1, 0, -1), (0, 0, 1), (0, 0, -1),
+            (1, 0, 0), (-1, 0, 0))
+    pos_prev = getattr(_ag, '_pos_prev', None)
+    _ag._pos_prev = (pos[0], pos[1], pos[2])
+    giros = getattr(_ag, '_giros', 0)
+    if pos_prev is not None:
+        desplazo = abs(pos[0] - pos_prev[0]) + abs(pos[2] - pos_prev[2])
+        if desplazo < 0.3:
+            giros += 1
+            if giros >= 4:  # 4 ticks sin avanzar => hay obstaculo, girar
+                n = getattr(_ag, '_n_giro', 0)
+                target_dir = divs[n % len(divs)]  # probar otra direccion
+                _ag._n_giro = n + 1
+                _ag._target_dir = target_dir
+                giros = 0
+        else:
+            giros = 0
+    _ag._giros = giros
     _ag._target_dir = target_dir
     _ag._target_dist = target_dist
 

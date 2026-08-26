@@ -336,14 +336,17 @@ class SGMAgentCore(SGMAgentGrafo):
 
     def _direccion_a_accion(self, dx, dy, dz=0):
         """
-        Convierte dirección 3D a acción de movimiento de Minecraft.
-        Prioriza el eje de mayor desplazamiento.
+        Convierte direccion 3D a accion de movimiento de Minecraft.
+        El eje Y (saltar/agacharse) SOLO prioriza cuando la diferencia
+        vertical es clara (|dy| >= 2). Con |dy|=1, el movimiento horizontal
+        predomina: en Minecraft avanzar horizontal sube escalones solos, y
+        saltar con dy=1 de ruido provoca el bucle 'solo salta'.
         """
         abs_dx, abs_dy, abs_dz = abs(dx), abs(dy), abs(dz)
-        # Prioridad: y (arriba/abajo) > x/z (plano)
-        if abs_dy >= max(abs_dx, abs_dz):
+        if abs_dy >= 2 and abs_dy >= abs_dx and abs_dy >= abs_dz:
             if dy > 0: return 5   # JUMP (subir)
             if dy < 0: return 6   # SNEAK (bajar/agacharse)
+        # Plano horizontal (prioriza al no estar Y claro)
         if abs_dx >= abs_dz:
             if dx > 0: return 4   # RIGHT (este)
             if dx < 0: return 3   # LEFT (oeste)
