@@ -75,6 +75,8 @@ class SGMAgentCore(SGMAgentGrafo):
         self._ultima_accion_ejec = -1; self.historial_acciones = []
         # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
+        self.historial_metas_l2 = []  # metas (razon->token) por paso, para L2
+        self._meta_pendiente = None  # meta a asociar en el proximo step
         self.modelo_mundo = {}; self.ultimo_estado_q = None
         self.ultimo_food = None; self.conteo_induccion = {}
 
@@ -207,12 +209,13 @@ class SGMAgentCore(SGMAgentGrafo):
             "scope_depth": self.scope_depth, "place_cells": self.place_cells,
             "place_pos": self.place_pos, "V_grafo": self.V_grafo,
             "E_acumulado": self.E_acumulado, "historial_campos": self.historial_campos[-1000:],
-            "historial_acciones_l2": self.historial_acciones_l2[-1000:]})
+            "historial_acciones_l2": self.historial_acciones_l2[-1000:],
+            "historial_metas_l2": self.historial_metas_l2[-1000:]})
 
     def cargar(self, ruta):
         if not os.path.exists(ruta): return False
         d = np.load(ruta, allow_pickle=True).item()
-        for k in ["omega","phi","vitalidad","es_place_cell","edges","scope_depth","place_cells","place_pos","V_grafo","E_acumulado","historial_campos","historial_acciones_l2"]:
+        for k in ["omega","phi","vitalidad","es_place_cell","edges","scope_depth","place_cells","place_pos","V_grafo","E_acumulado","historial_campos","historial_acciones_l2","historial_metas_l2"]:
             if k in d: setattr(self, k, d[k])
         self.conn_type = {eval(k): v for k, v in d.get("conn_type", {}).items()}
         return True
@@ -366,6 +369,12 @@ class SGMAgentCore(SGMAgentGrafo):
 
     def aprender_conexion(self, a, b): self.reforzar_arista(a, b, 0.1)
 
+    def registrar_meta(self, razon):
+        """Registra la meta decidida (razon) para el proximo step.
+        El L2 asocia cada estado percibido con la meta elegida (no una accion 0-16)."""
+        tid = TOKEN2ID.get(razon, TOKEN2ID.get('explorar', 0))
+        self._meta_pendiente = tid
+
     # ============ STEP COMPLETO ============
     def step(self, state_semantic, valid_actions, food=None, health=None):
         food_anterior = self.ultimo_food
@@ -418,6 +427,12 @@ class SGMAgentCore(SGMAgentGrafo):
         zona = campo_interferencia(self.omega, self.phi, self.phi_root, self.vitalidad)
         self.historial_campos.append(zona)
         self.historial_acciones_l2.append(accion)
+        # meta: usar la ultima registrada o por defecto 'explorar'
+        meta_id = getattr(self, '_meta_pendiente', None)
+        if meta_id is None:
+            meta_id = TOKEN2ID.get('explorar', 0)
+        self.historial_metas_l2.append(meta_id)
+        self._meta_pendiente = None
         
         # 12. Mutar place cell activo si se está en el mismo lugar un rato
         # (no solo si accion==noop; en MC puedes estar quieto cayendo, en agua, etc.)

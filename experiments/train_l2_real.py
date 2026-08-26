@@ -82,14 +82,16 @@ def train(datos, epochs=50, lr=0.05):
     V = len(TOKEN2ID)
     dec = L2Decoder(128, V, lr)
     
+    # Usa METAS (tokens semanticos: comer/explorar/huir) en vez de acciones 0-16.
+    # El L2 aprende estado (campo de interferencia) -> meta a ejecutar.
     pares = []
-    for i, (zona, accion) in enumerate(zip(datos["campos"], datos["acciones"])):
+    for i, (zona, meta) in enumerate(zip(datos["campos"], datos.get("metas", datos.get("acciones", [])))):
         if not zona: continue
-        omegas_paso = datos["omegas"][i] if i < len(datos["omegas"]) else {}
+        omegas_paso = datos["omegas"][i] if i < len(datos.get("omegas", [])) else {}
+        meta_tid = meta if isinstance(meta, int) else min(V-1, (meta or 0) % V)
         for nid, omega, _ in zona:
             if nid in omegas_paso:
-                tid = min(V-1, accion % V)
-                pares.append((np.array(omegas_paso[nid], dtype=float), tid))
+                pares.append((np.array(omegas_paso[nid], dtype=float), meta_tid))
     
     if not pares:
         return None
@@ -103,20 +105,35 @@ def train(datos, epochs=50, lr=0.05):
     return dec
 
 if __name__ == "__main__":
-    print("=== L2 REAL ===")
+    print("=== L2 REAL (estado -> meta) ===")
+    import sgm_core
     
-    # Recolectar datos si no existen
-    ruta_datos = "experiments/l2_raw_data.npy"
-    if not os.path.exists(ruta_datos) or "--colectar" in sys.argv:
-        print("  Colectando datos...")
-        from experiments.collect_l2_data import colectar
-        datos, ag = colectar(n_pasos=3600, semilla=42)
-        np.save(ruta_datos, datos)
+    # Fuente principal: el estado real del bot (historial_campos + historial_metas_l2)
+    # acumulado por el bridge en Minecraft. Si existe, entrenar con eso.
+    ruta_estado = "experiments/sgm_estado.npy"
+    if os.path.exists(ruta_estado):
+        est = cargar(ruta_estado)
+        campos = est.get("historial_campos", [])
+        metas = est.get("historial_metas_l2", [])
+        omegas = est.get("omega", [])
+        print(f"  Del estado real del bridge: {len(campos)} campos, {len(metas)} metas")
+        # construir omegas como dict {nid: omega} por zona
+        omegas_pasos = [{i: omegas[i] for i in range(len(omegas))} for _ in range(len(campos))]
+        datos = {"campos": campos, "metas": metas, "omegas": omegas_pasos}
     else:
-        datos = cargar(ruta_datos)
+        # fallback: recolectar datos simulados
+        ruta_datos = "experiments/l2_raw_data.npy"
+        if not os.path.exists(ruta_datos):
+            from experiments.collect_l2_data import colectar
+            datos, ag = colectar(n_pasos=200, semilla=42)
+            datos["metas"] = datos.get("acciones", [])  # fallback simulado
+            np.save(ruta_datos, datos)
+        else:
+            datos = cargar(ruta_datos)
+        print(f"  (fallback simulado) {len(datos['campos'])} pasos")
     
     n = max((n for z in datos["campos"] if z for n, _, _ in z), default=0) + 1
-    print(f"  Pasos: {len(datos['acciones'])} | Nodos: {n}")
+    print(f"  Pasos: {len(datos['metas'])} | Nodos: {n}")
     
     C = coocurrencia(datos, n)
     P = pmi(C)
@@ -126,7 +143,8 @@ if __name__ == "__main__":
     dec = train(datos)
     if dec:
         dec.save("experiments/l2_real.npz")
-        for tk in ["comida", "hambre"]:
+        # test: codificar metas conocidas
+        for tk in ["comer", "explorar", "huir"]:
             x = np.random.randn(128) * 0.1
             top = dec.decode(x)[0]
             print(f"  {tk} -> {ID2TOKEN.get(top[0], '?')} ({top[1]:.3f})")

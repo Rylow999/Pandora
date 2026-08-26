@@ -208,6 +208,9 @@ def _procesar_pose(data):
     else:
         meta = _meta_actual  # seguir con la meta en curso
 
+    # Registrar la meta en el core para que el L2 aprenda estado->meta
+    _ag.registrar_meta(meta.get('razon', 'explorar'))
+
     _ultimas_metas.append(meta['razon'])
     if len(_ultimas_metas) > 20:
         _ultimas_metas.pop(0)
