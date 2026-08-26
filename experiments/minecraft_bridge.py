@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-minecraft_bridge.py — Adaptador Mineflayer ↔ SGM Core.
+minecraft_bridge.py — Adaptador Mente (SGM core) ↔ Cuerpo (mineflayer-pathfinder).
 
-Puente que conecta el bot de Minecraft (puente_minecraft_sgm.js) con el
-SGMAgentCore. Corre como servidor HTTP en :8791. El bot JS lo llama cada tick.
+REFACTOR: la navegacion fisica se delega a mineflayer-pathfinder (A*).
+El SGM core YA NO genera acciones de movimiento (1-4); decide una META
+de alto nivel ({type, x,y,z}), y el bot JS la convierte en setGoal().
 
 Flujo por tick:
-1. Bot JS POST /pose  (posicion, food, health, entidades, bloque en cursor)
-2. El bridge arma state_semantic + atributos de pulsiones
-3. Core.step() devuelve la accion (indice MC)
-4. Bridge responde {accion, texto} y el bot ejecuta
+1. Bot JS POST /pose (posicion, food, health, entidades, bloque, meta_estado)
+2. El bridge corre el core para decidir QUÉ hacer (comer/explorar/huir)
+3. Bridge responde {goal: {...}} — la meta espacial a la que el cuerpo navega
+4. Bot JS: si goal.type == 'goto' -> pathfinder.setGoal(GoalNear)
+           si goal.type == 'interact' -> usar el bloque/entidad enfrente
+5. Bot JS reporta feedback (goal_reached / stuck) via POST /feedback
 
-Persistencia:
-- Auto-guarda estado en experiments/sgm_estado.npy cada 60s
-- Carga al iniciar si existe
-- Reentrena L2 cada 200 pasos y guarda texto generado
+Persistencia: auto-guarda cada 60s, carga al iniciar, reentrena L2.
 """
 import json, os, sys, time
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -39,7 +39,11 @@ PUERTO = 8791
 RUTA_ESTADO = os.path.join(SGM, "experiments", "sgm_estado.npy")
 AUTO_GUARDAR_S = 60.0
 REENTRENAR_CADA = 200
-CHUNK = 16  # place_bucket de Minecraft (coincide con sgm_core)
+CHUNK = 16  # place_bucket de Minecraft
+RANGO_NAV = 3      # rango de llegada a un goal
+RANGO_COMER = 2.5  # llegar a <=2.5 bloques de la comida para interactuar
+ALCANCE_EXPLORAR = 16  # distancia de exploracion (1 chunk)
+
 
 # Tipos de entidad de interés
 COMESTIBLES = ('cow', 'pig', 'chicken', 'sheep', 'rabbit', 'apple')
@@ -50,23 +54,21 @@ def crear_agente():
     """Construye un SGMAgentCore con grafo conectado y arbitro por defecto."""
     import random
     ag = SGMAgentCore(random.Random(42), D, N_NODOS)
-    # Grafo inicial conectado: sin esto PPR devuelve vacio y nunca se mueve
     ag.set_edges({i: random.sample(range(N_NODOS), min(5, N_NODOS - 1)) for i in range(N_NODOS)})
     ag.set_arbitro(crear_arbitro_default())
-    ag.instinto_alimentacion = 8  # USE (boton derecho: comer/interactuar)
+    ag.instinto_alimentacion = 8
     return ag
 
 
-def dir_a_entidad(pos, entidades, tipos):
-    """Direccion unitaria y distancia a la entidad mas cercana de los tipos dados."""
-    cerca = [e for e in entidades if e.get('name') in tipos and e.get('dist', 99) < 15]
-    if not cerca:
-        return (0, 0, 0), 0
-    e = min(cerca, key=lambda x: x['dist'])
-    dx = 1 if e['x'] > pos[0] else (-1 if e['x'] < pos[0] else 0)
-    dy = 1 if e['y'] > pos[1] else (-1 if e['y'] < pos[1] else 0)
-    dz = 1 if e['z'] > pos[2] else (-1 if e['z'] < pos[2] else 0)
-    return (dx, dy, dz), e['dist']
+def entidad_mas_cerca(pos, entidades, tipos, max_dist=25):
+    """Entidad de los tipos mas cercana, o None."""
+    cerca = [e for e in entidades if e.get('name') in tipos and e.get('dist', 99) <= max_dist]
+    return min(cerca, key=lambda x: x['dist']) if cerca else None
+
+
+def _decidir_tiene_comida(entidades):
+    """True si hay alimento comestible a la vista (para prioridad de emergencia)."""
+    return any(e.get('name') in COMESTIBLES for e in entidades)
 
 
 # Core global del bridge
@@ -79,148 +81,175 @@ if os.path.exists(RUTA_ESTADO):
         print(f"[bridge] Error cargando estado: {e}")
 _ultimo_guardado = time.time()
 _pasos = 0
-_ultimas_acciones = []  # buffer de diagnostico: ultimas acciones decididas
-_ultima_percep = {}      # diagnostico: percepcion del ultimo tick
+_ultimas_metas = []   # diagnostico: ultimas metas decididas
+_ultima_percep = {}   # diagnostico: percepcion del ultimo tick
+_ultimo_feedback = {}  # estado del ultimo goal (goal_reached/stuck)
+_meta_actual = None    # meta que se mantiene hasta completarse o fallar
+
+
+def _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque):
+    """
+    Decision de ALTO NIVEL del SGM: devuelve una meta {type, ...}.
+    El cuerpo (pathfinder) ejecuta el desplazamiento.
+    """
+    # 1. PELIGRO: huir del hostil mas cercano (meta de escape)
+    if amenaza > 0:
+        hostil = entidad_mas_cerca(pos, entidades, HOSTILES, max_dist=15)
+        if hostil:
+            # punto opuesto al hostil a cierta distancia
+            gx = pos[0] - (hostil['x'] - pos[0])
+            gz = pos[2] - (hostil['z'] - pos[2])
+            return {"type": "goto", "x": gx, "y": pos[1], "z": gz,
+                    "range": RANGO_NAV, "razon": "huir"}
+
+    # 2. HAMBRE: ir al comestible mas cercano (si hay a la vista)
+    if hambre > 0.3:
+        comida = entidad_mas_cerca(pos, entidades, COMESTIBLES, max_dist=25)
+        if comida:
+            return {"type": "goto", "x": comida['x'], "y": comida['y'], "z": comida['z'],
+                    "range": RANGO_COMER, "razon": "comer",
+                    "interactuar_al_llegar": True}
+
+    # 3. INTERACTUABLE enfrente y con necesidad de usarlo (mesa, cofre, etc.)
+    # Es una accion de UN SOLO USO: no persiste como meta navegable.
+    if interactuable:
+        return {"type": "interact", "razon": "usar_bloque", "unico": True}
+
+    # 4. EXPLORACION: chunk vecino menos visitado (curiosidad)
+    cx, cz = int(pos[0]) // CHUNK, int(pos[2]) // CHUNK
+    visitado = getattr(_ag, '_chunks_visitados', {})
+    vecinos = [(cx+1, cz), (cx-1, cz), (cx, cz+1), (cx, cz-1)]
+    # el menos visitado
+    menos = min(vecinos, key=lambda c: visitado.get(f"c{c[0]}_{c[1]}", 0))
+    return {"type": "goto",
+            "x": menos[0] * CHUNK + CHUNK//2, "y": pos[1], "z": menos[1] * CHUNK + CHUNK//2,
+            "range": RANGO_NAV, "razon": "explorar"}
 
 
 def _procesar_pose(data):
-    """Aplica una pose del bot al core y devuelve la accion decidida + info."""
-    global _ultimo_guardado, _pasos, _ultimas_acciones, _ultima_percep
+    """Aplica una pose del bot y decide la META que el cuerpo debe seguir."""
+    global _ultimo_guardado, _pasos, _ultimas_metas, _ultima_percep, _ultimo_feedback
     pos = data.get('pos', [0, 64, 0])
     food = data.get('food', 20)
     health = data.get('health', 20)
     entidades = data.get('entidades', [])
-    bloque = data.get('bloque', '')          # bloque en el cursor
+    bloque = data.get('bloque', '')
     interactuable = data.get('interactuable', False)
     hora = data.get('hora', 0)
+    meta_estado = data.get('meta_estado', '')  # goal_reached / stuck / None
 
     hambre = 1.0 - food / 20.0
+    amenaza = 1.0 if any(e.get('name') in HOSTILES for e in entidades) else 0.0
 
-    # ---- Estado corporal / amenaza
+    # ---- Estado corporal / amenaza en el core
     _ag._posicion_actual = (pos[0], pos[1], pos[2])
     _ag._hambre_real = hambre
-    _ag._amenaza = 1.0 if any(e.get('name') in HOSTILES for e in entidades) else 0.0
+    _ag._amenaza = amenaza
     recursos = [e for e in entidades if e.get('name') in COMESTIBLES and e.get('dist', 99) < 3]
     _ag._algo_enfrente = 8 if (hambre > 0.3 and recursos) else (4 if interactuable else 0)
 
-    # ---- Target: comida si hay hambre; HUIR (direccion opuesta) si hay peligro
-    target_dir, target_dist = dir_a_entidad(pos, entidades, COMESTIBLES) if hambre > 0.3 else ((0, 0, 0), 0)
-    if _ag._amenaza > 0:
-        hdir, hdist = dir_a_entidad(pos, entidades, HOSTILES)
-        target_dir = (-hdir[0], hdir[1], -hdir[2]) if hdir != (0, 0, 0) else (0, 0, 0)
-        target_dist = hdist
-    # ---- Girar al estancarse: si el bot no avanza (muro) pese a moverse,
-    #      cambiar de direccion. Funciona AUNQUE target_dir sea (0,0,0) (caso
-    #      'vagar sin objetivo'), porque el estancamiento = hay obstaculo.
-    divs = ((-1, 0, 1), (1, 0, 1), (1, 0, -1), (-1, 0, -1), (0, 0, 1), (0, 0, -1),
-            (1, 0, 0), (-1, 0, 0))
-    pos_prev = getattr(_ag, '_pos_prev', None)
-    _ag._pos_prev = (pos[0], pos[1], pos[2])
-    giros = getattr(_ag, '_giros', 0)
-    if pos_prev is not None:
-        desplazo = abs(pos[0] - pos_prev[0]) + abs(pos[2] - pos_prev[2])
-        if desplazo < 0.3:
-            giros += 1
-            if giros >= 4:  # 4 ticks sin avanzar => hay obstaculo, girar
-                n = getattr(_ag, '_n_giro', 0)
-                target_dir = divs[n % len(divs)]  # probar otra direccion
-                _ag._n_giro = n + 1
-                _ag._target_dir = target_dir
-                giros = 0
-        else:
-            giros = 0
-    _ag._giros = giros
-    _ag._target_dir = target_dir
-    _ag._target_dist = target_dist
-
-    # ---- Gradiente: recurso visible cerca
-    hay_recurso = bool(recursos) or bloque in ('grass_block', 'tall_grass', 'oak_leaves', 'wheat')
-    _ag._hay_gradiente = hay_recurso
-    _ag._gradiente_dir = target_dir if hay_recurso else (0, 0, 0)
-    _ag._config_grad = {'activo': hay_recurso and _ag._amenaza == 0, 'fuerza': 0.5}
-
-    # ---- Curiosidad: incertidumbre por chunk visitado
+    # ---- Curiosidad / exploracion (incertidumbre por chunk)
     cx, cz = int(pos[0]) // CHUNK, int(pos[2]) // CHUNK
     visitado = getattr(_ag, '_chunks_visitados', {})
     clave = f"c{cx}_{cz}"
     visitado[clave] = visitado.get(clave, 0) + 1
     _ag._chunks_visitados = visitado
-    # Incertidumbre acumulada: inversa a cuantas veces visité este chunk
     _ag.incertidumbre_acum = 1.0 / (1.0 + visitado[clave])
-    # Incertidumbre por direccion: mayor hacia chunk vecino menos visitado
     _ag._inc_dirs = {}
-    vecinos = {
-        1: (cx, cz - 1), 2: (cx, cz + 1), 3: (cx - 1, cz), 4: (cx + 1, cz),
-    }
-    for acc, (vx, vz) in vecinos.items():
-        nv = visitado.get(f"c{vx}_{vz}", 0)
+    dirs = {1: (0, -1), 2: (0, 1), 3: (-1, 0), 4: (1, 0)}
+    for acc, (dcx, dcz) in dirs.items():
+        nv = visitado.get(f"c{cx+dcx}_{cz+dcz}", 0)
         _ag._inc_dirs[acc] = 1.0 / (1.0 + nv)
-    # Curiosidad activa siempre que no haya peligro; se refuerza si el agente
-    # esta empantanado (mismo chunk, homeostasis baja -> debe explorar)
     estancado = visitado[clave] >= 3 and _ag.V_grafo < 0.2
-    _ag._config_curio = {'activo': _ag._amenaza == 0, 'fuerza': 0.8 if estancado else 0.4}
+    _ag._config_curio = {'activo': amenaza == 0, 'fuerza': 0.8 if estancado else 0.4}
 
-    # ---- state_semantic y STEP
-    sv = build_state(food, health,
-                     peligro_cercano=_ag._amenaza,
+    # ---- Correr el core (cerebro): produce la accion abstracta + estado
+    sv = build_state(food, health, peligro_cercano=amenaza,
                      comida_visible=bool(recursos),
                      bloque_interactuable=int(interactuable),
                      altura=pos[1], hora=hora)
-    accion = _ag.step(sv, list(range(17)), food=food, health=health)
+    accion_core = _ag.step(sv, list(range(17)), food=food, health=health)
     _pasos += 1
-    _ultimas_acciones.append(accion)
-    if len(_ultimas_acciones) > 20:
-        _ultimas_acciones.pop(0)
-    # diagnostico: guardar percepcion local de este tick (para /estado)
+
+    # ---- DECIDIR LA META de alto nivel (cuerpo la navega)
+    # Mantener la meta actual hasta que se complete (goal_reached), falle (stuck)
+    # o haya una emergencia nueva (peligro/hambre aparecen). No recalcularla
+    # cada tick, para que el pathfinder pueda llegar sin ser interrumpido.
+    global _meta_actual
+    if meta_estado == 'stuck':
+        _ultimo_feedback = {'stuck': True, 'pos': pos}
+        # marcar mucho visitado el chunk actual para forzar explorar otro
+        _ag._chunks_visitados[clave] = visitado.get(clave, 0) + 5
+        _meta_actual = None  # fallo -> decidir nueva
+    elif meta_estado == 'goal_reached':
+        _ultimo_feedback = {'goal_reached': True, 'pos': pos}
+        _meta_actual = None  # cumplido -> decidir nueva
+    else:
+        _ultimo_feedback = {}
+
+    # Emergencias superan la meta actual (siempre prioiritarias)
+    emergencia = None
+    if amenaza > 0 or (hambre > 0.3 and _decidir_tiene_comida(entidades)):
+        emergencia = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque)
+
+    if emergencia is not None:
+        meta = emergencia
+        # las metas 'unico' (interact) no persisten: se consumen en un tick
+        _meta_actual = None if meta.get('unico') else meta
+    elif _meta_actual is None:
+        meta = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque)
+        _meta_actual = None if meta.get('unico') else meta
+    else:
+        meta = _meta_actual  # seguir con la meta en curso
+
+    _ultimas_metas.append(meta['razon'])
+    if len(_ultimas_metas) > 20:
+        _ultimas_metas.pop(0)
+
     _ultima_percep = {
-        "hambre": round(_ag._hambre_real, 2),
-        "algo_enfrente": _ag._algo_enfrente,
+        "hambre": round(hambre, 2),
+        "amenaza": round(amenaza, 2),
         "recursos": [r.get('name') for r in recursos],
-        "target": _ag._target_dir,
-        "estancado": _ultimas_acciones.count(_ultimas_acciones[-1]) if _ultimas_acciones else 0,
+        "meta": meta,
+        "accion_core": accion_core,
     }
 
-    # ---- Persistencia periodica + sueño/consolidacion
+    # ---- Persistencia + sueño
     if time.time() - _ultimo_guardado > AUTO_GUARDAR_S:
         _ag.guardar(RUTA_ESTADO)
         _ultimo_guardado = time.time()
         _ag.reconciliar()
 
-    # ---- Reentrenar L2 con datos acumulados
+    # ---- L2 periodico
     if _pasos % REENTRENAR_CADA == 0 and len(_ag.historial_campos) >= 10:
         try:
             _ag.procesar_l2(epochs=15)
-            print(f"[bridge] L2 reentrenado, texto: {_ag.generar_texto()}")
+            print(f"[bridge] L2 reentrenado: {_ag.generar_texto()}")
         except Exception as e:
             print(f"[bridge] L2 error: {e}")
 
     return {
-        "accion": accion,
-        "nombre": NOMBRE.get(accion, f"accion_{accion}"),
+        "goal": meta,
         "texto": _ag.generar_texto() if _pasos % 20 == 0 else "",
         "modo": _ag.modo,
         "V_grafo": round(_ag.V_grafo, 3),
         "nodos": len(_ag.omega),
-        "place_cells": len(_ag.place_cells),
     }
 
 
 def _estado():
-    """Estado global del core (debug / observacion)."""
     return {
         "nodos": len(_ag.omega),
         "aristas": sum(len(v) for v in _ag.edges.values()) // 2,
-        "place_cells": len(_ag.place_cells),
-        "consolidadas": len(_ag.consolidadas),
+        "place_cells": len(getattr(_ag, 'place_cells', [])),
         "historial_l2": len(_ag.historial_campos),
         "V_grafo": round(_ag.V_grafo, 3),
         "modo": _ag.modo,
-        "meta": str(_ag.meta_recordada),
         "texto": _ag.generar_texto(),
-        "posicion": str(_ag._posicion_actual),      # posicion percibida por el core
-        "inc_dirs": _ag._inc_dirs,                   # incertidumbre por direccion
-        "ultimas_acciones": list(_ultimas_acciones),  # diagnostico: ultimas acciones
-        "percepcion": _ultima_percep,             # diagnostico: percepcion del tick
+        "posicion": str(_ag._posicion_actual),
+        "ultimas_metas": list(_ultimas_metas),
+        "percepcion": _ultima_percep,
+        "feedback": _ultimo_feedback,
     }
 
 
@@ -263,7 +292,7 @@ class Bridge(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"[bridge] escuchando en :{PUERTO}")
-    print(f"[bridge] instinto_alimentacion={_ag.instinto_alimentacion} (USE=8)")
-    print(f"[bridge] core: nodos={len(_ag.omega)}, aristas={sum(len(v) for v in _ag.edges.values()) // 2}")
+    print(f"[bridge] MENTE-CUERPO escuchando en :{PUERTO}")
+    print(f"[bridge] navegacion delegada a mineflayer-pathfinder (A*)")
+    print(f"[bridge] core: nodos={len(_ag.omega)}")
     HTTPServer(("127.0.0.1", PUERTO), Bridge).serve_forever()
