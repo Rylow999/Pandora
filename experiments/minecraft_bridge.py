@@ -87,7 +87,7 @@ _ultimo_feedback = {}  # estado del ultimo goal (goal_reached/stuck)
 _meta_actual = None    # meta que se mantiene hasta completarse o fallar
 
 
-def _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque):
+def _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque, tiene_comida_inv):
     """
     Decision de ALTO NIVEL del SGM: devuelve una meta {type, ...}.
     El cuerpo (pathfinder) ejecuta el desplazamiento.
@@ -102,13 +102,18 @@ def _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque):
             return {"type": "goto", "x": gx, "y": pos[1], "z": gz,
                     "range": RANGO_NAV, "razon": "huir"}
 
-    # 2. HAMBRE: ir al comestible mas cercano (si hay a la vista)
+    # 2. HAMBRE: si el bot tiene comida en el inventario, comer de alli
+    #    (accion instantanea, no perseguir animales). Solo ir a un animal
+    #    si NO hay comida en el inventario.
     if hambre > 0.3:
-        comida = entidad_mas_cerca(pos, entidades, COMESTIBLES, max_dist=25)
-        if comida:
-            return {"type": "goto", "x": comida['x'], "y": comida['y'], "z": comida['z'],
-                    "range": RANGO_COMER, "razon": "comer",
-                    "interactuar_al_llegar": True}
+        if _decidir_tiene_comida(entidades) and not tiene_comida_inv:
+            comida = entidad_mas_cerca(pos, entidades, COMESTIBLES, max_dist=25)
+            if comida:
+                return {"type": "goto", "x": comida['x'], "y": comida['y'], "z": comida['z'],
+                        "range": RANGO_COMER, "razon": "comer",
+                        "interactuar_al_llegar": True}
+        elif tiene_comida_inv:
+            return {"type": "interact", "razon": "comer", "unico": True}
 
     # 3. INTERACTUABLE enfrente y con necesidad de usarlo (mesa, cofre, etc.)
     # Es una accion de UN SOLO USO: no persiste como meta navegable.
@@ -137,6 +142,7 @@ def _procesar_pose(data):
     interactuable = data.get('interactuable', False)
     hora = data.get('hora', 0)
     meta_estado = data.get('meta_estado', '')  # goal_reached / stuck / None
+    tiene_comida = data.get('tiene_comida', False)  # el bot tiene comida en inventario
 
     hambre = 1.0 - food / 20.0
     amenaza = 1.0 if any(e.get('name') in HOSTILES for e in entidades) else 0.0
@@ -189,15 +195,15 @@ def _procesar_pose(data):
 
     # Emergencias superan la meta actual (siempre prioiritarias)
     emergencia = None
-    if amenaza > 0 or (hambre > 0.3 and _decidir_tiene_comida(entidades)):
-        emergencia = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque)
+    if amenaza > 0 or (hambre > 0.3 and (_decidir_tiene_comida(entidades) or tiene_comida)):
+        emergencia = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque, tiene_comida)
 
     if emergencia is not None:
         meta = emergencia
         # las metas 'unico' (interact) no persisten: se consumen en un tick
         _meta_actual = None if meta.get('unico') else meta
     elif _meta_actual is None:
-        meta = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque)
+        meta = _decidir_meta(pos, entidades, hambre, amenaza, interactuable, bloque, tiene_comida)
         _meta_actual = None if meta.get('unico') else meta
     else:
         meta = _meta_actual  # seguir con la meta en curso
