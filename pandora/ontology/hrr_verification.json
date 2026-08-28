@@ -1,0 +1,8 @@
+{
+  "n_concepts": 43,
+  "avg_similarity": 0.0015051598959583369,
+  "max_similarity": 0.11451319175818317,
+  "threshold": 0.15,
+  "violations": [],
+  "passed": true
+}

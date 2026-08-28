@@ -1,25 +1,56 @@
-# Python caches
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 
-# Resultados de corridas temporales (mantener los JSON de resultados commiteados)
+# Virtual environments
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Pandora runtime
+pandora/checkpoints/
+pandora/journal/
+pandora/logs/
+pandora/state/
+pandora/environment/
+pandora/ontology/hrr_vectors.json
+
+# SGM runtime
+sgm/checkpoints/
+sgm/state/
+
+# Models & Data
+*.npy
+*.pkl
+*.bin
+*.gguf
+
+# Logs
+*.log
+_push_*.log
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Misc
+_staging/
 *.tmp
-
-# Pesos del transformer persistidos (estado de aprendizaje, no se versionan)
-experiments/sgm_lang_weights.npz
-
-# Pesos del decodificador L2 (estado de aprendizaje, no se versionan)
-experiments/l2_decoder.npz
-experiments/l2_projection.npz
-
-# Estado de aprendizaje del loop de lenguaje (runtime)
-experiments/sgm_state.json
-
-# Estado del bridge de Minecraft (runtime: se regenera al correr)
-experiments/sgm_estado.npy
-
-# Datos crudos y pesos del entrenamiento L2 (runtime, no se versionan)
-experiments/l2_raw_data.npy
-experiments/l2_real.npz
-experiments/l2_dataset.npy
+*.temp

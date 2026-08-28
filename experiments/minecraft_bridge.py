@@ -27,7 +27,7 @@ for p in (SGM, os.path.join(SGM, "experiments")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from sgm_core import SGMAgentCore
+from sgm.core.sgm_core import SGMAgentCore
 from experiments.sgm_pulsiones import crear_arbitro_default
 from experiments.minecraft_actions import NOMBRE
 from experiments.minecraft_perception import build_state

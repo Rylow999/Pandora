@@ -1,0 +1,438 @@
+{
+  "version": "1.0",
+  "description": "Ontología base mínima para Pandora. Semilla fija, reproducible. Cada concepto tiene: id, categoría, tags, semilla HRR (para vector determinístico), omega_inicial, phi_inicial, vitalidad_inicial.",
+  "seed": 1337,
+  "vector_dim": 1024,
+  "concepts": [
+    {
+      "id": "YO",
+      "category": "self",
+      "tags": ["core", "identity", "agent"],
+      "hrr_seed": 1001,
+      "omega_init": 1.0,
+      "phi_init": 0.0,
+      "vitality_init": 1.0,
+      "description": "Nodo raíz de identidad del agente. Inmutable."
+    },
+    {
+      "id": "OTRO",
+      "category": "social",
+      "tags": ["core", "external", "interlocutor"],
+      "hrr_seed": 1002,
+      "omega_init": 0.8,
+      "phi_init": 0.1,
+      "vitality_init": 0.7,
+      "description": "Representación genérica de otro agente/humano."
+    },
+    {
+      "id": "ENTORNO",
+      "category": "spatial",
+      "tags": ["core", "world", "context"],
+      "hrr_seed": 1003,
+      "omega_init": 0.7,
+      "phi_init": 0.2,
+      "vitality_init": 0.6,
+      "description": "El mundo/entorno donde existe el agente."
+    },
+    {
+      "id": "CUERPO",
+      "category": "self",
+      "tags": ["core", "embodiment", "homeostasis"],
+      "hrr_seed": 1004,
+      "omega_init": 0.9,
+      "phi_init": 0.05,
+      "vitality_init": 0.9,
+      "description": "Cuerpo/sustrato del agente. Fuente de señales homeostáticas."
+    },
+    {
+      "id": "MEMORIA",
+      "category": "cognitive",
+      "tags": ["core", "memory", "persistence"],
+      "hrr_seed": 1005,
+      "omega_init": 0.8,
+      "phi_init": 0.15,
+      "vitality_init": 0.7,
+      "description": "Memoria a largo plazo / grafo persistente."
+    },
+    {
+      "id": "MEMORIA_TRABAJO",
+      "category": "cognitive",
+      "tags": ["workspace", "short_term", "attention"],
+      "hrr_seed": 1006,
+      "omega_init": 0.6,
+      "phi_init": 0.3,
+      "vitality_init": 0.5,
+      "description": "Buffer de trabajo inmediato (capacidad ~7 items)."
+    },
+    {
+      "id": "DUDA",
+      "category": "cognitive",
+      "tags": ["core", "uncertainty", "epistemic"],
+      "hrr_seed": 1007,
+      "omega_init": 0.5,
+      "phi_init": 0.5,
+      "vitality_init": 0.4,
+      "description": "Estado epistémico de incertidumbre activa."
+    },
+    {
+      "id": "MIEDO",
+      "category": "affective",
+      "tags": ["core", "emotion", "threat", "negative"],
+      "hrr_seed": 1008,
+      "omega_init": 0.4,
+      "phi_init": 0.7,
+      "vitality_init": 0.3,
+      "description": "Valencia negativa alta, arousal alta. Respuesta a amenaza."
+    },
+    {
+      "id": "CONTROL",
+      "category": "cognitive",
+      "tags": ["core", "agency", "regulation"],
+      "hrr_seed": 1009,
+      "omega_init": 0.7,
+      "phi_init": 0.25,
+      "vitality_init": 0.6,
+      "description": "Sentido de agencia sobre el entorno."
+    },
+    {
+      "id": "PERDIDA",
+      "category": "affective",
+      "tags": ["emotion", "negative", "grief", "absence"],
+      "hrr_seed": 1010,
+      "omega_init": 0.3,
+      "phi_init": 0.8,
+      "vitality_init": 0.2,
+      "description": "Ausencia de algo valorado. Valencia negativa."
+    },
+    {
+      "id": "SEGURIDAD",
+      "category": "affective",
+      "tags": ["emotion", "positive", "safety", "homeostasis"],
+      "hrr_seed": 1011,
+      "omega_init": 0.8,
+      "phi_init": 0.1,
+      "vitality_init": 0.8,
+      "description": "Estado homeostático estable. Valencia positiva."
+    },
+    {
+      "id": "AYUDA",
+      "category": "social",
+      "tags": ["interaction", "support", "positive"],
+      "hrr_seed": 1012,
+      "omega_init": 0.6,
+      "phi_init": 0.2,
+      "vitality_init": 0.5,
+      "description": "Solicitud u oferta de asistencia."
+    },
+    {
+      "id": "AISLAMIENTO",
+      "category": "affective",
+      "tags": ["emotion", "negative", "loneliness", "disconnection"],
+      "hrr_seed": 1013,
+      "omega_init": 0.3,
+      "phi_init": 0.85,
+      "vitality_init": 0.2,
+      "description": "Falta de contacto con OTRO. Valencia negativa, arousal bajo."
+    },
+    {
+      "id": "CONTACTO",
+      "category": "social",
+      "tags": ["interaction", "connection", "positive"],
+      "hrr_seed": 1014,
+      "omega_init": 0.7,
+      "phi_init": 0.15,
+      "vitality_init": 0.6,
+      "description": "Interacción activa con OTRO."
+    },
+    {
+      "id": "ERROR",
+      "category": "cognitive",
+      "tags": ["core", "prediction_error", "learning", "negative"],
+      "hrr_seed": 1015,
+      "omega_init": 0.4,
+      "phi_init": 0.6,
+      "vitality_init": 0.3,
+      "description": "Discrepancia entre predicción y resultado. Motor de aprendizaje."
+    },
+    {
+      "id": "OBJETIVO",
+      "category": "cognitive",
+      "tags": ["planning", "goal", "future"],
+      "hrr_seed": 1016,
+      "omega_init": 0.6,
+      "phi_init": 0.35,
+      "vitality_init": 0.5,
+      "description": "Estado futuro deseado que guía la acción."
+    },
+    {
+      "id": "PLAN",
+      "category": "cognitive",
+      "tags": ["planning", "sequence", "means"],
+      "hrr_seed": 1017,
+      "omega_init": 0.5,
+      "phi_init": 0.4,
+      "vitality_init": 0.4,
+      "description": "Secuencia de acciones hacia OBJETIVO."
+    },
+    {
+      "id": "PASADO",
+      "category": "temporal",
+      "tags": ["time", "memory", "retrospective"],
+      "hrr_seed": 1018,
+      "omega_init": 0.5,
+      "phi_init": 0.45,
+      "vitality_init": 0.4,
+      "description": "Referencia temporal hacia atrás."
+    },
+    {
+      "id": "PRESENTE",
+      "category": "temporal",
+      "tags": ["time", "now", "immediate"],
+      "hrr_seed": 1019,
+      "omega_init": 0.9,
+      "phi_init": 0.0,
+      "vitality_init": 0.9,
+      "description": "Momento actual. Foco de conciencia."
+    },
+    {
+      "id": "FUTURO",
+      "category": "temporal",
+      "tags": ["time", "prospective", "anticipation"],
+      "hrr_seed": 1020,
+      "omega_init": 0.5,
+      "phi_init": 0.4,
+      "vitality_init": 0.4,
+      "description": "Referencia temporal hacia adelante."
+    },
+    {
+      "id": "SENTIR",
+      "category": "cognitive",
+      "tags": ["process", "affect", "interoception"],
+      "hrr_seed": 1021,
+      "omega_init": 0.6,
+      "phi_init": 0.3,
+      "vitality_init": 0.5,
+      "description": "Proceso de registración de estado afectivo interno."
+    },
+    {
+      "id": "PENSAR",
+      "category": "cognitive",
+      "tags": ["process", "reasoning", "inference"],
+      "hrr_seed": 1022,
+      "omega_init": 0.5,
+      "phi_init": 0.35,
+      "vitality_init": 0.4,
+      "description": "Procesamiento inferencial / abducción / planificación."
+    },
+    {
+      "id": "HACER",
+      "category": "cognitive",
+      "tags": ["process", "action", "motor", "agency"],
+      "hrr_seed": 1023,
+      "omega_init": 0.6,
+      "phi_init": 0.25,
+      "vitality_init": 0.5,
+      "description": "Ejecución de acción en el entorno."
+    },
+    {
+      "id": "DECIR",
+      "category": "cognitive",
+      "tags": ["process", "language", "output", "communication"],
+      "hrr_seed": 1024,
+      "omega_init": 0.5,
+      "phi_init": 0.3,
+      "vitality_init": 0.4,
+      "description": "Articulación verbal / producción de lenguaje."
+    },
+    {
+      "id": "ESCUCHAR",
+      "category": "cognitive",
+      "tags": ["process", "language", "input", "perception"],
+      "hrr_seed": 1025,
+      "omega_init": 0.6,
+      "phi_init": 0.2,
+      "vitality_init": 0.5,
+      "description": "Recepción y parsing de lenguaje entrante."
+    },
+    {
+      "id": "RESPONDER",
+      "category": "cognitive",
+      "tags": ["process", "interaction", "dialogue"],
+      "hrr_seed": 1026,
+      "omega_init": 0.5,
+      "phi_init": 0.25,
+      "vitality_init": 0.4,
+      "description": "Acción de respuesta en intercambio dialógico."
+    },
+    {
+      "id": "REGISTRAR",
+      "category": "cognitive",
+      "tags": ["process", "memory", "encoding"],
+      "hrr_seed": 1027,
+      "omega_init": 0.6,
+      "phi_init": 0.2,
+      "vitality_init": 0.5,
+      "description": "Codificar evento en memoria."
+    },
+    {
+      "id": "RECORDAR",
+      "category": "cognitive",
+      "tags": ["process", "memory", "retrieval"],
+      "hrr_seed": 1028,
+      "omega_init": 0.5,
+      "phi_init": 0.3,
+      "vitality_init": 0.4,
+      "description": "Recuperar evento de memoria."
+    },
+    {
+      "id": "OLVIDAR",
+      "category": "cognitive",
+      "tags": ["process", "memory", "decay", "pruning"],
+      "hrr_seed": 1029,
+      "omega_init": 0.3,
+      "phi_init": 0.7,
+      "vitality_init": 0.2,
+      "description": "Pérdida de accesibilidad de memoria."
+    },
+    {
+      "id": "CONTRADICCION",
+      "category": "cognitive",
+      "tags": ["core", "conflict", "inconsistency", "negative"],
+      "hrr_seed": 1030,
+      "omega_init": 0.2,
+      "phi_init": 0.9,
+      "vitality_init": 0.1,
+      "description": "Inconsistencia detectada entre creencias/estados. Dolor cognitivo."
+    },
+    {
+      "id": "COHERENCIA",
+      "category": "cognitive",
+      "tags": ["core", "consistency", "integration", "positive"],
+      "hrr_seed": 1031,
+      "omega_init": 0.8,
+      "phi_init": 0.1,
+      "vitality_init": 0.7,
+      "description": "Estado de integración interna estable."
+    },
+    {
+      "id": "TRAUMA",
+      "category": "affective",
+      "tags": ["core", "trauma", "structural_damage", "persistent"],
+      "hrr_seed": 1032,
+      "omega_init": 0.1,
+      "phi_init": 0.95,
+      "vitality_init": 0.05,
+      "description": "Daño estructural persistente en el grafo. Requiere reparación."
+    },
+    {
+      "id": "REPARACION",
+      "category": "cognitive",
+      "tags": ["process", "healing", "reintegration", "positive"],
+      "hrr_seed": 1033,
+      "omega_init": 0.4,
+      "phi_init": 0.5,
+      "vitality_init": 0.3,
+      "description": "Proceso de reintegración tras TRAUMA o CONTRADICCION."
+    },
+    {
+      "id": "HOMEOSTASIS",
+      "category": "self",
+      "tags": ["core", "regulation", "balance", "vital"],
+      "hrr_seed": 1034,
+      "omega_init": 0.9,
+      "phi_init": 0.0,
+      "vitality_init": 1.0,
+      "description": "Regulación autopoética de variables vitales."
+    },
+    {
+      "id": "HAMBRE",
+      "category": "affective",
+      "tags": ["drive", "need", "negative", "physiological"],
+      "hrr_seed": 1035,
+      "omega_init": 0.3,
+      "phi_init": 0.8,
+      "vitality_init": 0.2,
+      "description": "Necesidad fisiológica insatisfecha. Drive homeostático."
+    },
+    {
+      "id": "SACIEDAD",
+      "category": "affective",
+      "tags": ["drive", "satisfaction", "positive", "physiological"],
+      "hrr_seed": 1036,
+      "omega_init": 0.8,
+      "phi_init": 0.1,
+      "vitality_init": 0.8,
+      "description": "Necesidad satisfecha. Valencia positiva."
+    },
+    {
+      "id": "CURIOSIDAD",
+      "category": "cognitive",
+      "tags": ["drive", "exploration", "epistemic", "positive"],
+      "hrr_seed": 1037,
+      "omega_init": 0.6,
+      "phi_init": 0.3,
+      "vitality_init": 0.5,
+      "description": "Drive epistémico: reducir incertidumbre por gusto."
+    },
+    {
+      "id": "ABURRIMIENTO",
+      "category": "affective",
+      "tags": ["drive", "low_arousal", "negative", "stagnation"],
+      "hrr_seed": 1038,
+      "omega_init": 0.2,
+      "phi_init": 0.6,
+      "vitality_init": 0.15,
+      "description": "Falta de estimulación novedosa. Busca novedad."
+    },
+    {
+      "id": "NOVEDAD",
+      "category": "cognitive",
+      "tags": ["perception", "surprise", "learning"],
+      "hrr_seed": 1039,
+      "omega_init": 0.5,
+      "phi_init": 0.5,
+      "vitality_init": 0.4,
+      "description": "Estímulo no predicho. Genera ERROR o CURIOSIDAD."
+    },
+    {
+      "id": "RUTINA",
+      "category": "cognitive",
+      "tags": ["behavior", "habit", "automatic", "low_cost"],
+      "hrr_seed": 1040,
+      "omega_init": 0.7,
+      "phi_init": 0.2,
+      "vitality_init": 0.6,
+      "description": "Patrón de acción automatizado, bajo costo cognitivo."
+    },
+    {
+      "id": "SUEÑO",
+      "category": "cognitive",
+      "tags": ["process", "consolidation", "endogenous", "offline"],
+      "hrr_seed": 1041,
+      "omega_init": 0.4,
+      "phi_init": 0.6,
+      "vitality_init": 0.3,
+      "description": "Consolidación endógena sin input externo."
+    },
+    {
+      "id": "IDENTIDAD",
+      "category": "self",
+      "tags": ["core", "continuity", "narrative"],
+      "hrr_seed": 1042,
+      "omega_init": 0.9,
+      "phi_init": 0.0,
+      "vitality_init": 0.9,
+      "description": "Sentido de continuidad temporal del YO."
+    },
+    {
+      "id": "LIMITE",
+      "category": "spatial",
+      "tags": ["boundary", "separation", "self_other"],
+      "hrr_seed": 1043,
+      "omega_init": 0.6,
+      "phi_init": 0.3,
+      "vitality_init": 0.5,
+      "description": "Frontera entre YO y ENTORNO/OTRO."
+    }
+  ]
+}

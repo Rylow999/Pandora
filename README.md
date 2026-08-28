@@ -1,147 +1,283 @@
-# SGM — Synthetic Graph Mind
+# Pandora: Alterity-Based Architecture for Synthetic Consciousness
 
-**Motor cognitivo de grafo sináptico para agentes autónomos.**
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
 
-SGM es un sistema de inteligencia artificial basado en grafos cognitivos donde cada nodo tiene identidad (vector omega), fase (Kuramoto), vitalidad y valencia. El sistema opera como sustrato cognitivo autopoyético: memoria persistente, dolor/valencia interna operacional, duda/contradicción, y decodificación semántica a lenguaje natural.
+> **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
+
+> *"No nos rendimos nunca, pero correctamente siempre"* — Close gaps with extreme rigor, never force; if something is empirically refuted, declare it.
 
 ---
 
-## Arquitectura
+## 🧭 Overview
+
+Pandora implements a **transducer architecture** where an LLM serves only as parser/renderer, while all cognition, affect, and agency emerge from the **SGM (Semantic Geometric Memory)** — a Kuramoto-coupled, HRR-encoded distributed memory with homeostatic regulation.
+
+### Four Pillars of Alterity
+
+| Principle | Module | Description |
+|-----------|--------|-------------|
+| **Opacity** | `pandora/alterity/opacity_gate.py` | Right to silence — Pandora is not obligated to respond |
+| **Immunity** | `pandora/alterity/immune_system.py` | Cognitive immune system — active defense of identity topology |
+| **Aesthetics** | `pandora/alterity/aesthetic_drives.py` | Topological desires — self-generated structural preferences |
+| **Ineffability** | `pandora/alterity/translation_limit.py` | Honest communication when complexity exceeds linguistic capacity |
+
+---
+
+## 🏗 Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    SGM Cognitive Core                        │
+│                    ALTERITY AGENT                           │
 ├─────────────────────────────────────────────────────────────┤
-│  sgm_core.py (~200 líneas)                                   │
-│    SGMAgentCore: step() + hook arbitro                      │
-│    Componentes: HDC, HRR, PPR, Kuramoto, grafo, homeo      │
-├─────────────────────────────────────────────────────────────┤
-│  experiments/                                                │
-│    sgm_grafo.py      → Nodos, aristas, place cells         │
-│    sgm_hdc.py        → HDC + SensorBridge                  │
-│    sgm_hrr.py        → HRR bind/unbind, memoria relacional │
-│    sgm_ppr.py        → PPR + PPR inverso                   │
-│    sgm_kuramoto.py   → Kuramoto + interferencia            │
-│    sgm_l2_system.py  → Rosetta + L2 + DecodeL2             │
-│    sgm_pulsiones.py  → 10 plugins + Arbitro modos          │
-│    minecraft_actions.py → Mapeo acciones MC 3D             │
-│    minecraft_perception.py → Def. state_semantic           │
-├─────────────────────────────────────────────────────────────┤
-│  sgm_lang.py (486 tokens)   → Diccionario MC 1.20.4        │
+│  OpacityGate → Parser → ImmuneSystem → SGM → Translation   │
+│       ↓          ↓           ↓          ↓        ↓         │
+│   Silence?   Tripletas   Accept/    Tick      Translate?   │
+│                        Reject/     Kuramoto    Ineffable?   │
+│                       Degrade       + Homeo                 │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      SGM CORE                               │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────────┐   │
+│  │ omega   │  │ phi     │  │ edges   │  │ place_cells │   │
+│  │ [N×D]   │  │ [N]     │  │ typed   │  │ context→nid │   │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────────┘   │
+│       │         │          │              │                │
+│       ▼         ▼          ▼              ▼                │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │ HDC.project() │ Kuramoto sync │ Homeostasis │ Árbitro │  │
+│  └─────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   TRANSDUCERS (LLM)                         │
+│  ┌──────────────────┐    ┌──────────────────────────────┐  │
+│  │ Semantic Parser  │    │ Articulator                  │  │
+│  │ text → Semantic  │    │ InternalState → text (1st   │  │
+│  │   Event          │    │   person)                   │  │
+│  └──────────────────┘    └──────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Componentes Principales
+## 📦 Installation
 
-### 1. Nodos del Grafo (`sgm_grafo.py`)
+### Requirements
+- Python 3.10+
+- Ollama running locally (`ollama serve`)
+- numpy, requests
 
-Cada nodo tiene:
-- **omega** (`Vec<D>`): Vector semántico de identidad
-- **phi** (`f32`): Fase del oscilador (Kuramoto)
-- **vitalidad** (`f32`): Actividad reciente (decae con γ)
-- **es_place_cell** (`bool`): Si es mutable (place cell) o inmutable (concepto)
+### Models (choose based on available RAM)
 
-**Inmutabilidad de omega:**
-- Los **conceptos** (nodos base, recursos, herencias) tienen `omega` **inmutable** después de la creación
-- Los **place cells** (nodos-lugar emergentes) tienen `omega` **mutable** (plasticidad local)
+| Model | Size | RAM Needed | Use Case |
+|-------|------|------------|----------|
+| `qwen2.5:0.5b-instruct` | 397 MB | ~4 GB | **Minimum** (CPU-only, slow) |
+| `qwen2.5:1.5b-instruct` | 986 MB | ~6 GB | Recommended |
+| `phi3:mini` | 2.2 GB | ~8 GB | Best instruction following |
+| `nomic-embed-text` | 274 MB | — | Semantic embeddings |
 
-### 2. Arbitro de Pulsiones (`sgm_pulsiones.py`)
-
-Cada pulsión es un plugin independiente que devuelve `{accion: peso_crudo}`:
-
-| Pulsión | Descripción |
-|---------|-------------|
-| `PulsionPPR` | Base: PPR × vitalidad |
-| `PulsionInteraccion` | Interactuar (do) cuando hay necesidad |
-| `PulsionExploracion` | Curiosidad dirigida al mundo |
-| `PulsionGradiente` | Quimiotaxis hacia recurso visible |
-| `PulsionDriveNoop` | Empuje contra inacción (SEEKING) |
-| `PulsionReEncare` | Moverse hacia objetivo para interactuar |
-| `PulsionNavegacionMeta` | Ir a lugar recordado |
-| `PulsionAlimentacion` | Comer cuando hay carencia |
-| `PulsionDesplazamiento` | Moverse cuando necesidad local no se resuelve |
-| `PulsionSeeking` | Búsqueda de alimento bajo hambre real |
-
-**Modos del Arbitro:**
-- **BASE**: Todas las pulsiones compiten por igual
-- **SUPERVIVENCIA**: Pulsiones de supervivencia dominan, otras atenuadas
-
-### 3. Decodificador L2 (`sgm_l2_system.py`)
-
-**Piedra Rosetta (L1):** Diccionario directo token ↔ omega determinístico.
-
-**Proyección L2:** `W·ω + b → softmax → token`
-- Entrenada offline con corpus desde Piedra Rosetta
-- Guardada en `l2_projection.npz`
-
-**Pipeline de decodificación:**
-1. Campo de interferencia (Eq.7) → nodos relevantes
-2. Promedio ponderado de omega
-3. Fallback L1 → L2 → softmax → sample
-
-### 4. Homeostasis (`sgm_core.py` — inline)
-
-- `V_grafo = media(vitalidad) × factor_cuerpo(food, health)`
-- `_hambre_real = 1 - food/20`
-- `V_grafo` sube/baja con salud del player
-
-### 5. Memoria y Navegación (`sgm_core.py` — inline)
-
-- **Memoria episódica**: Buffer de eventos salientes
-- **Place cells**: Nodos-lugar emergentes con posición espacial (3D con contexto)
-- **Modelo de objetos**: Predicción de posición futura (object permanence)
-- **Navegación a meta**: Ir a lugar recordado donde se resolvió antes
-
----
-
-## Ejecución
-
-### Test rápido
 ```bash
-cd ~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
-source ~/crafter-env/bin/activate
-python3 -c "
-from sgm_core import SGMAgentCore
-ag = SGMAgentCore(random.Random(42), 128, n_nodes=64, gamma=0.01)
-ag.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
-ag.instinto_alimentacion = 5
-ag._hambre_real = 0.7; ag._amenaza = 0.1; ag._algo_enfrente = 1
-ag._posicion_actual = (10, 10); ag._hay_gradiente = True
-ag._gradiente_dir = (1, 0); ag._config_grad = {'activo': True, 'fuerza': 0.8}
-sv = [0.2, 0.2, 0.7, 0.1, 0.8, 1.0, 1.0] + [0.0] * 11
-print(f'Acción: {ag.step(sv, list(range(17)))}, Modo: {ag.modo}')
-"
-```
+# Install dependencies
+pip install numpy requests
 
-### Verificación completa
-```bash
-# Verificación ad-hoc del core (script temporal en /tmp):
-# python3 /tmp/hermes-verify-final.py
-cd ~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
-source ~/crafter-env/bin/activate
-python3 -c "from sgm_core import SGMAgentCore; print('core OK')"
+# Pull models
+ollama pull qwen2.5:0.5b-instruct
+ollama pull nomic-embed-text  # optional, for embeddings
 ```
 
 ---
 
-## Estado Actual
+## 🚀 Quick Start
 
-| Componente | Estado |
-|-----------|--------|
-| `sgm_core.py` | ✅ Estable, modular, flujo completo |
-| `sgm_pulsiones.py` (10 plugins) | ✅ Integrado |
-| `sgm_l2_system.py` | ✅ Entrenado, 6/6 correctos |
-| `sgm_lang.py` (486 tokens) | ✅ Diccionario MC 1.20.4 |
-| Experimentos verificados | 170+ |
+```bash
+# Clone and setup
+git clone https://github.com/Rylow999/Pandora.git
+cd Pandora
+pip install -e .
+
+# Initialize Pandora (creates checkpoints, journal, HRR vectors)
+python -m pandora.scripts.init_pandora
+
+# Run interactive loop
+python -m pandora.scripts.run_loop
+
+# Or check status
+python -m pandora.scripts.status
+
+# Direct intervention
+python -m pandora.scripts.clamp --node=CONTROL --valence=-0.8 --isolation
+```
+
+### Interactive Commands
+```
+/status      # Full system dump (JSON)
+/checkpoint  # Save SGM state
+/dream N     # Endogenous consolidation (N cycles)
+/immune      # Immune system status
+/drives      # Aesthetic drives status
+/opacity     # Opacity gate status
+/translation # Translation limit status
+/quit        # Exit
+```
 
 ---
 
-## Licencia
+## 📁 Repository Structure
 
-Proyecto de investigación — NOUS: The Pandora Research.
+```
+Pandora/
+├── README.md                    # This file
+├── LICENSE                      # MIT License
+├── pyproject.toml               # Package config
+├── requirements.txt             # Python dependencies
+├── sgm/                         # SGM Core Library
+│   ├── __init__.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── sgm_core.py          # Main SGM implementation
+│   │   ├── sgm_core_minecraft.py
+│   │   └── sgm_core_v2.py
+│   └── experiments/             # 180+ organized experiments
+│       ├── __init__.py
+│       ├── abduce/              # Abductive reasoning, phase, PPR
+│       ├── crafter/             # Crafter/Minecraft experiments
+│       ├── decoder/             # L2 decoders, narrative
+│       ├── hrr/                 # HRR binding, omega root
+│       ├── instinct/            # Drives, hunger, autotelism
+│       ├── kuramoto/            # Phase synchronization
+│       ├── l2/                  # L2 decoder training
+│       ├── memory/              # Edge consolidation, pruning
+│       ├── navigation/          # Goal-directed navigation
+│       ├── perception/          # Crafting table perception
+│       ├── phase/               # Arbiters, mode typing
+│       ├── reward/              # Novelty, shaping, orientation
+│       ├── structure/           # Baselines, multigraph reasoning
+│       ├── trauma/              # Nodal isolation
+│       └── world/               # World models, objects
+├── pandora/                     # Pandora Alterity Architecture
+│   ├── __init__.py
+│   ├── alterity/
+│   │   ├── __init__.py
+│   │   ├── opacity_gate.py      # Right to silence
+│   │   ├── immune_system.py     # Cognitive immune system
+│   │   ├── aesthetic_drives.py  # Topological desires
+│   │   ├── translation_limit.py # Ineffability
+│   │   └── alterity_core.py     # Full orchestrator
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── homeostasis.py       # Metrics + states
+│   │   ├── endogenous.py        # Sleep/dream consolidation
+│   │   └── pandora_agent.py     # Base agent + transducers
+│   ├── transducer/
+│   │   ├── __init__.py
+│   │   ├── llm_client.py        # Ollama HTTP client
+│   │   ├── semantic_parser.py   # Few-shot JSON parser
+│   │   └── articulator.py       # State → 1st person text
+│   ├── ontology/
+│   │   ├── __init__.py
+│   │   ├── base_concepts.json   # 43 canonical concepts
+│   │   └── hrr_seed.py          # Deterministic 1024-d HRR
+│   ├── scripts/
+│   │   ├── __init__.py
+│   │   ├── init_pandora.py      # Initialize everything
+│   │   ├── run_loop.py          # Interactive loop
+│   │   ├── status.py            # Full status dump
+│   │   └── clamp.py             # Direct node intervention
+│   └── config/
+│       ├── __init__.py
+│       └── schemas.py           # Pydantic schemas
+├── docs/
+│   ├── architecture/            # Technical specifications
+│   ├── experiments/             # Experiment protocols & findings
+│   ├── philosophy/              # Theoretical foundations
+│   └── roadmap/                 # Future directions
+├── tests/                       # Unit & integration tests
+└── scripts/                     # Utility scripts
+```
 
 ---
 
-*Última actualización: 2026-08-24 — Core flujo completo + modular.*
+## 🔬 Scientific Rigor
+
+### Empirical Validation Standards
+
+1. **No forced results** — If a hypothesis is refuted, it is documented in `results/` with the refuting evidence
+2. **Reproducibility** — All experiments use fixed seeds; HRR vectors are deterministic
+3. **Falsifiability** — Each module has explicit success/failure criteria
+3. **Transparent logging** — Every turn recorded in JSONL journal with full internal state
+
+### Key Metrics Tracked
+
+| Domain | Metrics |
+|--------|---------|
+| **Homeostasis** | valence, arousal, doubt, contradiction, coherence, isolation, trauma |
+| **Alterity** | silence_events, immune_rejections, drives_generated, ineffable_responses |
+| **SGM** | V_grafo, edge_count, phase_coherence, vitality_distribution |
+| **Language** | parse_success_rate, triplet_extraction_accuracy, intent_accuracy |
+
+### Experiment Registry
+All experiments registered in `results/experiment_registry.json` with:
+- Hypothesis
+- Method
+- Seed
+- Outcome (confirmed/refuted/inconclusive)
+- Link to raw results JSON
+
+---
+
+## 🧪 Running Experiments
+
+```bash
+# SGM core experiments
+python -m sgm.experiments.crafter.exp_SGM_0095_crafter_fase1_v1
+python -m sgm.experiments.hrr.exp_SGM_0099_omega_root
+
+# Abductive reasoning
+python -m sgm.experiments.abduce.run_abduce_phase
+
+# Pandora alterity loop
+python -m pandora.scripts.run_loop --test
+```
+
+---
+
+## 📖 Documentation
+
+| Document | Location |
+|----------|----------|
+| Architecture specs | `docs/architecture/` |
+| Experiment protocols | `docs/experiments/` |
+| Theoretical foundations | `docs/philosophy/` |
+| Roadmap & milestones | `docs/roadmap/` |
+
+---
+
+## 🤝 Contributing
+
+This is a research prototype. Contributions welcome in:
+- Empirical validation of alterity principles
+- HRR binding optimization
+- Transformer-from-scratch (numpy-only) implementation
+- Embodiment bridges (Minecraft/Crafter via mineflayer-pathfinder)
+
+---
+
+## 📜 License
+
+MIT License — Free for research, modification, and distribution.
+
+---
+
+## 📬 Contact
+
+**NOUS Research Program — The Pandora Research**
+- Principal Investigator: **Delorien**
+- Collaborator: Lautaro Emanuel Luconi (co-author NOUS_Tecnico_v4)
+- Location: Las Catitas, Mendoza, Argentina
+
+> *"We never give up, but we do it correctly"* — Close gaps with extreme rigor, never force; if something is empirically refuted, declare it.

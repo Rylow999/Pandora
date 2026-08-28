@@ -21,7 +21,7 @@ import sys, os, json, random, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import importlib, sgm_core; importlib.reload(sgm_core)
-from sgm_core import SGMAgent
+from sgm.core.sgm_core import SGMAgent
 
 
 class Pandora:

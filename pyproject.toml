@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pandora-sgm"
+version = "0.1.0"
+description = "Pandora: Alterity-Based Architecture for Synthetic Consciousness — SGM Core + Pandora Transducers"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Delorien", email = "delorien@nous-research.local"},
+    {name = "Lautaro Emanuel Luconi", email = "luconi@nous-research.local"}
+]
+keywords = ["consciousness", "cognitive-architecture", "sgm", "hrr", "kuramoto", "alterity", "synthetic-consciousness"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Rylow999/Pandora"
+Repository = "https://github.com/Rylow999/Pandora"
+Issues = "https://github.com/Rylow999/Pandora/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pandora*", "sgm*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.py$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "W", "UP", "B", "C4", "T20"]
+ignore = ["E501", "B008"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
