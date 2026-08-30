@@ -81,7 +81,9 @@ VALID_CONCEPTS = {
     "DECIR", "ESCUCHAR", "RESPONDER", "REGISTRAR", "RECORDAR",
     "OLVIDAR", "CONTRADICCION", "COHERENCIA", "TRAUMA", "REPARACION",
     "HOMEOSTASIS", "HAMBRE", "SACIEDAD", "CURIOSIDAD", "ABURRIMIENTO",
-    "NOVEDAD", "RUTINA", "SUEÑO", "IDENTIDAD", "LIMITE"
+    "NOVEDAD", "RUTINA", "SUEÑO", "IDENTIDAD", "LIMITE",
+    "DELORIEN", "LUCIANO", "LLAMARSE", "NOMBRE", "NO_CONFIAR", "CONFIAR",
+    "PERDER", "SALUDAR", "PREGUNTAR", "SISTEMA", "PERDIDA", "CONTROL"
 }
 
 CONCEPT_NORMALIZATION = {
@@ -339,7 +341,7 @@ Schema: {"triplets":[{"subject":"string","predicate":"string","object":"string"}
 
         return [
             {"role": "system", "content": "You are a semantic parser. Output ONLY the JSON object matching this schema. No text. No markdown. No explanations. Just the JSON object.\nSchema: {\"triplets\":[{\"subject\":\"string\",\"predicate\":\"string\",\"object\":\"string\"}],\"affect\":{\"valence\":number,\"arousal\":number,\"uncertainty\":number},\"intent\":\"string\"}"},
-            {"role": "user", "content": "Example 1:\nTexto: Hola\nJSON: {\"triplets\":[{\"subject\":\"YO\",\"predicate\":\"SALUDAR\",\"object\":\"OTRO\"}],\"affect\":{\"valence\":0.1,\"arousal\":0.1,\"uncertainty\":0.2},\"intent\":\"RESPONDER\"}\n\nTexto: " + user_text + "\nJSON:"}
+            {"role": "user", "content": "\n".join(lines + [f"Texto: {user_text}", "JSON:"])}
         ]
 
 

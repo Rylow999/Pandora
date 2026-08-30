@@ -21,13 +21,13 @@ from pandora.alterity.opacity_gate import create_opacity_gate, OpacityGate
 from pandora.alterity.immune_system import create_immune_system, CognitiveImmuneSystem
 from pandora.alterity.aesthetic_drives import create_aesthetic_drives, AestheticDrives
 from pandora.alterity.translation_limit import create_translation_limit, TranslationLimit
-
 from pandora.transducer.semantic_parser import get_parser
 from pandora.transducer.articulator import get_articulator
 from pandora.core.endogenous import get_endogenous_engine
 from pandora.core.homeostasis import get_homeostasis
 from pandora.config.schemas import InternalState, Triplet, Intent, SemanticEvent, Affect
 from pandora.core.pandora_agent import Episode
+from pandora.config.settings import get_config, PandoraConfig
 import json
 import time
 import uuid
@@ -39,7 +39,7 @@ from typing import Dict, Any, List, Optional
 class AlterityAgent:
     """
     Agente Pandora con Arquitectura de Alteridad completa.
-    
+
     Flujo por turno:
     1. OpacityGate: ¿Hablar o callar?
     2. Si habla: Parse semántico → Inmunidad → Inyección SGM → Tick
@@ -48,24 +48,27 @@ class AlterityAgent:
     5. Journal + Workspace + Homeostasis
     6. Consolidación endógena periódica + Drives estéticos
     """
-    
+
     def __init__(
         self,
         load_checkpoint: bool = False,
-        alterity_config: Dict[str, Any] | None = None
+        config: PandoraConfig | None = None
     ):
-        # Configuración
-        self.alterity_config = alterity_config or {}
+        # Configuración centralizada
+        self.config = config or get_config()
         
         # Agente base (SGM + Parser + Articulator + Journal + Workspace)
         self.base_agent = get_pandora_agent(load_checkpoint=load_checkpoint)
         
-        # Módulos de alteridad
+        # Configuración de place_cells para conceptos core (ANTES de crear módulos)
+        self._ensure_core_place_cells()
+        
+        # Módulos de alteridad usando config centralizada
         sgm = self.base_agent.sgm
-        self.opacity_gate = create_opacity_gate(sgm, self.alterity_config.get("opacity", {}))
-        self.immune_system = create_immune_system(sgm, self.alterity_config.get("immune", {}))
-        self.aesthetic_drives = create_aesthetic_drives(sgm, self.alterity_config.get("aesthetic", {}))
-        self.translation_limit = create_translation_limit(sgm, self.alterity_config.get("translation", {}))
+        self.opacity_gate = create_opacity_gate(sgm, self.config.opacity.__dict__)
+        self.immune_system = create_immune_system(sgm, self.config.immune.__dict__)
+        self.aesthetic_drives = create_aesthetic_drives(sgm, self.config.aesthetic.__dict__)
+        self.translation_limit = create_translation_limit(sgm, self.config.translation.__dict__)
         
         # Subsistemas existentes
         self.parser = get_parser()
@@ -80,16 +83,17 @@ class AlterityAgent:
             "silence_events": 0,
             "immune_rejections": 0,
             "immune_degradations": 0,
+            "immune_isolations": 0,
             "drives_generated": 0,
             "ineffable_responses": 0,
             "total_turns": 0
         }
         
-        # Configuración de place_cells para conceptos core
+        # Configuración de place_cells para conceptos core (ANTES de crear módulos)
         self._ensure_core_place_cells()
         
         print(f"[AlterityAgent] Inicializado - Session: {self.session_id}")
-    
+
     def _ensure_core_place_cells(self):
         """Asegura place_cells para conceptos core de alteridad."""
         sgm = self.base_agent.sgm
@@ -209,8 +213,8 @@ class AlterityAgent:
         state_semantic = self.base_agent._encode_semantic_event(semantic_event)
         self.base_agent.sgm.step(state_semantic, list(range(17)), food=10, health=20)
         
-        # 5. LEER ESTADO DOMINANTE
-        internal_state = self.base_agent._read_dominant_state()
+        # 5. LEER ESTADO DOMINANTE (pasar semantic_event para tripletas)
+        internal_state = self.base_agent._read_dominant_state(semantic_event)
         
         # 6. TRANSLATION LIMIT: ¿Traducible?
         translation_decision = self.translation_limit.can_translate(internal_state)
@@ -338,8 +342,8 @@ class AlterityAgent:
             print(f"<<< {response}")
 
 
-def create_alterity_agent(load_checkpoint: bool = False, config: Dict[str, Any] | None = None) -> AlterityAgent:
-    return AlterityAgent(load_checkpoint=load_checkpoint, alterity_config=config)
+def create_alterity_agent(load_checkpoint: bool = False, config: PandoraConfig | None = None) -> AlterityAgent:
+    return AlterityAgent(load_checkpoint=load_checkpoint, config=config)
 
 
 if __name__ == "__main__":

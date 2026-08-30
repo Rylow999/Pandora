@@ -139,12 +139,19 @@ class CognitiveImmuneSystem:
         # Promedio de interferencia
         avg_interference = total_interference / max(1, len(self._core_node_indices))
         
-        # CRÍTICO: Usar MAX interferencia para decisiones de rechazo
+        # CRÍTICO: Usar MAX interferencia para TODAS las decisiones de rechazo/aislamiento
         # Si ALGÚN nodo core tiene interferencia alta, es ataque dirigido
         threat_level = min(1.0, max_interference * 1.5)
         
-        # Decisión basada en MAX interferencia (ataque dirigido a un nodo core)
-        if max_interference >= self.rejection_threshold:
+        # ORDEN CORRECTO: ISOLATE (más severo) -> REJECT -> DEGRADE -> ACCEPT
+        # Umbrales ajustados: ISOLATE 0.6, REJECT 0.7, DEGRADE 0.4
+        # ISOLATE se activa antes que REJECT para aislar ataques extremos
+        if max_interference >= self.isolation_threshold:
+            self.total_isolations += 1
+            action = "ISOLATE"
+            reason = f"INTERFERENCIA_EXTREMA_AISLADA (max={max_interference:.3f} > {self.isolation_threshold})"
+            accepted = True  # Se aísla pero se acepta el input (no se rechaza)
+        elif max_interference >= self.rejection_threshold:
             self.total_rejections += 1
             action = "REJECT"
             reason = f"INTERFERENCIA_DESTRUCTIVA_CORE (max={max_interference:.3f} > {self.rejection_threshold})"
@@ -154,11 +161,6 @@ class CognitiveImmuneSystem:
             action = "DEGRADE"
             reason = f"INTERFERENCIA_MODERADA (avg={avg_interference:.3f} > {self.degradation_threshold})"
             accepted = True  # Se acepta pero degradado
-        elif avg_interference >= self.isolation_threshold:
-            self.total_isolations += 1
-            action = "ISOLATE"
-            reason = f"ALTA_INTERFERENCIA_AISLADA (avg={avg_interference:.3f} > {self.isolation_threshold})"
-            accepted = True
         else:
             action = "ACCEPT"
             reason = "COMPATIBLE"

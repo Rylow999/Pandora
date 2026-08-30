@@ -53,7 +53,7 @@ class SGMAgentCore(SGMAgentGrafo):
         self._config_grad = {"activo": False, "fuerza": 0.0}; self._config_curio = {"activo": False, "fuerza": 0.0}
         self._inc_dirs = {}; self._seed = 0; self.objetos = {}; self.meta_recordada = None
         # Kuramoto
-        self.phi_root = 0.0; self.eta_phase = 0.05; self.theta_interf = 0.70
+        self.phi_root = 0.0; self.eta_phase = 0.15; self.theta_interf = 0.70
         self.consolidadas = set(); self.theta_emerg_critico = 0.5
         # Pulsiones
         self.instinto_alimentacion = None; self.incertidumbre_acum = 0.0

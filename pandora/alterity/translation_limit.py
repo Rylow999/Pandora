@@ -40,10 +40,11 @@ class TranslationLimit:
         self.sgm = sgm
         
         cfg = config or {}
+        # Umbrales para inefabilidad (más estrictos - valores realistas)
         self.max_active_nodes = cfg.get("max_active_nodes", 7)
-        self.min_phase_coherence = cfg.get("min_phase_coherence", 0.1)  # Lower for fresh SGM
-        self.max_entropy = cfg.get("max_entropy", 0.85)
-        self.min_pattern_coherence = cfg.get("min_pattern_coherence", 0.0)  # Allow 0 for new states
+        self.min_phase_coherence = cfg.get("min_phase_coherence", 0.3)
+        self.max_entropy = cfg.get("max_entropy", 0.85)  # Era 0.7, subido para permitir estados normales con place cells
+        self.min_pattern_coherence = cfg.get("min_pattern_coherence", 0.2)
         
         # Respuestas de inefabilidad por estado afectivo
         self.ineffable_responses = {
@@ -163,7 +164,6 @@ class TranslationLimit:
         else:
             reason = "; ".join(reasons)
             # Generar respuesta de inefabilidad basada en estado afectivo
-            # Necesitamos valence/arousal del estado
             valence = getattr(state, 'valence', 0.0)
             arousal = getattr(state, 'arousal', 0.0)
             suggested = self._generate_ineffable_response(
@@ -183,6 +183,11 @@ class TranslationLimit:
         """Estima coherencia interna de las tripletas."""
         if not triplets:
             return 0.0
+        
+        # Para un número pequeño de tripletas, no es "incoherente" 
+        # tener conceptos únicos - es normal
+        if len(triplets) <= 2:
+            return 1.0  # Pocas tripletas = coherente por defecto
         
         # Verificar si hay conceptos compartidos entre tripletas
         subjects = set()

@@ -66,18 +66,61 @@ class Homeostasis:
             "trauma_high": 0.5
         }
 
-    def update(self, state) -> HomeostasisMetrics:
+    def _calculate_isolation(self, sgm) -> float:
+        """Calcula fracción de nodos aislados (sin conexiones)."""
+        if not hasattr(sgm, 'edges') or not sgm.edges:
+            return 0.0
+        isolated = sum(1 for v in sgm.edges.values() if len(v) == 0)
+        total = len(sgm.edges)
+        return isolated / total if total > 0 else 0.0
+
+    def _calculate_trauma_load(self, sgm) -> float:
+        """Calcula carga traumática acumulada desde nodos con trauma."""
+        if not hasattr(sgm, 'trauma_nodes') or not sgm.trauma_nodes:
+            return 0.0
+        return min(1.0, len(sgm.trauma_nodes) / max(1, len(sgm.omega)))
+
+    def _calculate_coherence(self, sgm) -> float:
+        """Calcula coherencia del grafo."""
+        if not hasattr(sgm, 'edges') or not sgm.edges:
+            return 1.0
+        contradiction = 0.0
+        status = getattr(sgm, 'status', 'ACTIVA')
+        if status == 'CONTRADICTORIA':
+            contradiction = 0.8
+        elif status == 'INCONCLUSA':
+            contradiction = 0.3
+        edge_density = sum(len(v) for v in sgm.edges.values()) / max(1, len(sgm.edges))
+        return (1.0 - contradiction) * min(1.0, edge_density / 10.0)
+
+    def update(self, state, sgm=None) -> HomeostasisMetrics:
         """
         Actualiza métricas desde InternalState del SGM.
+        Si se provee sgm, calcula métricas completas incluyendo isolation y trauma.
         """
+        # Métricas base desde InternalState
+        valence = getattr(state, 'valence', 0.0)
+        arousal = getattr(state, 'arousal', 0.0)
+        doubt = getattr(state, 'doubt', 0.0)
+        contradiction = getattr(state, 'contradiction', 0.0)
+        coherence = 1.0 - contradiction  # aprox
+
+        # Métricas que requieren SGM
+        isolation = 0.0
+        trauma = 0.0
+        if sgm is not None:
+            isolation = self._calculate_isolation(sgm)
+            trauma = self._calculate_trauma_load(sgm)
+            coherence = self._calculate_coherence(sgm)
+
         m = HomeostasisMetrics(
-            valence_mean=getattr(state, 'valence', 0.0),
-            arousal_mean=getattr(state, 'arousal', 0.0),
-            doubt_level=getattr(state, 'doubt', 0.0),
-            contradiction_level=getattr(state, 'contradiction', 0.0),
-            coherence_level=1.0 - getattr(state, 'contradiction', 0.0),  # aprox
-            isolation_level=0.0,  # calcular desde grafo si hay nodos aislados
-            trauma_load=0.0       # calcular desde nodos con trauma
+            valence_mean=valence,
+            arousal_mean=arousal,
+            doubt_level=doubt,
+            contradiction_level=contradiction,
+            coherence_level=coherence,
+            isolation_level=isolation,
+            trauma_load=trauma
         )
 
         self.history.append(m)
@@ -110,17 +153,13 @@ class Homeostasis:
         contradiction = 0.8 if status == 'CONTRADICTORIA' else (0.3 if status == 'INCONCLUSA' else 0.0)
 
         # Coherencia: inversa de contradicción + factor de conectividad
-        edge_density = sum(len(v) for v in sgm.edges.values()) / max(1, len(sgm.edges))
-        coherence = (1.0 - contradiction) * min(1.0, edge_density / 10.0)
+        coherence = self._calculate_coherence(sgm)
 
         # Isolation: nodos sin conexiones / total
-        isolated = sum(1 for v in sgm.edges.values() if len(v) == 0)
-        isolation = isolated / max(1, len(sgm.edges))
+        isolation = self._calculate_isolation(sgm)
 
         # Trauma: nodos marcados como trauma (si existe atributo)
-        trauma = 0.0
-        if hasattr(sgm, 'trauma_nodes'):
-            trauma = len(sgm.trauma_nodes) / max(1, len(sgm.omega))
+        trauma = self._calculate_trauma_load(sgm)
 
         m = HomeostasisMetrics(
             valence_mean=valence,

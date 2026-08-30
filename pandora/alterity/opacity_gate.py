@@ -42,7 +42,7 @@ class OpacityGate:
         # Umbrales por defecto (ajustables via config)
         cfg = config or {}
         self.contradiction_threshold = cfg.get("contradiction_threshold", 0.6)
-        self.coherence_threshold = cfg.get("coherence_threshold", 0.1)  # Muy bajo para testing
+        self.coherence_threshold = cfg.get("coherence_threshold", 0.05)  # Muy bajo para cold start
         self.min_silence_ticks = cfg.get("min_silence_ticks", 3)
         self.max_silence_ticks = cfg.get("max_silence_ticks", 20)
         

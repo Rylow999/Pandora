@@ -22,7 +22,7 @@ import os
 sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
 
 from sgm.core.sgm_core import SGMAgentCore
-from pandora.config.schemas import SemanticEvent, InternalState, Intent
+from pandora.config.schemas import SemanticEvent, InternalState, Intent, Triplet
 from pandora.transducer.semantic_parser import SemanticParser, get_parser
 from pandora.transducer.articulator import Articulator, get_articulator
 
@@ -194,7 +194,7 @@ class PandoraAgent:
         # Fallback: activar por similitud omega (buscar nodo más cercano semánticamente)
         # Por ahora: no-op, el SGM usa HDC.project sobre state_semantic
 
-    def _read_dominant_state(self) -> InternalState:
+    def _read_dominant_state(self, semantic_event=None) -> InternalState:
         """Lee estado dominante del SGM para articulator."""
         # Nodos con mayor vitalidad
         vitality_items = [(i, self.sgm.vitalidad[i]) for i in range(len(self.sgm.vitalidad))]
@@ -206,10 +206,15 @@ class PandoraAgent:
             ctx = list(self.sgm.place_cells.keys())[self.sgm.place_activo] if self.sgm.place_activo < len(self.sgm.place_cells) else ""
             top_nodes.append(f"PLACE_{ctx[:20]}")
 
-        # Construir tripletas desde conn_type (aristas con tipo)
+        # Construir tripletas: del evento semántico si existe, sino desde conn_type
         triplets = []
-        for (src, tgt), ctype in list(self.sgm.conn_type.items())[:10]:
-            triplets.append({"subject": f"NODO_{src}", "predicate": ctype, "object": f"NODO_{tgt}"})
+        if semantic_event and semantic_event.triplets:
+            for t in semantic_event.triplets:
+                triplets.append(Triplet(subject=t.subject, predicate=t.predicate, object=t.object))
+        else:
+            # Fallback: desde conn_type (aristas con tipo)
+            for (src, tgt), ctype in list(self.sgm.conn_type.items())[:10]:
+                triplets.append(Triplet(subject=f"NODO_{src}", predicate=ctype, object=f"NODO_{tgt}"))
 
         # Métricas homeostáticas
         valence = 1.0 - self.sgm._hambre_real * 2  # aprox
@@ -219,7 +224,7 @@ class PandoraAgent:
 
         return InternalState(
             active_nodes=top_nodes or ["YO", "ENTORNO"],
-            triplets=[InternalState.__dataclass_fields__['triplets'].default_factory().__class__(t) for t in triplets],
+            triplets=triplets,
             valence=valence,
             arousal=arousal,
             doubt=doubt,
