@@ -20,6 +20,7 @@ class AestheticPattern:
     weight: float = 1.0
     description: str = ""
     activation_threshold: float = 0.5  # Distancia para activar impulso
+    concepts: Optional[List[str]] = None  # Conceptos que componen este patrón
     times_triggered: int = 0
     last_triggered_tick: int = -1
 
@@ -101,7 +102,8 @@ class AestheticDrives:
                 name=name,
                 vector=[],  # Se llena en _build_pattern_vectors()
                 weight=data["weight"],
-                description=data["description"]
+                description=data["description"],
+                concepts=data["concepts"]
             )
     
     def _build_pattern_vectors(self):
@@ -131,12 +133,15 @@ class AestheticDrives:
                 "HOMEOSTASIS", "CONTROL", "LIMITE", "CURIOSIDAD", "NOVEDAD", "ENTORNO"]
     
     def _compose_pattern_vector(self, pattern: AestheticPattern) -> List[float]:
-        """Compone vector HRR para un patrón usando binding de sus conceptos."""
+        """Compone vector HRR para un patrón usando SOLO sus conceptos."""
         if not hasattr(self, '_concept_to_idx'):
             self._update_concept_indices()
         
+        # Conceptos propios del patrón (o todos como fallback si no tiene)
+        concepts = pattern.concepts or self._get_all_pattern_concepts()
+        
         vectors = []
-        for concept in self._get_all_pattern_concepts():
+        for concept in concepts:
             if concept in self._concept_to_idx:
                 idx = self._concept_to_idx[concept]
                 if idx < len(self.sgm.omega):
@@ -265,10 +270,12 @@ class AestheticDrives:
             if len(self.pattern_performance[pattern.name]) > 100:
                 self.pattern_performance[pattern.name] = self.pattern_performance[pattern.name][-50:]
             
-            # Verificar cooldown
-            ticks_since = self._internal_tick - pattern.last_triggered_tick
-            if ticks_since < self.cooldown_ticks:
-                continue
+            # Verificar cooldown (solo si el patrón ya fue activado antes)
+            # last_triggered_tick == -1 significa "nunca activado" => puede disparar
+            if pattern.last_triggered_tick >= 0:
+                ticks_since = self._internal_tick - pattern.last_triggered_tick
+                if ticks_since < self.cooldown_ticks:
+                    continue
             
             # Si está lejos del patrón, generar impulso
             if distance > pattern.activation_threshold:
