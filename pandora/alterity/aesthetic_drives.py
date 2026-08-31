@@ -11,10 +11,6 @@ import random
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Tuple
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
 
 @dataclass
 class AestheticPattern:

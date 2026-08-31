@@ -94,6 +94,38 @@ class SGMAgentCore(SGMAgentGrafo):
             A = 1.0 if i in top_k else 0.0
             self.vitalidad[i] = self.vitalidad[i] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
 
+    # ============ AISLAMIENTO DE NODOS ============
+    def isolate_node(self, concept: str):
+        """Aísla un nodo del grafo temporalmente para proteger la identidad."""
+        # Buscar el nodo por place_cells
+        node_idx = None
+        for ctx, pid in self.place_cells.items():
+            if concept in ctx:
+                node_idx = pid
+                break
+        
+        if node_idx is None:
+            return False
+        
+        # Reducir vitalidad drásticamente
+        self.vitalidad[node_idx] *= 0.1
+        
+        # Eliminar conexiones temporales
+        if node_idx in self.edges:
+            self.edges[node_idx] = set()
+        
+        # Eliminar conexiones entrantes
+        for src in list(self.edges.keys()):
+            if node_idx in self.edges[src]:
+                self.edges[src].remove(node_idx)
+        
+        # Marcar como aislado
+        if not hasattr(self, 'isolated_nodes'):
+            self.isolated_nodes = set()
+        self.isolated_nodes.add(node_idx)
+        
+        return True
+
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
         a_eliminar = []

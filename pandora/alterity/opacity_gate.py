@@ -10,10 +10,6 @@ import math
 from dataclasses import dataclass
 from typing import Dict, Any, Optional
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
 
 @dataclass
 class SilenceDecision:
@@ -45,6 +41,10 @@ class OpacityGate:
         self.coherence_threshold = cfg.get("coherence_threshold", 0.05)  # Muy bajo para cold start
         self.min_silence_ticks = cfg.get("min_silence_ticks", 3)
         self.max_silence_ticks = cfg.get("max_silence_ticks", 20)
+        # Entorno homeostático
+        self.env_food = cfg.get("env_food", 10.0)
+        self.env_health = cfg.get("env_health", 20.0)
+        self.env_valid_actions = cfg.get("env_valid_actions", 17)
         
         # Estado interno
         self.silence_ticks = 0
@@ -187,7 +187,7 @@ class OpacityGate:
             self.sgm._hambre_real = max(0.0, self.sgm._hambre_real - 0.2)
         
         # Tick silencioso (sin articulación)
-        self.sgm.step([0.1] * 128, list(range(17)), food=10, health=20)
+        self.sgm.step([0.1] * 128, list(range(self.env_valid_actions)), food=self.env_food, health=self.env_health)
     
     def force_silence(self, enabled: bool = True):
         """Para testing: fuerza silencio activado/desactivado."""

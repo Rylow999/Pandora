@@ -10,10 +10,6 @@ import math
 from dataclasses import dataclass
 from typing import Dict, Any, List, Optional, Tuple
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
 
 @dataclass
 class ImmuneResponse:
@@ -144,7 +140,7 @@ class CognitiveImmuneSystem:
         threat_level = min(1.0, max_interference * 1.5)
         
         # ORDEN CORRECTO: ISOLATE (más severo) -> REJECT -> DEGRADE -> ACCEPT
-        # Umbrales ajustados: ISOLATE 0.6, REJECT 0.7, DEGRADE 0.4
+        # Umbrales ajustados: ISOLATE 0.85, REJECT 0.7, DEGRADE 0.4
         # ISOLATE se activa antes que REJECT para aislar ataques extremos
         if max_interference >= self.isolation_threshold:
             self.total_isolations += 1

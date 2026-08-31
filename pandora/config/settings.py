@@ -83,6 +83,11 @@ class PandoraConfig:
     drive_interval: int = 10
     checkpoint_interval: int = 10
 
+    # Paths
+    journal_path: str = "pandora/journal/episodes.jsonl"
+    checkpoint_path: str = "pandora/checkpoints/sgm_state.npy"
+    workspace_capacity: int = 7
+
     # SGM params
     sgm_D: int = 128
     sgm_n_nodes: int = 64
@@ -90,8 +95,13 @@ class PandoraConfig:
 
     # LLM params
     llm_model: str = "qwen2.5:0.5b-instruct"
-    llm_temperature: float = 0.0
+    llm_temperature: float = 0.2
     llm_num_predict: int = 128
+
+    # Entorno homeostático (valores por turno para el SGM embodied-base)
+    env_food: float = 10.0
+    env_health: float = 20.0
+    env_valid_actions: int = 17
 
 
 # Instancia global de configuración por defecto

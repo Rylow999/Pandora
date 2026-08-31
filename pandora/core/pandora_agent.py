@@ -17,14 +17,11 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, asdict
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
-from sgm.core.sgm_core import SGMAgentCore
-from pandora.config.schemas import SemanticEvent, InternalState, Intent, Triplet
+from pandora.config.settings import get_config, PandoraConfig
+from pandora.config.schemas import SemanticEvent, InternalState, Intent, Triplet, Affect
 from pandora.transducer.semantic_parser import SemanticParser, get_parser
 from pandora.transducer.articulator import Articulator, get_articulator
+from sgm.core.sgm_core import SGMAgentCore
 
 
 @dataclass
@@ -106,19 +103,23 @@ class PandoraAgent:
         journal_path: str = "pandora/journal/episodes.jsonl",
         checkpoint_path: str = "pandora/checkpoints/sgm_state.npy",
         workspace_capacity: int = 7,
-        load_checkpoint: bool = True
+        load_checkpoint: bool = True,
+        config: PandoraConfig | None = None
     ):
+        # Configuración centralizada
+        self.config = config or get_config()
+        
         # Componentes
         self.sgm = sgm or self._create_default_sgm()
         self.parser = parser or get_parser()
         self.articulator = articulator or get_articulator()
 
         # Memoria
-        self.journal = Journal(journal_path)
-        self.workspace = Workspace(workspace_capacity)
+        self.journal = Journal(self.config.journal_path)
+        self.workspace = Workspace(self.config.workspace_capacity)
 
         # Checkpoint
-        self.checkpoint_path = Path(checkpoint_path)
+        self.checkpoint_path = Path(self.config.checkpoint_path)
         self.checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Estado
@@ -180,8 +181,10 @@ class PandoraAgent:
                 self._activate_concept(concept)
 
         # Inyectar affect como señal homeostática
-        self.sgm._hambre_real = max(0.0, -event.affect.valence) if event.affect.valence < 0 else self.sgm._hambre_real
-        self.sgm._amenaza = event.affect.arousal if event.affect.arousal > 0.5 else self.sgm._amenaza
+        # valence: -1 (negativo) a 1 (positivo) -> _hambre_real: 1 (hambre) a 0 (saciado)
+        # arousal: 0 (calma) a 1 (alta activación) -> _amenaza: 0 a 1
+        self.sgm._hambre_real = max(0.0, 1.0 - event.affect.valence)  # valence 1.0 -> 0.0, valence -1.0 -> 2.0 (clamped)
+        self.sgm._amenaza = event.affect.arousal  # 0.0 a 1.0
 
     def _activate_concept(self, concept: str):
         """Activa un concepto en el grafo (busca place cell o crea activación)."""
@@ -258,11 +261,17 @@ class PandoraAgent:
         # 2. Inyectar en SGM
         self._inject_event_to_sgm(semantic_event)
 
-        # 3. State para step (vector semántico simplificado)
-        state_semantic = [0.1] * 128  # placeholder; en versión real: HDC.encode(semantic_event)
+        # 3. State para step - usar codificación HRR real del evento semántico
+        assert semantic_event is not None
+        state_semantic = self._encode_semantic_event(semantic_event)
 
         # 4. Tick SGM
-        action = self.sgm.step(state_semantic, list(range(17)), food=10, health=20)
+        action = self.sgm.step(
+            state_semantic,
+            list(range(self.config.env_valid_actions)),
+            food=self.config.env_food,
+            health=self.config.env_health
+        )
 
         # 5. Leer estado dominante
         internal_state = self._read_dominant_state()

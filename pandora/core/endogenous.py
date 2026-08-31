@@ -17,10 +17,6 @@ import math
 from typing import List, Dict, Set, Optional
 from dataclasses import dataclass
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
 from sgm.core.sgm_core import SGMAgentCore
 
 
@@ -57,6 +53,10 @@ class EndogenousEngine:
         self.recombination_rate = recombination_rate
         self.max_cycles = max_cycles_per_session
         self.rng = random.Random(1337)  # semilla fija para reproducibilidad
+        # Entorno homeostático (defaults; puede sobreescribirse si se integra config)
+        self.env_food = 10.0
+        self.env_health = 20.0
+        self.env_valid_actions = 17
 
     def _get_recent_active_nodes(self, limit: int = 10) -> List[int]:
         """Nodos activados recientemente (via historial_acciones / place_activo)."""
@@ -149,7 +149,7 @@ class EndogenousEngine:
         
         # Simular percepción interna (state_semantic = dream_vector)
         # Correr tick con vector onírico como entrada
-        self.sgm.step(dream_vector, list(range(17)), food=10, health=20)
+        self.sgm.step(dream_vector, list(range(self.env_valid_actions)), food=self.env_food, health=self.env_health)
 
     def _create_new_connections(self, node_set: Set[int], prob: float = None):
         """Crea nuevas aristas entre nodos recombinados (consolidación estructural)."""

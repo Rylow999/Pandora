@@ -10,10 +10,6 @@ import math
 from dataclasses import dataclass
 from typing import Dict, Any, List, Optional, Tuple
 
-import sys
-import os
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-
 from pandora.config.schemas import InternalState, Intent
 
 
@@ -151,8 +147,10 @@ class TranslationLimit:
             if pattern_coherence < self.min_pattern_coherence:
                 reasons.append(f"Baja coherencia de patrones ({pattern_coherence:.3f} < {self.min_pattern_coherence})")
         else:
-            metrics["pattern_coherence"] = 0.0
-            reasons.append("Sin tripletas estructuradas")
+            # Estado sin tripletas: no forzar inefabilidad automáticamente
+            # Puede ser un estado puramente afectivo sin estructura semántica explícita
+            metrics["pattern_coherence"] = 0.5  # Neutral
+            # No agregar a reasons - permitir estados sin tripletas
         
         # Decisión
         translatable = len(reasons) == 0
