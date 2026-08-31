@@ -5,6 +5,7 @@ Usa la misma semilla base (1337) + semilla por concepto para reproducibilidad to
 No usa numpy (entorno stdlib puro) — implementación simple de vector aleatorio normalizado.
 """
 
+import os
 import random
 import math
 import json
@@ -149,9 +150,10 @@ def verify_orthogonality(vectors: Dict[str, List[float]], threshold: float = 0.1
 
 
 if __name__ == "__main__":
-    # Generar y verificar
-    ontology_path = "/home/delorien/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/ontology/base_concepts.json"
-    output_path = "/home/delorien/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/ontology/hrr_vectors.json"
+    # Generar y verificar (paths relativos al archivo, no hardcodeados)
+    _here = os.path.dirname(os.path.abspath(__file__))
+    ontology_path = os.path.join(_here, "base_concepts.json")
+    output_path = os.path.join(_here, "hrr_vectors.json")
 
     print("Generando vectores HRR...")
     vectors = generate_all_vectors(ontology_path, output_path)
@@ -171,7 +173,7 @@ if __name__ == "__main__":
             print(f"    {a} <-> {b}: {sim:.4f}")
 
     # Guardar reporte
-    report_path = "/home/delorien/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/ontology/hrr_verification.json"
+    report_path = os.path.join(_here, "hrr_verification.json")
     with open(report_path, 'w') as f:
         json.dump(result, f, indent=2)
     print(f"Reporte guardado en {report_path}")

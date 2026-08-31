@@ -14,7 +14,9 @@ import os
 import json
 import random
 
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+# Bootstrap: raíz del repo en sys.path antes de importar pandora (portátil)
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, REPO_ROOT)
 
 from sgm.core.sgm_core import SGMAgentCore
 from pandora.core.pandora_agent import PandoraAgent
@@ -42,8 +44,8 @@ def create_base_sgm(seed: int = 42, D: int = 128, n_nodes: int = 64) -> SGMAgent
 
 def load_ontology_vectors() -> dict:
     """Genera y verifica vectores HRR para ontología base."""
-    ontology_path = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/ontology/base_concepts.json")
-    output_path = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/ontology/hrr_vectors.json")
+    ontology_path = os.path.join(REPO_ROOT, "pandora", "ontology", "base_concepts.json")
+    output_path = os.path.join(REPO_ROOT, "pandora", "ontology", "hrr_vectors.json")
     
     vectors = generate_all_vectors(ontology_path, output_path)
     result = verify_orthogonality(vectors)
@@ -70,7 +72,7 @@ def save_checkpoint_zero(sgm: SGMAgentCore, checkpoint_path: str):
 
 def create_agent_dirs():
     """Crea estructura de directorios necesaria."""
-    base = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora")
+    base = os.path.join(REPO_ROOT, "pandora")
     dirs = [
         "logs", "state", "checkpoints", "journal", 
         "ontology", "config", "core", "transducer", 
@@ -108,7 +110,7 @@ def main():
     
     # 5. Checkpoint 0
     print("\n5. Guardando checkpoint 0...")
-    checkpoint_path = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/pandora/checkpoints/sgm_state.npy")
+    checkpoint_path = os.path.join(REPO_ROOT, "pandora", "checkpoints", "sgm_state.npy")
     save_checkpoint_zero(sgm, checkpoint_path)
     
     # 6. Estado final

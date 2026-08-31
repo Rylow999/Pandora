@@ -13,7 +13,8 @@ import os
 import json
 import argparse
 
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+# Bootstrap: raíz del repo en sys.path antes de importar pandora (portátil)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from pandora.core.pandora_agent import get_pandora_agent
 from pandora.core.homeostasis import get_homeostasis
