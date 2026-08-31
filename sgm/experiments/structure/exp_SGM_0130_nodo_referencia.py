@@ -37,7 +37,7 @@ senal ya esta en objetos.py (eat efectivo si cow/plant a la vista).
 """
 import sys, os, random, json
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -164,7 +164,7 @@ for seed in [42,7,99]:
     if ra["eat_efectivo"]>0:
         print(f"    >> ratio eat_efectivo/total gated: {ra['eat_efectivo']}/{ra['eat']}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0130_nodo_referencia.json")
 os.makedirs(os.path.dirname(out),exist_ok=True)
 json.dump({

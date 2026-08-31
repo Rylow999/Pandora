@@ -13,7 +13,7 @@ deberia empezar a craftear ANTES de que la comida se acabe.
 """
 import sys, os, random, json
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/sgm-test"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 
@@ -134,7 +134,7 @@ for i in range(1, len(vidas)):
     print("  Vida %d→%d: pasos %+d, variedad %s%d" % (i-1, i, diff_pasos, simbolo, diff_var))
 
 # Guardar
-out = os.path.expanduser("~/sgm-test/results_multiples_vidas.json")
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_multiples_vidas.json")
 with open(out, "w") as f:
     json.dump({"experiment": "crafter_multiples_vidas", "n_vidas": N_VIDAS, "vidas": vidas}, f, indent=2)
 print("\n  Resultados guardados en: %s" % out)

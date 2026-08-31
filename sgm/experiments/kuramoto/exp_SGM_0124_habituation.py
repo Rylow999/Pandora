@@ -10,7 +10,7 @@ Protocolo A(inst+curio+despl con compuerta) / B(solo desplaz) / NC(PPR puro).
 """
 import sys, os, random, math, json
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -190,7 +190,7 @@ print(f" PASS sup A>B:     {pass_supervivencia} ({ra['pasos']} vs {rb['pasos']})
 print(f" PASS explora A>B: {pass_explora} ({len(ra['tiles'])} vs {len(rb['tiles'])})")
 print("=" * 70)
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0124_habituation.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

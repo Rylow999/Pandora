@@ -22,7 +22,7 @@ LITERATURA: Piaget (object permanence), world models (Ha & Schmidhuber 2018), Lo
 2310.10372: imaginar trayectoria de objetos), affordances (Gibson 1979).
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -165,7 +165,7 @@ print("=" * 70)
 for seed in [42, 7]:
     r = correr(seed, max_p=900, nvidas=3)
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0144_modelo_objeto.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

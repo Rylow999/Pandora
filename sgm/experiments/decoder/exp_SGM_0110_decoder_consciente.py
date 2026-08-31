@@ -13,7 +13,7 @@ Si el decoder ayuda, el agente con decoder tendra mas variedad de acciones.
 """
 import sys, os, random, math
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 
@@ -151,7 +151,7 @@ print(f"\n  PASS (decoder aumenta variedad sin aumentar noop): {pass_test}")
 
 # Guardar
 import json
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0110_decoder_consciente.json")
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0110_decoder_consciente.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({
     "experiment_id":"exp_SGM_0110",

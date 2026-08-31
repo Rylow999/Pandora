@@ -22,7 +22,7 @@ SI CIERTA: descubrio_comp incluye place_table Y make* => primera sintesis lograd
 SI FALSA: muere antes o no conecta la secuencia (el conocimiento no se traduce en accion).
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -173,7 +173,7 @@ for seed in [42]:
     res, logros, pasos = run(seed, n_lives=8)
     print(f"\n  seed {seed}: {pasos} pasos totales, logros desbloqueados = {logros}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0151_mundo_persistente.json")
 os.makedirs(os.path.dirname(out),exist_ok=True)
 json.dump({

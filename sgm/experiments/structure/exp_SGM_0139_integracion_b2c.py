@@ -18,7 +18,7 @@ Se guarda un LOG por seed para el analisis de patrones (filtrar/analizar despues
 """
 import sys, os, random, json, hashlib
 from collections import Counter, defaultdict
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -214,7 +214,7 @@ for seed in SEEDS:
           f"muerte={res['muerte']} food_fin={res['food_final']} hp_fin={res['hp_final']}")
     print(f"    frec: {list(res['frec_acciones'].items())[:3]}...")
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0139_integracion_b2c.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

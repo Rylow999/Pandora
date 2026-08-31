@@ -16,8 +16,8 @@ Se registra:
 Registro incremental (JSON parcial) para no perder nada ante interrupcion.
 """
 import sys, os, random, json, time
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/experiments"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 from sgm_lang_interfaz import InterfazLenguaje
@@ -116,7 +116,7 @@ def maraton(seed, n_vidas=100, pasos_max=1500):
             "velocidad_pasos_s": round(total/max(0.1, time.time()-t_inicio), 1)}
 
 def _guardar_parcial(estado):
-    out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+    out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                              "results/results_exp_SGM_0174_maraton_final.json")
     json.dump(estado, open(out, "w"), indent=2, default=str)
     return out

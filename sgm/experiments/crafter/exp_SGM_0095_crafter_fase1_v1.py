@@ -5,7 +5,7 @@ Un solo agente, estado semantico (info['semantic']), sustrato consolidado.
 Objetivo: que el episodio no se rompa.
 """
 import sys, os, random, math, json
-sys.path.insert(0, os.path.expanduser("~/sgm-test"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent, HDC, HRR
 
 import crafter

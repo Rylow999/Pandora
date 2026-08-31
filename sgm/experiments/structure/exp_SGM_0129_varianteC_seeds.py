@@ -20,7 +20,7 @@ LITERATURA: Panksepp 1998 (SEEKING); Friston active inference; Hafner/Crafter 20
 """
 import sys, os, random, json
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -136,7 +136,7 @@ print(f"  seeds que comen (eat>0): {len(n_come)}/3")
 print(f"  seeds que se mueven (mov>10): {len(n_muve)}/3")
 print("="*70)
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0129_varianteC_seeds.json")
 os.makedirs(os.path.dirname(out),exist_ok=True)
 json.dump({

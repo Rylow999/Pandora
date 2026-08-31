@@ -27,7 +27,7 @@ Crafter paper (Hafner ICLR 2022: RL aprenden acople del input, no lo pre-calcula
 """
 import sys, os, random, json, hashlib
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -211,7 +211,7 @@ for seed in [42, 7, 99]:
           f"place_creados={res['place_creados']}(total {res['n_place_cells']}) "
           f"consol={res['consol']} muerte={res['muerte']}")
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0138_place_cells_emergentes.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

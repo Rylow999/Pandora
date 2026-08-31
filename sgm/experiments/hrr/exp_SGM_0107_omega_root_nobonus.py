@@ -6,7 +6,7 @@ NC: comparar con exp_SGM_0106_rev2 (sin omega_root). Si el comportamiento es
 similar, la raiz sin bonus no interfiere.
 """
 import sys, os, random
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 from collections import Counter
@@ -61,7 +61,7 @@ print(f"\nPASS (noop<50%): {noop_pct < 50}")
 print("="*60)
 
 import json, os
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0107_omega_root_nobonus.json")
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0107_omega_root_nobonus.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 output={
     "experiment_id":"exp_SGM_0107",

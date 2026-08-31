@@ -20,7 +20,7 @@ Metodo:
 """
 import sys, os, random, math
 from collections import Counter, defaultdict
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 
@@ -171,7 +171,7 @@ for l in log[::30]:
 
 # Guardar
 import json, os
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0105_reward_novedad.json")
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0105_reward_novedad.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 output = {
     "experiment_id": "exp_SGM_0105",

@@ -19,7 +19,7 @@ NC: barajar las etiquetas de accion y ver que el bigrama NO aprenda nada (top1 ~
 """
 import sys, os, random, math, json
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 
@@ -166,7 +166,7 @@ output = {
     "notes": "Primera prueba del decoder L2 sobre comportamiento real del agente (no corpus sintetico). El bigrama aprende la secuencia de acciones del agente en Crafter. Si la secuencia tiene estructura (el agente no hace todo al azar), el bigrama la capta. Si el agente hace ruido puro, el bigrama da ~azar.",
     "notes_criollo": "El bigrama ya sabia predecir tokens de un lenguaje de juguete (0022). Ahora le damos la secuencia de lo que el agente hizo en Crafter: noop, move_left, make_sword, etc. Si el agente tiene patrones (despues de move_left suele venir move_right), el bigrama los aprende y acierta mejor que casualidad. Si el agente hace cualquier cosa al azar, el bigrama no aprende nada. Es el primer paso para que el sistema pueda 'contar su propia historia': primero tiene que tener una historia que contar."
 }
-out_path = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0104_decoder_auto_narrativa.json")
+out_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0104_decoder_auto_narrativa.json")
 os.makedirs(os.path.dirname(out_path), exist_ok=True)
 with open(out_path, "w") as f:
     json.dump(output, f, indent=2, ensure_ascii=False)

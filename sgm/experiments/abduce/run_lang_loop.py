@@ -6,7 +6,7 @@ proceso se detiene se guarde TODA la info (diccionario, datos_train, estado del
 agente, pesos) y se recupere al reiniciar (cargar_todo).
 """
 import sys, os, random, time, signal, importlib
-SGM = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM")
+SGM = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, SGM); sys.path.insert(0, os.path.join(SGM, "experiments"))
 import sgm_core
 from sgm_lang_interfaz import InterfazLenguaje

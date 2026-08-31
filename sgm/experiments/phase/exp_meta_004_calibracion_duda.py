@@ -16,12 +16,12 @@ Criterio de pase:
   - correlacion real > 0.30
   - NC da correlacion ~ 0 (dentro de ruido)
 
-Dependencias: solo stdlib + sgm_core.py (ya en ~/sgm-test/)
+Dependencias: solo stdlib + sgm_core.py (ya en os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/)
 """
 import sys, os, math, random, json
 from collections import Counter
 
-sys.path.insert(0, os.path.expanduser("~/sgm-test"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import HDC, HRR
 
 random.seed(420)
@@ -282,7 +282,7 @@ def main():
         ),
     }
 
-    out_path = os.path.expanduser("~/sgm-test/results_meta_004.json")
+    out_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_meta_004.json")
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
     print("\n[*] Resultados guardados en: %s" % out_path)

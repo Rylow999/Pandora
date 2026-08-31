@@ -18,7 +18,7 @@ Se mide la frecuencia de cada condicion para ver el cuello de botella real.
 STDOUT legible con contadores de cada etapa de la cadena.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -167,7 +167,7 @@ print("\n=== contadores de la cadena (contexto) ===")
 for k,v in diag.items():
     print(f"  {k}: {v}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0168_drive_busqueda_comida.json")
 json.dump({
   "experiment_id":"exp_SGM_0168","experiment_name":"drive_busqueda_comida_subsistencia",

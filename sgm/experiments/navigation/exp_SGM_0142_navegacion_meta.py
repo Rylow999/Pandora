@@ -25,7 +25,7 @@ LITERATURA: O'Keefe 1971 (place cells/navegacion), Tolman 1948 (cognitive map), 
 diseno de arbitro de modos (recuerdo dirigido a meta via mapa, Luciano).
 """
 import sys, os, random, json, hashlib
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -222,7 +222,7 @@ print("=" * 70)
 for seed in [42]:
     vr = correr(seed, max_p=1200, nvidas=5)
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0142_navegacion_meta.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

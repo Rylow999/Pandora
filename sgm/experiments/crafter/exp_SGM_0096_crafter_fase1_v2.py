@@ -5,7 +5,7 @@ Log por paso: accion, posicion, cambio de pos, repeticion, inventario.
 Objetivo: entender QUÉ hace el agente antes de morir.
 """
 import sys, os, random, math, json
-sys.path.insert(0, os.path.expanduser("~/sgm-test"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent, HDC, HRR
 import crafter
 
@@ -257,7 +257,7 @@ def main():
         print("    %-20s %d veces (%.1f%%)" % (act, cnt, cnt / len(all_actions) * 100))
     
     # Guardar resultados
-    out_path = os.path.expanduser("~/sgm-test/results_fase1.json")
+    out_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_fase1.json")
     with open(out_path, "w") as f:
         json.dump({
             "experiment": "crafter_fase1_baseline",

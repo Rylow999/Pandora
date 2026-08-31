@@ -33,7 +33,7 @@ Metricas:
 """
 import sys, os, random
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -142,7 +142,7 @@ print(f"  PASS mantiene querer de comer: {mantiene_querer}")
 print(f"{'='*70}")
 
 import json
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0122_desplazamiento.json")
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0122_desplazamiento.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({
     "experiment_id":"exp_SGM_0122",

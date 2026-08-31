@@ -23,7 +23,7 @@ Se corren V vidas del MISMO agente en el mismo mundo; entre vidas reset_episodio
 omega/conn_type/place_cells). Se mide: comida_efectivo por vida, pasos, tiles, muerte.
 """
 import sys, os, random, json, hashlib
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -176,7 +176,7 @@ for v in range(NV):
           f"comio_vac={res['comio_vacio']} mov={res['mov']} place={res['n_place']} "
           f"consol={res['consol']} muerte={res['muerte']} food_fin={res['food_fin']}")
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0141_autotelismo.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

@@ -20,7 +20,7 @@ adopta (vicario+explicito) sin tener que re-descubrirlo.
 Se mide: logros del conjunto, conexiones compartidas, velocidad de subsistencia.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -136,7 +136,7 @@ for seed in SEEDS:
                         "pasos": pasos, "conexiones_compartidas": share})
     print(f"\n  seed {seed}: {pasos} pasos, logros={logros}, conexiones compartidas={share}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0157_razonamiento_multigrafo.json")
 json.dump({
   "experiment_id":"exp_SGM_0157","experiment_name":"razonamiento_grafo_multigrafo_cruce_3seeds",

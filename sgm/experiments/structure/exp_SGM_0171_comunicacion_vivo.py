@@ -20,8 +20,8 @@ Se mide:
 Esto es el PRIMER dialogo real SGM <-> Luciano en el mundo.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/experiments"))
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 from sgm_lang_interfaz import InterfazLenguaje
@@ -146,7 +146,7 @@ print("\n=== EFECTO DE LAS INSTRUCCIONES (Luciano -> SGM) ===")
 for e in inst_efecto:
     print(f"  paso {e['paso']}: '{e['texto']}' -> reconocida={e['reconocida']} efecto={e['efecto']}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0171_comunicacion_vivo.json")
 json.dump({
   "experiment_id":"exp_SGM_0171","experiment_name":"comunicacion_en_vivo_sgm_luciano",

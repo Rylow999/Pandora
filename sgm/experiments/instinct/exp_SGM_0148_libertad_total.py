@@ -24,7 +24,7 @@ atractores/caos? ¿Aparecen mezclas de acciones que producen resultados? Se obse
 Se corren VARIAS seeds y VARIAS vidas con TIEMPO LARGO (max_p alto). Log detallado.
 """
 import sys, os, random, json, hashlib
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -150,7 +150,7 @@ for seed in SEEDS:
         print(f"  vida {v}: {res['pasos']}p {res['tiles']}tiles logros={res['n_logros']}/{' '.join(res['logros'][:6])}"
               f" consol={res['consol']} place={res['n_place']} conn_res={res['n_conn_resultado']}")
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0148_libertad_total.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

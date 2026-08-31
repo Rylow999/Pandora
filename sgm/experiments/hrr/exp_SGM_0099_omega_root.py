@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Smoke test: ω_root persistente + interocepcion + reset episodio"""
 import sys, os
-sys.path.insert(0, os.path.expanduser("~/sgm-test"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import random
 

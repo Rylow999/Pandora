@@ -16,7 +16,7 @@ la novedad es relevante. Si muere igual, el reward de novedad no cambia la super
 """
 import sys, os, random, math
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -139,7 +139,7 @@ pass_vive = (muerte_a is not None and pasos_a > 50)  # vivio "bastante" si paso 
 print(f"\n  Nota: si murió por hambre sin comer, el querer operativo NO está (come al azar).")
 
 import json
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0114_vivir_hasta_morir.json")
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0114_vivir_hasta_morir.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({
     "experiment_id":"exp_SGM_0114",

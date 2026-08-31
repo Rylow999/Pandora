@@ -24,7 +24,7 @@ LITERATURA: reward shaping (Ng et al. 1999), el desafio es mostrar que un cognit
 superar la muestra-ineficiencia de la RL.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -199,7 +199,7 @@ for seed in [42, 7]:
     r = correr(seed, max_p=900, nvidas=3)
     RESULTADOS.append({"seed": seed, "vidas": r})
 
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                          "results/results_exp_SGM_0146_reward_shaping.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({

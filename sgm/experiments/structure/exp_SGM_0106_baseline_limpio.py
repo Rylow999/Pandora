@@ -12,7 +12,7 @@ se comporta similar, el resto de mecanismos son los que estan interfiriendo.
 """
 import sys, os, random, math
 from collections import Counter
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import crafter
 
 # Construir SGMAgent SIN modificaciones complejas
@@ -118,7 +118,7 @@ print(f"  Si NOOP > 50%: el problema no son los mecanismos agregados — es mas 
 print(f"  {'='*50}")
 
 import json, os
-out = os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0106_baseline_limpio.json")
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0106_baseline_limpio.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 output = {
     "experiment_id": "exp_SGM_0106",

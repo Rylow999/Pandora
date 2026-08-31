@@ -18,7 +18,7 @@ Se mide: pasos hasta make/eat, logros acumulados, episodios recordados, cantidad
 la memoria/imaginacion influyo en la decision.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -137,7 +137,7 @@ res, logros, pasos, paso_make, paso_eat, n_imagino = run(42, n_lives=8)
 print(f"\n  seed 42: {pasos} pasos, logros={logros}, paso_make={paso_make}, paso_eat={paso_eat}, "
       f"n_imaginaciones={n_imagino}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0159_memoria_imag_subsistencia.json")
 json.dump({
   "experiment_id":"exp_SGM_0159","experiment_name":"fase9_memoria_imaginacion_subsistencia",

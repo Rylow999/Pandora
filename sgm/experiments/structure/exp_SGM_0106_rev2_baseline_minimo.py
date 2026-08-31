@@ -5,7 +5,7 @@ Verifica que con el core minimo (sin omega_root, sin bonus, sin modos, sin conn_
 el agente recupera el comportamiento de la v2 original (se mueve, come, explora).
 """
 import sys, os, random
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 from collections import Counter

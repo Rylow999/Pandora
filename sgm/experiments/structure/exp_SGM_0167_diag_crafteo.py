@@ -18,7 +18,7 @@ Se mide la frecuencia de cada condicion para ver el cuello de botella real.
 STDOUT legible con contadores de cada etapa de la cadena.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -165,7 +165,7 @@ for k,v in diag.items():
 print(f"\n  total pasos: {total}")
 print("\n  CUADRO: con wood>=2 tuvo cond para comp; con mesa+wood >=2 tenia make_cond_ok;")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0167_diag_crafteo.json")
 json.dump({
   "experiment_id":"exp_SGM_0167","experiment_name":"diagnostico_crafteo_un_grafo",

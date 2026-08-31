@@ -16,7 +16,7 @@ preservada) y el conocimiento se acumula en la colectividad mejor que en el mism
 Se mide: logros de cada mundo, y conciencia de propagacion (B adopta el hito de A).
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -151,7 +151,7 @@ print(" exp_SGM_0173 — COLECTIVIDAD: 2 grafos en MUNDOS SEPARADOS con PROPAGAC
 print("="*70)
 
 def _guardar(estado_json):
-    out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+    out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                            "results/results_exp_SGM_0173_colectividad_coldstart.json")
     json.dump(estado_json, open(out,"w"), indent=2, default=str)
     return out
@@ -184,7 +184,7 @@ print(f"  proceso B (su mundo): {tB} pasos, logros={sorted(lB)}, make={pMB}, eat
 nmB=len(agB.modelo_del_otro); mb=dict(agB.modelo_del_otro)
 print(f"  conocimiento propagado a B: {nmB} recursos -> {mb}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0173_colectividad_coldstart.json")
 json.dump({
   "experiment_id":"exp_SGM_0173","experiment_name":"colectividad_coldstart_crafteo",

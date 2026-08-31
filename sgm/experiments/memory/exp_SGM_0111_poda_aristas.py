@@ -8,7 +8,7 @@ lo que no.
 NC: comparar contra agente reiniciado (sin memoria entre vidas).
 """
 import sys, os, random
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from sgm.core.sgm_core import SGMAgent
 import crafter
 from collections import Counter
@@ -103,7 +103,7 @@ print(f"  PASS (poda hace persistencia util): {pass_test}")
 print(f"{'='*70}")
 
 import json
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/results/results_exp_SGM_0111_poda_aristas.json")
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "results/results_exp_SGM_0111_poda_aristas.json")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump({
     "experiment_id":"exp_SGM_0111",

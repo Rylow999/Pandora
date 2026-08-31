@@ -17,7 +17,7 @@ Se mide: logros del conjunto, paso hasta comer/craftear, n observaciones vicaria
 modelo del otro, y narrativa social/identidad de ambos grafos.
 """
 import sys, os, random, json
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -140,7 +140,7 @@ print("="*70)
 res, logros, pasos, pm, pe, nv = run(42, n_lives=20)
 print(f"\n  seed 42: {pasos} pasos, logros={logros}, paso_make={pm}, paso_eat={pe}, vicario={nv}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0165_maraton_mundo_interno_colectivo.json")
 json.dump({
   "experiment_id":"exp_SGM_0165","experiment_name":"maraton_mundo_interno_completo_colectividad",

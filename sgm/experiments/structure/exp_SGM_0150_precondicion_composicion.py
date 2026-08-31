@@ -27,7 +27,7 @@ desbloquea make_x en ≥1 vida, y se ve la red [recurso+accion]->tool en conn_ty
 Se corren varias seed/vidas. Se registra el GRAFO DE CONOCIMIENTO aprendido (recetas descubiertas).
 """
 import sys, os, random, json, hashlib
-sys.path.insert(0, os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM"))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 import importlib, sgm_core; importlib.reload(sgm_core)
 from sgm.core.sgm_core import SGMAgent
 import crafter
@@ -183,7 +183,7 @@ for seed in SEEDS:
         print(f"  vida {v}: {res['pasos']}p probadas_comp={len(res['probadas_comp'])} "
               f"descubrio={res['descubrio_comp']} consol={res['consol']} conn={res['n_conn']}")
 
-out=os.path.expanduser("~/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/"
+out=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ""
                        "results/results_exp_SGM_0150_grafo_conocimiento.json")
 os.makedirs(os.path.dirname(out),exist_ok=True)
 json.dump({
