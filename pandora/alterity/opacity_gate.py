@@ -172,18 +172,14 @@ class OpacityGate:
         Inyección mínima cuando el sistema está en silencio.
         Solo registra el evento internamente sin articular respuesta.
         """
-        # Parse simple: solo afectar hambre/amenaza si hay keywords
+        # Parse simple: detectar hostilidad para la señal de amenaza
+        # Keywords de hostilidad (señal de amenaza); sin metáfora de comida
         threat_keywords = ["ataque", "peligro", "daño", "matar", "destruir"]
-        food_keywords = ["comida", "hambre", "alimento", "comer"]
-        
         text_lower = user_text.lower()
-        
+
         if any(kw in text_lower for kw in threat_keywords):
             self.sgm._amenaza = min(1.0, self.sgm._amenaza + 0.3)
-        
-        if any(kw in text_lower for kw in food_keywords):
-            self.sgm._hambre_real = max(0.0, self.sgm._hambre_real - 0.2)
-        
+
         # Tick silencioso (sin articulación)
         self.sgm.step([0.1] * 128, list(range(self.env_valid_actions)))
     

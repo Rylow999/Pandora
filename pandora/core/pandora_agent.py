@@ -173,18 +173,26 @@ class PandoraAgent:
 
     def _inject_event_to_sgm(self, event: SemanticEvent):
         """Inyecta evento semántico en el SGM."""
-        # El SGM espera state_semantic (vector denso) para HDC.project
-        # Simplificado: activamos nodos por nombre via place cells / omega
         for t in event.triplets:
             for concept in [t.subject, t.predicate, t.object]:
-                # Buscar nodo con ese concepto (via place_cells o índice)
                 self._activate_concept(concept)
 
-        # Inyectar affect como señal homeostática
-        # valence: -1 (negativo) a 1 (positivo) -> _hambre_real: 1 (hambre) a 0 (saciado)
-        # arousal: 0 (calma) a 1 (alta activación) -> _amenaza: 0 a 1
-        self.sgm._hambre_real = max(0.0, 1.0 - event.affect.valence)  # valence 1.0 -> 0.0, valence -1.0 -> 2.0 (clamped)
+        # Inyectar afecto como señal interna (sin metáfora corporal).
+        # arousal (0=calma .. 1=activación) -> _amenaza: percepción de hostilidad.
+        # La valencia negativa NO se traduce a "hambre"; la fragmentación del
+        # grafo (aislamiento/desincronización) es lo que sube el deseo de
+        # integración, vía integridad_topologica(). Ver _read_dominant_state.
         self.sgm._amenaza = event.affect.arousal  # 0.0 a 1.0
+
+    def _deseo_integracion(self) -> float:
+        """Déficit de coherencia: cuánto "desea" Pandora reintegrar su self.
+
+        Reemplaza el _hambre_real corporal. Un self fragmentado (integridad
+        baja) desea integrarse; un self coherente no. Emerge del grafo, no se
+        inyecta desde fuera.
+        """
+        integridad = self.sgm.integridad_topologica()
+        return max(0.0, min(1.0, 1.0 - integridad))
 
     def _activate_concept(self, concept: str):
         """Activa un concepto en el grafo (busca place cell o crea activación)."""
@@ -220,12 +228,15 @@ class PandoraAgent:
                 triplets.append(Triplet(subject=f"NODO_{src}", predicate=ctype, object=f"NODO_{tgt}"))
 
         # Métricas homeostáticas — del estado REAL del grafo, no de constantes
-        # valence/arousal: del afecto inyectado (ya en _hambre_real/_amenaza)
-        valence = 1.0 - self.sgm._hambre_real * 2  # hambre alto => valence negativo
+        # arousal: percepción de hostilidad inyectada desde el afecto
         arousal = self.sgm._amenaza
-        # doubt: inversa de la integridad topológica (self fragmentado => duda alta)
-        integridad = self.sgm.integridad_topologica()
-        doubt = 1.0 - integridad if integridad is not None else 0.0
+        # deseo de integración: déficit de coherencia del self (reemplaza hambre)
+        deseo = self._deseo_integracion()
+        # valence: coherente con el deseo — un self integrado está en valencia
+        # positiva; un self fragmentado (deseo alto) cae a valencia negativa
+        valence = 1.0 - deseo * 2
+        # doubt: inversa directa de la integridad (fragmentación => duda)
+        doubt = deseo
         # contradiction: del status del SGM (ACTIVA / INCONCLUSA / CONTRADICTORIA)
         status = getattr(self.sgm, 'status', 'ACTIVA')
         contradiction = 0.8 if status == 'CONTRADICTORIA' else (0.3 if status == 'INCONCLUSA' else 0.0)
@@ -237,7 +248,8 @@ class PandoraAgent:
             arousal=arousal,
             doubt=doubt,
             contradiction=contradiction,
-            intent=Intent.RESPONDER
+            intent=Intent.RESPONDER,
+            metadata={"integracion": 1.0 - deseo, "deseo_integracion": deseo}
         )
 
     def receive(self, user_text: str) -> str:

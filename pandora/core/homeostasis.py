@@ -141,12 +141,16 @@ class Homeostasis:
                 # nodos con vitalidad significativa contribuyen
                 pass
 
-        # Usar homeostasis interna del SGM
-        valence = 1.0 - getattr(sgm, '_hambre_real', 0.0) * 2
+        # Deseo de integración desde el grafo (reemplaza _hambre_real corporal)
+        if hasattr(sgm, 'integridad_topologica'):
+            deseo = max(0.0, min(1.0, 1.0 - sgm.integridad_topologica()))
+        else:
+            deseo = 1.0 - getattr(sgm, '_hambre_real', 0.0)
+        valence = 1.0 - deseo * 2
         arousal = getattr(sgm, '_amenaza', 0.0)
 
-        # Doubt: del status del arbitro / dudas
-        doubt = 1.0 - getattr(sgm, 'V_grafo', 1.0) if hasattr(sgm, 'V_grafo') else 0.0
+        # Doubt: igual al deseo (fragmentación => duda)
+        doubt = deseo
 
         # Contradicción: desde sgm.status (ACTIVA/INCONCLUSA/CONTRADICTORIA)
         status = getattr(sgm, 'status', 'ACTIVA')
