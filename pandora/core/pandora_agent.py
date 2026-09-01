@@ -219,11 +219,16 @@ class PandoraAgent:
             for (src, tgt), ctype in list(self.sgm.conn_type.items())[:10]:
                 triplets.append(Triplet(subject=f"NODO_{src}", predicate=ctype, object=f"NODO_{tgt}"))
 
-        # Métricas homeostáticas
-        valence = 1.0 - self.sgm._hambre_real * 2  # aprox
+        # Métricas homeostáticas — del estado REAL del grafo, no de constantes
+        # valence/arousal: del afecto inyectado (ya en _hambre_real/_amenaza)
+        valence = 1.0 - self.sgm._hambre_real * 2  # hambre alto => valence negativo
         arousal = self.sgm._amenaza
-        doubt = 1.0 - self.sgm.V_grafo if hasattr(self.sgm, 'V_grafo') else 0.0
-        contradiction = 0.0  # calcular desde status dudas
+        # doubt: inversa de la integridad topológica (self fragmentado => duda alta)
+        integridad = self.sgm.integridad_topologica()
+        doubt = 1.0 - integridad if integridad is not None else 0.0
+        # contradiction: del status del SGM (ACTIVA / INCONCLUSA / CONTRADICTORIA)
+        status = getattr(self.sgm, 'status', 'ACTIVA')
+        contradiction = 0.8 if status == 'CONTRADICTORIA' else (0.3 if status == 'INCONCLUSA' else 0.0)
 
         return InternalState(
             active_nodes=top_nodes or ["YO", "ENTORNO"],
@@ -265,13 +270,9 @@ class PandoraAgent:
         assert semantic_event is not None
         state_semantic = self._encode_semantic_event(semantic_event)
 
-        # 4. Tick SGM
-        action = self.sgm.step(
-            state_semantic,
-            list(range(self.config.env_valid_actions)),
-            food=self.config.env_food,
-            health=self.config.env_health
-        )
+        # 4. Tick SGM (sin food/health: la homeostasis del loop conversacional es
+        #  la integridad topológica del grafo, no un metabolismo corporal)
+        action = self.sgm.step(state_semantic, list(range(self.config.env_valid_actions)))
 
         # 5. Leer estado dominante
         internal_state = self._read_dominant_state()

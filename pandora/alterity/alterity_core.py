@@ -145,7 +145,7 @@ class AlterityAgent:
         if not silence_decision.should_speak:
             # SILENCIO: solo inyección mínima + tick
             self.opacity_gate.inject_event_minimal(user_text)
-            self.base_agent.sgm.step([0.1] * 128, list(range(self.config.env_valid_actions)), food=self.config.env_food, health=self.config.env_health)
+            self.base_agent.sgm.step([0.1] * 128, list(range(self.config.env_valid_actions)))
             self.alterity_metrics["silence_events"] += 1
             
             # Registrar en journal
@@ -180,7 +180,7 @@ class AlterityAgent:
             if not immune_response.accepted:
                 # RECHAZO: inyectar respuesta de amenaza + tick
                 threat_vec, msg = self.immune_system.create_rejection_response(event_vector)
-                self.base_agent.sgm.step(threat_vec, list(range(self.config.env_valid_actions)), food=self.config.env_food, health=self.config.env_health)
+                self.base_agent.sgm.step(threat_vec, list(range(self.config.env_valid_actions)))
                 self.alterity_metrics["immune_rejections"] += 1
                 
                 # Registrar
@@ -199,7 +199,7 @@ class AlterityAgent:
                 self.alterity_metrics["immune_degradations"] += 1
                 degraded_vec, msg = self.immune_system.create_degradation_response(event_vector)
                 # Usar vector degradado para tick
-                self.base_agent.sgm.step(degraded_vec, list(range(self.config.env_valid_actions)), food=self.config.env_food, health=self.config.env_health)
+                self.base_agent.sgm.step(degraded_vec, list(range(self.config.env_valid_actions)))
                 # Continuar con flujo normal para articulación
             elif immune_response.recommended_action == "ISOLATE":
                 self.alterity_metrics["immune_isolations"] += 1
@@ -212,7 +212,7 @@ class AlterityAgent:
                 
                 # Continuar con flujo normal pero con vector degradado
                 degraded_vec, msg = self.immune_system.create_degradation_response(event_vector)
-                self.base_agent.sgm.step(degraded_vec, list(range(self.config.env_valid_actions)), food=self.config.env_food, health=self.config.env_health)
+                self.base_agent.sgm.step(degraded_vec, list(range(self.config.env_valid_actions)))
                 # Continuar con flujo normal para articulación
         
         # 4. INYECCIÓN NORMAL + TICK SGM
@@ -220,7 +220,7 @@ class AlterityAgent:
         assert semantic_event is not None
         self.base_agent._inject_event_to_sgm(semantic_event)
         state_semantic = self.base_agent._encode_semantic_event(semantic_event)
-        self.base_agent.sgm.step(state_semantic, list(range(self.config.env_valid_actions)), food=self.config.env_food, health=self.config.env_health)
+        self.base_agent.sgm.step(state_semantic, list(range(self.config.env_valid_actions)))
         
         # 5. LEER ESTADO DOMINANTE (pasar semantic_event para tripletas)
         internal_state = self.base_agent._read_dominant_state(semantic_event)

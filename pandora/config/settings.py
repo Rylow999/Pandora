@@ -98,9 +98,7 @@ class PandoraConfig:
     llm_temperature: float = 0.2
     llm_num_predict: int = 128
 
-    # Entorno homeostático (valores por turno para el SGM embodied-base)
-    env_food: float = 10.0
-    env_health: float = 20.0
+    # Entorno (acciones válidas del loop conversacional)
     env_valid_actions: int = 17
 
 

@@ -126,6 +126,36 @@ class SGMAgentCore(SGMAgentGrafo):
         
         return True
 
+    # ============ INTEGRIDAD TOPOLÓGICA ============
+    def integridad_topologica(self) -> float:
+        """Salud/coherencia real del self, sin metáfora corporal.
+
+        Para un agente de lenguaje no hay estómago ni comida: la integridad
+        es la del grafo — qué tan conectado y qué tan sincronizado está.
+        Devuelve conectividad efectiva × coherencia de fase (order parameter),
+        en [0, 1]. Un insulto aísla nodos (baja conectividad); la hostilidad
+        desincroniza fases (baja coherencia). La regeneración es gradual:
+        la conectividad no vuelve de golpe, las fases se realinean despacio.
+        """
+        # Conectividad efectiva: fracción de nodos con al menos una arista
+        if not self.edges:
+            conectividad = 0.0
+        else:
+            no_aislados = sum(1 for v in self.edges.values() if len(v) > 0)
+            conectividad = no_aislados / max(1, len(self.edges))
+
+        # Coherencia de fase Kuramoto: |<e^{iφ}>|
+        phases = [p for p in self.phi if p is not None]
+        if not phases:
+            coherencia = 1.0
+        else:
+            coherencia = 0.0
+            for p in phases:
+                coherencia += math.cos(p)  # phi_root = 0
+            coherencia = abs(coherencia / len(phases))
+
+        return conectividad * coherencia
+
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
         a_eliminar = []
