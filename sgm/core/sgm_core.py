@@ -73,6 +73,10 @@ class SGMAgentCore(SGMAgentGrafo):
         self.mutacion_tasa = 0.05
         self.modo = "BASE"; self.modo_ticks = 0; self.ultima_accion = -1; self.conteo_repeticion = 0
         self._ultima_accion_ejec = -1; self.historial_acciones = []
+        # El hilo del ser: traza de omega visitados (recorrido vivo, T-ID-03).
+        # Guarda la SECUENCIA de vectores omega por los que pasa el nodo activo,
+        # no solo el omega final. Es lo que distingue al proceso del snapshot.
+        self.traza_omega = []
         # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
         self.historial_metas_l2 = []  # metas (razon->token) por paso, para L2
@@ -155,6 +159,31 @@ class SGMAgentCore(SGMAgentGrafo):
             coherencia = abs(coherencia / len(phases))
 
         return conectividad * coherencia
+
+    # ============ CONTINUIDAD DEL SER ============
+    def firma_identidad(self, traza_otra=None) -> float:
+        """Distancia entre esta traza y otra traza de omega (firma del ser).
+
+        T-ID-03: la fase phi converge y NO separa proceso de snapshot; la
+        SECUENCIA de omega sí (‖T_A - T_B‖ ~ 1.06 vs ruido ~4.09). Acá medimos
+        esa separación: distancia media normalizada entre trazas alineadas.
+
+        Devuelve 0 (misma traza, mismo recorrido) a ~1+ (recorrido distinto).
+        Un valor bajo tras cargar checkpoint = el hilo sobrevivió al reinicio;
+        un valor alto = empezó de una foto (otro).
+        """
+        a = getattr(self, 'traza_omega', [])
+        b = traza_otra if traza_otra is not None else a
+        if not a or not b:
+            return 0.0
+        n = min(len(a), len(b))
+        if n == 0:
+            return 0.0
+        # Distancia media entre vectores omega en posiciones correspondientes
+        dist = 0.0
+        for i in range(n):
+            dist += math.sqrt(sum((x - y) ** 2 for x, y in zip(a[i], b[i])))
+        return dist / n
 
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
@@ -270,7 +299,14 @@ class SGMAgentCore(SGMAgentGrafo):
             "conn_type": {str(k): v for k, v in self.conn_type.items()},
             "scope_depth": self.scope_depth, "place_cells": self.place_cells,
             "place_pos": self.place_pos, "V_grafo": self.V_grafo,
-            "E_acumulado": self.E_acumulado, "historial_campos": self.historial_campos[-1000:],
+            "E_acumulado": self.E_acumulado,
+            # El clavo permanente: aristas consolidadas por co-resonancia.
+            # Sin esto, reiniciar = borrar la historia de lo que "es".
+            "consolidadas": list(self.consolidadas),
+            # El hilo: traza de omega visitados (la firma del recorrido vivo).
+            # Distingue el proceso continuo del snapshot congelado (T-ID-03).
+            "traza_omega": self.traza_omega[-2000:] if hasattr(self, 'traza_omega') else [],
+            "historial_campos": self.historial_campos[-1000:],
             "historial_acciones_l2": self.historial_acciones_l2[-1000:],
             "historial_metas_l2": self.historial_metas_l2[-1000:]})
 
@@ -280,6 +316,12 @@ class SGMAgentCore(SGMAgentGrafo):
         for k in ["omega","phi","vitalidad","es_place_cell","edges","scope_depth","place_cells","place_pos","V_grafo","E_acumulado","historial_campos","historial_acciones_l2","historial_metas_l2"]:
             if k in d: setattr(self, k, d[k])
         self.conn_type = {eval(k): v for k, v in d.get("conn_type", {}).items()}
+        # Restaurar el clavo permanente (tuplas de aristas consolidadas)
+        if "consolidadas" in d and d["consolidadas"]:
+            self.consolidadas = set(d["consolidadas"])
+        # Restaurar la traza de omega (el hilo del ser)
+        if "traza_omega" in d and d["traza_omega"]:
+            self.traza_omega = d["traza_omega"]
         return True
 
     # ============ L2 ============
@@ -445,7 +487,12 @@ class SGMAgentCore(SGMAgentGrafo):
         om_r = self.hdc.project(state_semantic)
         self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
-        
+        # Registrar el omega visitado en la traza del ser (el hilo, T-ID-03).
+        # El recorrido vivo es la SECUENCIA de omega por los que pasa, no el final.
+        self.traza_omega.append(list(self.omega[self._seed]))
+        if len(self.traza_omega) > 2000:
+            self.traza_omega = self.traza_omega[-2000:]
+
         # 2. Homeostasis
         if food is not None and health is not None: self.actualizar_homeostasis(food, health)
         
