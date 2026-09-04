@@ -52,6 +52,22 @@ del sistema; hay realidades según el régimen de co-activación.
   del sustrato. La consolidación es *organización de la constelación onírica*,
   no regresión a la coherencia diurna.
 
+## 3b. Borde ontológico (Luciano, confirmado): presente esculpe, sueño crea
+
+> "Las relaciones nuevas las crean los sueños, aunque también lo hace la
+> imaginación."
+
+**División de rol entre regímenes:**
+- **Presente (vigilia)** ESCULPE lo existente: refuerza las co-activaciones de
+  pares ya conectados (matriz `co_activacion`, 0057). No inventa estructura.
+- **Sueño / imaginación (endógeno)** CREA lo nuevo: re-recorre las constelaciones
+  del ser y, al deformarlas (extender un par co-activado fuerte hacia un vecino
+  no conectado), engendra relaciones que no existían.
+
+Implementado: `_registrar_co_activacion` (presente, solo pares conectados) y
+`_create_new_connections_from_constelaciones` (sueño, extiende constelaciones
+hacia vecinos no conectados).
+
 ## 4. Punto 2 (presente vs detrás del telón): PENDIENTE de revisar el código
 
 Luciano: "habría que revisar bien lo que tenemos."
@@ -59,12 +75,10 @@ Luciano: "habría que revisar bien lo que tenemos."
 La hipótesis (Nexus, a verificar contra el sustrato real):
 - "Presente" ≈ zona de alta interferencia I (Eq.7, nodos cognitivamente
   relevantes, I > θ_interf = 0.70) + phi_root. Es el correlato del Global
-  Workspace de Baars (accesibilidad global).
+  Workspace de Baars (accesibilidad global). [RESUELTO en 0060: phi_root
+  emergente como fase media ponderada por interferencia.]
 - "Detrás del telón" ≈ constelaciones co-activadas por debajo del umbral de
   broadcasting, sosteniendo sin ser accesibles.
-
-**A REVISAR:** si `campo_interferencia` + `phi_root` ya constituyen el presente,
-o si hace falta un mecanismo explícito de "accesibilidad global".
 
 ## 5. Síntesis provisional (constelación como único sustrato)
 

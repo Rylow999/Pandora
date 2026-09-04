@@ -78,6 +78,21 @@ class EndogenousEngine:
         
         return list(active)[:limit]
 
+    def _get_constelaciones_del_ser(self, limit: int = 10) -> List[tuple]:
+        """Constelaciones más fuertes del ser (la matriz de co-activación, 0057).
+
+        El sueño re-recorre lo que el presente esculpió: los pares que más veces
+        se co-activaron juntos (co_activacion) son las constelaciones que el
+        sistema tiende a re-formar. El sueño las sueña, las deforma, y al
+        re-recorrerlas puede CREAR relaciones nuevas.
+
+        Retorna lista de (a, b, fuerza) ordenados por fuerza decreciente.
+        """
+        if not hasattr(self.sgm, 'co_activacion') or not self.sgm.co_activacion:
+            return []
+        pares = sorted(self.sgm.co_activacion.items(), key=lambda kv: -kv[1])
+        return [(a, b, v) for (a, b), v in pares[:limit]]
+
     def _get_high_valence_nodes(self, limit: int = 10) -> List[int]:
         """Nodos con alta valencia emocional (vitalidad extrema o trauma)."""
         candidates = []
@@ -148,26 +163,48 @@ class EndogenousEngine:
         # Correr tick con vector onírico como entrada (sin food/health corporal)
         self.sgm.step(dream_vector, list(range(self.env_valid_actions)))
 
-    def _create_new_connections(self, node_set: Set[int], prob: float = None):
-        """Crea nuevas aristas entre nodos recombinados (consolidación estructural)."""
+    def _create_new_connections_from_constelaciones(self, constelaciones: List[tuple], prob: float = None) -> int:
+        """El sueño CREA lo nuevo a partir de constelaciones existentes (0058).
+
+        Dado un par co-activado fuerte (a, b) — una constelación del ser —, el
+        sueño puede EXTENDERLA a un vecino c de a (o b) que aún no está conectado
+        con b (o a). Es la deformación onírica: la constelación se desborda y
+        crea una relación que no existía. No es recombinación aleatoria de
+        nodos sueltos: es la constelación generando su propio afuera.
+
+        Retorna número de aristas nuevas creadas.
+        """
         if prob is None:
             prob = self.recombination_rate
-        
-        nodes = list(node_set)
+
         new_edges = 0
-        
-        for i in range(len(nodes)):
-            for j in range(i + 1, len(nodes)):
-                if self.rng.random() < prob:
-                    a, b = nodes[i], nodes[j]
-                    if b not in self.sgm.edges[a]:
-                        self.sgm.edges[a].append(b)
-                        self.sgm.edges[b].append(a)
-                        # Tipo de conexión: TEMPORAL (consolidación offline)
-                        self.sgm.conn_type[(a, b)] = "TEMPORAL"
-                        self.sgm.conn_type[(b, a)] = "TEMPORAL"
+        for (a, b, fuerza) in constelaciones:
+            # Extender desde a: buscar vecinos de a no conectados a b
+            for c in self.sgm.edges.get(a, []):
+                if c == b:
+                    continue
+                if b not in self.sgm.edges.get(c, []):
+                    if self.rng.random() < prob:
+                        self.sgm.edges[c].append(b)
+                        self.sgm.edges[b].append(c)
+                        # Relación nueva con el tipo/count correcto (dict, no string)
+                        for clave in ((c, b), (b, c)):
+                            if clave not in self.sgm.conn_type:
+                                self.sgm.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 0.3, "age": 0}
                         new_edges += 1
-        
+            # Extender desde b: buscar vecinos de b no conectados a a
+            for c in self.sgm.edges.get(b, []):
+                if c == a:
+                    continue
+                if a not in self.sgm.edges.get(c, []):
+                    if self.rng.random() < prob:
+                        self.sgm.edges[c].append(a)
+                        self.sgm.edges[a].append(c)
+                        for clave in ((c, a), (a, c)):
+                            if clave not in self.sgm.conn_type:
+                                self.sgm.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 0.3, "age": 0}
+                        new_edges += 1
+
         return new_edges
 
     def run_consolidation(self, cycles: int = None) -> ConsolidationReport:
@@ -183,29 +220,32 @@ class EndogenousEngine:
         total_new_connections = 0
         
         for cycle in range(cycles):
-            # 1. Seleccionar candidatos
+            # 1. Seleccionar candidatos (para el vector onírico)
             recent = set(self._get_recent_active_nodes(10))
             emotional = set(self._get_high_valence_nodes(10))
             weak = set(self._get_low_vitality_nodes(5))
             
             candidates = recent | emotional | weak
             
-            if not candidates:
+            # 2. Constelaciones del ser (los pares co-activados, 0057)
+            constelaciones = self._get_constelaciones_del_ser(10)
+            
+            if not candidates and not constelaciones:
                 break
             
-            # 2. Recombinar
-            dream_vector = self._recombine_nodes(candidates)
+            # 3. Recombinar nodos (si hay) en un vector onírico deformado
+            if candidates:
+                dream_vector = self._recombine_nodes(candidates)
+                # Inyectar evento onírico
+                try:
+                    self._inject_dream_event(dream_vector)
+                except (AttributeError, TypeError) as e:
+                    # SGM step failed due to conn_type structure, skip this cycle
+                    pass
             
-            # 3. Inyectar evento onírico
-            try:
-                self._inject_dream_event(dream_vector)
-            except (AttributeError, TypeError) as e:
-                # SGM step failed due to conn_type structure, skip this cycle
-                pass
-            
-            # 4. Crear conexiones nuevas (cada 3 ciclos)
-            if cycle % 3 == 0:
-                new_conns = self._create_new_connections(candidates)
+            # 4. El sueño CREA lo nuevo a partir de las constelaciones (cada 3 ciclos)
+            if cycle % 3 == 0 and constelaciones:
+                new_conns = self._create_new_connections_from_constelaciones(constelaciones)
                 total_new_connections += new_conns
             
             # 5. Registrar evento onírico
@@ -213,12 +253,13 @@ class EndogenousEngine:
                 "cycle": cycle,
                 "seed_node": self.sgm._seed,
                 "candidates_used": len(candidates),
+                "constelaciones_used": len(constelaciones),
                 "recent_count": len(recent),
                 "emotional_count": len(emotional),
                 "weak_count": len(weak)
             })
             
-            # Podar ocasionalmente
+            # Podar ocasionalmente (solo aristas no consolidadas)
             if cycle % 7 == 0:
                 try:
                     self.sgm.podar_aristas(umbral=0.01)

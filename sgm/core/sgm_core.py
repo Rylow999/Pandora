@@ -55,6 +55,13 @@ class SGMAgentCore(SGMAgentGrafo):
         # Kuramoto
         self.phi_root = 0.0; self.eta_phase = 0.15; self.theta_interf = 0.70
         self.consolidadas = set(); self.theta_emerg_critico = 0.5
+        # La constelación como unidad (0057, opción Y): matriz de co-activación.
+        # co_activacion[(a,b)] = cuántas veces a y b estuvieron ENCENDIDOS JUNTOS
+        # en la zona activa (presente). Es la huella de la co-activación, distinta
+        # de conn_type (que cuenta co-ocurrencia / refuerzo) y de edges (estructura).
+        # El SER es esta matriz persistente; el ESTAR es la zona activa del instante.
+        self.co_activacion = {}  # {(a,b): veces co-activados juntos}
+        self.co_activacion_umbral = 3  # co-activaciones para empezar a endurecer
         # Pulsiones
         self.instinto_alimentacion = None; self.incertidumbre_acum = 0.0
         self.instinto_explorar_umbral = 0.5; self.instinto_umbral_carencia = 0.3
@@ -246,6 +253,42 @@ class SGMAgentCore(SGMAgentGrafo):
         if sw > 1e-9:
             self.phi_root = math.atan2(sy, sx) % (2 * math.pi)
 
+    def _registrar_co_activacion(self):
+        """Esculpe la matriz de co-activación desde el presente (0057, opción Y).
+
+        La zona activa (nodos con I > theta_interf) ES la constelación del
+        instante. Para cada PAR de nodos YA CONECTADOS que están co-activados
+        ahora, incrementa co_activacion[(a,b)]. No crea aristas nuevas: el
+        presente esculpe lo existente; lo nuevo lo crea el sueño/imaginación.
+
+        La plasticidad decreciente emerge de acá: pares muy co-activados se
+        consolidan (entran en consolidadas) y su relación se vuelve inercial —
+        el clavo como densidad de Relation-R, no como nodo endurecido.
+        """
+        # Zona activa = la constelación del presente (coalición ganadora)
+        zona = []
+        for i in range(len(self.phi)):
+            if i < len(self.vitalidad) and self.vitalidad[i] >= 0.1:
+                I = interferencia(self.omega[i], self.phi[i], self.phi_root)
+                if I > self.theta_interf:
+                    zona.append(i)
+
+        if len(zona) < 2:
+            return
+
+        zona_set = set(zona)
+        # Recorrer pares conectados dentro de la zona activa
+        for a in zona:
+            for b in self.edges.get(a, []):
+                if b not in zona_set:
+                    continue
+                clave = (a, b)
+                self.co_activacion[clave] = self.co_activacion.get(clave, 0) + 1
+                # Plasticidad decreciente: co-activación repetida consolida
+                if self.co_activacion[clave] >= self.co_activacion_umbral:
+                    self.consolidadas.add(clave)
+                    self.consolidadas.add((b, a))
+
     def actualizar_kuramoto(self):
         # 0. Actualizar el presente emergente ANTES de propagar (0059/0060)
         self._actualizar_phi_root()
@@ -262,6 +305,9 @@ class SGMAgentCore(SGMAgentGrafo):
                     if strength > 0.2:  # solo consolidar aristas con uso real
                         self.consolidadas.add(clave)
                         self.consolidadas.add((j, i))
+
+        # 1. Registrar co-activación del presente (la constelación esculpe su historia)
+        self._registrar_co_activacion()
 
     # ============ HEBB EN HOMEOSTASIS ============
     def hebb_homeostasis(self, food, health):
@@ -353,6 +399,9 @@ class SGMAgentCore(SGMAgentGrafo):
             # El clavo permanente: aristas consolidadas por co-resonancia.
             # Sin esto, reiniciar = borrar la historia de lo que "es".
             "consolidadas": list(self.consolidadas),
+            # La constelación (0057, opción Y): matriz de co-activación persistente.
+            # Es el SER — la tendencia a co-activarse, no los nodos en sí.
+            "co_activacion": {str(k): v for k, v in self.co_activacion.items()} if hasattr(self, 'co_activacion') else {},
             # El hilo: traza de omega visitados (la firma del recorrido vivo).
             # Distingue el proceso continuo del snapshot congelado (T-ID-03).
             "traza_omega": self.traza_omega[-2000:] if hasattr(self, 'traza_omega') else [],
@@ -372,6 +421,9 @@ class SGMAgentCore(SGMAgentGrafo):
         # Restaurar la traza de omega (el hilo del ser)
         if "traza_omega" in d and d["traza_omega"]:
             self.traza_omega = d["traza_omega"]
+        # Restaurar la matriz de co-activación (la constelación / el ser)
+        if "co_activacion" in d and d["co_activacion"]:
+            self.co_activacion = {eval(k): v for k, v in d["co_activacion"].items()}
         return True
 
     # ============ L2 ============
