@@ -199,7 +199,57 @@ class SGMAgentCore(SGMAgentGrafo):
                 if a in self.edges.get(b, []): self.edges[b].remove(a)
 
     # ============ KURAMOTO (Eq.3) ============
+    def _actualizar_phi_root(self):
+        """Computa el presente emergente: fase media de la constelación activa.
+
+        NOTA_TECNICA_0060 (opción A): phi_root ya no es un 0.0 fijo. Es la fase
+        media (ψ de Kuramoto) de la zona activa — los nodos con interferencia
+        alta respecto a la referencia anterior — ponderados por su relevancia.
+
+        - La referencia EMERGE del colectivo (Kuramoto ReiΨ), no se impone.
+        - Al ponderar por interferencia, la coalición ganadora domina el presente
+          (Dehaene/Baars: winner-take-all + ignition).
+        - Si la zona activa está vacía (nadie supera el umbral), respaldo:
+          promedio global ponderado por vitalidad (el "centro de masa").
+
+        El estar mueve el presente; el ser es la tendencia del presente a
+        anclarse en los clavos (interferencia persistentemente alta).
+        """
+        if not self.phi or not self.omega:
+            return
+
+        # Zona activa: nodos vivos con interferencia alta vs referencia anterior
+        zona = []
+        for i in range(len(self.phi)):
+            if i < len(self.vitalidad) and self.vitalidad[i] >= 0.1:
+                I = interferencia(self.omega[i], self.phi[i], self.phi_root)
+                if I > 0.0:  # interferencia positiva = alineado con el presente
+                    zona.append((i, I))
+
+        if not zona:
+            # Respaldo: fase media global ponderada por vitalidad (centro de masa)
+            zona = [(i, self.vitalidad[i]) for i in range(len(self.phi))
+                    if i < len(self.vitalidad) and self.vitalidad[i] > 0.0]
+
+        if not zona:
+            return
+
+        # Fase media ponderada: ψ = phase( Σ w_j · exp(i·φ_j) )
+        sx = sy = 0.0
+        sw = 0.0
+        for i, w in zona:
+            w = max(0.0, w)
+            sx += w * math.cos(self.phi[i])
+            sy += w * math.sin(self.phi[i])
+            sw += w
+
+        if sw > 1e-9:
+            self.phi_root = math.atan2(sy, sx) % (2 * math.pi)
+
     def actualizar_kuramoto(self):
+        # 0. Actualizar el presente emergente ANTES de propagar (0059/0060)
+        self._actualizar_phi_root()
+
         for i in range(len(self.phi)):
             dist = math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], self.omega[0]))) if self.omega else 0.0
             R = 1.0 / (1.0 + dist); delta = math.sin(self.phi_root - self.phi[i])
