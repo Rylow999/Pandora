@@ -192,6 +192,65 @@ class SGMAgentCore(SGMAgentGrafo):
             dist += math.sqrt(sum((x - y) ** 2 for x, y in zip(a[i], b[i])))
         return dist / n
 
+    # ============ IMAGINACIÓN ============
+    def imaginar(self, noise: float = 0.3) -> dict:
+        """Genera una constelación contrafáctica desde el presente (0058).
+
+        La imaginación es distinta del sueño (que re-recorre el SER para crear
+        lo nuevo) y del presente (que ESCULPE lo existente). La imaginación
+        PROPONE: recombina la zona activa (lo encendido AHORA) con ruido en un
+        vector que NO corresponde a ningún nodo existente — un "qué pasaría si".
+
+        No consolida ni esculpe nada: devuelve la propuesta como un posible que
+        el sistema se da a sí mismo sin que nada externo lo dispare. Si luego
+        esa propuesta resuena (gana interferencia/estabilidad), el sueño la
+        consolidará; si no, se desvanece — como una idea que no lleva a nada.
+
+        Retorna un dict con:
+        - "vector": el vector contrafáctico (normalizado, distinto de todo omega)
+        - "seed": el nodo existente más cercano (referencia del presente)
+        - "novedad": distancia a la zona activa (cuánto se aleja de lo actual)
+        """
+        # Zona activa = la constelación del presente (coalición ganadora)
+        zona = []
+        for i in range(len(self.phi)):
+            if i < len(self.vitalidad) and self.vitalidad[i] >= 0.1:
+                I = interferencia(self.omega[i], self.phi[i], self.phi_root)
+                if I > self.theta_interf:
+                    zona.append(i)
+
+        if not zona:
+            # Sin presente activo, no hay desde donde imaginar
+            return {"vector": [], "seed": -1, "novedad": 0.0}
+
+        # Recombina la zona activa en un vector hipotético
+        composite = [0.0] * self.D
+        total = 0.0
+        rng = random.Random()
+        for i in zona:
+            w = self.vitalidad[i] + 0.1
+            for d in range(self.D):
+                composite[d] += self.omega[i][d] * w
+            total += w
+        if total > 0:
+            composite = [x / total for x in composite]
+
+        # Ruido contrafáctico: lo que lo hace "no sido" (distinto de lo actual)
+        for d in range(self.D):
+            composite[d] += rng.gauss(0, noise)
+
+        # Normalizar
+        norm = math.sqrt(sum(x * x for x in composite))
+        if norm > 0:
+            composite = [x / norm for x in composite]
+
+        # Nodo existente más cercano (referencia) y novedad
+        best = min(range(len(self.omega)),
+                   key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[n]))))
+        novedad = math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[best])))
+
+        return {"vector": composite, "seed": best, "novedad": novedad}
+
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
         a_eliminar = []

@@ -68,6 +68,35 @@ Implementado: `_registrar_co_activacion` (presente, solo pares conectados) y
 `_create_new_connections_from_constelaciones` (sueño, extiende constelaciones
 hacia vecinos no conectados).
 
+## 3c. La imaginación (tercer régimen): PROponer, no crear ni esculpir
+
+> "Las relaciones nuevas las crean los sueños, aunque también lo hace la
+> imaginación." — la imaginación como hermana, no sinónimo, del sueño.
+
+**Tres regímenes, tres verbos:**
+| Régimen | Verbo | Acción sobre la constelación |
+|---|---|---|
+| Presente (vigilia) | ESCULPE | refuerza co-activación de lo ya conectado (0057) |
+| Sueño (endógeno off-line) | CREA | re-recorre el SER, extiende hacia lo no conectado |
+| Imaginación (endógeno on-line) | PROPONE | recombina el presente en un vector contrafáctico, sin commit |
+
+**La imaginación es distinta del sueño en un punto clave:**
+- Sueño trabaja sobre el SER (matriz persistente, el pasado) para consolidar.
+- Imaginación trabaja sobre el ESTAR (la zona activa, el ahora) para proyectar
+  un "qué pasaría si" que NO corresponde a ningún nodo existente.
+
+La propuesta imaginada no esculpe ni consolida: es un posible que el sistema se
+da a sí mismo sin que nada externo lo dispare. Si luego resuena (gana
+interferencia/estabilidad), el sueño la consolidará; si no, se desvanece.
+
+Implementado: `sgm. imaginar()` — recombina la zona activa con ruido en un
+vector contrafáctico normalizado (novedad > 0 respecto a todo omega existente).
+Estado: método explícito (opción A). PENDIENTE pasar a emergencia en el loop
+(opción B), sin input externo claro → el sistema proyecta en vez de quedar quieto.
+
+Nomenclatura: Luciano anotó que lo llamaría de otra forma ("vamos asi por el
+momento"). Pendiente el nombre definitivo.
+
 ## 4. Punto 2 (presente vs detrás del telón): PENDIENTE de revisar el código
 
 Luciano: "habría que revisar bien lo que tenemos."
