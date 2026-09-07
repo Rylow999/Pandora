@@ -26,6 +26,9 @@ pandora/logs/
 pandora/state/
 pandora/environment/
 pandora/ontology/hrr_vectors.json
+# Workspace de actuación de Pandora (su entorno de archivos) — lo que escribe
+pandora/workspace/
+pandora/workspace_test/
 
 # SGM runtime
 sgm/checkpoints/

@@ -351,6 +351,36 @@ class SGMAgentCore(SGMAgentGrafo):
 
         return {"seed": best, "novedad": novedad}
 
+    def integrar_experiencia_motora(self, etiqueta, tipo, costo=0):
+        """Integra una acción motora al grafo como experiencia (más fuerte que la percepción).
+
+        NOTA_TECNICA_0066: la acción tiene CONSECUENCIA (escribió un archivo, consumió
+        recursos), por eso deja huella más fuerte que percibir. La acción refuerza
+        el nodo resonante con más intensidad y su costo (bytes) se asocia como
+        el "peso" de la acción en el mundo.
+
+        No pasa por el LLM: es experiencia cruda de actuar sobre el entorno.
+        """
+        # Representar la acción como patrón determinista sobre la etiqueta
+        import random
+        rng = random.Random(hash(etiqueta) % (2**31))
+        vec = [rng.gauss(0, 1) for _ in range(self.D)]
+        norm = math.sqrt(sum(x * x for x in vec)) or 1.0
+        vec = [x / norm for x in vec]
+
+        best = min(range(len(self.omega)),
+                   key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(vec, self.omega[n]))))
+
+        # La acción refuerza más que la percepción (factor 0.2 vs 0.05)
+        factor = 0.2 if tipo == "CREAR" else 0.08
+        self.vitalidad[best] = min(1.0, self.vitalidad[best] + factor)
+        # Registrar la transición de actuación (el hilo del ser incluye el actuar)
+        if self._seed_previo is not None and self._seed_previo != best:
+            self.traza_transiciones.append((self._seed_previo, best))
+        self._seed = best
+
+        return {"seed": best}
+
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
         a_eliminar = []
