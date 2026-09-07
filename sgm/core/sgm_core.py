@@ -94,6 +94,8 @@ class SGMAgentCore(SGMAgentGrafo):
         # reintegrar() deja acá su propuesta (un posible); el sueño (endogenous)
         # decide si resuena (consolida) o se desvanece. Cierra el lazo PROPONE→CREA.
         self.propuestas_reintegracion = []  # lista de {vector, seed, novedad}
+        self._reintegracion_cooldown = 0    # ticks desde la última propuesta emergente
+        self._reintegracion_intervalo = 10  # proponer a lo sumo 1 vez cada N ticks
         # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
         self.historial_metas_l2 = []  # metas (razon->token) por paso, para L2
@@ -470,9 +472,13 @@ class SGMAgentCore(SGMAgentGrafo):
     # ============ TRAUMA ============
     def verificar_trauma(self):
         trauma = False
+        if not hasattr(self, 'trauma_nodes'):
+            self.trauma_nodes = set()
         for i in range(len(self.vitalidad)):
             if self.vitalidad[i] > 0.9 and i < len(self.phi):
                 trauma = True
+                # Registrar el nodo traumado (alimenta trauma_load, homeostasis)
+                self.trauma_nodes.add(i)
                 for vecino in self.edges.get(i, []): self.consolidadas.discard((i, vecino))
         return trauma
 
@@ -733,10 +739,32 @@ class SGMAgentCore(SGMAgentGrafo):
         if len(self.traza_omega) > 2000:
             self.traza_omega = self.traza_omega[-2000:]
 
-        # 2. Homeostasis
-        if food is not None and health is not None: self.actualizar_homeostasis(food, health)
-        
-        # 3. Modo (BASE/SUPERVIVENCIA)
+        # 2. Homeostasis — solo la rama embodied (food/health reales, Crafter/MC)
+        if food is not None and health is not None:
+            self.actualizar_homeostasis(food, health)
+
+        # 2b. Homeostasis topológica (postura B, 0057/0058/0059):
+        # en el loop conversacional no hay comida: la "necesidad crítica" es la
+        # DISPERSIÓN del self (1 - integridad), no una variable de hambre muerta.
+        dispersion = 1.0 - self.integridad_topologica()
+        # Escribir la señal honesta en el canal que el modo lee (renombrar la
+        # metáfora sin re-introducirla): _hambre_real pasa a ser la dispersión.
+        self._hambre_real = dispersion
+
+        # 2c. Detección de trauma orgánica (antes huérfana: solo corría dentro
+        # de actualizar_homeostasis, que ya no se llama en el loop conversacional)
+        self.verificar_trauma()
+
+        # 2d. Reintegración emergente (0058, cabos sueltos #2/#3): si el self
+        # está fragmentado por encima del umbral, PROPONE espontáneamente — pero
+        # con cooldown, para no proponer en cada tick mientras se asienta.
+        # El sueño (endogenous) consumirá la propuesta luego.
+        self._reintegracion_cooldown -= 1
+        if dispersion > 0.4 and self._reintegracion_cooldown <= 0:
+            self.reintegrar()
+            self._reintegracion_cooldown = self._reintegracion_intervalo
+
+        # 3. Modo (BASE/SUPERVIVENCIA) — lee la necesidad real (dispersión + amenaza)
         necesidad_critica = max(self._hambre_real, self._amenaza)
         self.modo = "SUPERVIVENCIA" if necesidad_critica > self.theta_emerg_critico else "BASE"
         self.modo_ticks += 1
