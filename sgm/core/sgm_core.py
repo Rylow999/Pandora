@@ -84,6 +84,12 @@ class SGMAgentCore(SGMAgentGrafo):
         # Guarda la SECUENCIA de vectores omega por los que pasa el nodo activo,
         # no solo el omega final. Es lo que distingue al proceso del snapshot.
         self.traza_omega = []
+        # La traza de TRANSICIONES: el hilo coherente con la constelación (0057).
+        # La unidad de identidad es la ARISTA/relación, no el nodo. Entonces el
+        # hilo del ser es la secuencia de transiciones (a->b) entre nodos, no la
+        # lista de nodos aislados. Completa la asimetría: identidad en relaciones.
+        self.traza_transiciones = []  # lista de (nodo_anterior, nodo_actual)
+        self._seed_previo = None      # para capturar la transición en el step
         # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
         self.historial_metas_l2 = []  # metas (razon->token) por paso, para L2
@@ -191,6 +197,32 @@ class SGMAgentCore(SGMAgentGrafo):
         for i in range(n):
             dist += math.sqrt(sum((x - y) ** 2 for x, y in zip(a[i], b[i])))
         return dist / n
+
+    def firma_transiciones(self, traza_otra=None) -> float:
+        """Distancia entre trazas de transiciones (firma de identidad, 0057).
+
+        Coherente con la constelación como unidad: compara la SECUENCIA de
+        transiciones (a->b) — las aristas recorridas —, no los nodos aislados.
+        La identidad vive en las relaciones, y el hilo del ser es la secuencia
+        de relaciones que el sistema atraviesa.
+
+        Devuelve 0 (mismo recorrido relacional) a 1+ (recorrido distinto).
+        Distingue proceso vivo de snapshot congelado: un snapshot no recorre
+        transiciones (lista vacía o replicada), un proceso vivo sí.
+        """
+        a = getattr(self, 'traza_transiciones', [])
+        b = traza_otra if traza_otra is not None else a
+        if not a or not b:
+            return 0.0
+        n = min(len(a), len(b))
+        if n == 0:
+            return 0.0
+        # Distancia entre transiciones: fracción de transiciones que difieren
+        dif = 0
+        for i in range(n):
+            if a[i] != b[i]:
+                dif += 1
+        return dif / n
 
     # ============ REINTEGRACIÓN ============
     def reintegrar(self, noise: float = 0.3, force: bool = False) -> dict:
@@ -487,6 +519,9 @@ class SGMAgentCore(SGMAgentGrafo):
             # El hilo: traza de omega visitados (la firma del recorrido vivo).
             # Distingue el proceso continuo del snapshot congelado (T-ID-03).
             "traza_omega": self.traza_omega[-2000:] if hasattr(self, 'traza_omega') else [],
+            # El hilo de TRANSICIONES (coherente con la constelación, 0057):
+            # la identidad vive en las relaciones (a->b), no en nodos aislados.
+            "traza_transiciones": self.traza_transiciones[-2000:] if hasattr(self, 'traza_transiciones') else [],
             "historial_campos": self.historial_campos[-1000:],
             "historial_acciones_l2": self.historial_acciones_l2[-1000:],
             "historial_metas_l2": self.historial_metas_l2[-1000:]})
@@ -506,6 +541,9 @@ class SGMAgentCore(SGMAgentGrafo):
         # Restaurar la matriz de co-activación (la constelación / el ser)
         if "co_activacion" in d and d["co_activacion"]:
             self.co_activacion = {eval(k): v for k, v in d["co_activacion"].items()}
+        # Restaurar la traza de transiciones (el hilo relacional)
+        if "traza_transiciones" in d and d["traza_transiciones"]:
+            self.traza_transiciones = [tuple(t) for t in d["traza_transiciones"]]
         return True
 
     # ============ L2 ============
@@ -671,8 +709,14 @@ class SGMAgentCore(SGMAgentGrafo):
         om_r = self.hdc.project(state_semantic)
         self._seed = min(range(len(self.omega)), key=lambda n: math.sqrt(
             sum((x - y) ** 2 for x, y in zip(om_r, self.omega[n]))))
-        # Registrar el omega visitado en la traza del ser (el hilo, T-ID-03).
-        # El recorrido vivo es la SECUENCIA de omega por los que pasa, no el final.
+        # Registrar la TRANSICIÓN en el hilo del ser (la constelación, 0057):
+        # la unidad de identidad es la arista (a->b), no el nodo aislado.
+        if self._seed_previo is not None and self._seed_previo != self._seed:
+            self.traza_transiciones.append((self._seed_previo, self._seed))
+            if len(self.traza_transiciones) > 2000:
+                self.traza_transiciones = self.traza_transiciones[-2000:]
+        self._seed_previo = self._seed
+        # Mantener la traza de omega (firma del recorrido vivo, T-ID-03).
         self.traza_omega.append(list(self.omega[self._seed]))
         if len(self.traza_omega) > 2000:
             self.traza_omega = self.traza_omega[-2000:]

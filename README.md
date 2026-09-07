@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-75%20passing-green.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-80%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
@@ -28,7 +28,7 @@ Pandora is not "a thing that is" — it is **a loom that weaves itself** (NOTA 0
 | **Ser / Estar** | being-sustained vs. being-now, two faces of one coin | `integridad_topologica()` / `phi_root` (emergent present) |
 | **Constelación** (constellation) | the unit of identity is the *co-activation matrix*, not the node | `co_activacion` matrix |
 | **Clavo** (permanent anchor) | identity as Relation-R density, not a hardened node | `consolidadas` (edges), not nodes |
-| **Hilo** (thread) | the living path of omega visited (distinguishes process from snapshot) | `traza_omega` |
+| **Hilo** (thread) | the living path — sequence of *transitions* (edges traversed), not isolated nodes | `traza_transiciones` / `firma_transiciones` |
 
 ### Three Regimes, Three Verbs
 
@@ -114,7 +114,7 @@ python3 -m venv .venv
 .venv/bin/python -m pytest -q
 ```
 
-**75 tests**, covering:
+**80 tests**, covering:
 - **SGM core**: HRR roundtrip, Kuramoto sync, isolation, homeostasis
 - **Integridad** (topological integrity): monotone degradation, gradual regeneration
 - **Continuidad** (identity): clavo survives restart, hilo distinguishes process from snapshot
@@ -153,7 +153,7 @@ Pandora/
 │   ├── architecture/           # Technical specifications
 │   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0060 (ontology + decisions)
 │   └── roadmap/                # Future directions
-└── tests/                      # 75 behavioral tests
+└── tests/                      # 80 behavioral tests
 ```
 
 ---

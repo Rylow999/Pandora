@@ -44,6 +44,23 @@ d = sgm.firma_identidad(otra_traza)  # bajo tras cargar checkpoint = sobrevivió
 El hilo del ser: secuencia de omega visitados (recorrido vivo). Persiste en
 `guardar()`. Registra qué *camino* tomó, no solo dónde terminó.
 
+### `traza_transiciones` (atributo)
+El hilo coherente con la constelación (0057): secuencia de TRANSICIONES
+`(a -> b)` — las aristas recorridas — no nodos aislados. La identidad vive en
+las relaciones. Cierra la asimetría: si la unidad es la arista, el hilo debe
+ser de aristas. Persiste en `guardar()`.
+
+### `firma_transiciones(traza_otra=None) -> float`
+Distancia entre trazas de transiciones. `0` = mismo recorrido relacional,
+`1` = totalmente distinto. A diferencia de `firma_identidad` (que compara
+vectores omega), esta compara la SECUENCIA ORDENADA de relaciones — distingue
+dos recorridos que pasan por los mismos nodos en distinto orden. Es la firma
+del ser coherente con la constelación.
+
+```python
+d = sgm.firma_transiciones(otra_traza)  # 0 = mismo hilo, >0 = otro
+```
+
 ---
 
 ## Constelación (unidad de identidad)
