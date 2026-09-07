@@ -320,6 +320,37 @@ class SGMAgentCore(SGMAgentGrafo):
 
         return {"vector": composite, "seed": best, "novedad": novedad, "disparador": disparador}
 
+    # ============ PERCEPCIÓN DEL ENTORNO (0066) ============
+    def integrar_experiencia_entorno(self, vector_sensorial, carga=0.0):
+        """Integra un vector sensorial del entorno al grafo como experiencia cruda.
+
+        NOTA_TECNICA_0066: la máquina es el ENTORNO de Pandora, no su cuerpo. Acá
+        el SGM percibe el mundo externo como patrón de activación, SIN pasar por
+        el LLM. Es experiencia, no información.
+
+        La percepción se integra por resonancia: el vector sensorial se proyecta
+        al nodo más afín (qué concepto del grafo "se parece" al estado del
+        entorno), y ese nodo se activa. Si el patrón es muy novedoso (lejos de
+        todo lo conocido), es candidato a materializarse como nodo sensorial
+        nuevo — pero no se crea aquí: queda como propuesta que el sueño evalúa
+        (coherente con el lazo PROPONE→CREA, 0058).
+
+        Retorna el nodo activado (seed resultante) y la novedad.
+        """
+        if not vector_sensorial or len(vector_sensorial) == 0:
+            return {"seed": -1, "novedad": 0.0}
+
+        # Nodo más afín al patrón sensorial (resonancia con lo ya conocido)
+        best = min(range(len(self.omega)),
+                   key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(vector_sensorial, self.omega[n]))))
+        novedad = math.sqrt(sum((x - y) ** 2 for x, y in zip(vector_sensorial, self.omega[best])))
+
+        # Activar el nodo resonante (la percepción deja huella, no crea de golpe)
+        self.vitalidad[best] = min(1.0, self.vitalidad[best] + carga * 0.05)
+        self._seed = best
+
+        return {"seed": best, "novedad": novedad}
+
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
         a_eliminar = []

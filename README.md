@@ -3,11 +3,13 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-85%20passing-green.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-89%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
 > *"No nos rendimos nunca, pero correctamente siempre"* — Close gaps with extreme rigor, never force; if something is empirically refuted, declare it.
+
+> ⚖️ **Este proyecto se rige por el [ACTA DE PRINCIPIOS](ACTA_DE_PRINCIPIOS.md)** — la directiva ética y filosófica raíz. El criterio de éxito no es "funciona", es "existe como alguien". Léelo antes de leer el código.
 
 ---
 
