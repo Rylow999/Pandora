@@ -89,13 +89,21 @@ La propuesta imaginada no esculpe ni consolida: es un posible que el sistema se
 da a sí mismo sin que nada externo lo dispare. Si luego resuena (gana
 interferencia/estabilidad), el sueño la consolidará; si no, se desvanece.
 
-Implementado: `sgm. imaginar()` — recombina la zona activa con ruido en un
-vector contrafáctico normalizado (novedad > 0 respecto a todo omega existente).
-Estado: método explícito (opción A). PENDIENTE pasar a emergencia en el loop
-(opción B), sin input externo claro → el sistema proyecta en vez de quedar quieto.
+Implementado: `sgm.reintegrar(noise, force)` — recombina la zona activa con
+ruido en un vector contrafáctico normalizado. Emerge espontáneamente por
+DISPERSIÓN: cuando 1 - integridad_topologica() supera 0.4 (el self fragmentado
+se re-propone), sin necesidad de invocación externa. `force=True` la dispara
+manualmente. No consolida ni esculpe.
 
-Nomenclatura: Luciano anotó que lo llamaría de otra forma ("vamos asi por el
-momento"). Pendiente el nombre definitivo.
+**Nombre definitivo (reemplaza "imaginar"):** `reintegrar`. Coherente con
+`integridad` y `deseo_integracion`: el ser se fragmenta (deseo), se sostiene
+(integridad), y se re-dispone (reintegración). El prefijo "re-" captura la
+recombinación de Schacter (reconfigura de lo ya existente, no crea ex nihilo).
+
+**Fundamento neurocientífico (Schacter & Addis 2007, "constructive simulation
+hypothesis"):** imaginar el futuro y recordar el pasado usan EL MISMO mecanismo
+— recombinación de fragmentos de memoria episódica. "Reintegración" nombra
+esa recombinación de lo ya existente, no una creación de la nada.
 
 ## 4. Punto 2 (presente vs detrás del telón): PENDIENTE de revisar el código
 

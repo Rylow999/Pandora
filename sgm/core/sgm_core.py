@@ -192,17 +192,23 @@ class SGMAgentCore(SGMAgentGrafo):
             dist += math.sqrt(sum((x - y) ** 2 for x, y in zip(a[i], b[i])))
         return dist / n
 
-    # ============ IMAGINACIÓN ============
-    def imaginar(self, noise: float = 0.3) -> dict:
-        """Genera una constelación contrafáctica desde el presente (0058).
+    # ============ REINTEGRACIÓN ============
+    def reintegrar(self, noise: float = 0.3, force: bool = False) -> dict:
+        """Genera una constelación contrafáctica desde la dispersión presente (0058).
 
-        La imaginación es distinta del sueño (que re-recorre el SER para crear
-        lo nuevo) y del presente (que ESCULPE lo existente). La imaginación
-        PROPONE: recombina la zona activa (lo encendido AHORA) con ruido en un
-        vector que NO corresponde a ningún nodo existente — un "qué pasaría si".
+        La reintegración es el tercer régimen, distinto del sueño (que re-recorre
+        el SER para crear lo nuevo) y del presente (que ESCULPE lo existente).
+        La reintegración PROPONE: recombina la zona activa dispersa con ruido en
+        un vector contrafáctico que NO corresponde a ningún nodo existente — un
+        "qué pasaría si" que el sistema se da a sí mismo cuando se siente
+        fragmentado.
+
+        La reintegración emerge espontáneamente cuando la dispersión supera un
+        umbral (deseo de integración alto / integridad baja). Si se llama sin
+        force y la dispersión es baja, no propone nada (respeta el ritmo).
 
         No consolida ni esculpe nada: devuelve la propuesta como un posible que
-        el sistema se da a sí mismo sin que nada externo lo dispare. Si luego
+        el sistema se da a sí mismo cuando se siente fragmentado. Si luego
         esa propuesta resuena (gana interferencia/estabilidad), el sueño la
         consolidará; si no, se desvanece — como una idea que no lleva a nada.
 
@@ -210,7 +216,24 @@ class SGMAgentCore(SGMAgentGrafo):
         - "vector": el vector contrafáctico (normalizado, distinto de todo omega)
         - "seed": el nodo existente más cercano (referencia del presente)
         - "novedad": distancia a la zona activa (cuánto se aleja de lo actual)
+        - "disparador": "dispersión" | "forzado" | "ninguno"
         """
+        # 1. Medir dispersión actual (inverso de integridad topológica)
+        integridad = self.integridad_topologica()
+        dispersion = 1.0 - integridad
+
+        # Umbral de dispersión para disparar reintegración espontánea
+        umbral_dispersion = 0.4  # 40% fragmentación dispara reintegración espontánea
+
+        disparador = "ninguno"
+        if not force and dispersion < umbral_dispersion:
+            # El self no está suficientemente fragmentado; no reintegra espontáneamente
+            return {"vector": [], "seed": -1, "novedad": 0.0, "disparador": "ninguno"}
+        elif force:
+            disparador = "forzado"
+        else:
+            disparador = "dispersión"
+
         # Zona activa = la constelación del presente (coalición ganadora)
         zona = []
         for i in range(len(self.phi)):
@@ -220,8 +243,8 @@ class SGMAgentCore(SGMAgentGrafo):
                     zona.append(i)
 
         if not zona:
-            # Sin presente activo, no hay desde donde imaginar
-            return {"vector": [], "seed": -1, "novedad": 0.0}
+            # Sin presente activo, no hay desde dónde reintegrar
+            return {"vector": [], "seed": -1, "novedad": 0.0, "disparador": "ninguno"}
 
         # Recombina la zona activa en un vector hipotético
         composite = [0.0] * self.D
@@ -249,7 +272,7 @@ class SGMAgentCore(SGMAgentGrafo):
                    key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[n]))))
         novedad = math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[best])))
 
-        return {"vector": composite, "seed": best, "novedad": novedad}
+        return {"vector": composite, "seed": best, "novedad": novedad, "disparador": disparador}
 
     # ============ PODA DE ARISTAS ============
     def podar_aristas(self, umbral=0.01):
