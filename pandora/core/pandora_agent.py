@@ -118,6 +118,12 @@ class PandoraAgent:
         self.journal = Journal(self.config.journal_path)
         self.workspace = Workspace(self.config.workspace_capacity)
 
+        # Metacognición (Higher-Order Theory): razonar sobre el propio estado.
+        # Antes estaba escrito pero sin cablear. Ahora el agente la instancia
+        # y la expone para que el estado interno la refleje.
+        from sgm.core.sgm_metacognicion import Metacognicion
+        self.metacognicion = Metacognicion(self.sgm)
+
         # Checkpoint
         self.checkpoint_path = Path(self.config.checkpoint_path)
         self.checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
@@ -241,6 +247,16 @@ class PandoraAgent:
         status = getattr(self.sgm, 'status', 'ACTIVA')
         contradiction = 0.8 if status == 'CONTRADICTORIA' else (0.3 if status == 'INCONCLUSA' else 0.0)
 
+        # Metacognición (HOT): reflexionar sobre el propio estado, exponer
+        # confianza/duda en el metadata para que el articulador la refleje.
+        try:
+            reflexion = self.metacognicion.reflexionar()
+            confianza_global = reflexion.get("confianza_global", 0.5)
+            meta_duda = reflexion.get("incertidumbre", 0.0)
+        except Exception:
+            confianza_global = 0.5
+            meta_duda = 0.0
+
         return InternalState(
             active_nodes=top_nodes or ["YO", "ENTORNO"],
             triplets=triplets,
@@ -249,7 +265,12 @@ class PandoraAgent:
             doubt=doubt,
             contradiction=contradiction,
             intent=Intent.RESPONDER,
-            metadata={"integracion": 1.0 - deseo, "deseo_integracion": deseo}
+            metadata={
+                "integracion": 1.0 - deseo,
+                "deseo_integracion": deseo,
+                "confianza_global": confianza_global,
+                "duda_metacognitiva": meta_duda,
+            }
         )
 
     def receive(self, user_text: str) -> str:

@@ -13,10 +13,7 @@ La metacognición opera en 3 niveles:
 3. EXPERIMENTACIÓN: generar hipótesis, probarlas, aprender del resultado
 """
 import sys, os, random, math
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import importlib, sgm_core; importlib.reload(sgm_core)
-from sgm.core.sgm_core import SGMAgent
+from sgm.core.sgm_grafo import SGMAgent
 
 
 class Metacognicion:
@@ -128,7 +125,7 @@ class Metacognicion:
         # DEDUCCIÓN: de reglas generales a conclusiones específicas
         if analisis.get("induccion"):
             if "confianza" in analisis["induccion"]:
-                confianza_valor = float(analisis["indiccion"].split()[-1])
+                confianza_valor = float(analisis["induccion"].split()[-1])
                 if confianza_valor > 0.7:
                     analisis["deduccion"] = "puedo confiar en mi conocimiento"
                 else:

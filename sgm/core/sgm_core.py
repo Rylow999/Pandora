@@ -788,7 +788,16 @@ class SGMAgentCore(SGMAgentGrafo):
             accion = self._arbitro.elegir(self, valid_actions)
         else:
             accion = self._elegir_accion_ppp(valid_actions)
-        
+
+        # 7b. Predictive processing (modelo de mundo, Friston): predicción del
+        # próximo estado (seed) y comparación con lo observado. Antes solo se
+        # acumulaba modelo_mundo sin nunca leerse ni afectar la conducta.
+        if hasattr(self, 'ultimo_estado_q') and self.ultimo_estado_q is not None:
+            pred = self.predecir_transicion(self.ultimo_estado_q, accion)
+            self._prediccion_previa = pred
+        else:
+            self._prediccion_previa = None
+
         # 8. Post-acción
         self._post_accion(accion)
         
@@ -824,7 +833,13 @@ class SGMAgentCore(SGMAgentGrafo):
             if self._place_ticks >= 3:
                 señal = max(0.0, min(1.0, self.V_grafo))
                 self.mutar_omega_lugar(señal, tasa=self.mutacion_tasa)
-        
+
+        # 13. Predictive processing: aprender la transición observada
+        # (estado_previo, acción) → seed_actual, para nutrir el modelo de mundo.
+        if self.ultimo_estado_q is not None:
+            self.actualizar_modelo_mundo(self.ultimo_estado_q, accion, self._seed)
+        self.ultimo_estado_q = self._seed
+
         return accion
 
     def _post_accion(self, accion):
