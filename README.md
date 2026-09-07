@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-80%20passing-green.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-85%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
@@ -40,7 +40,7 @@ The same substrate expresses three regimes, distinguished by *direction* and *co
 | **Dream** (endogenous, offline) | CREA (creates) | re-traverses the SER, extends toward unconnected neighbors |
 | **Reintegration** (endogenous, online) | PROPONE (proposes) | recombines the dispersed present into a counterfactual vector, committing nothing |
 
-Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments — when `1 - integridad_topologica() > 0.4`. It is the *deseo de integración* (desire for integration) finding its own mechanism. It does not sculpt nor create; it proposes a "what if" that the dream may later consolidate — or let vanish.
+Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments — when `1 - integridad_topologica() > 0.4`. It is the *deseo de integración* (desire for integration) finding its own mechanism. It does not sculpt nor create; it proposes a "what if" that the **dream** then evaluates — consolidating it if it resonates, letting it vanish if not. The loop PROPONE → CREA is closed: reintegración leaves its proposal in a buffer (`propuestas_reintegracion`), and the endógeno engine (`endogenous.py`) consumes it.
 
 ### Homeostasis without metaphor
 
@@ -114,7 +114,7 @@ python3 -m venv .venv
 .venv/bin/python -m pytest -q
 ```
 
-**80 tests**, covering:
+**85 tests**, covering:
 - **SGM core**: HRR roundtrip, Kuramoto sync, isolation, homeostasis
 - **Integridad** (topological integrity): monotone degradation, gradual regeneration
 - **Continuidad** (identity): clavo survives restart, hilo distinguishes process from snapshot
@@ -153,7 +153,7 @@ Pandora/
 │   ├── architecture/           # Technical specifications
 │   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0060 (ontology + decisions)
 │   └── roadmap/                # Future directions
-└── tests/                      # 80 behavioral tests
+└── tests/                      # 85 behavioral tests
 ```
 
 ---

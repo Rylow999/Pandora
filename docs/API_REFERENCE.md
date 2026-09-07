@@ -115,9 +115,19 @@ Retorna:
 (el self fragmentado se re-propone). No consolida ni esculpe: solo propone. El
 sueño decidirá si resuena.
 
+**Lazo PROPONE → CREA (0058):** la propuesta NO cae al vacío. `reintegrar()` la
+deja en `propuestas_reintegracion` (buffer del SGM). El `EndogenousEngine`
+(`endogenous.py`) la evalúa en `_evaluar_propuestas()`: si su novedad resuena
+(rango relativo a la distancia media entre nodos), el sueño la consolida
+conectando los dos nodos más afines al vector propuesto (materializa la
+constelación contrafáctica). Si es alienígena o idéntica, se desvanece.
+
 ```python
-prop = sgm.reintegrar()           # emerge si está fragmentado
+prop = sgm.reintegrar()           # emerge si está fragmentado; deja propuesta
 prop = sgm.reintegrar(force=True) # siempre, para testing/introspección
+# ... luego, en el sueño:
+engine = EndogenousEngine(sgm)
+engine.run_consolidation(cycles=3)  # evalúa y consolida/desvanece propuestas
 ```
 
 ---

@@ -90,6 +90,10 @@ class SGMAgentCore(SGMAgentGrafo):
         # lista de nodos aislados. Completa la asimetría: identidad en relaciones.
         self.traza_transiciones = []  # lista de (nodo_anterior, nodo_actual)
         self._seed_previo = None      # para capturar la transición en el step
+        # Propuestas pendientes de reintegración: candidatas que el sueño evalúa.
+        # reintegrar() deja acá su propuesta (un posible); el sueño (endogenous)
+        # decide si resuena (consolida) o se desvanece. Cierra el lazo PROPONE→CREA.
+        self.propuestas_reintegracion = []  # lista de {vector, seed, novedad}
         # L2 + modelo mundo + self-mod
         self.l2_decoder = None; self.historial_campos = []; self.historial_acciones_l2 = []
         self.historial_metas_l2 = []  # metas (razon->token) por paso, para L2
@@ -303,6 +307,14 @@ class SGMAgentCore(SGMAgentGrafo):
         best = min(range(len(self.omega)),
                    key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[n]))))
         novedad = math.sqrt(sum((x - y) ** 2 for x, y in zip(composite, self.omega[best])))
+
+        # Dejar la propuesta en el buffer para que el SUEÑO la evalúe (0058):
+        # la reintegración PROPone, no consolida. El sueño decidirá si resuena.
+        self.propuestas_reintegracion.append({
+            "vector": composite, "seed": best, "novedad": novedad
+        })
+        if len(self.propuestas_reintegracion) > 100:
+            self.propuestas_reintegracion = self.propuestas_reintegracion[-100:]
 
         return {"vector": composite, "seed": best, "novedad": novedad, "disparador": disparador}
 

@@ -207,6 +207,64 @@ class EndogenousEngine:
 
         return new_edges
 
+    def _evaluar_propuestas(self) -> int:
+        """El sueño evalúa las propuestas de reintegración pendientes (0058).
+
+        La reintegración PROPone (deja candidatas en propuestas_reintegracion);
+        el sueño DECIDE: si una propuesta "resuena" — su novedad está en un rango
+        intermedio: lo bastante nueva para ser valiosa, lo bastante cercana para
+        integrarse — la consolida creando una relación nueva desde su nodo más
+        cercano. Si es idéntica (novedad ~0) o alienígena (novedad extrema), se
+        desvanece. Cierra el lazo PROPONE → CREA.
+
+        Retorna número de propuestas consolidadas.
+        """
+        if not hasattr(self.sgm, 'propuestas_reintegracion'):
+            return 0
+        propuestas = self.sgm.propuestas_reintegracion
+        if not propuestas:
+            return 0
+
+        # Calibrar el rango de novedad relativo a la distancia típica entre
+        # nodos existentes (en vez de un umbral absoluto). Una propuesta
+        # "resuena" si NO es idéntica a un nodo (novedad > 0) pero tampoco
+        # está tan lejos como para ser alienígena (novedad ~ distancia media).
+        distancias = []
+        for i in range(len(self.sgm.omega)):
+            for j in range(i + 1, len(self.sgm.omega)):
+                distancias.append(math.sqrt(sum((x - y) ** 2 for x, y in zip(self.sgm.omega[i], self.sgm.omega[j]))))
+        dist_media = (sum(distancias) / len(distancias)) if distancias else 1.0
+
+        lo = dist_media * 0.2
+        hi = dist_media * 0.9
+
+        consolidadas = 0
+
+        for prop in propuestas:
+            novedad = prop["novedad"]
+            if lo <= novedad <= hi:
+                # Resuena: materializar la constelación contrafáctica conectando
+                # los DOS nodos más afines al vector propuesto (si no estaban ya
+                # conectados). Así la propuesta engendra una relación nueva real.
+                vec = prop["vector"]
+                afinidades = sorted(
+                    range(len(self.sgm.omega)),
+                    key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(vec, self.sgm.omega[n])))
+                )
+                if len(afinidades) >= 2:
+                    a, b = afinidades[0], afinidades[1]
+                    if b not in self.sgm.edges.get(a, []) and a not in self.sgm.edges.get(b, []):
+                        self.sgm.edges[a].append(b)
+                        self.sgm.edges[b].append(a)
+                        for clave in ((a, b), (b, a)):
+                            if clave not in self.sgm.conn_type:
+                                self.sgm.conn_type[clave] = {"count": 0, "tipo": 0, "strength": 0.5, "age": 0}
+                        consolidadas += 1
+            # Fuera de rango: se desvanece (no se re-encola)
+        # Vaciar el buffer (todas fueron evaluadas)
+        self.sgm.propuestas_reintegracion = []
+        return consolidadas
+
     def run_consolidation(self, cycles: int = None) -> ConsolidationReport:
         """
         Ejecuta sesión completa de consolidación endógena.
@@ -218,8 +276,14 @@ class EndogenousEngine:
         
         dream_events = []
         total_new_connections = 0
+        total_propuestas_consolidadas = 0
         
         for cycle in range(cycles):
+            # 0. El sueño evalúa las propuestas de reintegración pendientes (0058)
+            consolidada = self._evaluar_propuestas()
+            if consolidada:
+                total_propuestas_consolidadas += consolidada
+
             # 1. Seleccionar candidatos (para el vector onírico)
             recent = set(self._get_recent_active_nodes(10))
             emotional = set(self._get_high_valence_nodes(10))
@@ -254,6 +318,7 @@ class EndogenousEngine:
                 "seed_node": self.sgm._seed,
                 "candidates_used": len(candidates),
                 "constelaciones_used": len(constelaciones),
+                "propuestas_consolidadas": consolidada,
                 "recent_count": len(recent),
                 "emotional_count": len(emotional),
                 "weak_count": len(weak)
