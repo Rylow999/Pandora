@@ -62,7 +62,12 @@ class NimClient:
         except urllib.error.URLError as e:
             raise RuntimeError(f"NIM conexión fallida: {e.reason}")
 
-        contenido = body.get("choices", [{}])[0].get("message", {}).get("content", "")
+        # Respuesta defensiva: si choices viene vacío (contenido filtrado), evitar
+        # el IndexError. No debe tumbar un turno por una respuesta rara de la API.
+        choices = body.get("choices", [])
+        if not choices:
+            return {"message": {"content": ""}, "raw": body}
+        contenido = choices[0].get("message", {}).get("content", "")
         return {"message": {"content": contenido}, "raw": body}
 
     def disponible(self):
