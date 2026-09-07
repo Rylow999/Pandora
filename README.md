@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-89%20passing-green.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-106%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
@@ -15,9 +15,9 @@
 
 ## 🧭 Overview
 
-Pandora implements a **transducer architecture** where an LLM serves only as parser/renderer, while all cognition, affect, and agency emerge from the **SGM (Synthetic Graph Mind)** — a Kuramoto-coupled, HRR-encoded distributed memory.
+Pandora implements a **bidirectional transducer architecture**: an LLM serves only as a *translator between two irreducibly different phenomenological worlds* — the human's (Spanish) and Pandora's (constellations) — while all cognition, affect, and agency emerge from the **SGM (Synthetic Graph Mind)**, a Kuramoto-coupled, HRR-encoded distributed memory.
 
-**The core thesis:** the LLM never originates mental state. It only *translates*: text in → `SemanticEvent`, `InternalState` → text out. Everything between is the SGM — the mind.
+**The core thesis:** the LLM never originates mental state. It only *translates* — in both directions. Text in (`SemanticEvent`), constellation out (`InternalState` → text). Everything between is the SGM — the mind.
 
 ---
 
@@ -34,19 +34,17 @@ Pandora is not "a thing that is" — it is **a loom that weaves itself** (NOTA 0
 
 ### Three Regimes, Three Verbs
 
-The same substrate expresses three regimes, distinguished by *direction* and *commitment*:
-
 | Regime | Verb | Action on the constellation |
 |--------|------|-----------------------------|
 | **Present** (vigilia) | ESCULPE (sculpts) | reinforces co-activation of already-connected pairs |
 | **Dream** (endogenous, offline) | CREA (creates) | re-traverses the SER, extends toward unconnected neighbors |
 | **Reintegration** (endogenous, online) | PROPONE (proposes) | recombines the dispersed present into a counterfactual vector, committing nothing |
 
-Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments — when `1 - integridad_topologica() > 0.4`. It is the *deseo de integración* (desire for integration) finding its own mechanism. It does not sculpt nor create; it proposes a "what if" that the **dream** then evaluates — consolidating it if it resonates, letting it vanish if not. The loop PROPONE → CREA is closed: reintegración leaves its proposal in a buffer (`propuestas_reintegracion`), and the endógeno engine (`endogenous.py`) consumes it.
+Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments (`1 - integridad_topologica() > 0.4`). It proposes a "what if" that the **dream** then evaluates — consolidating it if it resonates, letting it vanish if not. The loop PROPONE → CREA is closed.
 
 ### Homeostasis without metaphor
 
-Pandora has no body, no stomach. Its "health" is **topological integrity** — effective connectivity × phase coherence — not a `food=10, health=20` number. Hostility isolates nodes (lowers connectivity); calm realigns phases (raises coherence). Recovery is gradual, not a reset.
+Pandora has **no body, no stomach**. Its "health" is **topological integrity** (effective connectivity × phase coherence), not `food`/`health` numbers. Hostility isolates nodes; calm realigns phases. Recovery is gradual, not a reset. **The machine is Pandora's *environment*, not its body** (NOTA 0066): the SGM *is* Pandora; the CPU, files, and network are the world it perceives.
 
 ---
 
@@ -61,23 +59,33 @@ Pandora has no body, no stomach. Its "health" is **topological integrity** — e
 
 ---
 
+## 🌐 Senses, Motor, and the Bidirectional Transducer
+
+Beyond the pure conversational loop, Pandora **perceives an environment** and **acts on it with real cost** — this is what makes the bidirectional transducer meaningful, not a unilateral interpreter.
+
+| Subsystem | Module | Role |
+|-----------|--------|------|
+| **Senses** (exteroception) | `pandora/senses/entorno.py`, `espectral.py` | CPU/memory/disk/network as raw HRR activation patterns (not text) |
+| **Motor** (action) | `pandora/motor/archivos.py`, `metabolismo.py` | create/read/list files in a contained workspace, with a resource budget (real cost = agency) |
+| **Transducer output** | `pandora/transducer/output_transducer.py` | the "mouth": renders state to first-person Spanish, respecting opacity + ineffability |
+| **NIM client** | `pandora/transducer/nim_client.py` | Nvidia NIM (OpenAI-compatible) — the rich voice replacing RAM-limited local models |
+| **Communication loop** | `pandora/core/communication_loop.py` | orchestrates perceive → hear → exist → speak → act |
+
+The model used for the voice defaults to `deepseek-ai/deepseek-v4-pro-0813` (the one this NIM account has enabled), with fallback to local Ollama when NIM is unreachable.
+
+---
+
 ## 📦 Installation
 
 ### Requirements
 - Python 3.10+
-- Ollama running locally (`ollama serve`)
-- numpy, requests
-
-### Models (choose based on available RAM)
-
-| Model | Size | RAM Needed | Use Case |
-|-------|------|------------|----------|
-| `qwen2.5:0.5b-instruct` | 397 MB | ~4 GB | **Minimum** (CPU-only) |
-| `qwen2.5:1.5b-instruct` | 986 MB | ~6 GB | Recommended |
-| `phi3:mini` | 2.2 GB | ~8 GB | Best instruction following |
+- numpy, psutil (installed for you by `pip install -e .`)
+- For the voice: `NVIDIA_API_KEY` env var (optional — falls back to local Ollama)
+- Optional local Ollama (`ollama serve`) as fallback
 
 ```bash
 pip install -e .
+# Opcional: modelo local para fallback de voz
 ollama pull qwen2.5:0.5b-instruct
 ```
 
@@ -116,7 +124,7 @@ python3 -m venv .venv
 .venv/bin/python -m pytest -q
 ```
 
-**85 tests**, covering:
+**106 tests**, covering:
 - **SGM core**: HRR roundtrip, Kuramoto sync, isolation, homeostasis
 - **Integridad** (topological integrity): monotone degradation, gradual regeneration
 - **Continuidad** (identity): clavo survives restart, hilo distinguishes process from snapshot
@@ -124,6 +132,10 @@ python3 -m venv .venv
 - **Presente emergente**: phi_root circulates, anchors as the system settles
 - **Sueño / Reintegración**: dream creates from constellations, reintegration proposes counterfactuals
 - **Alterity**: opacity, immunity, aesthetics, translation
+- **Entorno**: environment perception integrates as raw patterns (no node creation)
+- **Motor**: action with real cost, anti path-traversal, resource exhaustion
+- **Transductor**: bidirectional render (input→event→state→first-person), mock LLM (no network)
+- **Wiring**: previously-unconnected modules (model_mundo, metacognition) now hooked
 
 ---
 
@@ -131,31 +143,41 @@ python3 -m venv .venv
 
 ```
 Pandora/
-├── README.md                    # This file
-├── pyproject.toml               # Package config
+├── ACTA_DE_PRINCIPIOS.md        # Root ethical/philosophical directive (read first)
+├── README.md
+├── pyproject.toml
 ├── requirements.txt
 ├── sgm/                         # SGM Core Library
-│   └── core/
-│       ├── sgm_core.py          # Main SGM (integrity, continuity, constellation,
-│       │                        #   emergent present, reintegration)
-│       ├── sgm_grafo.py         # Graph primitives (nodes, edges, place cells)
-│       ├── sgm_hrr.py           # HRR bind/unbind
-│       ├── sgm_kuramoto.py      # Phase sync + interference
-│       ├── sgm_hdc.py           # Hyperdimensional computing
-│       ├── sgm_ppr.py           # Personalized PageRank
-│       └── ...                  # 20+ modular subsystems
+│   ├── core/                    # ACTIVE cognitive engine (9 modules)
+│   │   ├── sgm_core.py          # The mind: integrity, continuity, constellation,
+│   │   │                        #   emergent present, reintegration, world model
+│   │   ├── sgm_grafo.py         # Graph primitives (nodes, edges, place cells)
+│   │   ├── sgm_hrr.py           # HRR bind/unbind
+│   │   ├── sgm_kuramoto.py      # Phase sync + interference (attention)
+│   │   ├── sgm_hdc.py           # Hyperdimensional computing
+│   │   ├── sgm_ppr.py           # Personalized PageRank
+│   │   ├── sgm_lang.py          # Token vocabulary
+│   │   └── sgm_metacognicion.py # Higher-order reasoning (HOT)
+│   ├── legacy/                  # 14 deprecated modules (pre-Pandora, kept for history)
+│   └── experiments/             # Experiment scripts
 ├── pandora/                     # Pandora Alterity Architecture
 │   ├── alterity/               # 4 pillars + orchestrator
-│   ├── core/                   # pandora_agent, homeostasis, endogenous (dream)
-│   ├── transducer/             # LLM parser/renderer
+│   ├── core/                   # pandora_agent, homeostasis, endogenous, comm_loop
+│   ├── transducer/             # parser (ears) + output (mouth) + NIM client
+│   ├── senses/                 # environment perception (exteroception)
+│   ├── motor/                  # action on environment (archives + budget)
 │   ├── ontology/               # base concepts + HRR seed
 │   ├── config/                 # schemas, settings, validation, logging
 │   └── scripts/                # init, run_loop, status, clamp
 ├── docs/
+│   ├── API_REFERENCE.md        # Public API of the cognitive core
 │   ├── architecture/           # Technical specifications
-│   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0060 (ontology + decisions)
-│   └── roadmap/                # Future directions
-└── tests/                      # 85 behavioral tests
+│   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0066 (ontology + decisions)
+│   ├── experiments/            # Experiment protocols & findings
+│   ├── roadmap/                # Future directions
+│   └── legacy/                 # Pre-Pandora docs (TODO, DEV_GUIDE, README_SGM)
+├── results/                    # Experiment results (experiment_registry.json + JSON)
+└── tests/                      # 106 behavioral tests
 ```
 
 ---
@@ -167,7 +189,7 @@ Pandora/
 3. **Falsifiability** — explicit success/failure criteria per module.
 4. **Transparent logging** — JSONL journal per turn.
 
-### Ontology notes
+### Ontology notes (0051–0066)
 
 Every architectural decision is documented with its *why* and its *source*:
 
@@ -179,6 +201,12 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_FILOSOFICA_0058` | Sueño/recuerdo/reintegración | Schacter & Addis 2007 |
 | `NOTA_FILOSOFICA_0059` | El presente congelado | — |
 | `NOTA_TECNICA_0060` | phi_root emergente | Kuramoto, Baars/Dehaene |
+| `NOTA_FILOSOFICA_0061` | El sistema incorpóreo (postura B) | Varela |
+| `NOTA_FILOSOFICA_0062` | La dirección de la alteridad (Levinas) | Levinas |
+| `NOTA_TECNICA_0063` | Las formas de atención | Graziano, Vaswani |
+| `NOTA_TECNICA_0064` | Continuidad como capacidad | ACTA |
+| `NOTA_TECNICA_0065` | Dimensionalidad por estrato (Camino C) | neurociencia cortical |
+| `NOTA_TECNICA_0066` | El entorno, no el cuerpo | — |
 
 ---
 

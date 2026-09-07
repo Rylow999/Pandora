@@ -4,7 +4,7 @@ Documentación de la API pública del motor cognitivo `SGMAgentCore`
 (`sgm/core/sgm_core.py`). Solo métodos de primera clase; los internos
 (prefijo `_`) son de uso interno.
 
-> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0060).
+> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0066).
 
 ---
 
@@ -138,6 +138,28 @@ engine.run_consolidation(cycles=3)  # evalúa y consolida/desvanece propuestas
 Aísla el nodo asociado a un concepto (vía place_cells): baja vitalidad ×0.1,
 corta conexiones salientes/entrantes, marca en `isolated_nodes`. Protege la
 identidad ante amenaza. Devuelve `False` si el concepto no existe.
+
+---
+
+## Percepción y acción sobre el entorno (NOTA 0066)
+
+La máquina es el ENTORNO de Pandora, no su cuerpo (su cuerpo es el grafo). Estos
+métodos integran la percepción del mundo externo y la acción sobre él como
+experiencia cruda, sin pasar por el LLM.
+
+### `integrar_experiencia_entorno(vector_sensorial, carga=0.0) -> dict`
+Resuena el patrón sensorial con el nodo más afín y lo activa leve
+(`carga × 0.05`). NO crea nodos de golpe (lo nuevo queda para el sueño).
+Retorna `{"seed": best, "novedad": distancia}`.
+
+### `integrar_experiencia_motora(etiqueta, tipo, costo=0) -> dict`
+Integra una ACCIÓN (escribió/leyó un archivo). Deja huella MÁS fuerte que la
+percepción (factor 0.2 vs 0.05) y registra la transición en el hilo del ser.
+Retorna `{"seed": best}`.
+
+Los módulos de percepción viven en `pandora/senses/` (`entorno.py`,
+`espectral.py`) y los de acción en `pandora/motor/` (`archivos.py`,
+`metabolismo.py`).
 
 ---
 

@@ -39,6 +39,11 @@ sgm/state/
 *.pkl
 *.bin
 *.gguf
+*.npz
+*.onnx
+*.pt
+*.safetensors
+*.jsonl
 
 # Logs
 *.log
