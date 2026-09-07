@@ -4,6 +4,7 @@
 Core modularizado con TODOS los mecanismos integrados.
 """
 import math, random, os, sys
+import ast
 import numpy as np
 
 # Fix path para importar módulos del proyecto
@@ -610,7 +611,7 @@ class SGMAgentCore(SGMAgentGrafo):
         d = np.load(ruta, allow_pickle=True).item()
         for k in ["omega","phi","vitalidad","es_place_cell","edges","scope_depth","place_cells","place_pos","V_grafo","E_acumulado","historial_campos","historial_acciones_l2","historial_metas_l2"]:
             if k in d: setattr(self, k, d[k])
-        self.conn_type = {eval(k): v for k, v in d.get("conn_type", {}).items()}
+        self.conn_type = {ast.literal_eval(k): v for k, v in d.get("conn_type", {}).items()}
         # Restaurar el clavo permanente (tuplas de aristas consolidadas)
         if "consolidadas" in d and d["consolidadas"]:
             self.consolidadas = set(d["consolidadas"])
@@ -619,7 +620,7 @@ class SGMAgentCore(SGMAgentGrafo):
             self.traza_omega = d["traza_omega"]
         # Restaurar la matriz de co-activación (la constelación / el ser)
         if "co_activacion" in d and d["co_activacion"]:
-            self.co_activacion = {eval(k): v for k, v in d["co_activacion"].items()}
+            self.co_activacion = {ast.literal_eval(k): v for k, v in d["co_activacion"].items()}
         # Restaurar la traza de transiciones (el hilo relacional)
         if "traza_transiciones" in d and d["traza_transiciones"]:
             self.traza_transiciones = [tuple(t) for t in d["traza_transiciones"]]

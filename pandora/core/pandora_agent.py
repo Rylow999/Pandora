@@ -114,6 +114,16 @@ class PandoraAgent:
         self.parser = parser or get_parser()
         self.articulator = articulator or get_articulator()
 
+        # Transductor de salida (Fase 4): NIM como voz rica, con fallback al
+        # articulator local (Ollama). El output_transducer integra opacity +
+        # inefabilidad en la decisión de hablar; si NIM no está disponible, la
+        # renderización cae al articulator (qwen2.5 local).
+        from pandora.transducer.output_transducer import OutputTransducer
+        from pandora.transducer.nim_client import NimClient
+        self.output_transducer = OutputTransducer(client=NimClient(),
+                                                  opacity_gate=None,
+                                                  translation_limit=None)
+
         # Memoria
         self.journal = Journal(self.config.journal_path)
         self.workspace = Workspace(self.config.workspace_capacity)
@@ -144,6 +154,34 @@ class PandoraAgent:
         sgm.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
         sgm.instinto_alimentacion = 5  # acción 'do' en Crafter
         return sgm
+
+    def _articular_respuesta(self, internal_state) -> str:
+        """Renderiza el estado interno a texto: NIM primero, fallback a Ollama.
+
+        - Si NIM está disponible y traduce (modo 'habla'), usa su voz rica.
+        - Si declara silencio/inefable o falla (sin key, sin red), cae al
+          articulator local (Ollama) como respaldo.
+        - Si ni NIM ni Ollama, fallback determinístico (nunca devuelve vacío).
+        """
+        # 1. Intentar NIM (voz rica)
+        try:
+            if self.output_transducer.client.disponible():
+                r = self.output_transducer.traducir(internal_state)
+                if r.get("modo") == "habla" and r.get("texto"):
+                    return r["texto"]
+        except Exception:
+            pass  # NIM falló: caer al fallback local
+
+        # 2. Fallback: articulator local (Ollama / qwen2.5)
+        try:
+            render_result = self.articulator.render(internal_state)
+            if render_result.success and render_result.text:
+                return render_result.text
+        except Exception:
+            pass
+
+        # 3. Último recurso: texto determinístico (nunca vacío)
+        return self.articulator.render_fallback(internal_state)
 
     def _encode_semantic_event(self, event: SemanticEvent) -> List[float]:
         """
@@ -310,12 +348,8 @@ class PandoraAgent:
         # 5. Leer estado dominante
         internal_state = self._read_dominant_state()
 
-        # 6. Articular respuesta
-        render_result = self.articulator.render(internal_state)
-        if not render_result.success:
-            response = self.articulator.render_fallback(internal_state)
-        else:
-            response = render_result.text
+        # 6. Articular respuesta (NIM primero, fallback a Ollama local)
+        response = self._articular_respuesta(internal_state)
 
         # 7. Guardar episodio
         episode = Episode(
