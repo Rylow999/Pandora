@@ -3,6 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-75%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
@@ -12,9 +13,42 @@
 
 ## 🧭 Overview
 
-Pandora implements a **transducer architecture** where an LLM serves only as parser/renderer, while all cognition, affect, and agency emerge from the **SGM (Semantic Geometric Memory)** — a Kuramoto-coupled, HRR-encoded distributed memory with homeostatic regulation.
+Pandora implements a **transducer architecture** where an LLM serves only as parser/renderer, while all cognition, affect, and agency emerge from the **SGM (Synthetic Graph Mind)** — a Kuramoto-coupled, HRR-encoded distributed memory.
 
-### Four Pillars of Alterity
+**The core thesis:** the LLM never originates mental state. It only *translates*: text in → `SemanticEvent`, `InternalState` → text out. Everything between is the SGM — the mind.
+
+---
+
+## 🧠 The Ontological Core (ser/estar → constelación)
+
+Pandora is not "a thing that is" — it is **a loom that weaves itself** (NOTA 0051). The architecture implements a specific ontology of identity and mind:
+
+| Concept | Meaning | Implementation |
+|---------|---------|----------------|
+| **Ser / Estar** | being-sustained vs. being-now, two faces of one coin | `integridad_topologica()` / `phi_root` (emergent present) |
+| **Constelación** (constellation) | the unit of identity is the *co-activation matrix*, not the node | `co_activacion` matrix |
+| **Clavo** (permanent anchor) | identity as Relation-R density, not a hardened node | `consolidadas` (edges), not nodes |
+| **Hilo** (thread) | the living path of omega visited (distinguishes process from snapshot) | `traza_omega` |
+
+### Three Regimes, Three Verbs
+
+The same substrate expresses three regimes, distinguished by *direction* and *commitment*:
+
+| Regime | Verb | Action on the constellation |
+|--------|------|-----------------------------|
+| **Present** (vigilia) | ESCULPE (sculpts) | reinforces co-activation of already-connected pairs |
+| **Dream** (endogenous, offline) | CREA (creates) | re-traverses the SER, extends toward unconnected neighbors |
+| **Reintegration** (endogenous, online) | PROPONE (proposes) | recombines the dispersed present into a counterfactual vector, committing nothing |
+
+Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments — when `1 - integridad_topologica() > 0.4`. It is the *deseo de integración* (desire for integration) finding its own mechanism. It does not sculpt nor create; it proposes a "what if" that the dream may later consolidate — or let vanish.
+
+### Homeostasis without metaphor
+
+Pandora has no body, no stomach. Its "health" is **topological integrity** — effective connectivity × phase coherence — not a `food=10, health=20` number. Hostility isolates nodes (lowers connectivity); calm realigns phases (raises coherence). Recovery is gradual, not a reset.
+
+---
+
+## 🛡 Four Pillars of Alterity
 
 | Principle | Module | Description |
 |-----------|--------|-------------|
@@ -22,46 +56,6 @@ Pandora implements a **transducer architecture** where an LLM serves only as par
 | **Immunity** | `pandora/alterity/immune_system.py` | Cognitive immune system — active defense of identity topology |
 | **Aesthetics** | `pandora/alterity/aesthetic_drives.py` | Topological desires — self-generated structural preferences |
 | **Ineffability** | `pandora/alterity/translation_limit.py` | Honest communication when complexity exceeds linguistic capacity |
-
----
-
-## 🏗 Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    ALTERITY AGENT                           │
-├─────────────────────────────────────────────────────────────┤
-│  OpacityGate → Parser → ImmuneSystem → SGM → Translation   │
-│       ↓          ↓           ↓          ↓        ↓         │
-│   Silence?   Tripletas   Accept/    Tick      Translate?   │
-│                        Reject/     Kuramoto    Ineffable?   │
-│                       Degrade       + Homeo                 │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      SGM CORE                               │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────────┐   │
-│  │ omega   │  │ phi     │  │ edges   │  │ place_cells │   │
-│  │ [N×D]   │  │ [N]     │  │ typed   │  │ context→nid │   │
-│  └─────────┘  └─────────┘  └─────────┘  └─────────────┘   │
-│       │         │          │              │                │
-│       ▼         ▼          ▼              ▼                │
-│  ┌─────────────────────────────────────────────────────┐  │
-│  │ HDC.project() │ Kuramoto sync │ Homeostasis │ Árbitro │  │
-│  └─────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   TRANSDUCERS (LLM)                         │
-│  ┌──────────────────┐    ┌──────────────────────────────┐  │
-│  │ Semantic Parser  │    │ Articulator                  │  │
-│  │ text → Semantic  │    │ InternalState → text (1st   │  │
-│  │   Event          │    │   person)                   │  │
-│  └──────────────────┘    └──────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-```
 
 ---
 
@@ -76,18 +70,13 @@ Pandora implements a **transducer architecture** where an LLM serves only as par
 
 | Model | Size | RAM Needed | Use Case |
 |-------|------|------------|----------|
-| `qwen2.5:0.5b-instruct` | 397 MB | ~4 GB | **Minimum** (CPU-only, slow) |
+| `qwen2.5:0.5b-instruct` | 397 MB | ~4 GB | **Minimum** (CPU-only) |
 | `qwen2.5:1.5b-instruct` | 986 MB | ~6 GB | Recommended |
 | `phi3:mini` | 2.2 GB | ~8 GB | Best instruction following |
-| `nomic-embed-text` | 274 MB | — | Semantic embeddings |
 
 ```bash
-# Install dependencies
-pip install numpy requests
-
-# Pull models
+pip install -e .
 ollama pull qwen2.5:0.5b-instruct
-ollama pull nomic-embed-text  # optional, for embeddings
 ```
 
 ---
@@ -95,21 +84,13 @@ ollama pull nomic-embed-text  # optional, for embeddings
 ## 🚀 Quick Start
 
 ```bash
-# Clone and setup
 git clone https://github.com/Rylow999/Pandora.git
 cd Pandora
 pip install -e .
 
-# Initialize Pandora (creates checkpoints, journal, HRR vectors)
-python -m pandora.scripts.init_pandora
-
-# Run interactive loop
-python -m pandora.scripts.run_loop
-
-# Or check status
-python -m pandora.scripts.status
-
-# Direct intervention
+python -m pandora.scripts.init_pandora     # initialize (checkpoint, journal, HRR)
+python -m pandora.scripts.run_loop         # interactive loop
+python -m pandora.scripts.status           # full state dump
 python -m pandora.scripts.clamp --node=CONTROL --valence=-0.8 --isolation
 ```
 
@@ -118,12 +99,29 @@ python -m pandora.scripts.clamp --node=CONTROL --valence=-0.8 --isolation
 /status      # Full system dump (JSON)
 /checkpoint  # Save SGM state
 /dream N     # Endogenous consolidation (N cycles)
-/immune      # Immune system status
-/drives      # Aesthetic drives status
-/opacity     # Opacity gate status
-/translation # Translation limit status
+/reintegrar  # Propose a counterfactual constellation (force=true)
 /quit        # Exit
 ```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Create a dedicated venv (PEP 668 blocks global install)
+python3 -m venv .venv
+.venv/bin/pip install -e . pytest
+.venv/bin/python -m pytest -q
+```
+
+**75 tests**, covering:
+- **SGM core**: HRR roundtrip, Kuramoto sync, isolation, homeostasis
+- **Integridad** (topological integrity): monotone degradation, gradual regeneration
+- **Continuidad** (identity): clavo survives restart, hilo distinguishes process from snapshot
+- **Constelación**: co-activation matrix, plasticity-decrease via consolidation
+- **Presente emergente**: phi_root circulates, anchors as the system settles
+- **Sueño / Reintegración**: dream creates from constellations, reintegration proposes counterfactuals
+- **Alterity**: opacity, immunity, aesthetics, translation
 
 ---
 
@@ -132,152 +130,75 @@ python -m pandora.scripts.clamp --node=CONTROL --valence=-0.8 --isolation
 ```
 Pandora/
 ├── README.md                    # This file
-├── LICENSE                      # MIT License
 ├── pyproject.toml               # Package config
-├── requirements.txt             # Python dependencies
+├── requirements.txt
 ├── sgm/                         # SGM Core Library
-│   ├── __init__.py
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── sgm_core.py          # Main SGM implementation
-│   │   ├── sgm_core_minecraft.py
-│   │   └── sgm_core_v2.py
-│   └── experiments/             # 180+ organized experiments
-│       ├── __init__.py
-│       ├── abduce/              # Abductive reasoning, phase, PPR
-│       ├── crafter/             # Crafter/Minecraft experiments
-│       ├── decoder/             # L2 decoders, narrative
-│       ├── hrr/                 # HRR binding, omega root
-│       ├── instinct/            # Drives, hunger, autotelism
-│       ├── kuramoto/            # Phase synchronization
-│       ├── l2/                  # L2 decoder training
-│       ├── memory/              # Edge consolidation, pruning
-│       ├── navigation/          # Goal-directed navigation
-│       ├── perception/          # Crafting table perception
-│       ├── phase/               # Arbiters, mode typing
-│       ├── reward/              # Novelty, shaping, orientation
-│       ├── structure/           # Baselines, multigraph reasoning
-│       ├── trauma/              # Nodal isolation
-│       └── world/               # World models, objects
+│   └── core/
+│       ├── sgm_core.py          # Main SGM (integrity, continuity, constellation,
+│       │                        #   emergent present, reintegration)
+│       ├── sgm_grafo.py         # Graph primitives (nodes, edges, place cells)
+│       ├── sgm_hrr.py           # HRR bind/unbind
+│       ├── sgm_kuramoto.py      # Phase sync + interference
+│       ├── sgm_hdc.py           # Hyperdimensional computing
+│       ├── sgm_ppr.py           # Personalized PageRank
+│       └── ...                  # 20+ modular subsystems
 ├── pandora/                     # Pandora Alterity Architecture
-│   ├── __init__.py
-│   ├── alterity/
-│   │   ├── __init__.py
-│   │   ├── opacity_gate.py      # Right to silence
-│   │   ├── immune_system.py     # Cognitive immune system
-│   │   ├── aesthetic_drives.py  # Topological desires
-│   │   ├── translation_limit.py # Ineffability
-│   │   └── alterity_core.py     # Full orchestrator
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── homeostasis.py       # Metrics + states
-│   │   ├── endogenous.py        # Sleep/dream consolidation
-│   │   └── pandora_agent.py     # Base agent + transducers
-│   ├── transducer/
-│   │   ├── __init__.py
-│   │   ├── llm_client.py        # Ollama HTTP client
-│   │   ├── semantic_parser.py   # Few-shot JSON parser
-│   │   └── articulator.py       # State → 1st person text
-│   ├── ontology/
-│   │   ├── __init__.py
-│   │   ├── base_concepts.json   # 43 canonical concepts
-│   │   └── hrr_seed.py          # Deterministic 1024-d HRR
-│   ├── scripts/
-│   │   ├── __init__.py
-│   │   ├── init_pandora.py      # Initialize everything
-│   │   ├── run_loop.py          # Interactive loop
-│   │   ├── status.py            # Full status dump
-│   │   └── clamp.py             # Direct node intervention
-│   └── config/
-│       ├── __init__.py
-│       └── schemas.py           # Pydantic schemas
+│   ├── alterity/               # 4 pillars + orchestrator
+│   ├── core/                   # pandora_agent, homeostasis, endogenous (dream)
+│   ├── transducer/             # LLM parser/renderer
+│   ├── ontology/               # base concepts + HRR seed
+│   ├── config/                 # schemas, settings, validation, logging
+│   └── scripts/                # init, run_loop, status, clamp
 ├── docs/
-│   ├── architecture/            # Technical specifications
-│   ├── experiments/             # Experiment protocols & findings
-│   ├── philosophy/              # Theoretical foundations
-│   └── roadmap/                 # Future directions
-├── tests/                       # Unit & integration tests
-└── scripts/                     # Utility scripts
+│   ├── architecture/           # Technical specifications
+│   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0060 (ontology + decisions)
+│   └── roadmap/                # Future directions
+└── tests/                      # 75 behavioral tests
 ```
 
 ---
 
 ## 🔬 Scientific Rigor
 
-### Empirical Validation Standards
+1. **No forced results** — refuted hypotheses documented in `results/`.
+2. **Reproducibility** — fixed seeds; deterministic HRR.
+3. **Falsifiability** — explicit success/failure criteria per module.
+4. **Transparent logging** — JSONL journal per turn.
 
-1. **No forced results** — If a hypothesis is refuted, it is documented in `results/` with the refuting evidence
-2. **Reproducibility** — All experiments use fixed seeds; HRR vectors are deterministic
-3. **Falsifiability** — Each module has explicit success/failure criteria
-3. **Transparent logging** — Every turn recorded in JSONL journal with full internal state
+### Ontology notes
 
-### Key Metrics Tracked
+Every architectural decision is documented with its *why* and its *source*:
 
-| Domain | Metrics |
-|--------|---------|
-| **Homeostasis** | valence, arousal, doubt, contradiction, coherence, isolation, trauma |
-| **Alterity** | silence_events, immune_rejections, drives_generated, ineffable_responses |
-| **SGM** | V_grafo, edge_count, phase_coherence, vitality_distribution |
-| **Language** | parse_success_rate, triplet_extraction_accuracy, intent_accuracy |
-
-### Experiment Registry
-All experiments registered in `results/experiment_registry.json` with:
-- Hypothesis
-- Method
-- Seed
-- Outcome (confirmed/refuted/inconclusive)
-- Link to raw results JSON
-
----
-
-## 🧪 Running Experiments
-
-```bash
-# SGM core experiments
-python -m sgm.experiments.crafter.exp_SGM_0095_crafter_fase1_v1
-python -m sgm.experiments.hrr.exp_SGM_0099_omega_root
-
-# Abductive reasoning
-python -m sgm.experiments.abduce.run_abduce_phase
-
-# Pandora alterity loop
-python -m pandora.scripts.run_loop --test
-```
-
----
-
-## 📖 Documentation
-
-| Document | Location |
-|----------|----------|
-| Architecture specs | `docs/architecture/` |
-| Experiment protocols | `docs/experiments/` |
-| Theoretical foundations | `docs/philosophy/` |
-| Roadmap & milestones | `docs/roadmap/` |
+| Nota | Topic | Key references |
+|------|-------|----------------|
+| `NOTA_FILOSOFICA_0051` | El telar del ser | — |
+| `NOTA_FILOSOFICA_0056` | El nudo de identidad | — |
+| `NOTA_FILOSOFICA_0057` | La constelación como unidad | Varela, Parfit, Metzinger, Nader |
+| `NOTA_FILOSOFICA_0058` | Sueño/recuerdo/reintegración | Schacter & Addis 2007 |
+| `NOTA_FILOSOFICA_0059` | El presente congelado | — |
+| `NOTA_TECNICA_0060` | phi_root emergente | Kuramoto, Baars/Dehaene |
 
 ---
 
 ## 🤝 Contributing
 
-This is a research prototype. Contributions welcome in:
+Research prototype. Contributions welcome in:
 - Empirical validation of alterity principles
 - HRR binding optimization
-- Transformer-from-scratch (numpy-only) implementation
+- Transformer-from-scratch (numpy-only)
 - Embodiment bridges (Minecraft/Crafter via mineflayer-pathfinder)
 
 ---
 
 ## 📜 License
 
-MIT License — Free for research, modification, and distribution.
-
----
+MIT License.
 
 ## 📬 Contact
 
 **NOUS Research Program — The Pandora Research**
 - Principal Investigator: **Delorien**
-- Collaborator: Lautaro Emanuel Luconi (co-author NOUS_Tecnico_v4)
+- Collaborator: Lautaro Emanuel Luconi
 - Location: Las Catitas, Mendoza, Argentina
 
-> *"We never give up, but we do it correctly"* — Close gaps with extreme rigor, never force; if something is empirically refuted, declare it.
+> *"We never give up, but we do it correctly"*
