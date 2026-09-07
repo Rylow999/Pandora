@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""sgm_atencion.py — CLASIFICADOR DE INTENCION con HRR/VSA/nodos (Fase 10).
+"""sgm_atencion.py — CLASIFICADOR DE INTENCION conversacional (NO es atención).
 
-Luciano: 'tiene que saber entender en charla, indicacion, pregunta, saber cuando
-escribir de vuelta'. Este modulo usa el SUTSTRATO COGNITIVO que ya funciona:
-  - HRR/VSA (sgm_core.HRR): cada intencion es un ROL (vector HRR). La intencion de un
-    mensaje se clasifica por coesion HRR (coseno del bind de las palabras con cada rol
-    de intencion / con el contexto), NO por if/else de palabras.
-  - NODOS y ARISTAS (sgm_mundo.GRAFO_SEMANTICO + decoder_l2): el mensaje se proyecta al
-    contexto y se routea por el grafo -> la intencion EMERGE de donde cae (cerca del nodo
-    'pregunta', 'indicacion', 'charla'...), no de reglas.
-  - Decoder L2 (rol/contexto) para el routing.
+NOTA de arquitectura (0063): este módulo NO implementa "atención" en el sentido
+de Attention Schema Theory. Es un CLASIFICADOR DE INTENCION (charla/indicacion/
+pregunta/relato) acoplado al mundo Minecraft (sgm_mundo).
+
+La ATENCIÓN real del sistema vive en DOS lugares que SÍ lo son:
+  1. Atención cognitiva: campo_interferencia + _seed + zona activa (sgm_kuramoto
+     / sgm_core) — qué señal domina el foco ahora (la coalición ganadora).
+  2. Atención transformer: MiniTransformer (sgm_lang_modelo.py) — self-attention
+     de 1 cabeza para producción de lenguaje condicionada por el estado SGM.
+
+Este módulo se conserva solo por su rol en el sustrato embodied (Minecraft),
+donde decidir entre charla/pregunta/indicacion es útil. En el loop conversacional
+Pandora, esa función ya la cubre SemanticParser + Intent. No es atención; es
+routing conversacional.
 
 Integra: charla/indicacion/pregunta/relato + decision de 'cuando escribir de vuelta'.
 """
