@@ -103,8 +103,9 @@ class TestImmuneSystem:
         immune = CognitiveImmuneSystem(sgm)
         # Vector parcialmente anti-alineado con un nodo core => interferencia media
         yo = sgm.omega[0]
-        # 40% anti, 60% ortogonal => interferencia ~0.4 (zona DEGRADE)
-        partial = [-0.4 * x for x in yo] + [0.6 * x for x in sgm.omega[1]]
+        # 40% anti + 60% otro nodo, PROMEDIADO en D (no concatenado: antes daba 2D
+        # y _hrr_similarity retornaba 0.0 por mismatch de dimensión).
+        partial = [(-0.4 * a + 0.6 * b) for a, b in zip(yo, sgm.omega[1])]
         response = immune.evaluate_input(partial)
         assert response.recommended_action in ("DEGRADE", "ACCEPT")
 

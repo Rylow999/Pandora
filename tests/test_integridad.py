@@ -98,5 +98,8 @@ class TestAfectoNoPisaIntegridad:
             sgm.step([0.1] * sgm.D, list(range(17)))
         v1 = integridad(sgm)
         assert 0.0 <= v1 <= 1.0
-        # No debe existir el input food/health en el camino de integridad
-        assert not hasattr(sgm, 'ultimo_food') or True
+        # La integridad NO lee ultimo_food/ultimo_estado_q: no depende de la
+        # rama embodied. Verificamos que el atributo (si existiera) no la altera.
+        sgm.ultimo_food = 999.0
+        v2 = integridad(sgm)
+        assert v1 == v2, "integridad no debe depender del estado embodied"

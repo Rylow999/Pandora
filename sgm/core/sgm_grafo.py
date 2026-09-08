@@ -34,6 +34,8 @@ class SGMAgent:
         self.phi = [rng.uniform(0, 2 * math.pi) for _ in range(n_nodes)]
         self.modo = "BASE"
         self.modo_ticks = 0
+        self._seed = 0  # nodo activo actual (proyección semántica). Aquí el default
+                        # neutro; SGMAgentCore lo re-asigna en cada step().
         self.ultima_accion = -1
         self.conteo_repeticion = 0
         self.historial_acciones = []

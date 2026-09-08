@@ -224,22 +224,3 @@ if __name__ == "__main__":
         print(f"  Path: {cp['path']} | Exists: {cp['exists']}")
         
         print("\n" + "=" * 70)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Pandora Status")
-    parser.add_argument("--json", action="store_true", help="Salida solo JSON")
-    parser.add_argument("--compact", action="store_true", help="Resumen compacto")
-    parser.add_argument("--fresh", action="store_true", help="Agente fresco")
-    args = parser.parse_args()
-    
-    agent = get_pandora_agent(load_checkpoint=not args.fresh)
-    homeostasis = get_homeostasis()
-    homeostasis.update_from_sgm(agent.sgm)
-    
-    status = get_full_status(agent, homeostasis, compact=args.compact)
-    
-    if args.json or args.compact:
-        print(json.dumps(status, indent=2, ensure_ascii=False))
-    else:
-        main()

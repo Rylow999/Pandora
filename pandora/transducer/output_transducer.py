@@ -43,7 +43,7 @@ class OutputTransducer:
         # 2. Translation limit: ¿es traducible?
         if self.translation_limit is not None:
             tl = self.translation_limit.can_translate(state)
-            if not tl.traducible:
+            if not tl.translatable:
                 return {"texto": None, "razon": tl.reason, "modo": "inefable"}
 
         # 3. Hablar: el LLM traduce el estado a primera persona, sin inventarlo.

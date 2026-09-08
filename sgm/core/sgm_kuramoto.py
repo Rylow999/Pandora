@@ -61,11 +61,18 @@ def promedio_ponderado(zona):
     return None
 
 
-def step_k_cadenas(edges, omega, phi, vitalidad, seed, K=10, pasos=3, alpha=5.0):
+def step_k_cadenas(edges, omega, phi, vitalidad, seed, K=10, pasos=3, alpha=5.0,
+                    phi_root=None):
     """
     Ejecuta K cadenas paralelas sobre el grafo.
     Devuelve zona activa (nodos con interferencia > umbral).
+
+    phi_root: fase de referencia (el presente emergente). Si es None, se usa
+    phi[0] como retrocompatibilidad (bug #6 de auditoría: antes era hardcodeado).
     """
+    if phi_root is None:
+        phi_root = phi[0] if phi else 0.0
+
     zona_activa = {}
     
     for k in range(K):
@@ -92,7 +99,7 @@ def step_k_cadenas(edges, omega, phi, vitalidad, seed, K=10, pasos=3, alpha=5.0)
             
             # Actualizar fase (Eq.3)
             if siguiente < len(phi):
-                delta_phi = math.sin(phi[0] - phi[siguiente]) if phi else 0.0
+                delta_phi = math.sin(phi_root - phi[siguiente])
                 R = 1.0 / (1.0 + math.sqrt(sum((a - b) ** 2 for a, b in zip(omega[siguiente], omega[0])))) if omega else 1.0
                 phi[siguiente] = (phi[siguiente] + 0.05 * R * delta_phi) % (2 * math.pi)
             
@@ -102,7 +109,7 @@ def step_k_cadenas(edges, omega, phi, vitalidad, seed, K=10, pasos=3, alpha=5.0)
             
             # Evaluar interferencia
             if siguiente < len(omega) and siguiente < len(phi):
-                I = interferencia(omega[siguiente], phi[siguiente], phi[0] if phi else 0.0)
+                I = interferencia(omega[siguiente], phi[siguiente], phi_root)
                 if I > 0.45:
                     zona_activa[siguiente] = I
             

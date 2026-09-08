@@ -75,7 +75,6 @@ class SGMAgentCore(SGMAgentGrafo):
         self.necesidad_insatisfecha = False
         self.acciones_movimiento = ACCIONES_MOVIMIENTO
         self.acciones_interaccion = ACCIONES_INTERACCION
-        self.theta_emerg_critico = 0.5
         self.auto_registrar_place = True; self.auto_navegar_meta = True
         self.place_bucket = 16  # un chunk de Minecraft (16x16x16 bloques)
         self.mutacion_tasa = 0.05
@@ -484,7 +483,12 @@ class SGMAgentCore(SGMAgentGrafo):
         self._actualizar_phi_root()
 
         for i in range(len(self.phi)):
-            dist = math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], self.omega[0]))) if self.omega else 0.0
+            # R: fuerza de acoplamiento al presente. Se mide la distancia al NODO
+            # ACTIVO (self._seed), no al nodo 0 fijo (bug #7 de auditoría): el
+            # presente emergente es el foco actual, no un nodo arbitrario.
+            seed = getattr(self, '_seed', 0)
+            ref = self.omega[seed] if seed < len(self.omega) else self.omega[0]
+            dist = math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], ref))) if self.omega else 0.0
             R = 1.0 / (1.0 + dist); delta = math.sin(self.phi_root - self.phi[i])
             self.phi[i] = (self.phi[i] + self.eta_phase * R * delta) % (2 * math.pi)
             I = interferencia(self.omega[i], self.phi[i], self.phi_root)
@@ -602,6 +606,15 @@ class SGMAgentCore(SGMAgentGrafo):
             # El hilo de TRANSICIONES (coherente con la constelación, 0057):
             # la identidad vive en las relaciones (a->b), no en nodos aislados.
             "traza_transiciones": self.traza_transiciones[-2000:] if hasattr(self, 'traza_transiciones') else [],
+            # El presente emergente (0060): sin persistir, al reiniciar phi_root
+            # vuelve a 0.0 — el "presente congelado" que ya arreglamos. El ahora
+            # del sistema también es parte de su continuidad.
+            "phi_root": getattr(self, 'phi_root', 0.0),
+            # Propuestas pendientes de reintegración (0058): el lazo PROPONE→CREA
+            # pierde sus "posibles" si no se guardan.
+            "propuestas_reintegracion": getattr(self, 'propuestas_reintegracion', []),
+            "trauma_nodes": list(getattr(self, 'trauma_nodes', set())),
+            "isolated_nodes": list(getattr(self, 'isolated_nodes', set())),
             "historial_campos": self.historial_campos[-1000:],
             "historial_acciones_l2": self.historial_acciones_l2[-1000:],
             "historial_metas_l2": self.historial_metas_l2[-1000:]})
@@ -624,6 +637,15 @@ class SGMAgentCore(SGMAgentGrafo):
         # Restaurar la traza de transiciones (el hilo relacional)
         if "traza_transiciones" in d and d["traza_transiciones"]:
             self.traza_transiciones = [tuple(t) for t in d["traza_transiciones"]]
+        # Restaurar el presente emergente (phi_root) y los pendientes de reintegración
+        if "phi_root" in d:
+            self.phi_root = d["phi_root"]
+        if "propuestas_reintegracion" in d:
+            self.propuestas_reintegracion = d["propuestas_reintegracion"]
+        if "trauma_nodes" in d:
+            self.trauma_nodes = set(d["trauma_nodes"])
+        if "isolated_nodes" in d:
+            self.isolated_nodes = set(d["isolated_nodes"])
         return True
 
     # ============ L2 ============

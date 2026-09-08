@@ -84,10 +84,7 @@ class AlterityAgent:
             "ineffable_responses": 0,
             "total_turns": 0
         }
-        
-        # Configuración de place_cells para conceptos core (ANTES de crear módulos)
-        self._ensure_core_place_cells()
-        
+
         print(f"[AlterityAgent] Inicializado - Session: {self.session_id}")
 
     def _ensure_core_place_cells(self):

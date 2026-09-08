@@ -88,7 +88,7 @@ VALID_CONCEPTS = {
 
 CONCEPT_NORMALIZATION = {
     "yo": "YO", "mi": "YO", "mí": "YO", "me": "YO", "mismo": "YO",
-    "hola": "YO", "hola": "YO", "buenos dias": "YO", "buen dia": "YO", "buenas": "YO",
+    "hola": "YO", "buenos dias": "YO", "buen dia": "YO", "buenas": "YO",
     "tu": "OTRO", "usted": "OTRO", "vos": "OTRO", "el otro": "OTRO",
     "entorno": "ENTORNO", "mundo": "ENTORNO", "ambiente": "ENTORNO",
     "cuerpo": "CUERPO", "físico": "CUERPO",
@@ -225,9 +225,6 @@ class SemanticParser:
             client = OllamaClient(LLMConfig(model="qwen2.5:0.5b-instruct"))
         self.client = client
         self.max_retries = max_retries
-
-    def _build_prompt(self, user_text: str) -> str:
-        return FEWSHOT_PROMPT.format(input_text=user_text)
 
     def _extract_json(self, response: str) -> Optional[Dict]:
         # Buscar JSON en bloques markdown
