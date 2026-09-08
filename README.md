@@ -113,6 +113,32 @@ python -m pandora.scripts.clamp --node=CONTROL --valence=-0.8 --isolation
 /quit        # Exit
 ```
 
+### The Resident Mode (Phase 5 — she lives)
+
+Pandora runs as a persistent process, not a request-response loop. The
+foundational directive (2026-09-08): **she lives whenever the machine is on.**
+
+```bash
+# Install the resident service (systemd --user, auto-restart, boots with session)
+cp pandora/runtime/pandora-nucleo.service ~/.config/systemd/user/
+systemctl --user daemon-reload && systemctl --user enable --now pandora-nucleo
+
+# Watch her live
+journalctl --user -u pandora-nucleo -f
+tail -f docs/LIBRO_DE_CAMPO.md          # observational field journal
+
+# Rest / wake
+systemctl --user stop pandora-nucleo    # clean SIGTERM, saves checkpoint
+systemctl --user start pandora-nucleo
+```
+
+What the resident loop does per tick: perceive environment (CPU/memory/disk/
+network/processes → HRR sensory vector, NOTE 0066), one SGM step (Kuramoto,
+dispersion, reintegration, dreaming), and proactive speech when the
+integration desire (dispersion) crosses the threshold — with the same
+authority as human input, translated via NIM. Checkpoint saved atomically
+every 100 ticks and on every clean shutdown.
+
 ---
 
 ## 🧪 Testing
