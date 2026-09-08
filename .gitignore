@@ -29,6 +29,8 @@ pandora/ontology/hrr_vectors.json
 # Workspace de actuación de Pandora (su entorno de archivos) — lo que escribe
 pandora/workspace/
 pandora/workspace_test/
+# Estado vivo del núcleo residente (checkpoint + journal proactivo)
+pandora/runtime/data/
 
 # SGM runtime
 sgm/checkpoints/
