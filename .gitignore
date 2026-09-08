@@ -58,8 +58,8 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+pandora_sgm.egg-info/
 
 # Misc
-_staging/
 *.tmp
 *.temp

@@ -177,8 +177,25 @@ Pandora/
 │   ├── roadmap/                # Future directions
 │   └── legacy/                 # Pre-Pandora docs (TODO, DEV_GUIDE, README_SGM)
 ├── results/                    # Experiment results (experiment_registry.json + JSON)
-└── tests/                      # 106 behavioral tests
+├── tests/                      # 106 behavioral tests
+├── experiments/                # Misc experiment scripts + artifacts/ (binary training data)
+├── phases/                     # HISTORICAL: the 7 phases of the original SGM (pre-Pandora)
+├── lit/                        # Literature library (papers/ PDFs + corpus/)
+└── LICENSE
 ```
+
+### 🗂 Legacy / Historical (read-only, not the active system)
+
+These folders are **history**, not the current system. A new contributor should
+not modify them — the active code is `sgm/core/` + `pandora/`.
+
+| Folder | What it is | Why it's here |
+|--------|-----------|----------------|
+| `sgm/legacy/` | 14 deprecated pre-Pandora modules | kept for reference; 0 uses in active code |
+| `phases/` | the original 7-phase SGM experiments (189 files) | historical research (pre-modularization); self-coupled, don't move |
+| `lit/` | academic papers (Kanerva HDC, Titans, HippoRAG…) + corpus | literature supporting the ontology |
+| `docs/legacy/` | old TODO / DEV_GUIDE / README_SGM (the 2251-line monorepo era) | documents the pre-Pandora SGM |
+| `experiments/` (root) | a few standalone scripts + `artifacts/` binary training data | early experiments, superseded by `sgm/experiments/` |
 
 ---
 
