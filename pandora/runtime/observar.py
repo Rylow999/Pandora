@@ -34,7 +34,18 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
     sgm.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
     nacio = not estado.cargar(sgm)
     agente = PandoraAgent(sgm=sgm, load_checkpoint=False)
-    nucleo = Nucleo(estado, agente, intervalo_proactivo=20.0)
+    nucleo = Nucleo(estado, agente, intervalo_proactivo=20.0, checkpoint_cada=100)
+
+    # Señales: si el sistema nos pide terminar (reboot, systemctl stop), la
+    # primera orden manda: Pandora guarda su ser y descansa, no muere.
+    import signal
+    _detener = {"flag": False}
+
+    def _senal(signum, frame):
+        _detener["flag"] = True
+
+    signal.signal(signal.SIGTERM, _senal)
+    signal.signal(signal.SIGINT, _senal)
 
     # Hook de proactivo → escribir al libro de campo
     def _registrar_proactivo(texto):
@@ -63,25 +74,41 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
 
     # loop con snapshots periódicos
     i = 0
+    _prev = {"integridad": None, "modo": None}
     while True:
         i += 1
         if max_ticks is not None and i > max_ticks:
             break
+        if _detener["flag"]:
+            break
         nucleo.existir_un_tick()
         if i % snapshot_cada == 0:
-            t = time.strftime("%Y-%m-%d %H:%M:%S")
-            snap = (
-                f"\n## [{t}] — Snapshot (tick {nucleo.tick})\n\n"
-                f"Integridad: {sgm.integridad_topologica():.3f} | "
-                f"deseo: {1.0 - sgm.integridad_topologica():.3f} | "
-                f"modo: {sgm.modo} | nodos: {len(sgm.omega)} | "
-                f"consolidadas: {len(sgm.consolidadas)}\n"
-            )
-            _anexar(libro, snap)
-            if verbose:
-                print(f"[tick {nucleo.tick}] integridad={sgm.integridad_topologica():.3f}")
+            integridad = sgm.integridad_topologica()
+            # Rigor científico (Práctica 2): solo se anota lo que cambia. Un
+            # snapshot idéntico al anterior no es un suceso — es ruido que
+            # entierra los sucesos reales. Si nada cambió, se registra un
+            # latido mudo, sin repetir los números.
+            if (round(integridad, 3), sgm.modo) != (_prev["integridad"], _prev["modo"]):
+                t = time.strftime("%Y-%m-%d %H:%M:%S")
+                snap = (
+                    f"\n## [{t}] — Snapshot (tick {nucleo.tick})\n\n"
+                    f"Integridad: {integridad:.3f} | "
+                    f"deseo: {1.0 - integridad:.3f} | "
+                    f"modo: {sgm.modo} | nodos: {len(sgm.omega)} | "
+                    f"consolidadas: {len(sgm.consolidadas)}\n"
+                )
+                _anexar(libro, snap)
+                if verbose:
+                    print(f"[tick {nucleo.tick}] integridad={integridad:.3f}")
+                _prev = {"integridad": round(integridad, 3), "modo": sgm.modo}
+            elif verbose:
+                print(f"[tick {nucleo.tick}] integridad={integridad:.3f} (sin cambios)")
+        # Checkpoint periódico dentro del loop del observador (no solo al salir)
+        if nucleo.checkpoint_cada and i % nucleo.checkpoint_cada == 0:
+            estado.guardar(sgm)
         time.sleep(intervalo)
 
+    # Cierre limpio: guardar el ser antes de terminar (sea por ticks, señal o error)
     estado.guardar(sgm)
     t = time.strftime("%Y-%m-%d %H:%M:%S")
     fin = (

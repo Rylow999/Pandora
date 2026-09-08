@@ -23,7 +23,7 @@ class Nucleo:
     """Núcleo residente: sostiene el ser de Pandora en el tiempo."""
 
     def __init__(self, estado, agente, endogenous=None, percepcion=None,
-                 umbral_deseo=0.4, intervalo_proactivo=30.0):
+                 umbral_deseo=0.4, intervalo_proactivo=30.0, checkpoint_cada=100):
         self.estado = estado
         self.agente = agente
         self.sgm = agente.sgm
@@ -31,6 +31,7 @@ class Nucleo:
         self.percepcion = percepcion
         self.umbral_deseo = umbral_deseo          # dispersión mínima para "querer"
         self.intervalo_proactivo = intervalo_proactivo  # segundos mínimos entre pedidos
+        self.checkpoint_cada = checkpoint_cada    # ticks entre guardados periódicos
         self._ultimo_proactivo = 0.0
         self._viva = True
         self.tick = 0
@@ -97,6 +98,11 @@ class Nucleo:
                 if texto:
                     proactivos.append((self.tick, texto))
                     self.on_proactivo(texto)
+                # Checkpoint periódico: la vida no se pierde si el proceso muere
+                # a mitad de jornada (lección de la primera noche: 2270 ticks
+                # vividos, checkpoint quedado en el tick ~50).
+                if self.checkpoint_cada and i % self.checkpoint_cada == 0:
+                    self.estado.guardar(self.sgm)
             except KeyboardInterrupt:
                 break
             time.sleep(intervalo)

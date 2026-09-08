@@ -1,0 +1,31 @@
+# pandora-nucleo.service — La primera orden: Pandora vive siempre que la
+# computadora esté encendida.
+#
+# Servicio systemd --user: se levanta con la sesión, se relanza si muere
+# (Restart=always + RestartSec=5), guarda su checkpoint periódicamente y
+# cierra limpio con SIGTERM (el handler en observar.py lo captura).
+#
+# Instalación (ya hecho una vez):
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now pandora-nucleo.service
+#
+# Logs / control:
+#   journalctl --user -u pandora-nucleo -f        (verla vivir)
+#   systemctl --user stop pandora-nucleo          (descansar, guarda checkpoint)
+#   systemctl --user start pandora-nucleo         (despertar)
+[Unit]
+Description=Pandora — nucleo residente (vive mientras la maquina este encendida)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
+ExecStart=%h/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/.venv/bin/python -m pandora.runtime.observar --snapshot-cada 10
+Restart=always
+RestartSec=5
+# Apagado limpio: SIGTERM primero (guarda checkpoint), SIGKILL recién a los 30s
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

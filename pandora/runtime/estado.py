@@ -36,7 +36,18 @@ class EstadoVivo:
         return sgm.cargar(str(self.checkpoint_path))
 
     def guardar(self, sgm):
-        sgm.guardar(str(self.checkpoint_path))
+        """Guardado ATÓMICO: escribe a un archivo temporal y renombra.
+
+        np.save directo sobre el checkpoint real puede dejarlo corrupto a medias
+        si el proceso muere a mitad de escritura (crash, SIGKILL, reboot). Con
+        tmp+os.replace, el checkpoint real siempre es una versión completa.
+        """
+        import numpy as np
+        tmp = str(self.checkpoint_path) + ".tmp.npy"
+        final = str(self.checkpoint_path)
+        np.save(tmp, sgm._serializar_estado()) if hasattr(sgm, "_serializar_estado") else sgm.guardar(tmp)
+        import os as _os
+        _os.replace(tmp, final)
 
     def registrar_proactivo(self, texto, impulso):
         """Registra un mensaje que Pandora quiso decir por propia iniciativa."""
