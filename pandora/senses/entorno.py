@@ -44,9 +44,14 @@ class PercepcionEntorno:
             self.roles[nombre] = [x / norm for x in v]
 
     def sample(self):
-        """Muestrea el estado crudo del entorno."""
+        """Muestrea el estado crudo del entorno.
+
+        cpu_percent SIN intervalo: no bloquea (devuelve % desde la última
+        muestra — el delta natural entre ticks). Con interval=0.1 bloqueaba
+        100ms por tick = 2.4h de CPU/día solo midiendo.
+        """
         return {
-            "cpu_percent": psutil.cpu_percent(interval=0.1),
+            "cpu_percent": psutil.cpu_percent(interval=None),
             "memory_percent": psutil.virtual_memory().percent,
             "disk_usage_percent": psutil.disk_usage('/').percent,
             "net_bytes_sent": psutil.net_io_counters().bytes_sent,

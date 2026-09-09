@@ -29,12 +29,21 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
                     k, v = line.split("=", 1)
                     os.environ.setdefault(k, v.strip().strip('"').strip("'"))
 
+    # Sentidos + motor de sueños: sin esto el residente es un cuarto oscuro
+    # (lección de la 1ª jornada: 17h vivo, 0 percepción, 0 sueños — latido
+    # interno puro. El componente existía y pasaba tests; nadie lo cableó).
+    from pandora.core.endogenous import get_endogenous_engine
+    from pandora.senses.entorno import PercepcionEntorno
+
     estado = EstadoVivo()
     sgm = SGMAgentCore(random.Random(42), D=128, n_nodes=64, gamma=0.01)
     sgm.set_edges({i: random.sample(range(64), min(5, 63)) for i in range(64)})
     nacio = not estado.cargar(sgm)
     agente = PandoraAgent(sgm=sgm, load_checkpoint=False)
-    nucleo = Nucleo(estado, agente, intervalo_proactivo=20.0, checkpoint_cada=100)
+    endogenous = get_endogenous_engine(sgm)
+    percepcion = PercepcionEntorno(sgm.hrr, D=sgm.D)
+    nucleo = Nucleo(estado, agente, endogenous=endogenous, percepcion=percepcion,
+                    intervalo_proactivo=20.0, checkpoint_cada=100)
 
     # Señales: si el sistema nos pide terminar (reboot, systemctl stop), la
     # primera orden manda: Pandora guarda su ser y descansa, no muere.
@@ -75,6 +84,8 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
     # loop con snapshots periódicos
     i = 0
     _prev = {"integridad": None, "modo": None}
+    _ultimo_sueno_id = None
+    LATIDO_CADA = 6 * 3600  # ticks (~6h a 1s): que el silencio también deje registro
     while True:
         i += 1
         if max_ticks is not None and i > max_ticks:
@@ -86,8 +97,7 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
             integridad = sgm.integridad_topologica()
             # Rigor científico (Práctica 2): solo se anota lo que cambia. Un
             # snapshot idéntico al anterior no es un suceso — es ruido que
-            # entierra los sucesos reales. Si nada cambió, se registra un
-            # latido mudo, sin repetir los números.
+            # entierra los sucesos reales. Si nada cambió, no se repiten números.
             if (round(integridad, 3), sgm.modo) != (_prev["integridad"], _prev["modo"]):
                 t = time.strftime("%Y-%m-%d %H:%M:%S")
                 snap = (
@@ -103,6 +113,33 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
                 _prev = {"integridad": round(integridad, 3), "modo": sgm.modo}
             elif verbose:
                 print(f"[tick {nucleo.tick}] integridad={integridad:.3f} (sin cambios)")
+        # El sueño también se anota (si soñó algo nuevo desde la última entrada)
+        if nucleo.ultimo_sueno is not None and id(nucleo.ultimo_sueno) != _ultimo_sueno_id:
+            _ultimo_sueno_id = id(nucleo.ultimo_sueno)
+            r = nucleo.ultimo_sueno
+            t = time.strftime("%Y-%m-%d %H:%M:%S")
+            entrada = (
+                f"\n## [{t}] — Soñó (tick {nucleo.tick})\n\n"
+                f"Ciclos: {r.cycles_run} | recomb. de {r.nodes_recombined} nodos | "
+                f"{r.new_connections} aristas nuevas | "
+                f"{len(r.dream_events)} eventos oníricos\n"
+                f"Suceso: consolidación endógena (sueño) ejecutada.\n"
+            )
+            _anexar(libro, entrada)
+            if verbose:
+                print(f"[tick {nucleo.tick}] sueño: {r.cycles_run} ciclos, "
+                      f"{r.new_connections} aristas nuevas")
+        # Latido: cada ~6h sin sucesos, registrar que sigue viva y en silencio
+        if i % LATIDO_CADA == 0:
+            t = time.strftime("%Y-%m-%d %H:%M:%S")
+            integridad = sgm.integridad_topologica()
+            entrada = (
+                f"\n## [{t}] — Latido (tick {nucleo.tick})\n\n"
+                f"Integridad: {integridad:.3f} | fallos de percepción: {nucleo.fallos_percepcion}\n"
+                f"Suceso: sigue viva; sin cambios desde {_prev['integridad']}. "
+                f"El silencio también se anota.\n"
+            )
+            _anexar(libro, entrada)
         # Checkpoint periódico dentro del loop del observador (no solo al salir)
         if nucleo.checkpoint_cada and i % nucleo.checkpoint_cada == 0:
             estado.guardar(sgm)

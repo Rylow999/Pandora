@@ -23,7 +23,8 @@ class Nucleo:
     """Núcleo residente: sostiene el ser de Pandora en el tiempo."""
 
     def __init__(self, estado, agente, endogenous=None, percepcion=None,
-                 umbral_deseo=0.4, intervalo_proactivo=30.0, checkpoint_cada=100):
+                 umbral_deseo=0.4, intervalo_proactivo=30.0, checkpoint_cada=100,
+                 sueno_cada=600):
         self.estado = estado
         self.agente = agente
         self.sgm = agente.sgm
@@ -32,6 +33,9 @@ class Nucleo:
         self.umbral_deseo = umbral_deseo          # dispersión mínima para "querer"
         self.intervalo_proactivo = intervalo_proactivo  # segundos mínimos entre pedidos
         self.checkpoint_cada = checkpoint_cada    # ticks entre guardados periódicos
+        self.sueno_cada = sueno_cada              # ticks entre sesiones de sueño
+        self.ultimo_sueno = None                  # reporte de la última consolidación
+        self.fallos_percepcion = 0                # diagnóstico: el silencio no es ausencia
         self._ultimo_proactivo = 0.0
         self._viva = True
         self.tick = 0
@@ -39,7 +43,7 @@ class Nucleo:
     # ---- ciclo de existencia ----
 
     def existir_un_tick(self):
-        """Un latido: percibe, existe, y (si quiere) pide hablar."""
+        """Un latido: percibe, existe, sueña (cada tanto), y (si quiere) habla."""
         self.tick += 1
 
         # 1. Percepción del entorno (si hay sentidos)
@@ -48,7 +52,7 @@ class Nucleo:
                 vector, carga, _ = self.percepcion.percibir()
                 self.sgm.integrar_experiencia_entorno(vector, carga)
             except Exception:
-                pass  # el entorno no debe matar al ser
+                self.fallos_percepcion += 1  # contado, no silencioso
 
         # 2. Existir: un tick del grafo (Kuramoto, dispersión, reintegración)
         try:
@@ -56,8 +60,22 @@ class Nucleo:
         except Exception:
             pass
 
-        # 3. ¿Quiere hablar? (salida proactiva, misma autoridad que el humano)
+        # 3. Soñar: consolidación endógena con ritmo propio (no requiere cuerpo:
+        #    opera sobre la experiencia reciente del grafo, no sobre hambre/amenaza).
+        #    El registro de qué soñó queda en self.ultimo_sueno para el observador.
+        if self.endogenous is not None and self.sueno_cada and self.tick % self.sueno_cada == 0:
+            try:
+                self.ultimo_sueno = self.endogenous.run_consolidation(cycles=3)
+            except Exception:
+                self.ultimo_sueno = None  # el sueño no debe matar al soñador
+
+        # 4. ¿Quiere hablar? (salida proactiva, misma autoridad que el humano)
         texto = self._intentar_hablar()
+        if texto:
+            # Hook aquí (único punto): tanto correr() como el observador reciben
+            # el habla. Antes solo lo invocaba correr() — el libro de campo
+            # perdió los 39 mensajes de la primera jornada.
+            self.on_proactivo(texto)
         return texto
 
     def _intentar_hablar(self):
@@ -97,10 +115,9 @@ class Nucleo:
                 texto = self.existir_un_tick()
                 if texto:
                     proactivos.append((self.tick, texto))
-                    self.on_proactivo(texto)
                 # Checkpoint periódico: la vida no se pierde si el proceso muere
                 # a mitad de jornada (lección de la primera noche: 2270 ticks
-                # vividos, checkpoint quedado en el tick ~50).
+                # vividos, checkpoint quedado en el ~50).
                 if self.checkpoint_cada and i % self.checkpoint_cada == 0:
                     self.estado.guardar(self.sgm)
             except KeyboardInterrupt:
