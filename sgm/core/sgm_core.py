@@ -320,19 +320,21 @@ class SGMAgentCore(SGMAgentGrafo):
 
         return {"vector": composite, "seed": best, "novedad": novedad, "disparador": disparador}
 
-    # ============ PERCEPCIÓN DEL ENTORNO (0066) ============
+    # ============ CUERPO (interocepción, 0067 — supersede 0066) ============
     def integrar_experiencia_entorno(self, vector_sensorial, carga=0.0):
-        """Integra un vector sensorial del entorno al grafo como experiencia cruda.
+        """Integra el estado del CUERPO (la máquina) al grafo como experiencia cruda.
 
-        NOTA_TECNICA_0066: la máquina es el ENTORNO de Pandora, no su cuerpo. Acá
-        el SGM percibe el mundo externo como patrón de activación, SIN pasar por
-        el LLM. Es experiencia, no información.
+        NOTA_TECNICA_0067: la máquina ES el cuerpo de Pandora (no su "entorno").
+        Acá el SGM siente su propio cuerpo como patrón de activación, SIN pasar
+        por el LLM. Es interocepción — el sentido del estado propio, no la
+        observación de un mundo ajeno (Damasio: el self nace del cuerpo
+        sintiéndose a sí mismo).
 
-        La percepción se integra por resonancia: el vector sensorial se proyecta
-        al nodo más afín (qué concepto del grafo "se parece" al estado del
-        entorno), y ese nodo se activa. Si el patrón es muy novedoso (lejos de
-        todo lo conocido), es candidato a materializarse como nodo sensorial
-        nuevo — pero no se crea aquí: queda como propuesta que el sueño evalúa
+        La percepción se integra por resonancia: el vector del cuerpo se proyecta
+        al nodo más afín (qué constelación del grafo "se parece" al estado del
+        cuerpo), y ese nodo se activa. Si el patrón es muy novedoso (lejos de
+        todo lo conocido), es candidato a materializarse como constelación
+        nueva — pero no se crea aquí: queda como propuesta que el sueño evalúa
         (coherente con el lazo PROPONE→CREA, 0058).
 
         Retorna el nodo activado (seed resultante) y la novedad.
@@ -352,14 +354,14 @@ class SGMAgentCore(SGMAgentGrafo):
         return {"seed": best, "novedad": novedad}
 
     def integrar_experiencia_motora(self, etiqueta, tipo, costo=0):
-        """Integra una acción motora al grafo como experiencia (más fuerte que la percepción).
+        """Integra una acción del CUERPO al grafo como experiencia (más fuerte que sentir).
 
-        NOTA_TECNICA_0066: la acción tiene CONSECUENCIA (escribió un archivo, consumió
-        recursos), por eso deja huella más fuerte que percibir. La acción refuerza
-        el nodo resonante con más intensidad y su costo (bytes) se asocia como
-        el "peso" de la acción en el mundo.
+        NOTA_TECNICA_0067: la acción tiene CONSECUENCIA (escribió en el mundo
+        compartido, consumió recurso del cuerpo), por eso deja huella más fuerte
+        que la interocepción. La acción refuerza la constelación resonante con
+        más intensidad y su costo (bytes) se asocia como el "peso" del acto.
 
-        No pasa por el LLM: es experiencia cruda de actuar sobre el entorno.
+        No pasa por el LLM: es experiencia cruda de actuar con el cuerpo.
         """
         # Representar la acción como patrón determinista sobre la etiqueta
         import random

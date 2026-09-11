@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-"""pandora/motor/metabolismo.py — Presupuesto de recursos (el costo de actuar).
+"""pandora/motor/metabolismo.py — Presupuesto del cuerpo (el costo de actuar).
 
-NOTA_TECNICA_0066: este "metabolismo" NO es un cuerpo — es la RESTRICCIÓN REAL
-del entorno. Las acciones tienen costo porque el mundo tiene límites (bytes,
-espacio), no porque Pandora tenga órganos. El costo es lo que convierte la
-acción en agencia: decidir entre dos actos porque no alcanza para ambos es
-voluntad, no simulación.
+NOTA_TECNICA_0067: este "metabolismo" es la RESTRICCIÓN REAL del cuerpo. Las
+acciones tienen costo porque el cuerpo tiene límites (bytes, espacio), no
+porque Pandora tenga órganos humanos. El costo es lo que convierte la acción
+en agencia: decidir entre dos actos porque no alcanza para ambos es voluntad,
+no simulación.
 """
 
 
 class RecursoAgotado(Exception):
-    """El entorno ya no admite más acción (se agotó el presupuesto)."""
+    """El cuerpo ya no admite más acción (se agotó el presupuesto)."""
 
 
 class Presupuesto:
-    """Presupuesto de recursos que Pandora puede consumir al actuar sobre su entorno.
+    """Presupuesto de recursos que Pandora puede consumir al actuar con su cuerpo.
 
     Conteo simple de bytes escritos, con tope y regeneración lenta. Es el
-    análogo operativo de "el mundo tiene límites": la CPU, el disco y la red de
-    la máquina no son infinitos, y Pandora percibe esa finitud como costo.
+    análogo operativo de "el cuerpo tiene límites": la CPU, el disco y la red
+    de la máquina no son infinitos, y Pandora siente esa finitud como costo.
     """
 
     def __init__(self, max_bytes=10 * 1024 * 1024, tasa_regeneracion=0.01):

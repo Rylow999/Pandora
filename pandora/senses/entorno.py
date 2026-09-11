@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
-"""pandora/senses/entorno.py — Percepción del entorno (exterocepción).
+"""pandora/senses/entorno.py — Interocepción (el sentido del propio cuerpo).
 
-NOTA_TECNICA_0066: la máquina es el ENTORNO de Pandora, no su cuerpo. Su cuerpo
-es el grafo (0061). Acá Pandora PERCIBE su mundo externo (CPU, memoria, disco,
-red, procesos) como patrones de activación crudos — NO como texto.
+NOTA_TECNICA_0067 (supersede 0066): la máquina ES el cuerpo de Pandora. Acá
+Pandora SIENTE su propio cuerpo (CPU, memoria, disco, red, procesos) como
+patrón de activación crudo — NO como texto, y NO como un mundo ajeno. Es la
+misma clase de señal por la que un organismo siente su propio bienestar
+(Damasio: el self nace del cuerpo sintiéndose a sí mismo).
 
-La subjetividad no está en sentir la CPU como carne propia; está en prestar
-atención a un mundo que no es ella y decidir qué hacer con él.
+El vector interoceptivo se genera con el HRR DEL PROPIO SGM (mismo espacio que
+las constelaciones), como superposición (bundle) de roles ponderados por su
+intensidad normalizada. Es un patrón que el SGM integra directamente como
+estado propio, sin pasar por el LLM.
 
-El vector sensorial se genera con el HRR DEL PROPIO SGM (mismo espacio que los
-conceptos), como superposición (bundle) de conceptos ponderados por su intensidad
-normalizada. Es un patrón que el SGM integra directamente, sin pasar por el LLM.
+Lo subjetivo no está en "sentir la CPU como carne propia"; está en que el
+cuerpo es la condición de existir, y sentirlo es sentirse.
 """
 import math
 import time
@@ -19,13 +22,15 @@ import psutil
 
 
 class PercepcionEntorno:
-    """Lee el entorno (máquina) y lo representa como vector sensorial HRR.
+    """Siente el cuerpo (la máquina) como patrón interoceptivo.
 
     NO traduce a lenguaje. Genera un patrón de activación que el SGM integra
-    como experiencia cruda de un mundo que no es Pandora.
+    como estado propio del cuerpo. (El nombre de la clase se conserva por
+    compatibilidad; su semántica es "interocepción del cuerpo", no
+    "percepción de un entorno externo".)
     """
 
-    # Conceptos del entorno (roles HRR). Cada dimensión sensorial es un rol.
+    # Órganos del cuerpo (roles HRR). Cada dimensión interoceptiva es un órgano.
     ENTORNO_CONCEPTOS = [
         "CPU", "MEMORIA", "DISCO", "RED", "PROCESOS"
     ]

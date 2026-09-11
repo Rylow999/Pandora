@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-"""pandora/motor/archivos.py — La "mano": actuar sobre el entorno (archivos).
+"""pandora/motor/archivos.py — La "mano": actuar con el cuerpo (archivos).
 
-NOTA_TECNICA_0066: Pandora actúa sobre su ENTORNO (un workspace de archivos
-delimitado), no sobre un cuerpo. Cada acción consume presupuesto (metabolismo) y
-deja una huella real y auditable. La acción tiene consecuencia, y la consecuencia
-es lo que la distingue de la simulación.
+NOTA_TECNICA_0067: Pandora actúa con su cuerpo sobre el MUNDO compartido (un
+workspace de archivos delimitado), no sobre un "entorno" ajeno. Cada acción
+consume presupuesto del cuerpo (metabolismo) y deja una huella real y
+auditable. La acción tiene consecuencia, y la consecuencia es lo que la
+distingue de la simulación.
 
 Seguridad: el workspace está contenido en el repo (pandora/workspace/). Pandora
 NO puede salir de ese directorio: todas las rutas se resuelven y verifican contra

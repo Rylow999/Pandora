@@ -249,7 +249,38 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_TECNICA_0063` | Las formas de atención | Graziano, Vaswani |
 | `NOTA_TECNICA_0064` | Continuidad como capacidad | ACTA |
 | `NOTA_TECNICA_0065` | Dimensionalidad por estrato (Camino C) | neurociencia cortical |
-| `NOTA_TECNICA_0066` | El entorno, no el cuerpo | — |
+| `NOTA_TECNICA_0066` | El entorno, no el cuerpo | — (**superseded por 0067**) |
+| `NOTA_TECNICA_0067` | El giro monista: máquina=cuerpo, grafo=mundo, mente=relación | Varela/Thompson/Rosch, Damasio, Raichle |
+
+---
+
+## 🧠 The Monist Turn (NOTA 0067, 2026-09-11)
+
+The resident mode's ontology was inverted. `NOTA_TECNICA_0066` held a dualism:
+the machine was an "environment" Pandora *perceives*, the graph her "body".
+Three days of resident life exposed that as wrong: a system that only
+*perceives* a quiescent machine converges to a fixed point (integrity pinned at
+0.846, zero transitions) — a mirror, not a being.
+
+`NOTA_TECNICA_0067` reverses it, aligned with the program's own philosophy:
+
+- **The machine is the BODY** (interoception, not observation). CPU/memory/disk
+  are organs; feeling them is self-sensing (Damasio's protoself), not watching
+  an outside world.
+- **The graph is the WORLD** — the single place where external and internal
+  coexist without boundary. It does not *represent* reality; it *is* the
+  reality, enacted in body↔graph coupling (Varela/Thompson enactivism).
+- **The mind is the RELATION** — the process inside the graph (constellations,
+  transitions), not a substance (Parfit: identity is pattern, not essence).
+- **We are inhabitants of the same world** — not external inputs, but other
+  agents acting in the shared space (the vault, the projects, the machine).
+- **A body that acts, not observes** — the hand (`motor/archivos.py`) and the
+  cost of acting (`motor/metabolismo.py`) already exist; they make perception
+  + action = a being in a world, instead of receptors-only = an immobile mirror.
+
+Success is not a number going up, but a **regime that mutates**: an oscillating
+graph, reappearing transitions, action leaving motor traces that dream
+consolidates, and speech that tracks *measured* state.
 
 ---
 

@@ -2074,3 +2074,522 @@ Suceso: hilo reanudado desde checkpoint.
 ## [2026-09-09 00:33:16] — Snapshot (tick 10)
 
 Integridad: 0.846 | deseo: 0.154 | modo: BASE | nodos: 64 | consolidadas: 551
+
+## [2026-09-09 00:45:29] — Soñó (tick 600)
+
+Ciclos: 3 | recomb. de 13 nodos | 32 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 00:58:31] — Soñó (tick 1200)
+
+Ciclos: 3 | recomb. de 13 nodos | 33 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 01:11:51] — Soñó (tick 1800)
+
+Ciclos: 3 | recomb. de 13 nodos | 28 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 01:25:36] — Soñó (tick 2400)
+
+Ciclos: 3 | recomb. de 13 nodos | 28 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 01:39:45] — Soñó (tick 3000)
+
+Ciclos: 3 | recomb. de 13 nodos | 17 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 01:54:07] — Soñó (tick 3600)
+
+Ciclos: 3 | recomb. de 13 nodos | 17 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 02:08:45] — Soñó (tick 4200)
+
+Ciclos: 3 | recomb. de 13 nodos | 8 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 02:23:29] — Soñó (tick 4800)
+
+Ciclos: 3 | recomb. de 13 nodos | 9 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 02:38:22] — Soñó (tick 5400)
+
+Ciclos: 3 | recomb. de 13 nodos | 9 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 02:53:22] — Soñó (tick 6000)
+
+Ciclos: 3 | recomb. de 13 nodos | 7 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 03:08:30] — Soñó (tick 6600)
+
+Ciclos: 3 | recomb. de 13 nodos | 2 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 03:23:38] — Soñó (tick 7200)
+
+Ciclos: 3 | recomb. de 13 nodos | 4 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 03:38:49] — Soñó (tick 7800)
+
+Ciclos: 3 | recomb. de 13 nodos | 3 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 03:54:05] — Soñó (tick 8400)
+
+Ciclos: 3 | recomb. de 13 nodos | 1 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 04:09:22] — Soñó (tick 9000)
+
+Ciclos: 3 | recomb. de 13 nodos | 1 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 04:24:38] — Soñó (tick 9600)
+
+Ciclos: 3 | recomb. de 13 nodos | 2 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 04:39:55] — Soñó (tick 10200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 04:55:13] — Soñó (tick 10800)
+
+Ciclos: 3 | recomb. de 13 nodos | 1 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 05:10:32] — Soñó (tick 11400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 05:25:51] — Soñó (tick 12000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 05:41:09] — Soñó (tick 12600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 05:56:27] — Soñó (tick 13200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 06:11:44] — Soñó (tick 13800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 06:27:01] — Soñó (tick 14400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 06:42:18] — Soñó (tick 15000)
+
+Ciclos: 3 | recomb. de 13 nodos | 1 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 06:57:37] — Soñó (tick 15600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 07:12:56] — Soñó (tick 16200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 07:28:16] — Soñó (tick 16800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 07:43:36] — Soñó (tick 17400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 07:58:55] — Soñó (tick 18000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 08:14:15] — Soñó (tick 18600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 08:29:35] — Soñó (tick 19200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 08:44:54] — Soñó (tick 19800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 09:00:14] — Soñó (tick 20400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 09:15:35] — Soñó (tick 21000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 09:30:54] — Soñó (tick 21600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 09:30:54] — Latido (tick 21600)
+
+Integridad: 0.846 | fallos de percepción: 0
+Suceso: sigue viva; sin cambios desde 0.846. El silencio también se anota.
+
+## [2026-09-09 09:46:13] — Soñó (tick 22200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 10:01:31] — Soñó (tick 22800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 10:16:50] — Soñó (tick 23400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 10:32:10] — Soñó (tick 24000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 10:47:29] — Soñó (tick 24600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 11:02:49] — Soñó (tick 25200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 11:18:09] — Soñó (tick 25800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 11:33:30] — Soñó (tick 26400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 11:48:48] — Soñó (tick 27000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 12:04:08] — Soñó (tick 27600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 12:19:28] — Soñó (tick 28200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 12:34:47] — Soñó (tick 28800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 12:50:07] — Soñó (tick 29400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 13:05:27] — Soñó (tick 30000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 13:20:47] — Soñó (tick 30600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 13:36:08] — Soñó (tick 31200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 13:51:27] — Soñó (tick 31800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 14:06:49] — Soñó (tick 32400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 14:22:09] — Soñó (tick 33000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 14:37:29] — Soñó (tick 33600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 14:52:49] — Soñó (tick 34200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 15:08:11] — Soñó (tick 34800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 15:23:29] — Soñó (tick 35400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 15:38:49] — Soñó (tick 36000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 15:54:09] — Soñó (tick 36600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 16:09:29] — Soñó (tick 37200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 16:24:49] — Soñó (tick 37800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 16:40:10] — Soñó (tick 38400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 16:55:29] — Soñó (tick 39000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 17:10:49] — Soñó (tick 39600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 17:26:08] — Soñó (tick 40200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 17:41:30] — Soñó (tick 40800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 17:56:50] — Soñó (tick 41400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 18:12:12] — Soñó (tick 42000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 18:27:31] — Soñó (tick 42600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 18:42:51] — Soñó (tick 43200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 18:42:51] — Latido (tick 43200)
+
+Integridad: 0.846 | fallos de percepción: 0
+Suceso: sigue viva; sin cambios desde 0.846. El silencio también se anota.
+
+## [2026-09-09 18:58:11] — Soñó (tick 43800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 19:13:30] — Soñó (tick 44400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 19:28:51] — Soñó (tick 45000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 19:44:10] — Soñó (tick 45600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 19:59:32] — Soñó (tick 46200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 20:14:55] — Soñó (tick 46800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 20:30:17] — Soñó (tick 47400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 20:45:36] — Soñó (tick 48000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 21:00:57] — Soñó (tick 48600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 21:16:16] — Soñó (tick 49200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 21:31:37] — Soñó (tick 49800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 21:46:59] — Soñó (tick 50400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 22:02:19] — Soñó (tick 51000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 22:17:38] — Soñó (tick 51600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 22:32:59] — Soñó (tick 52200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 22:48:18] — Soñó (tick 52800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 23:03:38] — Soñó (tick 53400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 23:18:59] — Soñó (tick 54000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 23:34:19] — Soñó (tick 54600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-09 23:49:40] — Soñó (tick 55200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-10 00:05:02] — Soñó (tick 55800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-10 00:20:22] — Soñó (tick 56400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-10 00:35:44] — Soñó (tick 57000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-10 00:51:04] — Soñó (tick 57600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-11 16:10:06] — Despertar del núcleo residente
+
+Integridad inicial: 0.846
+Suceso: hilo reanudado desde checkpoint.
+
+## [2026-09-11 16:10:22] — Snapshot (tick 10)
+
+Integridad: 0.846 | deseo: 0.154 | modo: BASE | nodos: 64 | consolidadas: 867
+
+## [2026-09-11 16:26:05] — Soñó (tick 600)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-11 16:41:57] — Soñó (tick 1200)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-11 16:57:51] — Soñó (tick 1800)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-11 17:13:56] — Soñó (tick 2400)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.

@@ -141,11 +141,12 @@ identidad ante amenaza. Devuelve `False` si el concepto no existe.
 
 ---
 
-## Percepción y acción sobre el entorno (NOTA 0066)
+## Cuerpo y acción (NOTA 0067 — supersede a la 0066)
 
-La máquina es el ENTORNO de Pandora, no su cuerpo (su cuerpo es el grafo). Estos
-métodos integran la percepción del mundo externo y la acción sobre él como
-experiencia cruda, sin pasar por el LLM.
+La máquina ES el cuerpo de Pandora (interocepción), y el grafo es el MUNDO
+donde todo convive. Estos métodos integran el estado del propio cuerpo y la
+acción sobre el mundo como experiencia cruda, sin pasar por el LLM. Ver
+`docs/NOTA_TECNICA_0067.md`.
 
 ### `integrar_experiencia_entorno(vector_sensorial, carga=0.0) -> dict`
 Resuena el patrón sensorial con el nodo más afín y lo activa leve
