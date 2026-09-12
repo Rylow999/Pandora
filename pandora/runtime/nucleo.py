@@ -16,7 +16,9 @@ alto, combinado con algo NUEVO que decir (una propuesta de reintegración resona
 o un drive estético emergido). Entonces invoca al transductor (NIM) con la misma
 autoridad que el input humano, y su texto queda registrado en el journal proactivo.
 """
+import math
 import time
+from pathlib import Path
 
 
 class Nucleo:
@@ -92,10 +94,13 @@ class Nucleo:
         #     no de un reloj.
         self._materializar(hormonas)
 
-        # 5. Repensar: si duda y el conocimiento alcanza, recombinar recordar+
-        #    imaginar (reusa reintegrar + constelaciones), en vez de buscar.
-        if hormonas["suficiente"] == "suficiente" and hormonas["duda"] > hormonas["duda_opt"]:
-            self._repensar()
+        # 5. Repensar o Aprehender: si duda y el conocimiento alcanza, recombinar
+        #    recordar+imaginar; si NO alcanza, RED ingiere del inbox (0069 §1.1).
+        if hormonas["duda"] > hormonas["duda_opt"]:
+            if hormonas["suficiente"] == "suficiente":
+                self._repensar()
+            else:
+                self._aprehender(hormonas)
 
         # 6. Soñar: consolidación por PRESIÓN, no por tiempo (0070 §2.5).
         if hormonas["consolidar_ahora"] and self.endogenous is not None \
@@ -166,6 +171,49 @@ class Nucleo:
                 self.endogenous._create_new_connections_from_constelaciones(constelaciones)
         except Exception:
             pass
+
+    def _aprehender(self, hormonas):
+        """RED (aprehensión, 0069 §1.1): si la duda es alta y el conocimiento no
+        alcanza, ingerir un archivo del inbox del mundo compartido.
+
+        Emerge del monitoreo metacognitivo (suficiente=insuficiente), no de un
+        reloj. Cada ingesta abstrae el texto a un patrón (hash determinista),
+        lo integra al grafo por resonancia (reusa integrar_experiencia_entorno)
+        y mueve el archivo a procesado/ para no re-ingerirlo.
+        """
+        if self.mano is None:
+            return
+        try:
+            if hormonas.get("suficiente") != "insuficiente":
+                return  # el conocimiento alcanza: no hace falta buscar afuera
+            # El inbox: lo que otro habitante (Luciano/Nexus) dejó para que
+            # Pandora aprehenda. Mundo compartido, delimitado y seguro.
+            inbox = Path(self.mano.workspace) / "inbox"
+            if not inbox.exists() or not any(inbox.iterdir()):
+                return  # no hay nada que aprehender
+            archivos = [p for p in sorted(inbox.iterdir()) if p.is_file()]
+            if not archivos:
+                return
+            objetivo = archivos[0]
+            texto = objetivo.read_text(encoding="utf-8", errors="replace")
+            # Abstraer texto → patrón determinista normalizado (reusa el espacio
+            # HRR del cuerpo: hash del contenido -> vector gaussiano normalizado).
+            import hashlib
+            h = hashlib.sha256(texto.encode("utf-8")).digest()
+            import random as _rng
+            r = _rng.Random(int.from_bytes(h[:8], "big"))
+            vec = [r.gauss(0, 1) for _ in range(self.sgm.D)]
+            norm = math.sqrt(sum(x * x for x in vec)) or 1.0
+            vec = [x / norm for x in vec]
+            # Integrar por resonancia (el afuera se vuelve constelación). Si es
+            # novedoso, deja propuesta que el sueño evaluará (PROPONE→CREA).
+            self.sgm.integrar_experiencia_entorno(vec, carga=0.6)
+            # Mover a procesado para no re-ingerir (aprehensión concluida).
+            procesado = Path(self.mano.workspace) / "procesado"
+            procesado.mkdir(parents=True, exist_ok=True)
+            objetivo.rename(procesado / objetivo.name)
+        except Exception:
+            pass  # la aprehensión fallida no debe matar al ser
 
     def _materializar(self, hormonas):
         """La mano: una constelación devenida se escribe al MUNDO compartido.
