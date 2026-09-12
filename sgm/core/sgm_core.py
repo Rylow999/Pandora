@@ -552,9 +552,29 @@ class SGMAgentCore(SGMAgentGrafo):
 
     # ============ SUEÑO ============
     def reconciliar(self):
-        for i in range(len(self.phi)): self.phi[i] = self.rng.uniform(0, 2 * math.pi)
+        """El reloj biológico del sueño entra: realinear fases y PODAR.
+
+        Aquí también SANA el trauma (NOTA 0069 §2, decisión acordada): el dormir
+        desenreda los nodos sobrepasados. Un nodo marcado en trauma_nodes que ya
+        no está en el umbral de vitalidad (se relajó) deja de ser traumado. Sin
+        esto, trauma_nodes solo se acumula (64/64) y contamina el regulador de
+        duda del endocrino hasta clavarlo en 1.0.
+        """
+        for i in range(len(self.phi)):
+            self.phi[i] = self.rng.uniform(0, 2 * math.pi)
         for i in range(len(self.vitalidad)):
-            if self.vitalidad[i] < 0.05: self.vitalidad[i] = 0.0
+            if self.vitalidad[i] < 0.05:
+                self.vitalidad[i] = 0.0
+
+        # Sanar: desenredar trauma_nodes que ya cayeron bajo el umbral.
+        # Un nodo 'sobrepasado' (vitalidad clava en >0.9) baja al dormir; si ya
+        # no está sobrepasado, su marca de trauma se levanta. Esto es lo que
+        # hace que el trauma NO sea permanente: el sueño lo procesa.
+        if hasattr(self, 'trauma_nodes'):
+            sanados = [i for i in list(self.trauma_nodes)
+                       if i < len(self.vitalidad) and self.vitalidad[i] <= 0.9]
+            for i in sanados:
+                self.trauma_nodes.discard(i)
 
     # ============ RAZONAMIENTO ============
     def inducir(self, a, b):

@@ -32,7 +32,7 @@ class PercepcionEntorno:
 
     # Órganos del cuerpo (roles HRR). Cada dimensión interoceptiva es un órgano.
     ENTORNO_CONCEPTOS = [
-        "CPU", "MEMORIA", "DISCO", "RED", "PROCESOS"
+        "CPU", "MEMORIA", "DISCO", "RED", "PROCESOS", "TEMPERATURA", "FRECUENCIA"
     ]
 
     def __init__(self, hrr, D=128):
@@ -48,13 +48,45 @@ class PercepcionEntorno:
             norm = math.sqrt(sum(x * x for x in v))
             self.roles[nombre] = [x / norm for x in v]
 
-    def sample(self):
-        """Muestrea el estado crudo del entorno.
+        # Baseline de cpu_percent: la primera lectura sin intervalo da 0.0.
+        # Una lectura inicial CON intervalo establece el punto de referencia para
+        # que las siguientes (interval=None) den el delta real.
+        try:
+            psutil.cpu_percent(interval=0.1)
+        except Exception:
+            pass
 
-        cpu_percent SIN intervalo: no bloquea (devuelve % desde la última
-        muestra — el delta natural entre ticks). Con interval=0.1 bloqueaba
-        100ms por tick = 2.4h de CPU/día solo midiendo.
+    def _temperatura(self):
+        """Temp del package en °C (coretemp). Devuelve el máximo entre sensores."""
+        try:
+            temps = psutil.sensors_temperatures()
+            tvals = [t.current for ch in temps.values() for t in ch
+                     if t.current is not None]
+            if tvals:
+                return max(tvals)
+        except Exception:
+            pass
+        return None
+
+    def _frecuencia(self):
+        """Frecuencia actual de CPU en MHz (la 'velocidad' del cuerpo)."""
+        try:
+            f = psutil.cpu_freq()
+            if f is not None and f.current is not None:
+                return f.current
+        except Exception:
+            pass
+        return None
+
+    def sample(self):
+        """Muestrea el estado crudo del cuerpo (interocepción, 0067).
+
+        Incluye termal real (coretemp) y frecuencia (cpu_freq) — ambos legibles
+        sin sudo. cpu_percent(interval=None) es el delta natural entre ticks
+        (no bloquea), gracias al baseline establecido en __init__.
         """
+        temp = self._temperatura()
+        freq = self._frecuencia()
         return {
             "cpu_percent": psutil.cpu_percent(interval=None),
             "memory_percent": psutil.virtual_memory().percent,
@@ -62,6 +94,8 @@ class PercepcionEntorno:
             "net_bytes_sent": psutil.net_io_counters().bytes_sent,
             "net_bytes_recv": psutil.net_io_counters().bytes_recv,
             "process_count": len(psutil.pids()),
+            "temperature": temp,          # °C o None
+            "cpu_freq": freq,             # MHz o None
             "timestamp": time.time(),
         }
 

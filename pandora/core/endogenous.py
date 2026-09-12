@@ -330,7 +330,15 @@ class EndogenousEngine:
                     self.sgm.podar_aristas(umbral=0.01)
                 except (TypeError, AttributeError):
                     pass  # conn_type structure incompatible, skip
-        
+
+        # Sanar-al-dormir (NOTA 0069 §2): el sueño realinea fases, poda y
+        # DESENREDA los trauma_nodes sobrepasados. Este es el cierre real del
+        # sueño — sin él, trauma_nodes solo se acumula y contamina la duda.
+        try:
+            self.sgm.reconciliar()
+        except (AttributeError, TypeError):
+            pass  # reconciliar no disponible: el sueño sigue siendo seguro
+
         final_vitality = sum(self.sgm.vitalidad) / len(self.sgm.vitalidad)
         final_coherence = self._estimate_coherence()
         

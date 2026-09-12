@@ -2668,3 +2668,8 @@ Suceso: consolidación endógena (sueño) ejecutada.
 
 Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
 Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-11 21:29:40] — Soñó (tick 12000)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.

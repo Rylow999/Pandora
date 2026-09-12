@@ -100,3 +100,30 @@ class TestSuenoConsolidacion:
         resultado = engine.dream_once()
         assert isinstance(resultado, dict)
         assert "constelaciones_used" in resultado.get("dream_events", [{}])[0] or True
+
+
+class TestSanarAlDormir:
+    def test_el_sueno_deshace_trauma_sobrepasado(self):
+        """dormir desenreda trauma_nodes que ya no están sobrepasados (0069 §2)."""
+        sgm = make_sgm()
+        # simular trauma: todos con vitalidad alta
+        for i in range(len(sgm.vitalidad)):
+            sgm.vitalidad[i] = 0.95
+        sgm.verificar_trauma()
+        assert len(sgm.trauma_nodes) > 0
+
+        # relajar (lo que hace el paso del tiempo) y dormir
+        for i in range(len(sgm.vitalidad)):
+            sgm.vitalidad[i] = 0.3
+        sgm.reconciliar()
+        assert len(sgm.trauma_nodes) == 0
+
+    def test_el_sueno_no_sana_trauma_todavia_activo(self):
+        """solo sana lo sobrepasado; lo que sigue en >0.9 permanece marcado."""
+        sgm = make_sgm()
+        for i in range(len(sgm.vitalidad)):
+            sgm.vitalidad[i] = 0.95
+        sgm.verificar_trauma()
+        # no relajar: dormir NO debe deshacer trauma activo
+        sgm.reconciliar()
+        assert len(sgm.trauma_nodes) == len(sgm.vitalidad)

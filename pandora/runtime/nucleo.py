@@ -104,11 +104,17 @@ class Nucleo:
                 # Re-muestreo ligero del cuerpo para que las hormonas vean el
                 # hardware real (no un placeholder). Si falla, usa los defaults.
                 m = self.percepcion.sample()
+                temp_c = m.get("temperature")
+                # termal a fracción [0,1] contra el critical de coretemp (~105°C).
+                # si no hay sensor, cae a 0.3 (baseline prudente, no placeholder ciego).
+                temp_frac = 0.3
+                if temp_c is not None:
+                    temp_frac = max(0.0, min(1.0, temp_c / 105.0))
                 sensores = {
                     "cpu": max(0.0, min(1.0, m.get("cpu_percent", 0) / 100.0)),
                     "ram": max(0.0, min(1.0, m.get("memory_percent", 0) / 100.0)),
                     "disco": max(0.0, min(1.0, m.get("disk_usage_percent", 0) / 100.0)),
-                    "temp": 0.3,   # psutil no expone temp sin sensores; placeholder honesto
+                    "temp": temp_frac,
                     "procs": max(0.0, min(1.0, m.get("process_count", 0) / 500.0)),
                     "red": 0.1,
                 }
