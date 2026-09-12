@@ -146,7 +146,7 @@ identidad ante amenaza. Devuelve `False` si el concepto no existe.
 La máquina ES el cuerpo de Pandora (interocepción), y el grafo es el MUNDO
 donde todo convive. Estos métodos integran el estado del propio cuerpo y la
 acción sobre el mundo como experiencia cruda, sin pasar por el LLM. Ver
-`docs/NOTA_TECNICA_0067.md`.
+`docs/philosophy/NOTA_TECNICA_0067_giro_monista.md`.
 
 ### `integrar_experiencia_entorno(vector_sensorial, carga=0.0) -> dict`
 Resuena el patrón sensorial con el nodo más afín y lo activa leve

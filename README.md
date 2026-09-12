@@ -198,8 +198,10 @@ Pandora/
 │   └── scripts/                # init, run_loop, status, clamp
 ├── docs/
 │   ├── API_REFERENCE.md        # Public API of the cognitive core
+│   ├── LIBRO_DE_CAMPO.md       # The observational field journal (written by the resident loop)
+│   ├── TODO.md                 # Prioritized integration backlog (transducer, hand, RED…)
 │   ├── architecture/           # Technical specifications
-│   ├── philosophy/             # NOTAS FILOSÓFICAS 0051-0066 (ontology + decisions)
+│   ├── philosophy/             # NOTAS FILOSÓFICAS + TÉCNICAS 0051-0070 (ontology + decisions)
 │   ├── experiments/            # Experiment protocols & findings
 │   ├── roadmap/                # Future directions
 │   └── legacy/                 # Pre-Pandora docs (TODO, DEV_GUIDE, README_SGM)

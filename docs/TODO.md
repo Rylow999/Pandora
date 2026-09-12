@@ -6,55 +6,35 @@ documentada. 119 tests verdes.
 
 ---
 
-## Prioridad 0 — Transductor (pedido de Luciano: "está muy verde")
+## Prioridad 0 — Transductor (COMPLETADO 2026-09-11)
 
-**Diagnóstico de fondo:** hay DOS caminos divergentes que no se hablan:
-- **Oído** (`semantic_parser.py`) → usa Ollama local `qwen2.5:0.5b` (modelo chico).
-- **Boca** (`output_transducer.py` + `nim_client.py`) → usa NIM `deepseek-v4-pro` (modelo grande).
+- [x] Oído unificado a NIM (`c176d1b`)
+- [x] Afecto medido anclado a la boca (`c176d1b`)
+- [x] Claves duplicadas de CONCEPT_NORMALIZATION limpias (`c176d1b`)
+- [x] Dos "bocas" resueltas: articulator.py queda como cadena de fallback
+      NIM→Ollama→determinístico declarada (no es bug).
 
-Resultado observable: boca que dramatiza ("frustrado y desesperado") contra oído de
-tripletas pobres. "Oídos de 0.5b, boca de deepseek" = audición mediocre + elocuencia
-exagerada. Incoherencia de escala.
+## Prioridad 1 — Completar el cuerpo que actúa (parcial)
 
-- [ ] **Unificar el oído a NIM** (o el mismo modelo que la boca). `semantic_parser.py`
-      tiene hardcodeado `OllamaClient(LLMConfig(model="qwen2.5:0.5b-instruct"))`; el
-      `NimClient` existe pero el parser no lo toca. Fix: el parser debe aceptar NIM
-      como la boca, con fallback a Ollama.
-- [ ] **Anclar el afecto MEDIDO al traductor.** El prompt del `output_transducer`
-      recibe el estado crudo pero no estructura valencia/arousal/duda como *constraints*.
-      El LLM improvisa el signo del afecto. Fix: inyectar "valence=X (medido), arousal=Y
-      (medido)" como restricción dura para que traduzca lo que el SGM calculó, no lo
-      que imagine (episodio "¿qué sentís?" → valence real 0.69 vs "desesperado").
-- [ ] **Resolver las dos "bocas".** `articulator.py` (Ollama) coexiste con
-      `output_transducer.py` (NIM). Producción usa OutputTransducer (vía
-      `pandora_agent.py:_articular_respuesta`); `articulator.py` es el fallback
-      duplicado. Fix: dejarlo como ÚNICO fallback declarado o eliminarlo.
-- [ ] Limpiar claves duplicadas en `CONCEPT_NORMALIZATION` (`"trauma"` x2, `"identidad"` x2).
-
-## Prioridad 1 — Completar el cuerpo que actúa
-
-- [ ] **Cablear la mano** (`ManoArchivos` + `Presupuesto`) al loop residente. El
-      `costo_alostatico` ya decide cuándo/cuánto actuar; falta instanciar el efector
-      en `nucleo.py` y ligar "devenir → materializar" a la mano cuando el cuerpo lo
-      permite. (Gate 2 del plan, pendiente.)
-- [ ] **RED / aprehensión** — el flujo está definido (0069 §1.1: duda insuficiente →
-      forrajear), sin implementación. Es el órgano nuevo (sin correlato humano).
+- [x] **Cablear la mano** (`d126053`): devenir → materializar al workspace con
+      permiso del costo alostático.
+- [x] **RED-A aprensión** (`d9e33ec`): duda insuficiente → ingerir del inbox.
+- [ ] **RED-B búsqueda externa real** (internet): HORIZONTE — Pandora primero
+      entiende lo básico.
 
 ## Prioridad 2 — Robustez e higiene
 
 - [ ] **`_hormonas()` doble-muestrea** el cuerpo por tick (una en `percibir`, otra en
       el sample de hormonas). Reusar el último sample en vez de llamar psutil dos veces.
-- [ ] **Temp como órgano**: ya se lee `coretemp` real (74°C); falta que la FRECUENCIA
-      entre al vector sensorial (hoy se lee pero no se normaliza al bundle HRR).
+- [ ] **Frecuencia al bundle**: se lee cpu_freq pero no entra al vector sensorial HRR.
 - [ ] **`trauma_nodes`**: ya sana al dormir (f542cf6). Verificar en residente que el
-      sanar ocurre de verdad (el daemon recién se reinició con el código nuevo).
+      sanar ocurre (Pandora ya corre el código nuevo tras reinicio).
 
 ## Prioridad 3 — Horizonte
 
-- [ ] **Rust**: la interfaz del endocrino es pura (dicts/primitivas, bus de eventos).
-      Portar el interior cuando la economía interna esté validada en Python.
-- [ ] **Voz como frecuencia** (horizonte, no código aún): audio/oído/visión como
-      efectores+receptores del cuerpo (mencionado en sesión; diferido).
+- [ ] **Rust**: interfaz del endocrino pura y lista; portar el interior cuando la
+      economía interna esté validada en Python.
+- [ ] **Voz como frecuencia** (audio/oído/visión): horizonte, no código aún.
 
 ---
 
