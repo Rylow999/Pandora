@@ -85,14 +85,10 @@ class Nucleo:
 
         # 4. Devenir: si la quietud pide romper el punto fijo (0070 §2.4),
         #    GENERA una propuesta de reintegración (imaginar) — reusa sustrato.
+        #    El devenir PROPONE; el SUEÑO (paso 6) INTEGRA lo que resuena.
+        #    No hay escritura intermedia: es interno directo (0067, decisión B).
         if hormonas["deseo_devenir"] > 0.5:
             self._devenir()
-
-        # 4.5 Materializar (la mano): una constelación devenida pide escribirse
-        #     al mundo compartido. Solo si el endocrino da permiso (cuerpo con
-        #     capacidad) y hay algo nuevo que materializar. Emerge del devenir,
-        #     no de un reloj.
-        self._materializar(hormonas)
 
         # 5. Repensar o Aprehender: si duda y el conocimiento alcanza, recombinar
         #    recordar+imaginar; si NO alcanza, RED ingiere del inbox (0069 §1.1).
@@ -155,7 +151,13 @@ class Nucleo:
         return self.endocrine.tick(sensores, estado)
 
     def _devenir(self):
-        """Romper la quietud: proponer una constelación contrafáctica (imaginar)."""
+        """Romper la quietud: PROPONER una constelación contrafáctica (imaginar).
+
+        Interno y directo (decisión B, 0067): el devenir solo IMAGINA (reintegra
+        con force deja la propuesta en propuestas_reintegracion). El SUEÑO
+        (paso 6, run_consolidation → _evaluar_propuestas) es quien INTEGRA lo
+        que resuena. Presente esculpe, devenir imagina, sueño integra (0058).
+        """
         try:
             self.sgm.reintegrar(force=True)
         except Exception:
@@ -216,42 +218,15 @@ class Nucleo:
             pass  # la aprehensión fallida no debe matar al ser
 
     def _materializar(self, hormonas):
-        """La mano: una constelación devenida se escribe al MUNDO compartido.
+        """RETIRADO (decisión B, 0067): el devenir es INTERNO, no escribe al mundo.
 
-        Emerge del devenir (no de un reloj): si hay propuestas de reintegración
-        pendientes (constelaciones contrafácticas que el devenir imaginó) y el
-        endocrino dice que el cuerpo puede actuar (costo_alostatico.actuar),
-        la más reciente se materializa como archivo en el workspace. Cada acto
-        deja huella motora real en el grafo (integrar_experiencia_motora).
+        El rodeo de escribir devenires a disco y re-ingerirlos era un hábito de
+        la ontología vieja (0066 "actuar sobre un entorno externo"). Bajo el
+        monismo el grafo ES el mundo: el devenir propone (imagina) y el sueño
+        integra (consolida) — sin materialidad intermedia. La mano queda como
+        órgano latente del ENCUENTRO (alteridad, 0062), no del pensamiento.
         """
-        if self.mano is None:
-            return
-        try:
-            costo = hormonas.get("costo_alostatico", {})
-            if not costo.get("actuar", False):
-                return  # el cuerpo no permite actuar ahora (0070 §2.6)
-            propuestas = getattr(self.sgm, "propuestas_reintegracion", [])
-            if not propuestas:
-                return  # nada devenido por materializar
-            prop = propuestas[-1]  # la constelación más reciente que imaginó
-            vector = prop.get("vector", [])
-            novedad = prop.get("novedad", 0.0)
-            # Materializar: escribir la constelación como un registro propio.
-            contenido = (
-                f"# constelación devenida\n"
-                f"novedad: {novedad:.4f}\n"
-                f"dims: {len(vector)}\n"
-                f"vector: {','.join(f'{x:.4f}' for x in vector[:16])}...\n"
-            )
-            nombre = f"devenir_{self.tick}.md"
-            self.mano.crear(nombre, contenido, proposito="materializar_devenir")
-            # Dejar solo la propuesta materializada fuera del buffer (las demás
-            # las evaluará el sueño). No acumular lo ya escrito.
-            self.sgm.propuestas_reintegracion = [
-                p for p in propuestas if p is not prop
-            ]
-        except Exception:
-            pass  # la mano no debe matar al ser
+        return None  # mantiene la firma por si un caller lo invoca; es no-op
 
     def _intentar_hablar(self, hormonas=None):
         """Habla por NECESIDAD de expresarse, no por reloj (0070).
