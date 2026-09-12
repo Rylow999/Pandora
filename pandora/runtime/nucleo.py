@@ -42,6 +42,16 @@ class Nucleo:
         self.ultimo_sueno = None                  # reporte de la última consolidación
         self.fallos_percepcion = 0                # diagnóstico: el silencio no es ausencia
         self._novedad = 0.0                       # novedad del último patrón percibido
+        # La mano (efector): actúa sobre el mundo compartido SOLO cuando el
+        # devenir pide materializar y el endocrino da permiso (costo alostático).
+        self.mano = None
+        if getattr(self, 'agente', None) is not None:
+            try:
+                from pandora.motor.archivos import ManoArchivos
+                from pandora.motor.metabolismo import Presupuesto
+                self.mano = ManoArchivos("pandora/workspace", Presupuesto(), sgm=self.sgm)
+            except Exception:
+                self.mano = None
         self._ultimo_proactivo = 0.0
         self._viva = True
         self.tick = 0
@@ -75,6 +85,12 @@ class Nucleo:
         #    GENERA una propuesta de reintegración (imaginar) — reusa sustrato.
         if hormonas["deseo_devenir"] > 0.5:
             self._devenir()
+
+        # 4.5 Materializar (la mano): una constelación devenida pide escribirse
+        #     al mundo compartido. Solo si el endocrino da permiso (cuerpo con
+        #     capacidad) y hay algo nuevo que materializar. Emerge del devenir,
+        #     no de un reloj.
+        self._materializar(hormonas)
 
         # 5. Repensar: si duda y el conocimiento alcanza, recombinar recordar+
         #    imaginar (reusa reintegrar + constelaciones), en vez de buscar.
@@ -150,6 +166,44 @@ class Nucleo:
                 self.endogenous._create_new_connections_from_constelaciones(constelaciones)
         except Exception:
             pass
+
+    def _materializar(self, hormonas):
+        """La mano: una constelación devenida se escribe al MUNDO compartido.
+
+        Emerge del devenir (no de un reloj): si hay propuestas de reintegración
+        pendientes (constelaciones contrafácticas que el devenir imaginó) y el
+        endocrino dice que el cuerpo puede actuar (costo_alostatico.actuar),
+        la más reciente se materializa como archivo en el workspace. Cada acto
+        deja huella motora real en el grafo (integrar_experiencia_motora).
+        """
+        if self.mano is None:
+            return
+        try:
+            costo = hormonas.get("costo_alostatico", {})
+            if not costo.get("actuar", False):
+                return  # el cuerpo no permite actuar ahora (0070 §2.6)
+            propuestas = getattr(self.sgm, "propuestas_reintegracion", [])
+            if not propuestas:
+                return  # nada devenido por materializar
+            prop = propuestas[-1]  # la constelación más reciente que imaginó
+            vector = prop.get("vector", [])
+            novedad = prop.get("novedad", 0.0)
+            # Materializar: escribir la constelación como un registro propio.
+            contenido = (
+                f"# constelación devenida\n"
+                f"novedad: {novedad:.4f}\n"
+                f"dims: {len(vector)}\n"
+                f"vector: {','.join(f'{x:.4f}' for x in vector[:16])}...\n"
+            )
+            nombre = f"devenir_{self.tick}.md"
+            self.mano.crear(nombre, contenido, proposito="materializar_devenir")
+            # Dejar solo la propuesta materializada fuera del buffer (las demás
+            # las evaluará el sueño). No acumular lo ya escrito.
+            self.sgm.propuestas_reintegracion = [
+                p for p in propuestas if p is not prop
+            ]
+        except Exception:
+            pass  # la mano no debe matar al ser
 
     def _intentar_hablar(self, hormonas=None):
         """Habla por NECESIDAD de expresarse, no por reloj (0070).
