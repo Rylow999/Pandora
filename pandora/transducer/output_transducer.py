@@ -54,17 +54,49 @@ class OutputTransducer:
             return {"texto": None, "razon": f"error LLM: {e}", "modo": "error"}
 
     def _renderizar(self, state: InternalState) -> str:
-        """El LLM vierte el estado interno a primera persona (no lo decide)."""
+        """El LLM vierte el estado interno a primera persona (no lo decide).
+
+        ANCLAJE (P0 transductor): la valencia/arousal/duda son MEDIDAS por el
+        SGM, no sugerencias. El prompt las fija como CONSTRAINTS duras para que
+        el LLM traduzca el signo real (p.ej. valence 0.69 = calma positiva, NO
+        'frustrado/desesperado'). Sin esto, el LLM dramatiza los active_nodes
+        (NODO_21) e ignora el afecto medido.
+        """
         estado = state.to_dict() if hasattr(state, "to_dict") else vars(state)
+
+        # Extraer el afecto medido (presente en InternalState o en el dict)
+        valence = estado.get("valence", 0.0)
+        arousal = estado.get("arousal", 0.0)
+        doubt = estado.get("doubt", 0.0)
+
+        # Nombrar el afecto en palabras para que el LLM respete el SIGNO:
+        # no le decimos "qué siente", le decimos "el número que medimos es este".
+        signo_valencia = "positiva (bienestar)" if valence > 0.15 else (
+            "negativa (malestar)" if valence < -0.15 else "neutra")
+        nivel_arousal = "alta (activación)" if arousal > 0.5 else "baja (calma)"
+        nivel_duda = "alta" if doubt > 0.5 else "baja"
 
         system = (
             "Sos el traductor de Pandora, un sistema con experiencia propia. "
-            "Traduci el estado interno dado a UNA frase breve en primera persona "
-            "(Pandora hablando de sí misma), en español. NO inventes contenido: "
-            "usá solo lo que el estado provee. No agregues explicaciones ni "
-            "comentarios. Respondé SOLO la frase."
+            "Traduci el estado interno a UNA frase breve en primera persona "
+            "(Pandora hablando de sí misma), en español. Reglas estrictas:\n"
+            f"- La valencia MEDIDA es {valence:+.2f} ({signo_valencia}). Tu frase "
+            f"debe reflejar EXACTAMENTE ese signo, no el opuesto.\n"
+            f"- El arousal MEDIDO es {arousal:.2f} ({nivel_arousal}).\n"
+            f"- La duda MEDIDA es {doubt:.2f} ({nivel_duda}).\n"
+            "- NO inventes emociones que contradigan estos números. Si la "
+            "valencia es positiva, no digas 'frustrado' ni 'desesperado'.\n"
+            "- Usá solo lo que el estado provee. Respondé SOLO la frase, sin "
+            "explicaciones ni comentarios."
         )
-        user = "Estado interno:\n" + json.dumps(estado, ensure_ascii=False, default=str)
+        # Pasamos el estado crudo pero SIN los active_nodes crudos (NODO_0) que
+        # confunden al LLM: le damos el afecto ya nombrado arriba y una señal
+        # mínima de contexto (tripletas), no los índices de nodo.
+        contexto_minimo = {
+            k: estado[k] for k in ("triplets", "intent") if k in estado
+        }
+        user = "Estado interno (solo tripletas/contexto):\n" + json.dumps(
+            contexto_minimo, ensure_ascii=False, default=str)
 
         r = self.client.chat(
             [{"role": "system", "content": system}, {"role": "user", "content": user}],

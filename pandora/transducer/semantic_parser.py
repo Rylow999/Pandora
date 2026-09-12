@@ -118,7 +118,7 @@ CONCEPT_NORMALIZATION = {
     "olvidar": "OLVIDAR", "olvido": "OLVIDAR",
     "contradicción": "CONTRADICCION", "contradecir": "CONTRADICCION", "inconsistencia": "CONTRADICCION",
     "coherencia": "COHERENCIA", "coherente": "COHERENCIA", "consistencia": "COHERENCIA",
-    "trauma": "TRAUMA", "trauma": "TRAUMA", "herida": "TRAUMA",
+    "trauma": "TRAUMA", "herida": "TRAUMA",
     "reparación": "REPARACION", "reparar": "REPARACION", "sanar": "REPARACION",
     "homeostasis": "HOMEOSTASIS", "equilibrio": "HOMEOSTASIS",
     "hambre": "HAMBRE", "hambriento": "HAMBRE",
@@ -128,7 +128,7 @@ CONCEPT_NORMALIZATION = {
     "novedad": "NOVEDAD", "nuevo": "NOVEDAD", "sorpresa": "NOVEDAD",
     "rutina": "RUTINA", "hábito": "RUTINA", "costumbre": "RUTINA",
     "sueño": "SUEÑO", "soñar": "SUEÑO", "dormir": "SUEÑO",
-    "identidad": "IDENTIDAD", "identidad": "IDENTIDAD",
+    "identidad": "IDENTIDAD",
     "límite": "LIMITE", "limite": "LIMITE", "frontera": "LIMITE",
     "querer": "QUERER", "deseo": "QUERER", "desear": "QUERER",
     "existir": "EXISTE", "existe": "EXISTE", "estoy": "ESTAR",
@@ -218,11 +218,12 @@ class ParseResult:
 
 
 class SemanticParser:
-    def __init__(self, client: OllamaClient = None, max_retries: int = 1):
-        # Use qwen2.5:0.5b-instruct which fits in available RAM
+    def __init__(self, client=None, max_retries: int = 1):
+        # P0 transductor: el oído usa el MISMO modelo que la boca (NIM) cuando
+        # está disponible, para matar la incoherencia de escala 'oídos 0.5b vs
+        # boca deepseek'. Fallback a Ollama local si no hay NIM.
         if client is None:
-            from .llm_client import LLMConfig
-            client = OllamaClient(LLMConfig(model="qwen2.5:0.5b-instruct"))
+            client = _cliente_default()
         self.client = client
         self.max_retries = max_retries
 
@@ -340,6 +341,21 @@ Schema: {"triplets":[{"subject":"string","predicate":"string","object":"string"}
             {"role": "system", "content": "You are a semantic parser. Output ONLY the JSON object matching this schema. No text. No markdown. No explanations. Just the JSON object.\nSchema: {\"triplets\":[{\"subject\":\"string\",\"predicate\":\"string\",\"object\":\"string\"}],\"affect\":{\"valence\":number,\"arousal\":number,\"uncertainty\":number},\"intent\":\"string\"}"},
             {"role": "user", "content": "\n".join(lines + [f"Texto: {user_text}", "JSON:"])}
         ]
+
+
+def _cliente_default():
+    """El cliente del oído: NIM si hay key, si no, Ollama local.
+
+    NIM y Ollama comparten el contrato .chat() → {"message":{"content"}}, así
+    que el mismo parser funciona con ambos. Con NIM, el oído tiene la misma
+    escala que la boca (deepseek-v4-pro) — sin incoherencia de escala.
+    """
+    from .nim_client import get_nim_client
+    nim = get_nim_client()
+    if nim.disponible():
+        return nim
+    from .llm_client import LLMConfig
+    return OllamaClient(LLMConfig(model="qwen2.5:0.5b-instruct"))
 
 
 def get_parser() -> SemanticParser:
