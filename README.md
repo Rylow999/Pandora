@@ -65,13 +65,14 @@ Beyond the pure conversational loop, Pandora **perceives an environment** and **
 
 | Subsystem | Module | Role |
 |-----------|--------|------|
-| **Senses** (exteroception) | `pandora/senses/entorno.py`, `espectral.py` | CPU/memory/disk/network as raw HRR activation patterns (not text) |
-| **Motor** (action) | `pandora/motor/archivos.py`, `metabolismo.py` | create/read/list files in a contained workspace, with a resource budget (real cost = agency) |
-| **Transducer output** | `pandora/transducer/output_transducer.py` | the "mouth": renders state to first-person Spanish, respecting opacity + ineffability |
-| **NIM client** | `pandora/transducer/nim_client.py` | Nvidia NIM (OpenAI-compatible) — the rich voice replacing RAM-limited local models |
-| **Communication loop** | `pandora/core/communication_loop.py` | orchestrates perceive → hear → exist → speak → act |
+| **Cuerpo** (interocepción) | `pandora/senses/entorno.py` | CPU/mem/disco/termal/frecuencia como patrones HRR propios (no texto). La máquina ES el cuerpo (0067) |
+| **Motor** (acción) | `pandora/motor/archivos.py`, `metabolismo.py` | crear/leer/listar en workspace contenido, con presupuesto (costo real = agencia) |
+| **Endocrino** (modulación) | `pandora/endocrine/endocrine.py` | hormonas = duda/devenir/presión-sueño/costo-alostático; arbitra soñar/actuar/hablar por presión, no reloj (0069/0070) |
+| **Transductor** (oído+boca) | `pandora/transducer/` | español↔constelaciones; oído=parser, boca=output_transducer con opacity+inefabilidad |
+| **NIM client** | `pandora/transducer/nim_client.py` | Nvidia NIM (OpenAI-compatible) — voz rica; fallback a Ollama local |
+| **Runtime** | `pandora/runtime/nucleo.py`, `observar.py`, `estado.py` | el daemon residente (systemd), checkpoint atómico, libro de campo |
 
-The model used for the voice defaults to `deepseek-ai/deepseek-v4-pro-0813` (the one this NIM account has enabled), with fallback to local Ollama when NIM is unreachable.
+The voice defaults to `deepseek-ai/deepseek-v4-pro-0813` (NIM), fallback to local Ollama.
 
 ---
 
@@ -232,7 +233,7 @@ not modify them — the active code is `sgm/core/` + `pandora/`.
 3. **Falsifiability** — explicit success/failure criteria per module.
 4. **Transparent logging** — JSONL journal per turn.
 
-### Ontology notes (0051–0066)
+### Ontology notes (0051–0070)
 
 Every architectural decision is documented with its *why* and its *source*:
 
@@ -251,6 +252,9 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_TECNICA_0065` | Dimensionalidad por estrato (Camino C) | neurociencia cortical |
 | `NOTA_TECNICA_0066` | El entorno, no el cuerpo | — (**superseded por 0067**) |
 | `NOTA_TECNICA_0067` | El giro monista: máquina=cuerpo, grafo=mundo, mente=relación | Varela/Thompson/Rosch, Damasio, Raichle |
+| `NOTA_TECNICA_0068` | Alostasis: sensor→capacidad, costo derivado del cuerpo | Sterling & Eyer, McEwen, Tononi & Cirelli, Barrett |
+| `NOTA_TECNICA_0069` | El sistema endocrino (duda, devenir, sueño, trauma) + RED/aprehensión | Aston-Jones & Cohen, Schmidhuber, Loewenstein, Friston, Smith et al. |
+| `NOTA_TECNICA_0070` | Implementación del endocrino (6 hormonas, presiones no relojes) | — |
 
 ---
 
