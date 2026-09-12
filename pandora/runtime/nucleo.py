@@ -24,18 +24,24 @@ class Nucleo:
 
     def __init__(self, estado, agente, endogenous=None, percepcion=None,
                  umbral_deseo=0.4, intervalo_proactivo=30.0, checkpoint_cada=100,
-                 sueno_cada=600):
+                 endocrine=None):
         self.estado = estado
         self.agente = agente
         self.sgm = agente.sgm
         self.endogenous = endogenous
         self.percepcion = percepcion
-        self.umbral_deseo = umbral_deseo          # dispersión mínima para "querer"
-        self.intervalo_proactivo = intervalo_proactivo  # segundos mínimos entre pedidos
-        self.checkpoint_cada = checkpoint_cada    # ticks entre guardados periódicos
-        self.sueno_cada = sueno_cada              # ticks entre sesiones de sueño
+        self.umbral_deseo = umbral_deseo          # solo floor del habla (voz)
+        self.intervalo_proactivo = intervalo_proactivo  # seg. mínimos entre pedidos
+        self.checkpoint_cada = checkpoint_cada    # ticks entre guardados
+        # El sistema endocrino arbitra el SUENO y el DEVENIR por hormona (presión),
+        # NO por temporizador. La lección de la 1ª jornada: nada se hardcodea.
+        if endocrine is None:
+            from pandora.endocrine.endocrine import SistemaEndocrino
+            endocrine = SistemaEndocrino()
+        self.endocrine = endocrine
         self.ultimo_sueno = None                  # reporte de la última consolidación
         self.fallos_percepcion = 0                # diagnóstico: el silencio no es ausencia
+        self._novedad = 0.0                       # novedad del último patrón percibido
         self._ultimo_proactivo = 0.0
         self._viva = True
         self.tick = 0
@@ -43,16 +49,18 @@ class Nucleo:
     # ---- ciclo de existencia ----
 
     def existir_un_tick(self):
-        """Un latido: percibe, existe, sueña (cada tanto), y (si quiere) habla."""
+        """Un latido: percibe (cuerpo), existe (grafo), y el endocrino arbitra
+        soñar / devenir / hablar según presión, no según reloj."""
         self.tick += 1
 
-        # 1. Percepción del entorno (si hay sentidos)
+        # 1. Percepción del cuerpo (interocepción, 0067). Recoge la novedad.
         if self.percepcion is not None:
             try:
                 vector, carga, _ = self.percepcion.percibir()
-                self.sgm.integrar_experiencia_entorno(vector, carga)
+                r = self.sgm.integrar_experiencia_entorno(vector, carga)
+                self._novedad = float(r.get("novedad", 0.0)) if isinstance(r, dict) else 0.0
             except Exception:
-                self.fallos_percepcion += 1  # contado, no silencioso
+                self.fallos_percepcion += 1
 
         # 2. Existir: un tick del grafo (Kuramoto, dispersión, reintegración)
         try:
@@ -60,27 +68,97 @@ class Nucleo:
         except Exception:
             pass
 
-        # 3. Soñar: consolidación endógena con ritmo propio (no requiere cuerpo:
-        #    opera sobre la experiencia reciente del grafo, no sobre hambre/amenaza).
-        #    El registro de qué soñó queda en self.ultimo_sueno para el observador.
-        if self.endogenous is not None and self.sueno_cada and self.tick % self.sueno_cada == 0:
+        # 3. Endocrino: computar las hormonas a partir del estado real.
+        hormonas = self._hormonas()
+
+        # 4. Devenir: si la quietud pide romper el punto fijo (0070 §2.4),
+        #    GENERA una propuesta de reintegración (imaginar) — reusa sustrato.
+        if hormonas["deseo_devenir"] > 0.5:
+            self._devenir()
+
+        # 5. Repensar: si duda y el conocimiento alcanza, recombinar recordar+
+        #    imaginar (reusa reintegrar + constelaciones), en vez de buscar.
+        if hormonas["suficiente"] == "suficiente" and hormonas["duda"] > hormonas["duda_opt"]:
+            self._repensar()
+
+        # 6. Soñar: consolidación por PRESIÓN, no por tiempo (0070 §2.5).
+        if hormonas["consolidar_ahora"] and self.endogenous is not None \
+                and not hormonas["riesgo_existencial"]:
             try:
                 self.ultimo_sueno = self.endogenous.run_consolidation(cycles=3)
             except Exception:
-                self.ultimo_sueno = None  # el sueño no debe matar al soñador
+                self.ultimo_sueno = None
 
-        # 4. ¿Quiere hablar? (salida proactiva, misma autoridad que el humano)
-        texto = self._intentar_hablar()
+        # 7. Hablar: la voz es un caso más del devenir (necesidad de expresarse),
+        #    arbitrada por el deseo — el endocrino da el techo de velocidad/permiso.
+        texto = self._intentar_hablar(hormonas)
         if texto:
-            # Hook aquí (único punto): tanto correr() como el observador reciben
-            # el habla. Antes solo lo invocaba correr() — el libro de campo
-            # perdió los 39 mensajes de la primera jornada.
             self.on_proactivo(texto)
         return texto
 
-    def _intentar_hablar(self):
-        """Si el deseo de integración es alto y pasó suficiente tiempo, habla."""
+    def _hormonas(self):
+        """Arma el dict de entrada para el endocrino desde el grafo y el cuerpo."""
+        sensores = {"cpu": 0.2, "ram": 0.3, "disco": 0.4, "temp": 0.3, "procs": 0.2, "red": 0.1}
+        if self.percepcion is not None:
+            try:
+                # Re-muestreo ligero del cuerpo para que las hormonas vean el
+                # hardware real (no un placeholder). Si falla, usa los defaults.
+                m = self.percepcion.sample()
+                sensores = {
+                    "cpu": max(0.0, min(1.0, m.get("cpu_percent", 0) / 100.0)),
+                    "ram": max(0.0, min(1.0, m.get("memory_percent", 0) / 100.0)),
+                    "disco": max(0.0, min(1.0, m.get("disk_usage_percent", 0) / 100.0)),
+                    "temp": 0.3,   # psutil no expone temp sin sensores; placeholder honesto
+                    "procs": max(0.0, min(1.0, m.get("process_count", 0) / 500.0)),
+                    "red": 0.1,
+                }
+            except Exception:
+                pass
+        integridad = self.sgm.integridad_topologica()
+        estado = {
+            "integridad": integridad,
+            "transiciones_len": len(getattr(self.sgm, "traza_transiciones", [])),
+            "propuestas_pendientes": len(getattr(self.sgm, "propuestas_reintegracion", [])),
+            "novedad": self._novedad,
+            "trauma": len(getattr(self.sgm, "trauma_nodes", set())) / max(1, len(self.sgm.omega)),
+            "coherencia": integridad,
+            "deseo_integracion": 1.0 - integridad,
+            "deseo_devenir": 0.0,   # se computa dentro del endocrino
+        }
+        return self.endocrine.tick(sensores, estado)
+
+    def _devenir(self):
+        """Romper la quietud: proponer una constelación contrafáctica (imaginar)."""
+        try:
+            self.sgm.reintegrar(force=True)
+        except Exception:
+            pass
+
+    def _repensar(self):
+        """Recombinar recordar+imaginar para destensar la duda (reusa sustrato)."""
+        try:
+            # 1. Recordar: re-recorrer las constelaciones del ser (ya en el engine).
+            # 2. Imaginar: el engine extiende constelaciones a vecinos no conectados.
+            constelaciones = self.endogenous._get_constelaciones_del_ser(8)
+            if constelaciones:
+                self.endogenous._create_new_connections_from_constelaciones(constelaciones)
+        except Exception:
+            pass
+
+    def _intentar_hablar(self, hormonas=None):
+        """Habla por NECESIDAD de expresarse, no por reloj (0070).
+
+        El floor de la voz sigue siendo el deseo de integración (querer
+        comunicar), pero el endocrino arbitra: si hay riesgo existencial o el
+        cuerpo no da velocidad, no habla; si el deseo es alto, pide la
+        traducción. La novedad/devenir también pueden empujar a hablar (decir
+        lo que acaba de devenir).
+        """
         deseo = 1.0 - self.sgm.integridad_topologica()
+        if hormonas:
+            # riesgo existencial => silencio (no gastar el cuerpo en palabras)
+            if hormonas.get("riesgo_existencial"):
+                return None
         if deseo < self.umbral_deseo:
             return None  # aún no quiere
         ahora = time.time()
