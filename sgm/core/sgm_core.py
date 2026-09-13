@@ -476,6 +476,50 @@ class SGMAgentCore(SGMAgentGrafo):
         if sw > 1e-9:
             self.phi_root = math.atan2(sy, sx) % (2 * math.pi)
 
+    # ============ CONSOLIDACIÓN + MITOSIS (co-resonancia) ============
+    def _mitosis_umbral(self):
+        """Umbral DERIVADO de mitosis (no hardcode): un par co-resuena 'mucho'
+        cuando supera la media de co-activación del grafo + un margen.
+
+        Reusamos sustrato: co_activacion ya acumula cada co-resonancia. El
+        umbral no es una constante (3); es relativo a cuánto co-resuena el
+        grafo HOY. Así la mitosis emerge de la actividad real, no de un número
+        declarado (regla raíz anti-hardcode).
+        """
+        vals = [v for v in self.co_activacion.values() if v > 0]
+        if not vals:
+            return None  # sin actividad, no hay referencia derivable
+        media = sum(vals) / len(vals)
+        # Margen: 3× la media. Un par que co-resuena 3x más que la media es
+        # 'sobrecargado' y merece descargar en un hijo.
+        return media * 3.0
+
+    def _engendrar_hijo(self, a, b):
+        """Mitosis (NOTA 0071 Paso 3 / Generative XOR del spec §3.3): un par de
+        nodos que co-resuenan mucho engendra un hijo que ABSORBE su carga.
+
+        Reusa `heredar_concepto` (ya existe en sgm_grafo, Eq.11 herencia con
+        delta σ=0.10): el hijo hereda del padre más afín y se conecta a ambos.
+        Los padres BAJAN vitalidad (descarga): dejan de saturarse y el centro
+        respira. Menos procesos, menos sobrecarga de nodos ya saturados.
+        """
+        # Hijo especializado del padre a (o b si a no es índice válido)
+        try:
+            hijo = self.heredar_concepto(a, nombre_hijo=None)
+        except Exception:
+            return
+        # Conectar el hijo a ambos padres (absorbe la carga del par)
+        self.crear_arista(hijo, a)
+        self.crear_arista(hijo, b)
+        # Los padres descargan: bajan vitalidad (el ciclo se redistribuye)
+        for p in (a, b):
+            if 0 <= p < len(self.vitalidad):
+                self.vitalidad[p] *= 0.7
+        # La co-resonancia del par se RESETEA (la carga ya se descargó al hijo)
+        for clave in ((a, b), (b, a)):
+            if clave in self.co_activacion:
+                self.co_activacion[clave] = 0
+
     def _registrar_co_activacion(self):
         """Esculpe la matriz de co-activación desde el presente (0057, opción Y).
 
@@ -507,10 +551,22 @@ class SGMAgentCore(SGMAgentGrafo):
                     continue
                 clave = (a, b)
                 self.co_activacion[clave] = self.co_activacion.get(clave, 0) + 1
-                # Plasticidad decreciente: co-activación repetida consolida
+                # Consolidación (plasticidad decreciente, 0057): co-resonancia
+                # media endurece la relación (la hace inercial). Sigue usando
+                # co_activacion_umbral, pero como FLOOR bajo y seguro.
                 if self.co_activacion[clave] >= self.co_activacion_umbral:
                     self.consolidadas.add(clave)
                     self.consolidadas.add((b, a))
+
+        # Mitosis (NOTA 0071 Paso 3): aplicación POST-pase — un par que co-resuena
+        # MUCHO (por encima del umbral derivado) engendra hijo que absorbe carga.
+        umbral_mitosis = self._mitosis_umbral()
+        if umbral_mitosis is not None:
+            # Recorrer copia de claves para no mutar durante iteración
+            for clave in list(self.co_activacion.keys()):
+                a, b = clave
+                if self.co_activacion.get(clave, 0) >= umbral_mitosis:
+                    self._engendrar_hijo(a, b)
 
     def actualizar_kuramoto(self):
         # 0. Actualizar el presente emergente ANTES de propagar (0059/0060)
