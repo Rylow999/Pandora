@@ -175,13 +175,14 @@ class Nucleo:
     def _devenir(self):
         """Romper la quietud: PROPONER una constelación contrafáctica (imaginar).
 
-        Interno y directo (decisión B, 0067): el devenir solo IMAGINA (reintegra
-        con force deja la propuesta en propuestas_reintegracion). El SUEÑO
-        (paso 6, run_consolidation → _evaluar_propuestas) es quien INTEGRA lo
-        que resuena. Presente esculpe, devenir imagina, sueño integra (0058).
+        Interno y directo (decisión B, 0067): el devenir solo IMAGINA. NO fuerza
+        (reintegrar sin force respeta el umbral de dispersión real, 0.4): si el
+        sistema no está fragmentado, no propone. Forzar producía un feedback loop
+        de fragmentación perpetua (integridad colapsaba a 0.03) — la regla raíz
+        dice que todo emerge del sustrato, no se impone a la fuerza.
         """
         try:
-            self.sgm.reintegrar(force=True)
+            self.sgm.reintegrar()  # sin force: emerge solo ante dispersión real
         except Exception:
             pass
 
