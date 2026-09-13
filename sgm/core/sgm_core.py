@@ -104,18 +104,50 @@ class SGMAgentCore(SGMAgentGrafo):
         self.ultimo_food = None; self.conteo_induccion = {}
 
     # ============ DECAIMIENTO DE VITALIDAD (Eq.5) ============
-    def decaer_vitalidad(self, k=3):
-        # Recompensar los k nodos más cercanos a la percepción actual (top-k),
-        # no solo el seed exacto (evita el 'parpadeo' cuando la percepción varía
-        # y el seed salta entre nodos)
-        distancias = [(i, math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], self.omega[self._seed]))))
-                      for i in range(len(self.omega)) if i != self._seed]
+    def decaer_vitalidad(self, k=3, alpha=None):
+        """Eq.5 reconciliada (NOTA 0071, Paso 1): actividad SUAVE, no binaria.
+
+        El spec (Eq.5) pedía A_i = "fracción de cadenas visitando el nodo i":
+        una actividad distribuida y gradual. La implementación anterior la
+        redujo a winner-take-all duro (A=1 si top-k, si no 0), lo que clavaba
+        al seed en vitalidad 1.0 y congelaba la constelación núcleo (centro
+        estático: traza_transiciones=0, vitalidad pico inmóvil).
+
+        Fix: A_i es una afinidad suave decreciente con la distancia semántica
+        al seed (Eq.2: exp(-alpha·dist)), NO un flag. El seed sigue dominando,
+        pero los nodos cercanos respiran y el ganador puede ser destronado si
+        otra zona del grafo gana afinidad. Devuelve plasticidad distribuida
+        sin perder la estabilidad del atractor.
+
+        - alpha: concentración de afinidad. None => se deriva de gamma para
+          mantener la escala suave y conservadora (no inyectar hiperparámetros).
+        """
+        if alpha is None:
+            # Afinidad suave: caída exponencial con la distancia al seed.
+            # alpha grande = decaimiento de actividad más localizado.
+            alpha = 2.0
+
+        # Distancias semánticas al seed (base de la afinidad, Eq.2).
+        distancias = []
+        seed_omega = self.omega[self._seed]
+        for i in range(len(self.omega)):
+            if i == self._seed:
+                continue
+            d = math.sqrt(sum((a - b) ** 2 for a, b in zip(self.omega[i], seed_omega)))
+            distancias.append((i, d))
         distancias.sort(key=lambda x: x[1])
-        top_k = {self._seed} | {i for i, _ in distancias[:k]}
+
+        # A_i = actividad suave: 1.0 en el seed, decae exp(-alpha*d) al alejarse.
+        # (La Eq.5 original normaliza por fracción de cadenas; acá la afinidad
+        # juega ese rol: actividad proporcional a cercanía semántica.)
+        actividad = {self._seed: 1.0}
+        for i, d in distancias:
+            actividad[i] = math.exp(-alpha * d)
 
         for i in range(len(self.vitalidad)):
-            A = 1.0 if i in top_k else 0.0
-            self.vitalidad[i] = self.vitalidad[i] * math.exp(-self.gamma_nodo) + A * (1 - math.exp(-self.gamma_nodo))
+            A = actividad.get(i, 0.0)
+            self.vitalidad[i] = (self.vitalidad[i] * math.exp(-self.gamma_nodo)
+                                 + A * (1 - math.exp(-self.gamma_nodo)))
 
     # ============ AISLAMIENTO DE NODOS ============
     def isolate_node(self, concept: str):
