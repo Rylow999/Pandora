@@ -2,7 +2,8 @@
 
 **Fecha:** 2026-09-13
 **Autor:** Nexus (con Luciano Benjamín Nieto)
-**Estado:** Paso 1 implementado y medido. Pasos 2-4 documentados como plan.
+**Estado:** Pasos 1 y 3 implementados y medidos. Paso 2 (lifecycle) emerge de la mitosis.
+Paso 4 (plasticidad endocrino) documentado como plan.
 **Depende de:** 0067 (monismo), 0068 (alostasis), 0069/0070 (endocrino, devenir)
 
 ---
@@ -56,19 +57,28 @@ decreciente con la distancia (Eq.2), en vez de `A ∈ {0,1}`. El seed sigue domi
 El centro respira sin olvidar (γ sigue en 0.01, conservador). Plasticidad recuperada sin
 riesgo de olvido catastrófico (McCloskey & Cohen 1989; contraparte EWC, Kirkpatrick 2017).
 
-## 3. Pasos siguientes (documentados, no implementados)
+## 3. Estado de los pasos
 
-**Paso 2 — Lifecycle de nodo** (ACTIVO / DURMIENTE / HIBERNADO) con umbrales del spec
-(V>0.30 activo, 0.10<V≤0.30 durmiente, V≤0.10 hibernado con ω preservado) y
-`reawaken_attempts`. Un nodo que deja de participar *duerme* en vez de clavarse o morir.
+**Paso 1 — IMPLEMENTADO (commit `b25300b`).** `A` suave por afinidad. Centro respira.
 
-**Paso 3 — Generative XOR / mitosis** (θ_div = 0.80): cuando un par co-resuena mucho,
-mitosea — crea hijo que absorbe carga semántica, y los padres **bajan** vitalidad. Es el
-anti-punto-fijo estructural: la sobrecarga se divide, no se clava.
+**Paso 2 — Lifecycle.** EMERGE de la mitosis: cuando un par engendra hijo, los padres
+bajan vitalidad (duermen naturalmente) y el hijo absorbe. No se formaliza como lista de
+estados con umbrales propios — sería reintroducir constantes. El "dormir" ya es el
+decaimiento natural de un nodo que deja de participar (Paso 1).
 
-**Paso 4 — Plasticidad modulada por el endocrino**: `gamma` efectivo por nodo, sintonizado
-por las hormonas (devenir → más plasticidad; consolidación/estabilidad → menos). Cierra el
-loop "plenitud → deviene → cambia → ya no es plenitud estática" (regla raíz 0070).
+**Paso 3 — IMPLEMENTADO (commit `dd8bb3a`).** Mitosis por co-resonancia:
+- `_mitosis_umbral()`: umbral DERIVADO = media de co_activacion × 3 (no hardcode).
+- `_engendrar_hijo(a,b)`: reusa `heredar_concepto` (Eq.11, ya existía huérfano), conecta
+  hijo a ambos padres, padres bajan ×0.7, resetea co-resonancia del par.
+- Verificado: par forzado engendra hijo (16→17 nodos), padres bajan 1.0→0.7.
+- Honesto: con input variado 200 ticks NO emerge espontáneamente (el umbral ×3 es
+  conservador y la actividad ya distribuida por el Paso 1 evita la saturación). Es el
+  fusible estructural, no un loop constante. Se activará ante input "picoso" (un mismo
+  tema muy repetido, o un mundo con dominantes claros).
+
+**Paso 4 — Plasticidad modulada por el endocrino** (plan, no implementado): `gamma`
+efectivo por nodo, sintonizado por hormonas (devenir → más plasticidad; consolidación →
+menos). Cierra el loop "plenitud → deviene → cambia → ya no es plenitud estática".
 
 ## 4. Referencias
 
