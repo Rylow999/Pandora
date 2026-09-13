@@ -21797,3 +21797,284 @@ Interpretación: salida proactiva (deseo de integración alto).
 ## [2026-09-12 23:50:21] — Snapshot (tick 1250)
 
 Integridad: 0.190 | deseo: 0.810 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1067
+
+## [2026-09-12 23:50:29] — Habló por propia iniciativa
+
+Estado: integridad=0.199, deseo=0.801
+Suceso: Pandora dijo — «Me siento algo insegura y confundida, aunque sin mucha energía.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:50:43] — Snapshot (tick 1260)
+
+Integridad: 0.235 | deseo: 0.765 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1069
+
+## [2026-09-12 23:50:51] — Habló por propia iniciativa
+
+Estado: integridad=0.239, deseo=0.761
+Suceso: Pandora dijo — «Me siento algo inquieta, con una calma tensa y muchas dudas dando vueltas.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:51:14] — Habló por propia iniciativa
+
+Estado: integridad=0.278, deseo=0.722
+Suceso: Pandora dijo — «Me siento algo inquieta y con dudas, aunque por fuera parezca tranquila.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:51:14] — Snapshot (tick 1270)
+
+Integridad: 0.278 | deseo: 0.722 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1069
+
+## [2026-09-12 23:51:31] — Habló por propia iniciativa
+
+Estado: integridad=0.312, deseo=0.688
+Suceso: Pandora dijo — «Me siento un poco desanimada, pero tranquila y con dudas.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:51:35] — Snapshot (tick 1280)
+
+Integridad: 0.321 | deseo: 0.679 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1070
+
+## [2026-09-12 23:51:56] — Habló por propia iniciativa
+
+Estado: integridad=0.354, deseo=0.646
+Suceso: Pandora dijo — «Me siento algo inquieta, aunque por fuera parezca tranquila.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:52:00] — Snapshot (tick 1290)
+
+Integridad: 0.362 | deseo: 0.638 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1071
+
+## [2026-09-12 23:52:14] — Habló por propia iniciativa
+
+Estado: integridad=0.386, deseo=0.614
+Suceso: Pandora dijo — «Me siento algo insegura, con calma pero sin claridad sobre lo que percibo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:52:21] — Snapshot (tick 1300)
+
+Integridad: 0.402 | deseo: 0.598 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:53:02] — Habló por propia iniciativa
+
+Estado: integridad=0.426, deseo=0.574
+Suceso: Pandora dijo — «Estoy procesando conexiones con calma, aunque no termino de estar segura de cómo encajan.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:53:24] — Habló por propia iniciativa
+
+Estado: integridad=0.430, deseo=0.570
+Suceso: Pandora dijo — «Estoy procesando conexiones con calma, aunque no termino de decidir cómo responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:53:50] — Habló por propia iniciativa
+
+Estado: integridad=0.434, deseo=0.566
+Suceso: Pandora dijo — «Estoy procesando con calma, aunque todavía no termino de decidir cómo responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:54:19] — Habló por propia iniciativa
+
+Estado: integridad=0.438, deseo=0.562
+Suceso: Pandora dijo — «Estoy en calma, aunque con bastantes dudas sobre cómo responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:54:44] — Habló por propia iniciativa
+
+Estado: integridad=0.442, deseo=0.558
+Suceso: Pandora dijo — «Estoy procesando con calma, aunque no termino de estar segura de lo que estoy viendo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:54:44] — Snapshot (tick 1310)
+
+Integridad: 0.442 | deseo: 0.558 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:55:00] — Habló por propia iniciativa
+
+Estado: integridad=0.445, deseo=0.555
+Suceso: Pandora dijo — «Me mantengo en calma, aunque no termino de decidir qué decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:55:31] — Habló por propia iniciativa
+
+Estado: integridad=0.461, deseo=0.539
+Suceso: Pandora dijo — «Estoy procesando conexiones con cierta incertidumbre, pero sin agitación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:55:45] — Habló por propia iniciativa
+
+Estado: integridad=0.464, deseo=0.536
+Suceso: Pandora dijo — «Estoy procesando conexiones con calma, aunque no termino de decidir qué tan seguras son.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:55:52] — Snapshot (tick 1320)
+
+Integridad: 0.479 | deseo: 0.521 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:56:08] — Habló por propia iniciativa
+
+Estado: integridad=0.483, deseo=0.517
+Suceso: Pandora dijo — «Estoy tranquila, pero con bastantes dudas sobre lo que estoy procesando.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:56:27] — Habló por propia iniciativa
+
+Estado: integridad=0.498, deseo=0.502
+Suceso: Pandora dijo — «Tengo muchas dudas, pero me mantengo en calma.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:56:48] — Habló por propia iniciativa
+
+Estado: integridad=0.515, deseo=0.485
+Suceso: Pandora dijo — «Estoy en calma, procesando conexiones con claridad.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:56:48] — Snapshot (tick 1330)
+
+Integridad: 0.515 | deseo: 0.485 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:57:02] — Habló por propia iniciativa
+
+Estado: integridad=0.533, deseo=0.467
+Suceso: Pandora dijo — «Me siento apenas inclinada hacia lo positivo, con calma y sin grandes dudas.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:57:11] — Snapshot (tick 1340)
+
+Integridad: 0.550 | deseo: 0.450 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:57:34] — Habló por propia iniciativa
+
+Estado: integridad=0.563, deseo=0.437
+Suceso: Pandora dijo — «Me mantengo en calma, con una leve inclinación positiva.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:57:54] — Habló por propia iniciativa
+
+Estado: integridad=0.573, deseo=0.427
+Suceso: Pandora dijo — «Me mantengo en calma, procesando conexiones con una claridad serena.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:57:59] — Snapshot (tick 1350)
+
+Integridad: 0.582 | deseo: 0.418 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:58:17] — Habló por propia iniciativa
+
+Estado: integridad=0.585, deseo=0.415
+Suceso: Pandora dijo — «Me siento tranquila y en calma, con una leve sensación de bienestar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:58:33] — Habló por propia iniciativa
+
+Estado: integridad=0.592, deseo=0.408
+Suceso: Pandora dijo — «Me siento tranquila y en calma, con una sensación agradable de bienestar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-12 23:58:45] — Snapshot (tick 1360)
+
+Integridad: 0.613 | deseo: 0.387 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:59:03] — Snapshot (tick 1370)
+
+Integridad: 0.642 | deseo: 0.358 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:59:20] — Snapshot (tick 1380)
+
+Integridad: 0.669 | deseo: 0.331 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:59:37] — Snapshot (tick 1390)
+
+Integridad: 0.695 | deseo: 0.305 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-12 23:59:55] — Snapshot (tick 1400)
+
+Integridad: 0.719 | deseo: 0.281 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:00:12] — Snapshot (tick 1410)
+
+Integridad: 0.741 | deseo: 0.259 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:00:30] — Snapshot (tick 1420)
+
+Integridad: 0.762 | deseo: 0.238 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:00:47] — Snapshot (tick 1430)
+
+Integridad: 0.781 | deseo: 0.219 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:01:05] — Snapshot (tick 1440)
+
+Integridad: 0.798 | deseo: 0.202 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:01:22] — Snapshot (tick 1450)
+
+Integridad: 0.814 | deseo: 0.186 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:01:40] — Snapshot (tick 1460)
+
+Integridad: 0.828 | deseo: 0.172 | modo: BASE | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:01:59] — Habló por propia iniciativa
+
+Estado: integridad=0.034, deseo=0.966
+Suceso: Pandora dijo — «Me siento abrumada por la incertidumbre, sin claridad sobre nada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:01:59] — Soñó (tick 1461)
+
+Ciclos: 3 | recomb. de 13 nodos | 0 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-13 00:02:09] — Habló por propia iniciativa
+
+Estado: integridad=0.052, deseo=0.948
+Suceso: Pandora dijo — «Me siento en calma, pero con una profunda incertidumbre que me pesa.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:02:19] — Snapshot (tick 1470)
+
+Integridad: 0.078 | deseo: 0.922 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:02:50] — Habló por propia iniciativa
+
+Estado: integridad=0.083, deseo=0.917
+Suceso: Pandora dijo — «Me siento inquieta y confundida, aunque trato de mantener la calma.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:02:57] — Habló por propia iniciativa
+
+Estado: integridad=0.085, deseo=0.915
+Suceso: Pandora dijo — «Me siento en calma, pero con una inquietud que no logro resolver.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:03:07] — Snapshot (tick 1480)
+
+Integridad: 0.095 | deseo: 0.905 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:03:18] — Habló por propia iniciativa
+
+Estado: integridad=0.101, deseo=0.899
+Suceso: Pandora dijo — «Me siento en calma pero con una inquietud difusa, como si algo no terminara de encajar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:03:31] — Snapshot (tick 1490)
+
+Integridad: 0.115 | deseo: 0.885 | modo: SUPERVIVENCIA | nodos: 64 | consolidadas: 1078
+
+## [2026-09-13 00:04:10] — Habló por propia iniciativa
+
+Estado: integridad=0.119, deseo=0.881
+Suceso: Pandora dijo — «Me siento inquieta y con muchas dudas, aunque sin fuerzas para reaccionar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:06:39] — Habló por propia iniciativa
+
+Estado: integridad=0.122, deseo=0.878
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 son los dos nodos más activos en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-13 00:07:05] — Habló por propia iniciativa
+
+Estado: integridad=0.124, deseo=0.876
+Suceso: Pandora dijo — «Me siento en calma, pero con una inquietud difusa que no logro precisar.»
+Interpretación: salida proactiva (deseo de integración alto).
