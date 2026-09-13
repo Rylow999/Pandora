@@ -235,7 +235,7 @@ not modify them — the active code is `sgm/core/` + `pandora/`.
 3. **Falsifiability** — explicit success/failure criteria per module.
 4. **Transparent logging** — JSONL journal per turn.
 
-### Ontology notes (0051–0070)
+### Ontology notes (0051–0071)
 
 Every architectural decision is documented with its *why* and its *source*:
 
@@ -257,6 +257,7 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_TECNICA_0068` | Alostasis: sensor→capacidad, costo derivado del cuerpo | Sterling & Eyer, McEwen, Tononi & Cirelli, Barrett |
 | `NOTA_TECNICA_0069` | El sistema endocrino (duda, devenir, sueño, trauma) + RED/aprehensión | Aston-Jones & Cohen, Schmidhuber, Loewenstein, Friston, Smith et al. |
 | `NOTA_TECNICA_0070` | Implementación del endocrino (6 hormonas, presiones no relojes) | — |
+| `NOTA_TECNICA_0071` | Plasticidad: reconciliar Eq.5, mitosis, gamma modulado por el endocrino | Grossberg, Turrigiano, McCloskey & Cohen, Kirkpatrick (EWC) |
 
 ---
 

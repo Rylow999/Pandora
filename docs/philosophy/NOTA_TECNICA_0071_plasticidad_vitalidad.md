@@ -76,9 +76,28 @@ decaimiento natural de un nodo que deja de participar (Paso 1).
   fusible estructural, no un loop constante. Se activará ante input "picoso" (un mismo
   tema muy repetido, o un mundo con dominantes claros).
 
-**Paso 4 — Plasticidad modulada por el endocrino** (plan, no implementado): `gamma`
-efectivo por nodo, sintonizado por hormonas (devenir → más plasticidad; consolidación →
-menos). Cierra el loop "plenitud → deviene → cambia → ya no es plenitud estática".
+**Paso 4 — IMPLEMENTADO (commit `be669ff`).** Plasticidad modulada por el endocrino:
+- SGM: `gamma_efectivo` (modulable) + `set_plasticidad(nivel)`. `decaer_vitalidad`
+  usa `gamma_efectivo`, no el `gamma_nodo` fijo. Rango acotado [gamma×0.2, gamma×5].
+- Endocrino: hormona `plasticidad` = 0.5 + 0.5·devenir − 0.5·consolidación
+  (Grossberg 1987: el balance se resuelve modulando, no eligiendo extremo).
+- Loop residente aplica plasticidad al SGM tras cada tick endocrino.
+- Verificado: devenir alto → plasticidad 0.40 (gamma 0.01→0.021); consolidando → 0.08.
+
+Con esto, la plasticidad dejó de ser un gamma fijo: ES una hormona. El loop
+"plenitud → deviene → cambia → ya no es plenitud estática" queda cerrado.
+
+## 3b. Detalles detectados (higiene pendiente, no bloqueante)
+
+Dos umbrales de decisión quedan con número fijo y, por coherencia con la regla
+anti-hardcode, deberían derivarse como `_mitosis_umbral`:
+- `co_activacion_umbral = 3` (cuándo una relación se consolida) — hermano del
+  umbral de mitosis, aún fijo.
+- `conteo_induccion >= 3` (cuándo una inducción consolida) — ídem.
+
+Ambos son umbrales de ESTADO (disparadores de consolidación), no recompensas
+constitutivas. Quedan anotados para una pasada de higiene dedicada (cambiarían
+comportamiento, requieren visto bueno de Luciano).
 
 ## 4. Referencias
 
