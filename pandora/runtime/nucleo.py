@@ -83,6 +83,15 @@ class Nucleo:
         # 3. Endocrino: computar las hormonas a partir del estado real.
         hormonas = self._hormonas()
 
+        # 3.5 Aplicar plasticidad (NOTA 0071 Paso 4): la hormona 'plasticidad'
+        #     modula gamma_efectivo del SGM. Devenir -> cede, consolidar -> retiene.
+        #     Es la costura endocrino->sustrato ANTES de que el tick haga decay.
+        try:
+            if "plasticidad" in hormonas and hasattr(self.sgm, "set_plasticidad"):
+                self.sgm.set_plasticidad(hormonas["plasticidad"])
+        except Exception:
+            pass
+
         # 4. Devenir: si la quietud pide romper el punto fijo (0070 §2.4),
         #    GENERA una propuesta de reintegración (imaginar) — reusa sustrato.
         #    El devenir PROPONE; el SUEÑO (paso 6) INTEGRA lo que resuena.

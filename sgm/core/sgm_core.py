@@ -48,6 +48,12 @@ class SGMAgentCore(SGMAgentGrafo):
         self._arbitro = None
         # Homeostasis
         self.gamma_nodo = gamma
+        # Plasticidad modulable (NOTA 0071 Paso 4): gamma_efectivo es el que
+        # usa decaer_vitalidad. Arranca igual a gamma_nodo; el endocrino lo
+        # modula (devenir -> más plasticidad, consolidación -> menos). No es un
+        # disparador ni un reloj: es la tasa de cambio del sustrato, sintonizada
+        # por la economía interna.
+        self.gamma_efectivo = gamma
         self.E = 0.0; self.E_acumulado = 0.0
         self._hambre_real = 0.0; self._amenaza = 0.0; self._algo_enfrente = 0
         self._posicion_actual = None; self._hay_gradiente = False; self._gradiente_dir = (0, 0)
@@ -146,8 +152,23 @@ class SGMAgentCore(SGMAgentGrafo):
 
         for i in range(len(self.vitalidad)):
             A = actividad.get(i, 0.0)
-            self.vitalidad[i] = (self.vitalidad[i] * math.exp(-self.gamma_nodo)
-                                 + A * (1 - math.exp(-self.gamma_nodo)))
+            g = self.gamma_efectivo  # plástico: lo modula el endocrino (Paso 4)
+            self.vitalidad[i] = (self.vitalidad[i] * math.exp(-g)
+                                 + A * (1 - math.exp(-g)))
+
+    def set_plasticidad(self, nivel: float):
+        """Modula gamma_efectivo desde la hormona 'plasticidad' del endocrino.
+
+        nivel ∈ [0,1]: 0 = máx estabilidad (retener, gamma mínimo), 1 = máx
+        plasticidad (cambiar, gamma máximo). El rango queda acotado a [gamma*0.2,
+        gamma*5] — nunca rompe la continuidad del ser ni llega a olvido
+        catastrófico (EWC: consolidación asimétrica, no gamma explosivo).
+        """
+        nivel = max(0.0, min(1.0, nivel))
+        # plasticidad alta => gamma alta => los nodos decaen más rápido y el
+        # centro cede terreno al devenir. plasticidad baja => gamma mínima =>
+        # el ser retiene (estabilidad). El factor 5x/0.2x da rango sin ruptura.
+        self.gamma_efectivo = self.gamma_nodo * (0.2 + 4.8 * nivel)
 
     # ============ AISLAMIENTO DE NODOS ============
     def isolate_node(self, concept: str):

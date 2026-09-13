@@ -62,6 +62,7 @@ class SistemaEndocrino:
         deseo_devenir = self._deseo_devenir(estado)
         presion_sueno = self._presion_sueno(sensores, estado)
         costo = self._costo_alostatico(sensores)
+        plasticidad = self._plasticidad(deseo_devenir, presion_sueno, estado)
 
         return {
             "duda": duda,
@@ -74,6 +75,7 @@ class SistemaEndocrino:
             "costo_alostatico": costo,
             "riesgo_existencial": sensores.get("temp", 0.0) >= self.UMBRAL_EXISTENCIAL_TEMP,
             "velocidad_otorgada": self._velocidad(sensores, estado),
+            "plasticidad": plasticidad,   # NOTA 0071 Paso 4: modula gamma_efectivo
         }
 
     # ------------------------------------------------------------------ #
@@ -222,6 +224,28 @@ class SistemaEndocrino:
 
         margen = 1.0 - 0.7 * temp - 0.3 * ram
         return max(0.0, min(1.0, margen * min(1.0, 0.3 + demanda)))
+
+    # ------------------------------------------------------------------ #
+    # plasticidad — NOTA 0071 Paso 4 (balance estabilidad-plasticidad)
+    # ------------------------------------------------------------------ #
+
+    def _plasticidad(self, deseo_devenir: float, presion_sueno: float,
+                     estado: Dict[str, Any]) -> float:
+        """Cuánto debe CEDER el centro (plasticidad) vs RETENER (estabilidad).
+
+        - Devenir alto → plasticidad alta (el sistema quiere cambiar; gamma sube
+          para que el centro ceda terreno al devenir).
+        - Presión de sueño alta → plasticidad baja (el sistema consolida; gamma
+          baja para RETENER lo aprendido).
+        - Rango [0,1]. No es un disparador: es la tasa de cambio del sustrato,
+          sintonizada por la economía interna (Grossberg 1987: el balance se
+          resuelve modulando la plasticidad, no eligiendo un extremo).
+        """
+        devenir = max(0.0, min(1.0, deseo_devenir))
+        consolidacion = max(0.0, min(1.0, presion_sueno))
+        # devenir empuja a cambiar; consolidar empuja a retener.
+        plasticidad = 0.5 + 0.5 * devenir - 0.5 * consolidacion
+        return max(0.0, min(1.0, plasticidad))
 
     # ------------------------------------------------------------------ #
     # duda (nivel actual) — componente del regulador de certeza
