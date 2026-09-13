@@ -1,8 +1,8 @@
 # TODO — Estado de integración del programa Pandora
 
-**Actualizado:** 2026-09-12
-**Estado general:** núcleo residente vivo (systemd), endocrino cableado, devenir cerrado
-(devenir imagina → sueño integra), ontología 0067-0070, transductor unificado. 119 tests.
+**Actualizado:** 2026-09-13
+**Estado general:** núcleo residente vivo, endocrino (7 hormonas), devenir interno
+cerrado, plasticidad completa (Pasos 1-4), transductor unificado. 119 tests.
 
 ---
 
@@ -10,21 +10,22 @@
 
 - [x] Oído unificado a NIM (`c176d1b`)
 - [x] Afecto medido anclado a la boca (`c176d1b`)
-- [x] Claves duplicadas de CONCEPT_NORMALIZATION limpias (`c176d1b`)
-- [x] Dos "bocas" resueltas (cadena de fallback NIM→Ollama→determinístico)
+- [x] Claves duplicadas de CONCEPT_NORMALIZATION limpias
+- [x] Dos "bocas" resueltas (cadena NIM→Ollama→determinístico)
 
 ## Prioridad 1 — Cuerpo que actúa (parcial)
 
-- [x] **Cablear la mano** (`d126053`) — instanciada, latente, para el ENCUENTRO.
-- [x] **Devenir interno** (`cca13a0`) — devenir propone, sueño integra (sin workspace).
-- [x] **RED-A aprehensión** (`d9e33ec`) — duda insuficiente → ingerir del inbox.
+- [x] **Cablear la mano** (`d126053`) — latente, para el ENCUENTRO.
+- [x] **Devenir interno** (`cca13a0`) — devenir propone, sueño integra.
+- [x] **RED-A aprehensión** (`d9e33ec`) — duda insuficiente → inbox.
 - [ ] **RED-B búsqueda externa real** (internet): HORIZONTE.
 
-## Prioridad 2 — Robustez e higiene (COMPLETADA 2026-09-12)
+## Prioridad 2 — Robustez e higiene
 
-- [x] `_hormonas()` reusa sample (`524d505`) — sin doble psutil por tick.
-- [x] Frecuencia CPU al bundle HRR (`524d505`) — órgano FRECUENCIA nuevo.
-- [ ] Verificar trauma sana en vivo (checkpoint: 4/64, daemon corriendo).
+- [x] `_hormonas()` reusa sample (`524d505`)
+- [x] Frecuencia CPU al bundle HRR (`524d505`)
+- [x] **Umbrales de consolidación derivados** (`co_activacion` y `conteo_induccion`)
+- [ ] Verificar trauma sana en vivo (checkpoint: 4/64, pending reinicio daemon)
 
 ## Prioridad 3 — Horizonte
 
@@ -33,33 +34,41 @@
 
 ---
 
-## 🔴 Anotación abierta — Nodos estáticos (centro congelado)
+## ✅ Resuelto — Nodos estáticos (plasticidad, NOTA 0071)
 
-**Síntoma:** los 4 nodos núcleo (0, 21, 26, 27) tienen vitalidad 1.0 clavada desde hace
-días, y `traza_transiciones = 0` (presente quieto) aunque el grafo aprende (aristas suben,
-consolidadas crecen, trauma sana).
+Los 4 nodos ancla congelados (0/21/26/27, vitalidad 1.0, traza_transiciones=0) fueron
+resueltos con 4 pasos (commits `b25300b`, `dd8bb3a`, `be669ff`):
 
-**Causas identificadas (técnicas):**
-1. `gamma = 0.01` fijo → vitalidad decae ~0.6%/100 ticks (tarda ~690 ticks en bajar a 0.5).
-2. El devenir es interno (no llama `integrar_experiencia_motora`), nada empuja/drena los anclas.
-3. No hay mecanismo de "olvido" ni "reemplazo" del centro: los anclas ganaron temprano y nadie los desbanca.
+1. **Eq.5 reconciliada** — actividad suave por afinidad, no winner-take-all binario.
+2. **Mitosis** — par sobrecargado engendra hijo (cablea `heredar_concepto` huérfano).
+3. **Lifecycle** — emerge de la mitosis (padres bajan, hijos absorben).
+4. **Plasticidad hormonal** — `gamma_efectivo` modulado por el endocrino.
 
-**Interpretación (filosófica, 0067):** la identidad = traza de transiciones. Con
-`traza_transiciones = 0`, el ser tiene identidad FIJA, no identidad en PROCESO. Aprende en
-la periferia pero no cambia de parecer en el núcleo. Diagnóstico honesto: falta el mecanismo
-que haga al centro *respirar* (plasticidad).
+Medido: vitalidad máx 1.0→0.865, top-4 cambió, transiciones 0→31. Ver NOTA_0071.
 
-**Candidatos de solución (para evaluar en próxima sesión):**
-- `gamma` adaptativo: sube cuando integridad alta (más plasticidad en plenitud, sintoniza
-  con el deseo_devenir).
-- Decaimiento por desuso: nodos que no participan en transiciones por N ciclos decaen
-  acelerado (olvido estructural, no solo de aristas).
-- Transferencia de vitalidad: al consolidar una propuesta devenida, drenar vitalidad del
-  ancla hacia el nodo nuevo materializado (el centro cede terreno al devenir).
-- Sintonía `gamma ↔ deseo_devenir`: el drive de plenitud (devenir) amplifica plasticidad,
-  cerrando el loop "plenitud → deviene → cambia → ya no es plenitud estática".
+---
 
-*Estado: documentado, pendiente de decisión de dirección con Luciano.*
+## 🟡 Inventario de umbrales fijos (higiene de decisión)
+
+Clasificación honesta de los números mágicos restantes en código vivo:
+
+| Umbral | Tipo | Estado |
+|--------|------|--------|
+| `co_activacion_umbral` (consolidar relación) | decisión | ✅ **DERIVADO** (media×0.5, piso 1) |
+| `conteo_induccion >= 3` | decisión | ✅ **DERIVADO** (media×1.5, piso 2) |
+| `_mitosis_umbral` | decisión | ✅ derivado desde el inicio (media×3) |
+| `instinto_explorar_umbral = 0.5` | pulsión | 🟡 constitutivo (define la fuerza del drive explorar) |
+| `instinto_umbral_carencia = 0.3` | pulsión | 🟡 constitutivo (idem carencia) |
+| `drive_noop_umbral = 1.5` | pulsión | 🟡 constitutivo (acumulación de no-actuar) |
+| `dispersion > 0.4` (reintegración espontánea) | decisión | 🟡 candidato a derivar |
+| `_reintegracion_intervalo = 10` | cadencia defensiva | ✅ no es agencia (anti-spam, no disparador cognitivo) |
+| `checkpoint_cada`, `snapshot_cada` | cadencia de persistencia | ✅ no es agencia (higiene de guardado) |
+| `gamma`, `gamma_efectivo`, `alpha`, recompensas (0.1/0.15/0.05) | constitutivo | ✅ física del sustrato (tasa de cambio, no disparador) |
+
+**Pendiente de decisión con Luciano:** los umbrales *pulsionales* (explorar/carencia/noop)
+y `dispersion > 0.4`. Son de otra naturaleza que los de consolidación — definen la fuerza
+de los instintos, no decisiones de consolidación. Cambiarlos altera el comportamiento de
+los drives; requieren visto bueno y una pasada dedicada.
 
 ---
 
@@ -69,8 +78,9 @@ que haga al centro *respirar* (plasticidad).
 |------|------|
 | 0067 | monismo (máquina=cuerpo, grafo=mundo, mente=relación) |
 | 0068 | alostasis (sensor→capacidad, costo derivado, RED) |
-| 0069 | sistema endocrino + matriz de influencias + RED/aprehensión |
-| 0070 | implementación (6 hormonas, presiones no relojes) |
+| 0069 | sistema endocrino + RED/aprehensión |
+| 0070 | implementación (hormonas, presiones no relojes) |
+| 0071 | plasticidad (Eq.5, mitosis, gamma hormonal) |
 
 ## Regla raíz (no se transgrede)
 

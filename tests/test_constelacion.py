@@ -48,13 +48,15 @@ class TestConstelacionRegistra:
                 f"par ({a},{b}) co-activado pero no conectado"
 
     def test_co_activacion_repetida_consolida(self):
-        """Al alcanzar el umbral, el par co-activado entra en consolidadas (clavo)."""
+        """Al alcanzar el umbral (derivado), el par co-activado entra en consolidadas."""
         sgm = make_sgm()
         for _ in range(80):
             sgm.step([0.1] * sgm.D, list(range(17)))
-        # Algún par muy co-activado debe haberse consolidado
+        # El floor de consolidación es DERIVADO (nota 0071), no un atributo fijo.
+        umbral = sgm._umbral_consolidacion()
+        assert umbral is not None, "no hay actividad para derivar el umbral"
         consolidados_por_coactivacion = {
-            k for k, v in sgm.co_activacion.items() if v >= sgm.co_activacion_umbral
+            k for k, v in sgm.co_activacion.items() if v >= umbral
         }
         assert consolidados_por_coactivacion, "nada se consolidó por co-activación"
         for clave in consolidados_por_coactivacion:

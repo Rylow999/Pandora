@@ -68,7 +68,7 @@ class SGMAgentCore(SGMAgentGrafo):
         # de conn_type (que cuenta co-ocurrencia / refuerzo) y de edges (estructura).
         # El SER es esta matriz persistente; el ESTAR es la zona activa del instante.
         self.co_activacion = {}  # {(a,b): veces co-activados juntos}
-        self.co_activacion_umbral = 3  # co-activaciones para empezar a endurecer
+        self.co_activacion_umbral = None  # derivado (no hardcode): floor de consolidación
         # Pulsiones
         self.instinto_alimentacion = None; self.incertidumbre_acum = 0.0
         self.instinto_explorar_umbral = 0.5; self.instinto_umbral_carencia = 0.3
@@ -515,6 +515,20 @@ class SGMAgentCore(SGMAgentGrafo):
         # 'sobrecargado' y merece descargar en un hijo.
         return media * 3.0
 
+    def _umbral_consolidacion(self):
+        """Floor DERIVADO de consolidación (nota 0071, higiene): cuándo una
+        relación se 'endurece' (entra en consolidadas). Relativo a la media de
+        co-activación del grafo, con piso = 1 (una co-resonancia ya es señal
+        mínima). No es un 3 fijo: emerge de la actividad real.
+        """
+        vals = [v for v in self.co_activacion.values() if v > 0]
+        if not vals:
+            return None  # sin actividad aún
+        media = sum(vals) / len(vals)
+        # Consolidar a la mitad de la media de actividad (más permisivo que la
+        # mitosis, que es 3x): consolidar es 'reconocer', mitosis es 'descargar'.
+        return max(1.0, media * 0.5)
+
     def _engendrar_hijo(self, a, b):
         """Mitosis (NOTA 0071 Paso 3 / Generative XOR del spec §3.3): un par de
         nodos que co-resuenan mucho engendra un hijo que ABSORBE su carga.
@@ -573,9 +587,11 @@ class SGMAgentCore(SGMAgentGrafo):
                 clave = (a, b)
                 self.co_activacion[clave] = self.co_activacion.get(clave, 0) + 1
                 # Consolidación (plasticidad decreciente, 0057): co-resonancia
-                # media endurece la relación (la hace inercial). Sigue usando
-                # co_activacion_umbral, pero como FLOOR bajo y seguro.
-                if self.co_activacion[clave] >= self.co_activacion_umbral:
+                # endurece la relación. El floor se DERIVA (nota 0071): un par
+                # se consolida cuando su co-resonancia es significativa relativa
+                # a la actividad del grafo, con piso = 1 (primera co-resonancia).
+                floor = self._umbral_consolidacion()
+                if floor is not None and self.co_activacion[clave] >= floor:
                     self.consolidadas.add(clave)
                     self.consolidadas.add((b, a))
 
@@ -686,9 +702,24 @@ class SGMAgentCore(SGMAgentGrafo):
                 self.trauma_nodes.discard(i)
 
     # ============ RAZONAMIENTO ============
+    def _umbral_induccion(self):
+        """Umbral DERIVADO de inducción (no hardcode == 3): cuánta evidencia se
+        necesita para consolidar una inferencia, relativo a cuánto induce el
+        grafo HOY. Es el mismo principio que _mitosis_umbral: el 'suficiente'
+        emerge de la actividad real, no de un número declarado (regla raíz).
+        """
+        vals = [v for v in self.conteo_induccion.values() if v > 0]
+        if not vals:
+            return None  # sin evidencias aún, no hay referencia derivable
+        media = sum(vals) / len(vals)
+        # Consolidar cuando la evidencia supera un margen sobre la media.
+        # Piso seguro: nunca bajar de 2 (evitar consolidar con una sola co-ocurrencia).
+        return max(2.0, media * 1.5)
+
     def inducir(self, a, b):
         clave = (a, b); self.conteo_induccion[clave] = self.conteo_induccion.get(clave, 0) + 1
-        if self.conteo_induccion[clave] >= 3:
+        umbral = self._umbral_induccion()
+        if umbral is not None and self.conteo_induccion[clave] >= umbral:
             self.reforzar_arista(a, b, 0.15); return {"evidencia": self.conteo_induccion[clave], "consolidada": True}
         return {"evidencia": self.conteo_induccion[clave], "consolidada": False}
 

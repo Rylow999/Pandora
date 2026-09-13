@@ -87,17 +87,16 @@ decaimiento natural de un nodo que deja de participar (Paso 1).
 Con esto, la plasticidad dejó de ser un gamma fijo: ES una hormona. El loop
 "plenitud → deviene → cambia → ya no es plenitud estática" queda cerrado.
 
-## 3b. Detalles detectados (higiene pendiente, no bloqueante)
+## 3b. Detalles detectados y RESUELTOS (higiene)
 
-Dos umbrales de decisión quedan con número fijo y, por coherencia con la regla
-anti-hardcode, deberían derivarse como `_mitosis_umbral`:
-- `co_activacion_umbral = 3` (cuándo una relación se consolida) — hermano del
-  umbral de mitosis, aún fijo.
-- `conteo_induccion >= 3` (cuándo una inducción consolida) — ídem.
+Dos umbrales de decisión quedaban con número fijo; se DERIVARON (mismo principio
+que `_mitosis_umbral`):
+- `co_activacion_umbral = 3` → `_umbral_consolidacion()`: media×0.5, piso 1. ✅
+- `conteo_induccion >= 3` → `_umbral_induccion()`: media×1.5, piso 2. ✅
 
-Ambos son umbrales de ESTADO (disparadores de consolidación), no recompensas
-constitutivas. Quedan anotados para una pasada de higiene dedicada (cambiarían
-comportamiento, requieren visto bueno de Luciano).
+Quedan como CONSTITUTIVOS (no son disparadores de agencia, definen la física del
+sustrato o la fuerza de pulsiones): `instinto_explorar_umbral`, `instinto_umbral_carencia`,
+`drive_noop_umbral`, `gamma`, recompensas. Inventario completo en `docs/TODO.md`.
 
 ## 4. Referencias
 
