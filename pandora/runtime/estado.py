@@ -58,3 +58,32 @@ class EstadoVivo:
                 "impulso": impulso,
                 "texto": texto,
             }, ensure_ascii=False) + "\n")
+
+    # ---- persistencia del historial endocrino (NOTA 0070, bache 3 detectado) ----
+    def _endocrino_path(self):
+        return self.base / "endocrino_hist.json"
+
+    def guardar_endocrino(self, hist_integridad, hist_transiciones):
+        """Persiste el historial corto del endocrino (del que depende deseo_devenir).
+        Sin esto, cada reinicio resetearía la 'quietud' acumulada. JSON atomico."""
+        import json, os as _os
+        tmp = str(self._endocrino_path()) + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump({
+                "hist_integridad": list(hist_integridad),
+                "hist_transiciones": list(hist_transiciones),
+            }, f)
+        _os.replace(tmp, str(self._endocrino_path()))
+
+    def cargar_endocrino(self, endocrine):
+        """Restaura el historial del endocrino si existe. No falla si no hay."""
+        import json
+        p = self._endocrino_path()
+        if not p.exists():
+            return
+        try:
+            d = json.loads(p.read_text())
+            endocrine._hist_integridad = list(d.get("hist_integridad", []))
+            endocrine._hist_transiciones_len = list(d.get("hist_transiciones", []))
+        except Exception:
+            pass  # historial corrupto no debe matar al ser

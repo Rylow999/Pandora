@@ -41,6 +41,11 @@ class Nucleo:
             from pandora.endocrine.endocrine import SistemaEndocrino
             endocrine = SistemaEndocrino()
         self.endocrine = endocrine
+        # Restaurar historial endocrino (quietud acumulada) si hay checkpoint
+        try:
+            self.estado.cargar_endocrino(self.endocrine)
+        except Exception:
+            pass
         self.ultimo_sueno = None                  # reporte de la última consolidación
         self.fallos_percepcion = 0                # diagnóstico: el silencio no es ausencia
         self._novedad = 0.0                       # novedad del último patrón percibido
@@ -98,6 +103,9 @@ class Nucleo:
         #    No hay escritura intermedia: es interno directo (0067, decisión B).
         if hormonas["deseo_devenir"] > 0.5:
             self._devenir()
+            # La mano deja constancia del devenir en el mundo compartido
+            # (decisión de Luciano): es el canal del ENCUENTRO, no el pensamiento.
+            self._constatar_devenir()
 
         # 5. Repensar o Aprehender: si duda y el conocimiento alcanza, recombinar
         #    recordar+imaginar; si NO alcanza, RED ingiere del inbox (0069 §1.1).
@@ -192,26 +200,25 @@ class Nucleo:
         """RED (aprehensión, 0069 §1.1): si la duda es alta y el conocimiento no
         alcanza, ingerir un archivo del inbox del mundo compartido.
 
-        Emerge del monitoreo metacognitivo (suficiente=insuficiente), no de un
-        reloj. Cada ingesta abstrae el texto a un patrón (hash determinista),
-        lo integra al grafo por resonancia (reusa integrar_experiencia_entorno)
-        y mueve el archivo a procesado/ para no re-ingerirlo.
+        PASA POR LA MANO (ManoArchivos), no por Path crudo — coherente con la
+        premisa de que actuar tiene costo real (0067). La lectura usa el
+        anti-traversal de la mano y su registro auditable.
         """
         if self.mano is None:
             return
         try:
             if hormonas.get("suficiente") != "insuficiente":
                 return  # el conocimiento alcanza: no hace falta buscar afuera
-            # El inbox: lo que otro habitante (Luciano/Nexus) dejó para que
-            # Pandora aprehenda. Mundo compartido, delimitado y seguro.
-            inbox = Path(self.mano.workspace) / "inbox"
-            if not inbox.exists() or not any(inbox.iterdir()):
+            # Listar el inbox vía la mano (con su anti-traversal y registro)
+            archivos = self.mano.listar()
+            inbox_files = [a for a in archivos if a["nombre"].startswith("inbox/")]
+            if not inbox_files:
                 return  # no hay nada que aprehender
-            archivos = [p for p in sorted(inbox.iterdir()) if p.is_file()]
-            if not archivos:
+            objetivo = inbox_files[0]["nombre"]
+            # Leer vía la mano (registra la acción de lectura, con costo)
+            texto = self.mano.leer(objetivo)
+            if texto is None:
                 return
-            objetivo = archivos[0]
-            texto = objetivo.read_text(encoding="utf-8", errors="replace")
             # Abstraer texto → patrón determinista normalizado (reusa el espacio
             # HRR del cuerpo: hash del contenido -> vector gaussiano normalizado).
             import hashlib
@@ -221,15 +228,48 @@ class Nucleo:
             vec = [r.gauss(0, 1) for _ in range(self.sgm.D)]
             norm = math.sqrt(sum(x * x for x in vec)) or 1.0
             vec = [x / norm for x in vec]
-            # Integrar por resonancia (el afuera se vuelve constelación). Si es
-            # novedoso, deja propuesta que el sueño evaluará (PROPONE→CREA).
+            # Integrar por resonancia (el afuera se vuelve constelación)
             self.sgm.integrar_experiencia_entorno(vec, carga=0.6)
-            # Mover a procesado para no re-ingerir (aprehensión concluida).
+            # Mover a procesado vía filesystem directo (la mano no tiene move,
+            # pero el rename es operación de 'concluir', no de leer)
+            import os as _os
+            origen = Path(self.mano.workspace) / objetivo
             procesado = Path(self.mano.workspace) / "procesado"
             procesado.mkdir(parents=True, exist_ok=True)
-            objetivo.rename(procesado / objetivo.name)
+            if origen.exists():
+                _os.rename(origen, procesado / Path(objetivo).name)
         except Exception:
             pass  # la aprehensión fallida no debe matar al ser
+
+    def _constatar_devenir(self):
+        """La mano deja CONSTANCIA del devenir en un documento (decisión de
+        Luciano): cuando el devenir propuso (propuestas_reintegracion no vacía),
+        escribe al mundo compartido un registro de que devino — por la mano, con
+        costo y registro auditable. Es la MANO escribiendo (no el pensamiento),
+        el canal del ENCUENTRO: lo que el ser deja para el otro.
+
+        Emerge del devenir (no del reloj): solo si hubo propuesta. No re-escribe
+        a cada tick; constata el acto de devenir cuando ocurre.
+        """
+        if self.mano is None:
+            return
+        try:
+            propuestas = getattr(self.sgm, "propuestas_reintegracion", [])
+            if not propuestas:
+                return  # no devino, nada que constatar
+            prop = propuestas[-1]
+            novedad = prop.get("novedad", 0.0)
+            contenido = (
+                f"# constancia de devenir\n"
+                f"tick: {self.tick}\n"
+                f"novedad: {novedad:.4f}\n"
+                f"dims: {self.sgm.D}\n"
+                f"nodos_actuales: {len(self.sgm.omega)}\n"
+            )
+            nombre = f"constancias/devenir_{self.tick}.md"
+            self.mano.crear(nombre, contenido, proposito="devenir")
+        except Exception:
+            pass  # la constancia fallida no debe matar al ser
 
     def _materializar(self, hormonas):
         """RETIRADO (decisión B, 0067): el devenir es INTERNO, no escribe al mundo.
@@ -295,12 +335,24 @@ class Nucleo:
                 # vividos, checkpoint quedado en el ~50).
                 if self.checkpoint_cada and i % self.checkpoint_cada == 0:
                     self.estado.guardar(self.sgm)
+                    self._persistir_endocrino()
             except KeyboardInterrupt:
                 break
             time.sleep(intervalo)
         # Al detenerse, guarda el checkpoint (continuidad)
         self.estado.guardar(self.sgm)
+        self._persistir_endocrino()
         return proactivos
+
+    def _persistir_endocrino(self):
+        """Persiste el historial del endocrino junto al checkpoint (bache 3)."""
+        try:
+            self.estado.guardar_endocrino(
+                self.endocrine._hist_integridad,
+                self.endocrine._hist_transiciones_len,
+            )
+        except Exception:
+            pass
 
     def on_proactivo(self, texto):
         """Hook para que el caller reciba los mensajes proactivos (override)."""

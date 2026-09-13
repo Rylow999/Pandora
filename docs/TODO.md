@@ -48,6 +48,24 @@ Medido: vitalidad máx 1.0→0.865, top-4 cambió, transiciones 0→31. Ver NOTA
 
 ---
 
+## 🔴 Órganos LATENTES (diseñados y probados, aún sin rol en el loop actual)
+
+Rastreo de alcanzabilidad desde los puntos de entrada reales (`Nucleo.existir_un_tick`
+y `PandoraAgent.receive`). Estos componentes existen, tienen tests, pero no se conectan
+al bucle vivo. **Decisión Luciano: anotarlos, no cablearlos — el sistema aún no está
+apto para expresarse realmente.**
+
+| Componente | Qué es | Estado |
+|-----------|--------|--------|
+| `Metacognicion.experimentar()` | razonar sobre el propio estado (confianza/contradicción) | latente — `confianza_global` congelado en default |
+| `sgm_lang_modelo.py` (MiniTransformer) | atención lingüística real (nota 0063) | latente — 0 usos |
+| `CommunicationLoop` | bucle percibir→existir→hablar | **DEPRECADO** — duplicado conceptual del Nucleo, no cablear |
+| `ManoArchivos.crear()` (escritura) | actuar sobre el mundo con costo | ✅ **RESUELTO** — ahora `_constatar_devenir()` escribe constancia del devenir |
+
+**Regla fija (para no repetir el patrón):** ningún mecanismo nuevo se da por terminado
+hasta tener un test que lo ejercite pasando por `Nucleo.existir_un_tick()` o
+`PandoraAgent.receive()` — no instanciado a mano en aislamiento.
+
 ## 🟡 Inventario de umbrales fijos (higiene de decisión)
 
 Clasificación honesta de los números mágicos restantes en código vivo:

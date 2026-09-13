@@ -143,10 +143,12 @@ def run_observing(max_ticks=None, intervalo=1.0, libro="docs/LIBRO_DE_CAMPO.md",
         # Checkpoint periódico dentro del loop del observador (no solo al salir)
         if nucleo.checkpoint_cada and i % nucleo.checkpoint_cada == 0:
             estado.guardar(sgm)
+            nucleo._persistir_endocrino()
         time.sleep(intervalo)
 
     # Cierre limpio: guardar el ser antes de terminar (sea por ticks, señal o error)
     estado.guardar(sgm)
+    nucleo._persistir_endocrino()
     t = time.strftime("%Y-%m-%d %H:%M:%S")
     fin = (
         f"\n## [{t}] — El núcleo se detuvo\n\n"
