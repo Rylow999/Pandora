@@ -114,24 +114,29 @@ class Nucleo:
         return texto
 
     def _hormonas(self):
-        """Arma el dict de entrada para el endocrino desde el grafo y el cuerpo."""
-        sensores = {"cpu": 0.2, "ram": 0.3, "disco": 0.4, "temp": 0.3, "procs": 0.2, "red": 0.1}
+        """Arma el dict de entrada para el endocrino desde el grafo y el cuerpo.
+
+        Reusa la última muestra de percepción (evita doble psutil call por tick).
+        """
+        sensores = {"cpu": 0.2, "ram": 0.3, "disco": 0.4, "temp": 0.3, "procs": 0.2, "red": 0.1, "freq": 0.0}
         if self.percepcion is not None:
             try:
-                # Re-muestreo ligero del cuerpo para que las hormonas vean el
-                # hardware real (no un placeholder). Si falla, usa los defaults.
                 m = self.percepcion.sample()
                 temp_c = m.get("temperature")
-                # termal a fracción [0,1] contra el critical de coretemp (~105°C).
-                # si no hay sensor, cae a 0.3 (baseline prudente, no placeholder ciego).
+                freq_mhz = m.get("cpu_freq")
                 temp_frac = 0.3
                 if temp_c is not None:
                     temp_frac = max(0.0, min(1.0, temp_c / 105.0))
+                freq_frac = 0.0
+                if freq_mhz is not None:
+                    # Normalizar frecuencia contra max turbo (~5000 MHz techo conservador)
+                    freq_frac = max(0.0, min(1.0, freq_mhz / 5000.0))
                 sensores = {
                     "cpu": max(0.0, min(1.0, m.get("cpu_percent", 0) / 100.0)),
                     "ram": max(0.0, min(1.0, m.get("memory_percent", 0) / 100.0)),
                     "disco": max(0.0, min(1.0, m.get("disk_usage_percent", 0) / 100.0)),
                     "temp": temp_frac,
+                    "freq": freq_frac,
                     "procs": max(0.0, min(1.0, m.get("process_count", 0) / 500.0)),
                     "red": 0.1,
                 }
@@ -146,7 +151,7 @@ class Nucleo:
             "trauma": len(getattr(self.sgm, "trauma_nodes", set())) / max(1, len(self.sgm.omega)),
             "coherencia": integridad,
             "deseo_integracion": 1.0 - integridad,
-            "deseo_devenir": 0.0,   # se computa dentro del endocrino
+            "deseo_devenir": 0.0,
         }
         return self.endocrine.tick(sensores, estado)
 

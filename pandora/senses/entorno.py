@@ -126,6 +126,7 @@ class PercepcionEntorno:
                 maximo=1_000_000_000.0  # 1 GB de tráfico acumulado como techo
             ),
             "PROCESOS": self._norm(muestra["process_count"], maximo=500.0),
+            "FRECUENCIA": self._norm(muestra.get("cpu_freq", 0.0), maximo=5000.0),
         }
 
         # Superposición (bundle): suma de roles ponderados por intensidad.
