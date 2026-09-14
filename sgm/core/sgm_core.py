@@ -405,6 +405,20 @@ class SGMAgentCore(SGMAgentGrafo):
                    key=lambda n: math.sqrt(sum((x - y) ** 2 for x, y in zip(vector_sensorial, self.omega[n]))))
         novedad = math.sqrt(sum((x - y) ** 2 for x, y in zip(vector_sensorial, self.omega[best])))
 
+        # Resonancia estocástica (NOTA 0073 paso 2): nodos que VIVIERON igual
+        # (misma firma de vivencia) 'resuenan' con el seed actual y se puentean
+        # aunque estén lejos en omega. El recuerdo salta la distancia: reforzamos
+        # levemente los resonantes en fase. Complementa (no reemplaza) la
+        # resonancia por distancia.
+        try:
+            if hasattr(self, 'vivencias') and self._seed < len(self.omega):
+                resonantes = self.vivencias.resonar(self._seed, lambda i, j: 0.0)
+                for vecino, afinidad in resonantes[:3]:
+                    if vecino < len(self.vitalidad):
+                        self.vitalidad[vecino] = min(1.0, self.vitalidad[vecino] + 0.03 * afinidad)
+        except Exception:
+            pass
+
         # Activar el nodo resonante (la percepción deja huella, no crea de golpe)
         self.vitalidad[best] = min(1.0, self.vitalidad[best] + carga * 0.05)
         self._seed = best

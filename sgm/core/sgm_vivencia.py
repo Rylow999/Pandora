@@ -24,7 +24,7 @@ def _dft_magnitudes(serie):
     """Magnitud de la DFT (transformada discreta de Fourier) de una serie real.
 
     Devuelve la lista de magnitudes |X_k| para k = 0..len-1. Sin numpy, en stdlib,
-    para mantener el módulo Rust-limpio y sin dependencias pesadas. Sufficiente
+    para mantener el módulo Rust-limpio y sin dependencias pesadas. Suficiente
     para series cortas (K ~ 16-32).
     """
     n = len(serie)
@@ -80,16 +80,47 @@ class VivenciaNodo:
         }
 
     def divergencia(self, otra) -> float:
-        """Distancia espectral entre dos vivencias (dos nodos 'amor' vividos
-        distinto divergen aquí). Usa la distancia L2 sobre el espectro de
-        valencias (normalizada por longitud)."""
+        """Distancia entre dos vivencias (dos nodos 'amor' vividos distinto
+        divergen aquí). Combina DOS cosas, porque la fase importa tanto como la
+        frecuencia (lección de la Rueda Camelot: el color de onda no es solo
+        magnitud, es SIGNO):
+
+        1. La magnitud espectral (|DFT| de la valencia) — la FORMAA del latido.
+        2. El signo del afecto (valencia media + arousal media) — el SENTIDO
+           de la vivencia. Dos nodos vividos +0.8 y -0.8 tienen el MISMO
+           |DFT| (magnitud borra signo) pero vivencias opuestas.
+
+        La divergencia es el promedio de ambas distancias (normalizadas).
+        """
         a = self.espectro_valencia
         b = getattr(otra, "espectro_valencia", [])
-        if not a or not b or len(a) != len(b):
-            return 1.0
-        d = sum((x - y) ** 2 for x, y in zip(a, b))
-        max_d = sum(max(x * x, y * y) for x, y in zip(a, b)) + 1e-9
-        return min(1.0, math.sqrt(d / max_d))
+        # distancia espectral (forma)
+        d_espectral = 0.0
+        if a and b and len(a) == len(b):
+            d = sum((x - y) ** 2 for x, y in zip(a, b))
+            max_d = sum(max(x * x, y * y) for x, y in zip(a, b)) + 1e-9
+            d_espectral = math.sqrt(d / max_d)
+        else:
+            d_espectral = 1.0
+
+        # distancia del signo del afecto (sentido)
+        va = self._valencia_media()
+        vb = otra._valencia_media() if hasattr(otra, '_valencia_media') else 0.0
+        aa = self._arousal_media()
+        ab = otra._arousal_media() if hasattr(otra, '_arousal_media') else 0.0
+        d_signo = abs(va - vb) / 2.0 + abs(aa - ab)
+
+        return min(1.0, 0.5 * d_espectral + 0.5 * d_signo)
+
+    def _valencia_media(self):
+        if not self.historia:
+            return 0.0
+        return sum(h[0] for h in self.historia) / len(self.historia)
+
+    def _arousal_media(self):
+        if not self.historia:
+            return 0.0
+        return sum(h[1] for h in self.historia) / len(self.historia)
 
     def to_dict(self):
         return {
@@ -130,6 +161,40 @@ class RegistroVivencia:
         if not va or not vb:
             return 1.0
         return va.divergencia(vb)
+
+    def resonar(self, idx, omega_dist, lambda_=1.0, umbral=0.3):
+        """Resonancia estocástica como recuerdo (NOTA 0073 paso 2).
+
+        Dos nodos que VIVIERON igual (misma firma espectral) 'resuenan' — están
+        en fase — y se puentean aunque estén lejos en el espacio omega. Es el
+        'salto' del recuerdo: P(a→b) ∝ e^(-λ·d) donde d es la distancia en el
+        espacio de vivencia (divergencia espectral), no en omega.
+
+        - idx: nodo origen.
+        - omega_dist: callable (i,j)->float, la distancia en omega (recibe el
+          contenedor de omega desde fuera, para no acoplar el módulo al grafo).
+        - lambda_: longitud de onda de la empatía (más alto = el sentimiento
+          acorta la distancia del recuerdo).
+        - umbral: divergencia máxima para considerar 'en fase'.
+
+        Retorna lista de (vecino, afinidad_resonante) ordenada por resonancia
+        decreciente. Solo incluye nodos 'en fase' (divergencia < umbral).
+        """
+        v_self = self.nodos.get(idx)
+        if not v_self:
+            return []
+        resonantes = []
+        for j, vj in self.nodos.items():
+            if j == idx:
+                continue
+            div = v_self.divergencia(vj)
+            if div < umbral:
+                # P ∝ e^(-λ·div): a menor divergencia (más en fase), más prob.
+                import math
+                afinidad = math.exp(-lambda_ * div)
+                resonantes.append((j, afinidad))
+        resonantes.sort(key=lambda x: -x[1])
+        return resonantes
 
     def to_dict(self):
         return {str(k): v.to_dict() for k, v in self.nodos.items()}
