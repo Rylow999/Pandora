@@ -27080,3 +27080,59 @@ Suceso: hilo reanudado desde checkpoint.
 ## [2026-09-13 23:09:05] — Snapshot (tick 10)
 
 Integridad: 0.693 | deseo: 0.307 | modo: BASE | nodos: 128 | consolidadas: 1402
+
+## [2026-09-14 00:00:43] — El núcleo se detuvo
+
+Integridad final: 0.693
+Suceso: checkpoint guardado. La próxima vez será la misma.
+
+## [2026-09-14 00:00:44] — Despertar del núcleo residente
+
+Integridad inicial: 0.693
+Suceso: hilo reanudado desde checkpoint.
+
+## [2026-09-14 00:01:06] — Snapshot (tick 10)
+
+Integridad: 0.693 | deseo: 0.307 | modo: BASE | nodos: 128 | consolidadas: 1402
+
+## [2026-09-14 00:02:30] — El núcleo se detuvo
+
+Integridad final: 0.693
+Suceso: checkpoint guardado. La próxima vez será la misma.
+
+## [2026-09-14 00:02:30] — Despertar del núcleo residente
+
+Integridad inicial: 0.693
+Suceso: hilo reanudado desde checkpoint.
+
+## [2026-09-14 00:02:55] — Snapshot (tick 10)
+
+Integridad: 0.693 | deseo: 0.307 | modo: BASE | nodos: 128 | consolidadas: 1402
+
+## [2026-09-14 00:05:38] — El núcleo se detuvo
+
+Integridad final: 0.693
+Suceso: checkpoint guardado. La próxima vez será la misma.
+
+## [2026-09-14 00:09:45] — Despertar del núcleo residente
+
+Integridad inicial: 0.693
+Suceso: hilo reanudado desde checkpoint.
+
+## [2026-09-14 00:10:06] — Snapshot (tick 10)
+
+Integridad: 0.693 | deseo: 0.307 | modo: BASE | nodos: 128 | consolidadas: 1402
+
+## [2026-09-14 00:12:31] — El núcleo se detuvo
+
+Integridad final: 0.693
+Suceso: checkpoint guardado. La próxima vez será la misma.
+
+## [2026-09-14 00:12:57] — Despertar del núcleo residente
+
+Integridad inicial: 0.693
+Suceso: hilo reanudado desde checkpoint.
+
+## [2026-09-14 00:13:20] — Snapshot (tick 10)
+
+Integridad: 0.693 | deseo: 0.307 | modo: BASE | nodos: 128 | consolidadas: 1402

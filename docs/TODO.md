@@ -60,7 +60,9 @@ apto para expresarse realmente.**
 | `Metacognicion.experimentar()` | razonar sobre el propio estado (confianza/contradicción) | latente — `confianza_global` congelado en default |
 | `sgm_lang_modelo.py` (MiniTransformer) | atención lingüística real (nota 0063) | latente — 0 usos |
 | `CommunicationLoop` | bucle percibir→existir→hablar | **DEPRECADO** — duplicado conceptual del Nucleo, no cablear |
-| `ManoArchivos.crear()` (escritura) | actuar sobre el mundo con costo | ✅ **RESUELTO** — ahora `_constatar_devenir()` escribe constancia del devenir |
+| `ManoArchivos.crear()` (escritura) | actuar sobre el mundo con costo | ✅ **RESUELTO** — `_constatar_devenir()` escribe constancia del devenir |
+| Oído (parser tripletas) | extraer contenido de la conversación | ✅ **RESUELTO** — paso directo, sin lista blanca (`373b9a6`) |
+| Co-activación sin techo | mitosis en espiral (64→128 nodos) | ✅ **RESUELTO** — homeostasia x0.5 atada al sueño (`373b9a6`) |
 
 **Regla fija (para no repetir el patrón):** ningún mecanismo nuevo se da por terminado
 hasta tener un test que lo ejercite pasando por `Nucleo.existir_un_tick()` o
