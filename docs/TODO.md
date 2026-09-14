@@ -57,12 +57,14 @@ apto para expresarse realmente.**
 
 | Componente | Qué es | Estado |
 |-----------|--------|--------|
-| `Metacognicion.experimentar()` | razonar sobre el propio estado (confianza/contradicción) | latente — `confianza_global` congelado en default |
-| `sgm_lang_modelo.py` (MiniTransformer) | atención lingüística real (nota 0063) | latente — 0 usos |
+| `Metacognicion.experimentar()` | razonar sobre el propio estado (confianza/contradicción) | ✅ **CABLEADA** — `_sincronizar_metacognicion()` puebla creencias desde relaciones consolidadas (`9443dee`) |
+| `sgm_lang_modelo.py` (MiniTransformer) | atención lingüística real (nota 0063) | latente — voz futura, por diseño |
 | `CommunicationLoop` | bucle percibir→existir→hablar | **DEPRECADO** — duplicado conceptual del Nucleo, no cablear |
 | `ManoArchivos.crear()` (escritura) | actuar sobre el mundo con costo | ✅ **RESUELTO** — `_constatar_devenir()` escribe constancia del devenir |
 | Oído (parser tripletas) | extraer contenido de la conversación | ✅ **RESUELTO** — paso directo, sin lista blanca (`373b9a6`) |
 | Co-activación sin techo | mitosis en espiral (64→128 nodos) | ✅ **RESUELTO** — homeostasia x0.5 atada al sueño (`373b9a6`) |
+| Señales internas simuladas (doubt/contradiction/arousal) | colapso de la voz | ✅ **RESUELTO** — señales reales desacopladas (`83ae9b9`) |
+| Nodos activos opacos ("NODO_65") | boca sin contenido del grafo | ✅ **RESUELTO** — tripletas relacionales reales (`7f4f174`) |
 
 **Regla fija (para no repetir el patrón):** ningún mecanismo nuevo se da por terminado
 hasta tener un test que lo ejercite pasando por `Nucleo.existir_un_tick()` o

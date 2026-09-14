@@ -4,7 +4,7 @@ Documentación de la API pública del motor cognitivo `SGMAgentCore`
 (`sgm/core/sgm_core.py`). Solo métodos de primera clase; los internos
 (prefijo `_`) son de uso interno.
 
-> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0071).
+> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0072).
 
 ---
 
@@ -268,3 +268,24 @@ ya no es metabólica.
 Contrato estricto LLM ↔ SGM: `SemanticEvent`, `InternalState`, `Triplet`,
 `Affect`, `Intent`. `InternalState.metadata` expone `deseo_integracion` e
 `integracion` (medidas del grafo, no inyectadas).
+
+---
+
+## El transductor se alimenta de la matemática real (NOTA 0072)
+
+`PandoraAgent` (`pandora/core/pandora_agent.py`) construye el `InternalState`
+que recibe la boca **desde la matemática real del grafo**, no desde resúmenes
+simulados. Métodos internos que lo implementan:
+
+| Método | Qué produce (real) |
+|--------|-------------------|
+| `_duda_zona_ciega()` | fracción de nodos dormidos (vitalidad < 0.2) — desacoplada de `valence` |
+| `_contradiccion_fase()` | `1 − |⟨e^{iφ}⟩|` — dispersión de fase Kuramoto, continua |
+| `_arousal_kuramoto()` | fracción de nodos en zona activa (I > theta_interf) — fuente propia |
+| `_nodos_activos_reales()` | descripción estructural: `nucleo_activo(x/total)`, `periferia_dormida(y/total)`, `relaciones_consolidadas(N)`, `presente_phi(φ)` |
+| `_relaciones_reales()` | tripletas `estado_a ligado_a(fuerza) estado_b` de las relaciones consolidadas más fuertes |
+| `_sincronizar_metacognicion()` | puebla `creencias` desde relaciones consolidadas e `incertidumbre_acum` desde la dispersión de fase (metacognición ya no congela `confianza_global` en 0.5) |
+
+Principio: los nodos no tienen nombre (y no se les inventa uno); las
+relaciones SÍ son expresables como estructura. El LLM describe la FORMA del
+grafo, no etiquetas.
