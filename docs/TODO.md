@@ -44,8 +44,8 @@ implementamos. Lo que falta de ese plano, en orden:
    firma DFT. NOTA 0074.
 2. **Resonancia estocástica como recuerdo** ✅ **HECHO** (`d849fc0`) — `P(G₁→G₂) ∝ e^(-λ/d)`
    sobre la divergencia de VIVENCIA; nodos en fase se puentean. NOTA 0073 p2.
-3. **Memoria de los muertos**: cuando un nodo muere, la información vuelve a ser "fondo"
-   hasta que un proceso nuevo la recluta (hoy solo atenuamos con homeostasia).
+3. **Memoria de los muertos** ✅ **HECHO** (`9329a13`) — la info de un nodo muerto
+   vuelve a "fondo" (FondoMemorial), reclutable, con olvido final (envejecer).
 4. **Cuerdas de bits {0,1}**: hoy omega es continuo; la charla propone haces de bits
    comprimidos por la Rueda (tensor de filtrado). Rumbo de largo plazo.
 

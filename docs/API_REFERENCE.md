@@ -305,6 +305,10 @@ a nivel de nodo: el omega (núcleo rígido, qué ES) se separa de la vivencia
 | `VivenciaNodo.firma()` | `{espectro_valencia, espectro_arousal, veces_vivido}` |
 | `VivenciaNodo.divergencia(otra)` | distancia espectral + signo del afecto (la fase importa como la frecuencia) |
 | `RegistroVivencia.resonar(idx, ...)` | vecinos "en fase" (misma vivencia) — el recuerdo salta la distancia: `P ∝ e^(-λ·d)` |
+| `FondoMemorial` | la memoria de los muertos: omega+vivencia de nodos muertos quedan como fondo |
+| `FondoMemorial.enterrar(omega, viv)` | registra un nodo muerto al fondo (acotado) |
+| `FondoMemorial.reclutar(...)` | recluta material del fondo (lo más "nuevo" primero) |
+| `FondoMemorial.envejecer()` | desvanece los muertos más viejos (olvido final) |
 
 **Raíz:** el grafo ES la base de datos (0073). La vivencia es parte del grafo
 (persiste en `guardar`/`cargar`), no un store externo.
