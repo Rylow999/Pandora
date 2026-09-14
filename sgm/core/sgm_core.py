@@ -49,8 +49,9 @@ class SGMAgentCore(SGMAgentGrafo):
         # Vivencia espectral (NOTA 0074): la "nube" de cada nodo — la firma de
         # frecuencia de CÓMO se vivió, separada de omega (qué es). El grafo ES
         # la base de datos (0073): la vivencia es parte del grafo, no un store.
-        from sgm.core.sgm_vivencia import RegistroVivencia
+        from sgm.core.sgm_vivencia import RegistroVivencia, FondoMemorial
         self.vivencias = RegistroVivencia()
+        self.memoria_muerta = FondoMemorial()
         # Homeostasis
         self.gamma_nodo = gamma
         # Plasticidad modulable (NOTA 0071 Paso 4): gamma_efectivo es el que
@@ -732,6 +733,23 @@ class SGMAgentCore(SGMAgentGrafo):
             for clave in list(self.co_activacion.keys()):
                 self.co_activacion[clave] *= factor
 
+        # MEMORIA DE LOS MUERTOS (NOTA 0073 paso 3): los nodos que murieron
+        # (vitalidad == 0) pasan su omega + vivencia al fondo. Su información
+        # no se borra — vuelve a ser 'cuerdas residuales' que un proceso nuevo
+        # puede reclutar (reencarnación, no resurrección). El fondo envejece:
+        # los muertos más viejos se desvanecen (olvido final).
+        try:
+            if hasattr(self, 'memoria_muerta'):
+                for i in range(len(self.vitalidad)):
+                    if self.vitalidad[i] <= 0.0:
+                        self.memoria_muerta.enterrar(
+                            self.omega[i],
+                            self.vivencias.firma(i) if hasattr(self, 'vivencias') else None,
+                        )
+                self.memoria_muerta.envejecer()
+        except Exception:
+            pass
+
     # ============ RAZONAMIENTO ============
     def _umbral_induccion(self):
         """Umbral DERIVADO de inducción (no hardcode == 3): cuánta evidencia se
@@ -816,7 +834,9 @@ class SGMAgentCore(SGMAgentGrafo):
             "parent_of": {str(k): v for k, v in self.parent_of.items()} if hasattr(self, 'parent_of') else {},
             # Vivencia espectral (NOTA 0074): la nube de cada nodo — la firma de
             # cómo se vivió. Parte del grafo (0073: el grafo ES la base de datos).
-            "vivencias": self.vivencias.to_dict() if hasattr(self, 'vivencias') else {}})
+            "vivencias": self.vivencias.to_dict() if hasattr(self, 'vivencias') else {},
+            # Memoria de los muertos (NOTA 0073 p3): el fondo residual.
+            "memoria_muerta": self.memoria_muerta.to_dict() if hasattr(self, 'memoria_muerta') else {}})
 
     def cargar(self, ruta):
         if not os.path.exists(ruta): return False
@@ -853,6 +873,13 @@ class SGMAgentCore(SGMAgentGrafo):
             try:
                 from sgm.core.sgm_vivencia import RegistroVivencia
                 self.vivencias = RegistroVivencia.from_dict(d["vivencias"])
+            except Exception:
+                pass
+        # Restaurar la memoria de los muertos (NOTA 0073 p3): el fondo residual.
+        if "memoria_muerta" in d and d["memoria_muerta"]:
+            try:
+                from sgm.core.sgm_vivencia import FondoMemorial
+                self.memoria_muerta = FondoMemorial.from_dict(d["memoria_muerta"])
             except Exception:
                 pass
         return True

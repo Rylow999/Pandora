@@ -205,3 +205,66 @@ class RegistroVivencia:
         for k, v in d.items():
             reg.nodos[int(k)] = VivenciaNodo.from_dict(v)
         return reg
+
+
+class FondoMemorial:
+    """La 'memoria de los muertos' (NOTA 0073 paso 3).
+
+    Cuando un nodo muere (vitalidad -> 0), su información NO se borra: su omega
+    (qué era) y su vivencia (cómo se vivió) pasan a un FONDO residual, como las
+    'cuerdas' que la Rueda Camelot describe (los datos permanecen aunque el
+    procesador muera). Un proceso nuevo puede RECLUTAR del fondo para formar un
+    nodo nuevo — reencarnación del material, no resurrección del nodo.
+
+    Puro: no toca el grafo. Acotado (cola circular) para no acumular sin techo.
+    """
+
+    def __init__(self, capacidad=64):
+        self.capacidad = capacidad
+        self.fondo = []  # lista de {"omega": [...], "vivencia": {...}, "edad": int}
+
+    def enterrar(self, omega, vivencia_dict):
+        """Registra un nodo muerto al fondo (acotado)."""
+        import time
+        self.fondo.append({
+            "omega": list(omega),
+            "vivencia": vivencia_dict,
+            "edad": 0,
+        })
+        if len(self.fondo) > self.capacidad:
+            self.fondo = self.fondo[-self.capacidad:]
+
+    def reclutar(self, excluir_omega=None, k=1):
+        """Recluta material del fondo para un nodo nuevo.
+
+        Devuelve lista de dicts del fondo (los de menor superposición con
+        excluir_omega primero — material 'nuevo' para especializar). NO los
+        saca del fondo (el recuerdo es re-derivable, el grafo es la DB).
+        """
+        if not self.fondo:
+            return []
+        if excluir_omega is None:
+            return self.fondo[-k:]
+        # ordenar por distancia al excluir_omega: los más lejanos son más 'nuevos'
+        def dist(f):
+            fo = f["omega"]
+            return math.sqrt(sum((a - b) ** 2 for a, b in zip(fo, excluir_omega)))
+        ordenados = sorted(self.fondo, key=dist, reverse=True)
+        return ordenados[:k]
+
+    def envejecer(self):
+        """El fondo envejece: los muertos más viejos se desvanecen (olvido final)."""
+        for f in self.fondo:
+            f["edad"] += 1
+        # desvanecer los muy viejos (edad > capacidad): la memoria final también
+        # se olvida, dejando solo lo reciente como 'fondo vivo'
+        self.fondo = [f for f in self.fondo if f["edad"] <= self.capacidad]
+
+    def to_dict(self):
+        return {"capacidad": self.capacidad, "fondo": self.fondo}
+
+    @classmethod
+    def from_dict(cls, d):
+        fm = cls(capacidad=d.get("capacidad", 64))
+        fm.fondo = list(d.get("fondo", []))
+        return fm
