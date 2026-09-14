@@ -171,12 +171,21 @@ def normalize_triplet(triplet: Dict[str, str]) -> Triplet:
 
 
 def filter_valid_triplets(triplets: List[Triplet]) -> List[Triplet]:
+    """Paso directo (regla raíz: los conceptos emergen del mundo, no de una lista
+    blanca). Antes esto DESCARTABA toda tripleta cuyo concepto no estuviera en
+    VALID_CONCEPTS — un diccionario fijo —, silenciando el contenido de la
+    conversación (la boca quedaba sorda, repitiendo solo el afecto).
+
+    Ahora solo descarta tripletas estructuralmente vacías (sujeto sin contenido);
+    todo lo demás pasa, normalizado. Si el concepto es nuevo, el GRAFO lo crea
+    (crear_nodo/heredar_concepto ya existen) — eso es aprehensión, no silencio.
+    """
     valid = []
     for t in triplets:
-        if (t.subject in VALID_CONCEPTS and
-            t.predicate in VALID_CONCEPTS and
-            t.object in VALID_CONCEPTS):
-            valid.append(t)
+        # Descarta solo lo estructuralmente pobre: sujeto vacío (nada que integrar)
+        if not t.subject or not t.subject.strip():
+            continue
+        valid.append(t)
     return valid
 
 

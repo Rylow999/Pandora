@@ -345,8 +345,11 @@ class PandoraAgent:
         #  la integridad topológica del grafo, no un metabolismo corporal)
         action = self.sgm.step(state_semantic, list(range(self.config.env_valid_actions)))
 
-        # 5. Leer estado dominante
-        internal_state = self._read_dominant_state()
+        # 5. Leer estado dominante — pasando el evento semántico para que la boca
+        #    reciba el CONTENIDO de lo que se dijo (no solo el afecto). Antes se
+        #    llamaba sin el evento -> la boca caía al fallback conn_type (NODO_x)
+        #    y repetía el afecto desnudo, sorda al contenido de la conversación.
+        internal_state = self._read_dominant_state(semantic_event)
 
         # 6. Articular respuesta (NIM primero, fallback a Ollama local)
         response = self._articular_respuesta(internal_state)

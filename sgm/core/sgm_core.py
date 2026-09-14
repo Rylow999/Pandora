@@ -701,6 +701,18 @@ class SGMAgentCore(SGMAgentGrafo):
             for i in sanados:
                 self.trauma_nodes.discard(i)
 
+        # HOMEOSTASIS DE CO-ACTIVACIÓN (NOTA 0071, decisión Luciano): atada al
+        # sueño. La co-resonancia acumula sin techo (llegó a media ~9830, máx
+        # 27598) -> el umbral derivado (media×3) se infla y la mitosis corre en
+        # espiral. El sueño RENORMALIZA toda la matriz (factor <1) — la
+        # homeostasis sináptica de Tononi & Cirelli (SHY): el dormir devuelve la
+        # plasticidad acumulada a una escala sana. Esto es el OLVIDO que impide
+        # que 'comprender' se convierta en 'inflarse'.
+        if hasattr(self, 'co_activacion') and self.co_activacion:
+            factor = 0.5  # normalización global del sueño (no borra, atenúa)
+            for clave in list(self.co_activacion.keys()):
+                self.co_activacion[clave] *= factor
+
     # ============ RAZONAMIENTO ============
     def _umbral_induccion(self):
         """Umbral DERIVADO de inducción (no hardcode == 3): cuánta evidencia se
@@ -779,7 +791,10 @@ class SGMAgentCore(SGMAgentGrafo):
             "isolated_nodes": list(getattr(self, 'isolated_nodes', set())),
             "historial_campos": self.historial_campos[-1000:],
             "historial_acciones_l2": self.historial_acciones_l2[-1000:],
-            "historial_metas_l2": self.historial_metas_l2[-1000:]})
+            "historial_metas_l2": self.historial_metas_l2[-1000:],
+            # Filiación de los hijos de la mitosis (NOTA 0071): sin persistir,
+            # reiniciar pierde quién engendró a quién (parent_of quedó en 0).
+            "parent_of": {str(k): v for k, v in self.parent_of.items()} if hasattr(self, 'parent_of') else {}})
 
     def cargar(self, ruta):
         if not os.path.exists(ruta): return False
@@ -808,6 +823,9 @@ class SGMAgentCore(SGMAgentGrafo):
             self.trauma_nodes = set(d["trauma_nodes"])
         if "isolated_nodes" in d:
             self.isolated_nodes = set(d["isolated_nodes"])
+        # Restaurar la filiación de la mitosis (NOTA 0071): quién engendró a quién.
+        if "parent_of" in d and d["parent_of"]:
+            self.parent_of = {ast.literal_eval(k): v for k, v in d["parent_of"].items()}
         return True
 
     # ============ L2 ============
