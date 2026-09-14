@@ -34,6 +34,29 @@ cerrado, plasticidad completa (Pasos 1-4), transductor unificado. 119 tests.
 
 ---
 
+## 🟢 Próximos pasos — desde la Rueda Camelot (NOTA 0073, recuperada 14-09-26)
+
+El plano original del proyecto (charla Gemini 28/03/26) ya contenía gran parte de lo que
+implementamos. Lo que falta de ese plano, en orden:
+
+1. **Doble ejecución a nivel de NODO** (lo más importante). Cada nodo con un "núcleo
+   rígido" (omega/forma matemática — qué ES) y una "nube de vivencia" (historia de
+   activación — cómo se sintió). Complementa la 0072: la boca describiría forma +
+   vivencia, no solo forma.
+2. **Resonancia estocástica como recuerdo**: `P(G₁→G₂) ∝ e^(-λ/d)` — nodos lejanos en
+   fase se "puentean" (hoy el recuerdo es solo por distancia).
+3. **Memoria de los muertos**: cuando un nodo muere, la información vuelve a ser "fondo"
+   hasta que un proceso nuevo la recluta (hoy solo atenuamos con homeostasia).
+4. **Cuerdas de bits {0,1}**: hoy omega es continuo; la charla propone haces de bits
+   comprimidos por la Rueda (tensor de filtrado). Rumbo de largo plazo.
+
+**Raíz que rige todo esto:** el GRAFO es la base de datos. No se almacena información
+semántica en un vector store externo — el grafo vivo (vitalidad + consolidadas +
+co_activacion + traza) ES la memoria. Cualquier solución de "memoria" debe re-derivar
+del grafo, no consultar un almacén aparte.
+
+---
+
 ## ✅ Resuelto — Nodos estáticos (plasticidad, NOTA 0071)
 
 Los 4 nodos ancla congelados (0/21/26/27, vitalidad 1.0, traza_transiciones=0) fueron
