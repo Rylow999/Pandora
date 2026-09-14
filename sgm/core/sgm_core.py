@@ -46,6 +46,11 @@ class SGMAgentCore(SGMAgentGrafo):
         self.hrr = HRR(D, self.rng, n_nodes)
         self.sensor = SensorBridge(D)
         self._arbitro = None
+        # Vivencia espectral (NOTA 0074): la "nube" de cada nodo — la firma de
+        # frecuencia de CÓMO se vivió, separada de omega (qué es). El grafo ES
+        # la base de datos (0073): la vivencia es parte del grafo, no un store.
+        from sgm.core.sgm_vivencia import RegistroVivencia
+        self.vivencias = RegistroVivencia()
         # Homeostasis
         self.gamma_nodo = gamma
         # Plasticidad modulable (NOTA 0071 Paso 4): gamma_efectivo es el que
@@ -794,7 +799,10 @@ class SGMAgentCore(SGMAgentGrafo):
             "historial_metas_l2": self.historial_metas_l2[-1000:],
             # Filiación de los hijos de la mitosis (NOTA 0071): sin persistir,
             # reiniciar pierde quién engendró a quién (parent_of quedó en 0).
-            "parent_of": {str(k): v for k, v in self.parent_of.items()} if hasattr(self, 'parent_of') else {}})
+            "parent_of": {str(k): v for k, v in self.parent_of.items()} if hasattr(self, 'parent_of') else {},
+            # Vivencia espectral (NOTA 0074): la nube de cada nodo — la firma de
+            # cómo se vivió. Parte del grafo (0073: el grafo ES la base de datos).
+            "vivencias": self.vivencias.to_dict() if hasattr(self, 'vivencias') else {}})
 
     def cargar(self, ruta):
         if not os.path.exists(ruta): return False
@@ -826,6 +834,13 @@ class SGMAgentCore(SGMAgentGrafo):
         # Restaurar la filiación de la mitosis (NOTA 0071): quién engendró a quién.
         if "parent_of" in d and d["parent_of"]:
             self.parent_of = {ast.literal_eval(k): v for k, v in d["parent_of"].items()}
+        # Restaurar la vivencia espectral (NOTA 0074): la nube de cada nodo.
+        if "vivencias" in d and d["vivencias"]:
+            try:
+                from sgm.core.sgm_vivencia import RegistroVivencia
+                self.vivencias = RegistroVivencia.from_dict(d["vivencias"])
+            except Exception:
+                pass
         return True
 
     # ============ L2 ============
@@ -1014,6 +1029,17 @@ class SGMAgentCore(SGMAgentGrafo):
         # Escribir la señal honesta en el canal que el modo lee (renombrar la
         # metáfora sin re-introducirla): _hambre_real pasa a ser la dispersión.
         self._hambre_real = dispersion
+
+        # Vivencia espectral (NOTA 0074): el nodo seed se 'vivió' con esta
+        # valencia/arousal. La firma de frecuencia del nodo acumula CÓMO se
+        # sintió, separada de su omega (qué es). valence = 1 - 2*dispersion
+        # (coherente con _read_dominant_state), arousal = _amenaza.
+        try:
+            if hasattr(self, 'vivencias') and self._seed < len(self.omega):
+                valencia = 1.0 - 2.0 * dispersion
+                self.vivencias.registrar(self._seed, valencia, self._amenaza)
+        except Exception:
+            pass
 
         # 2c. Detección de trauma orgánica (antes huérfana: solo corría dentro
         # de actualizar_homeostasis, que ya no se llama en el loop conversacional)
