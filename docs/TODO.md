@@ -39,12 +39,11 @@ cerrado, plasticidad completa (Pasos 1-4), transductor unificado. 119 tests.
 El plano original del proyecto (charla Gemini 28/03/26) ya contenía gran parte de lo que
 implementamos. Lo que falta de ese plano, en orden:
 
-1. **Doble ejecución a nivel de NODO** (lo más importante). Cada nodo con un "núcleo
-   rígido" (omega/forma matemática — qué ES) y una "nube de vivencia" (historia de
-   activación — cómo se sintió). Complementa la 0072: la boca describiría forma +
-   vivencia, no solo forma.
-2. **Resonancia estocástica como recuerdo**: `P(G₁→G₂) ∝ e^(-λ/d)` — nodos lejanos en
-   fase se "puentean" (hoy el recuerdo es solo por distancia).
+1. **Doble ejecución a nivel de NODO** ✅ **HECHO** (`34615e8`) — cada nodo con
+   núcleo rígido (omega, qué ES) + nube de vivencia espectral (cómo SE SINTIÓ),
+   firma DFT. NOTA 0074.
+2. **Resonancia estocástica como recuerdo** ✅ **HECHO** (`d849fc0`) — `P(G₁→G₂) ∝ e^(-λ/d)`
+   sobre la divergencia de VIVENCIA; nodos en fase se puentean. NOTA 0073 p2.
 3. **Memoria de los muertos**: cuando un nodo muere, la información vuelve a ser "fondo"
    hasta que un proceso nuevo la recluta (hoy solo atenuamos con homeostasia).
 4. **Cuerdas de bits {0,1}**: hoy omega es continuo; la charla propone haces de bits

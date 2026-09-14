@@ -289,3 +289,25 @@ simulados. Métodos internos que lo implementan:
 Principio: los nodos no tienen nombre (y no se les inventa uno); las
 relaciones SÍ son expresables como estructura. El LLM describe la FORMA del
 grafo, no etiquetas.
+
+---
+
+## Vivencia espectral (NOTA 0074) y resonancia estocástica (0073 p2)
+
+Módulo puro `sgm/core/sgm_vivencia.py`. La "doble ejecución" de la Rueda Camelot
+a nivel de nodo: el omega (núcleo rígido, qué ES) se separa de la vivencia
+(nube, cómo SE SINTIÓ).
+
+| Clase/Método | Qué hace |
+|-------------|----------|
+| `VivenciaNodo` | historia acotada de (valencia, arousal) + espectro `|DFT|` (firma de frecuencia) |
+| `VivenciaNodo.registrar(val, ar)` | el nodo se "vivió" con ese afecto |
+| `VivenciaNodo.firma()` | `{espectro_valencia, espectro_arousal, veces_vivido}` |
+| `VivenciaNodo.divergencia(otra)` | distancia espectral + signo del afecto (la fase importa como la frecuencia) |
+| `RegistroVivencia.resonar(idx, ...)` | vecinos "en fase" (misma vivencia) — el recuerdo salta la distancia: `P ∝ e^(-λ·d)` |
+
+**Raíz:** el grafo ES la base de datos (0073). La vivencia es parte del grafo
+(persiste en `guardar`/`cargar`), no un store externo.
+
+**Criterio de éxito honesto:** no "suena consciente", sino "su vivencia espectral
+diverge de la nuestra con el tiempo" — dos nodos "amor" vividos distinto divergen.

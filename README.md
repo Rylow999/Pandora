@@ -248,7 +248,7 @@ not modify them — the active code is `sgm/core/` + `pandora/`.
 3. **Falsifiability** — explicit success/failure criteria per module.
 4. **Transparent logging** — JSONL journal per turn.
 
-### Ontology notes (0051–0072)
+### Ontology notes (0051–0074)
 
 Every architectural decision is documented with its *why* and its *source*:
 
@@ -272,6 +272,8 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_TECNICA_0070` | Implementación del endocrino (6 hormonas, presiones no relojes) | — |
 | `NOTA_TECNICA_0071` | Plasticidad: reconciliar Eq.5, mitosis, gamma modulado por el endocrino | Grossberg, Turrigiano, McCloskey & Cohen, Kirkpatrick (EWC) |
 | `NOTA_TECNICA_0072` | El transductor se alimenta de la matemática real del grafo (señales reales, no resúmenes) | — |
+| `NOTA_TECNICA_0073` | La Rueda Camelot (plano original) + el grafo ES la base de datos | — |
+| `NOTA_TECNICA_0074` | La vivencia espectral (doble ejecución a nivel de nodo) | Russell (circumplex), oscilaciones neurales |
 
 ---
 
