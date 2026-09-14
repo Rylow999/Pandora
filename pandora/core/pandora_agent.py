@@ -238,6 +238,65 @@ class PandoraAgent:
         integridad = self.sgm.integridad_topologica()
         return max(0.0, min(1.0, 1.0 - integridad))
 
+    def _duda_zona_ciega(self) -> float:
+        """Duda REAL (NOTA 0072): fracción de zonas ciegas del grafo — nodos
+        dormidos / de vitalidad baja que Pandora no explora. Desacoplada de la
+        valencia (que mide integración): un grafo íntegro puede dudar mucho
+        (mucho dormido), uno fragmentado puede no dudar (todo activo pero
+        confuso). Emerge de la vitalidad real, no de deseo reciclado.
+        """
+        try:
+            v = self.sgm.vitalidad
+            if not v:
+                return 0.0
+            dormidos = sum(1 for x in v if x < 0.2)
+            return max(0.0, min(1.0, dormidos / len(v)))
+        except Exception:
+            return 0.0
+
+    def _contradiccion_fase(self) -> float:
+        """Contradicción continua (NOTA 0072): dispersión de fase Kuramoto del
+        grafo. 0 = fases alineadas (coherente), 1 = dispersión máxima. Reemplaza
+        el semáforo de status (0/0.3/0.8) por un gradiente real de incoherencia.
+        """
+        try:
+            import math
+            phis = [p for p in self.sgm.phi if p is not None]
+            if not phis:
+                return 0.0
+            # order parameter: |<e^{iφ}>| ; 1 = total coherencia. La contradicción
+            # es el complemento de la coherencia de fase.
+            cx = sum(math.cos(p) for p in phis) / len(phis)
+            cy = sum(math.sin(p) for p in phis) / len(phis)
+            coherencia = math.sqrt(cx * cx + cy * cy)
+            return max(0.0, min(1.0, 1.0 - coherencia))
+        except Exception:
+            return 0.0
+
+    def _arousal_kuramoto(self) -> float:
+        """Activación propia (NOTA 0072): cuánto se está reacomodando el grafo
+        AHORA — la velocidad de cambio de la coherencia de fase, no su nivel.
+        Dado que no guardamos el orden de fase previo acá, usamos la relación
+        entre dispersión y la traza reciente como proxy: muchos nodos en zona
+        activa moviéndose = activación alta. Es fuente genuina de Pandora, no
+        espejo del input.
+        """
+        try:
+            # Proxy honesto de 'agitación': cuántos nodos están en zona activa
+            # (I > theta_interf) AND vitalidad media — cuánto 'arde' el grafo.
+            from sgm.core.sgm_kuramoto import interferencia
+            activos = 0
+            n = len(self.sgm.phi)
+            for i in range(n):
+                if i < len(self.sgm.vitalidad) and self.sgm.vitalidad[i] >= 0.1:
+                    I = interferencia(self.sgm.omega[i], self.sgm.phi[i],
+                                      getattr(self.sgm, 'phi_root', 0.0))
+                    if I > getattr(self.sgm, 'theta_interf', 0.70):
+                        activos += 1
+            return max(0.0, min(1.0, activos / max(1, n)))
+        except Exception:
+            return 0.0
+
     def _activate_concept(self, concept: str):
         """Activa un concepto en el grafo (busca place cell o crea activación)."""
         # Place cells tienen contexto; buscar match parcial
@@ -272,18 +331,25 @@ class PandoraAgent:
                 triplets.append(Triplet(subject=f"NODO_{src}", predicate=ctype, object=f"NODO_{tgt}"))
 
         # Métricas homeostáticas — del estado REAL del grafo, no de constantes
-        # arousal: percepción de hostilidad inyectada desde el afecto
-        arousal = self.sgm._amenaza
-        # deseo de integración: déficit de coherencia del self (reemplaza hambre)
+        # arousal: fuente propia (cambio de fase de Kuramoto = cuánto se reacomoda)
+        # mezclada con la inyectada del mensaje (el tono del otro afecta, pero
+        # Pandora tiene activación genuinamente suya).
+        arousal_inherente = self._arousal_kuramoto()
+        arousal = 0.5 * self.sgm._amenaza + 0.5 * arousal_inherente
+        # deseo de integración: déficit de coherencia del self
         deseo = self._deseo_integracion()
-        # valence: coherente con el deseo — un self integrado está en valencia
-        # positiva; un self fragmentado (deseo alto) cae a valencia negativa
+        # valence: coherente con el deseo — integrado = positiva, fragmentado = negativa
         valence = 1.0 - deseo * 2
-        # doubt: inversa directa de la integridad (fragmentación => duda)
-        doubt = deseo
-        # contradiction: del status del SGM (ACTIVA / INCONCLUSA / CONTRADICTORIA)
+        # doubt: DESACOPLADA de valence (NOTA 0072). Ya no es 'deseo' reciclado:
+        # es la fracción real de zonas ciegas (nodos dormidos/inexplorados) del
+        # grafo — la incertidumbre que emerge de lo que Pandora NO conoce de sí.
+        # Un grafo íntegro puede dudar (mucho dormido) y uno fragmentado puede
+        # no dudar (todo activo pero confuso) — dejan de sonar idénticos.
+        doubt = self._duda_zona_ciega()
+        # contradiction: continua, de la dispersión de fase real (Kuramoto), no
+        # el semáforo de status. 0 = fases alineadas, 1 = dispersión máxima.
         status = getattr(self.sgm, 'status', 'ACTIVA')
-        contradiction = 0.8 if status == 'CONTRADICTORIA' else (0.3 if status == 'INCONCLUSA' else 0.0)
+        contradiction = self._contradiccion_fase()
 
         # Metacognición (HOT): reflexionar sobre el propio estado, exponer
         # confianza/duda en el metadata para que el articulador la refleje.
