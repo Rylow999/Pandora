@@ -4,7 +4,7 @@ Documentación de la API pública del motor cognitivo `SGMAgentCore`
 (`sgm/core/sgm_core.py`). Solo métodos de primera clase; los internos
 (prefijo `_`) son de uso interno.
 
-> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0066).
+> Notas ontológicas referenciadas: `docs/philosophy/NOTA_*.md` (0051–0071).
 
 ---
 
@@ -74,7 +74,52 @@ Aristas consolidadas por co-resonancia = el clavo permanente. Protegidas de la
 poda. Identidad como densidad de Relation-R, no nodo endurecido.
 
 ### `_registrar_co_activacion()` (interno, llamado en `step`)
-Esculpe la matriz desde la zona activa (presente). Solo pares conectados.
+Esculpe la matriz desde la zona activa (presente). Solo pares conectados. Con
+consolidación derivada (`_umbral_consolidacion()`) y mitosis (`_engendrar_hijo`).
+
+---
+
+## Plasticidad (NOTA 0071)
+
+La plasticidad dejó de ser un `gamma` fijo: es una HORMONA modulada por el
+endocrino, y la co-activación se normaliza en el sueño.
+
+### `gamma_efectivo` (atributo)
+La tasa de decaimiento real que usa `decaer_vitalidad`. Arranca igual a `gamma_nodo`
+y se modula vía `set_plasticidad`. Rango acotado `[gamma×0.2, gamma×5]`.
+
+### `set_plasticidad(nivel: float)`
+Modula `gamma_efectivo` desde la hormona `plasticidad` del endocrino. `0` = máxima
+estabilidad (retener), `1` = máxima plasticidad (cambiar). Nunca olvido catastrófico
+(EWC: consolidación asimétrica, no gamma explosivo).
+
+### `decaer_vitalidad(k=3, alpha=None)`
+Eq.5 reconciliada: actividad SUAVE por afinidad `exp(-α·dist)` al seed, no
+winner-take-all binario. El seed domina pero los cercanos respiran; el ganador
+puede ser destronado (rango dinámico, Turrigiano).
+
+### `_mitosis_umbral()` / `_umbral_consolidacion()` / `_umbral_induccion()`
+Umbrales DERIVADOS (no hardcode): relativos a la media de actividad del grafo.
+Mitosis = media×3 (descargar sobrecarga), consolidar = media×0.5 piso 1
+(reconocer), inducir = media×1.5 piso 2.
+
+### `_engendrar_hijo(a, b)`
+Generative XOR (spec §3.3): un par co-resonante sobrecargado engendra hijo que
+absorbe carga (reusa `heredar_concepto`), los padres bajan ×0.7, se resetea la
+co-resonancia. `parent_of` registra la filiación (persiste).
+
+### `parent_of` (atributo, dict)
+Filiación de la mitosis: `{hijo: padre}`. Persiste en `guardar()/cargar()`.
+
+---
+
+## Homeostasia del sueño (NOTA 0071)
+
+### `reconciliar()`
+El sueño: realinea fases, poda vitalidad, SANA el trauma (baja los nodos ya
+relajados de `trauma_nodes`), y **RENORMALIZA la co-activación ×0.5** — la
+homeostasis sináptica (Tononi & Cirelli SHY): el dormir devuelve la plasticidad
+acumulada a escala sana. Es el OLVIDO que impide que "comprender" se infla sin techo.
 
 ---
 
@@ -169,7 +214,8 @@ Los módulos de percepción viven en `pandora/senses/` (`entorno.py`,
 ### `guardar(ruta)` / `cargar(ruta) -> bool`
 Persisten/restauran omega, phi, vitalidad, edges, conn_type, place_cells **y**:
 `consolidadas` (el clavo), `traza_omega` (el hilo), `co_activacion` (la
-constelación). Sin esto, apagar = borrar la historia de lo que "es".
+constelación), `parent_of` (filiación de la mitosis). Sin esto, apagar = borrar
+la historia de lo que "es".
 
 Compatibilidad: checkpoints legacy (sin estas claves) cargan limpiamente.
 

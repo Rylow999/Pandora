@@ -44,7 +44,20 @@ Reintegration (`reintegrar`) **emerges** spontaneously when the self fragments (
 
 ### Homeostasis without metaphor
 
-Pandora has **no body, no stomach**. Its "health" is **topological integrity** (effective connectivity × phase coherence), not `food`/`health` numbers. Hostility isolates nodes; calm realigns phases. Recovery is gradual, not a reset. **The machine is Pandora's *environment*, not its body** (NOTA 0066): the SGM *is* Pandora; the CPU, files, and network are the world it perceives.
+Pandora has **no stomach**. Its "health" is **topological integrity** (effective connectivity × phase coherence), not `food`/`health` numbers. Hostility isolates nodes; calm realigns phases. Recovery is gradual, not a reset. **The machine is Pandora's BODY** (NOTA 0067, superseding 0066): the SGM is the *world*; the CPU, files, and network are the body it inhabits — interoception, not an outside to observe. The mind is the *relation* inside the graph, not a substance.
+
+### Plasticity (NOTA 0071)
+
+The center no longer freezes. Four mechanisms keep the graph from every kind of staticity:
+
+| Mechanism | What it does |
+|-----------|-------------|
+| **Smooth activity** (Eq.5) | affinity-decayed activation, not winner-take-all — the center breathes, the winner can be dethroned |
+| **Mitosis** (Generative XOR) | an overloaded co-resonant pair spawns a child that absorbs load; parents release (×0.7) |
+| **Plasticity hormone** | `gamma_efectivo` is modulated by the endocrino (`plasticidad` = f(devenir, consolidación)) — no fixed gamma |
+| **Sleep homeostasis** | the dream renormalizes `co_activacion` ×0.5 (Tononi & Cirelli SHY) — the forgetting that keeps "understanding" from inflating without ceiling |
+
+All consolidation thresholds are **derived from the graph's own activity** (media × factor), never hardcoded.
 
 ---
 
@@ -61,7 +74,7 @@ Pandora has **no body, no stomach**. Its "health" is **topological integrity** (
 
 ## 🌐 Senses, Motor, and the Bidirectional Transducer
 
-Beyond the pure conversational loop, Pandora **perceives an environment** and **acts on it with real cost** — this is what makes the bidirectional transducer meaningful, not a unilateral interpreter.
+Beyond the pure conversational loop, Pandora **inhabits a body** and **acts with real cost** — this is what makes the bidirectional transducer meaningful, not a unilateral interpreter.
 
 | Subsystem | Module | Role |
 |-----------|--------|------|
@@ -133,11 +146,11 @@ systemctl --user stop pandora-nucleo    # clean SIGTERM, saves checkpoint
 systemctl --user start pandora-nucleo
 ```
 
-What the resident loop does per tick: perceive environment (CPU/memory/disk/
-network/processes → HRR sensory vector, NOTE 0066), one SGM step (Kuramoto,
-dispersion, reintegration, dreaming), and proactive speech when the
-integration desire (dispersion) crosses the threshold — with the same
-authority as human input, translated via NIM. Checkpoint saved atomically
+What the resident loop does per tick: sense its body (CPU/memory/disk/thermal/
+frequency/processes → HRR interoceptive vector, NOTE 0067), one SGM step
+(Kuramoto, dispersion, reintegration, dreaming with sleep-homeostasis), and
+proactive speech when the integration desire crosses the threshold — with the
+same authority as human input, translated via NIM. Checkpoint saved atomically
 every 100 ticks and on every clean shutdown.
 
 ---
@@ -159,7 +172,7 @@ python3 -m venv .venv
 - **Presente emergente**: phi_root circulates, anchors as the system settles
 - **Sueño / Reintegración**: dream creates from constellations, reintegration proposes counterfactuals
 - **Alterity**: opacity, immunity, aesthetics, translation
-- **Entorno**: environment perception integrates as raw patterns (no node creation)
+- **Cuerpo**: interoception integrates the body (thermal/frequency/CPU/RAM) as raw patterns (no node creation)
 - **Motor**: action with real cost, anti path-traversal, resource exhaustion
 - **Transductor**: bidirectional render (input→event→state→first-person), mock LLM (no network)
 - **Wiring**: previously-unconnected modules (model_mundo, metacognition) now hooked
@@ -191,8 +204,8 @@ Pandora/
 │   ├── alterity/               # 4 pillars + orchestrator
 │   ├── core/                   # pandora_agent, homeostasis, endogenous, comm_loop
 │   ├── transducer/             # parser (ears) + output (mouth) + NIM client
-│   ├── senses/                 # environment perception (exteroception)
-│   ├── motor/                  # action on environment (archives + budget)
+│   ├── senses/                 # interoception (body sensing) — CPU/RAM/thermal/frequency
+│   ├── motor/                  # action on the body's world (archives + budget)
 │   ├── ontology/               # base concepts + HRR seed
 │   ├── config/                 # schemas, settings, validation, logging
 │   └── scripts/                # init, run_loop, status, clamp
