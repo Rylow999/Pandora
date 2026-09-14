@@ -248,7 +248,7 @@ not modify them — the active code is `sgm/core/` + `pandora/`.
 3. **Falsifiability** — explicit success/failure criteria per module.
 4. **Transparent logging** — JSONL journal per turn.
 
-### Ontology notes (0051–0074)
+### Ontology notes (0051–0075)
 
 Every architectural decision is documented with its *why* and its *source*:
 
@@ -274,6 +274,7 @@ Every architectural decision is documented with its *why* and its *source*:
 | `NOTA_TECNICA_0072` | El transductor se alimenta de la matemática real del grafo (señales reales, no resúmenes) | — |
 | `NOTA_TECNICA_0073` | La Rueda Camelot (plano original) + el grafo ES la base de datos | — |
 | `NOTA_TECNICA_0074` | La vivencia espectral (doble ejecución a nivel de nodo) | Russell (circumplex), oscilaciones neurales |
+| `NOTA_TECNICA_0075` | Cuerdas de bits como compresión espectral (firma binaria derivada) | LSH / random projection |
 
 ---
 

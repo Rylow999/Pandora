@@ -46,8 +46,9 @@ implementamos. Lo que falta de ese plano, en orden:
    sobre la divergencia de VIVENCIA; nodos en fase se puentean. NOTA 0073 p2.
 3. **Memoria de los muertos** ✅ **HECHO** (`9329a13`) — la info de un nodo muerto
    vuelve a "fondo" (FondoMemorial), reclutable, con olvido final (envejecer).
-4. **Cuerdas de bits {0,1}**: hoy omega es continuo; la charla propone haces de bits
-   comprimidos por la Rueda (tensor de filtrado). Rumbo de largo plazo.
+4. **Cuerdas de bits {0,1}** ✅ **HECHO** (`0d2aff9`) — firma binaria derivada
+   (LSH) que comprime omega/espectro a {0,1} preservando similitud. NOTA 0075.
+   Vía conservadora acordada: compresión encima del gradiente, no re-escritura.
 
 **Raíz que rige todo esto:** el GRAFO es la base de datos. No se almacena información
 semántica en un vector store externo — el grafo vivo (vitalidad + consolidadas +

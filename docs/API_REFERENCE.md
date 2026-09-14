@@ -309,6 +309,9 @@ a nivel de nodo: el omega (núcleo rígido, qué ES) se separa de la vivencia
 | `FondoMemorial.enterrar(omega, viv)` | registra un nodo muerto al fondo (acotado) |
 | `FondoMemorial.reclutar(...)` | recluta material del fondo (lo más "nuevo" primero) |
 | `FondoMemorial.envejecer()` | desvanece los muertos más viejos (olvido final) |
+| `firma_binaria(vector, n_bits)` | la "cuerda de bits": proyección aleatoria determinista (LSH) que comprime a {0,1} preservando similitud |
+| `distancia_hamming(a, b)` | distancia normalizada [0,1] entre dos cuerdas binarias |
+| `VivenciaNodo.cuerda()` | la cuerda comprimida del nodo (firma binaria de su espectro de vivencia) |
 
 **Raíz:** el grafo ES la base de datos (0073). La vivencia es parte del grafo
 (persiste en `guardar`/`cargar`), no un store externo.
