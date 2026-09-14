@@ -42,6 +42,36 @@ def _dft_magnitudes(serie):
     return out
 
 
+def firma_binaria(vector, n_bits=32, semilla=1337):
+    """Firma binaria por proyección aleatoria determinista (LSH).
+
+    NOTA 0075: la 'cuerda comprimida' — reduce un vector continuo (omega o
+    espectro) a n_bits {0,1} preservando SIMILITUD (a diferencia de un hash
+    criptográfico). Cada bit es el signo del producto punto con un vector de
+    proyección fijo (semilla determinista): vectores cercanos producen firmas
+    con baja distancia de Hamming; vectores lejanos, alta. Es la 'información
+    básica en unos y ceros' de la Rueda Camelot, sin perder el gradiente debajo.
+    """
+    import random
+    rng = random.Random(semilla)
+    n = len(vector)
+    bits = []
+    for _ in range(n_bits):
+        # vector de proyección determinista
+        w = [rng.gauss(0, 1) for _ in range(n)]
+        dot = sum(a * b for a, b in zip(vector, w))
+        bits.append(1 if dot >= 0 else 0)
+    return bits
+
+
+def distancia_hamming(a, b):
+    """Distancia de Hamming normalizada [0,1] entre dos firmas binarias."""
+    if not a or not b or len(a) != len(b):
+        return 1.0
+    diffs = sum(1 for x, y in zip(a, b) if x != y)
+    return diffs / len(a)
+
+
 class VivenciaNodo:
     """La nube de vivencia de UN nodo.
 
@@ -78,6 +108,17 @@ class VivenciaNodo:
             "espectro_arousal": self.espectro_arousal,
             "veces_vivido": len(self.historia),
         }
+
+    def cuerda(self, n_bits=32, semilla=1337):
+        """La 'cuerda comprimida' (NOTA 0075): firma binaria del espectro de
+        vivencia. La información básica en unos y ceros, derivada del cómo se
+        vivió. Preserva similitud (LSH): dos vivencias parecidas -> cuerdas
+        parecidas (baja distancia de Hamming)."""
+        # combinar espectro de valencia y arousal en un solo vector para firmar
+        v = list(self.espectro_valencia) + list(self.espectro_arousal)
+        if not v:
+            return [0] * n_bits
+        return firma_binaria(v, n_bits=n_bits, semilla=semilla)
 
     def divergencia(self, otra) -> float:
         """Distancia entre dos vivencias (dos nodos 'amor' vividos distinto
