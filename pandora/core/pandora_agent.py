@@ -304,6 +304,34 @@ class PandoraAgent:
                 self.sgm.place_activo = pid
                 return
 
+    def _sincronizar_metacognicion(self):
+        """Cablea la metacognición a la realidad del grafo (NOTA 0072).
+
+        Antes, `creencias` estaba vacío -> `confianza_global` congelado en 0.5 y
+        `_detectar_contradicciones` devolvía []. Ahora poblamos las 'creencias'
+        desde las RELACIONES consolidadas (lo que Pandora sostiene como verdadero)
+        y la incertidumbre desde la coherencia de fase real. La metacognición
+        deja de razonar sobre un vacío: razona sobre el grafo como es.
+        """
+        try:
+            meta = self.metacognicion
+            # Creencias = las relaciones consolidadas más fuertes, con su fuerza
+            # como 'confianza'. (clave = 'rel_a_b', valor = strength)
+            pares = sorted(
+                self.sgm.consolidadas,
+                key=lambda p: self.sgm.conn_type.get(p, {}).get("strength", 0.0),
+                reverse=True,
+            )
+            for (a, b) in pares[:20]:
+                s = self.sgm.conn_type.get((a, b), {}).get("strength", 0.5)
+                clave = f"rel_{a}_{b}"
+                meta.creencias[clave] = max(0.0, min(1.0, s))
+            # Incertidumbre real: dispersión de fase (complemento de coherencia)
+            # escala a la escala de incertidumbre_acum que usa la metacognición.
+            meta.agente.incertidumbre_acum = self._contradiccion_fase() * 10.0
+        except Exception:
+            pass
+
     def _nodos_activos_reales(self) -> list:
         """Descripción estructural real de lo que domina AHORA (NOTA 0072), sin
         etiquetas inventadas. Describe la FORMA de la constelación activa: cuántos
@@ -400,9 +428,11 @@ class PandoraAgent:
         status = getattr(self.sgm, 'status', 'ACTIVA')
         contradiction = self._contradiccion_fase()
 
-        # Metacognición (HOT): reflexionar sobre el propio estado, exponer
-        # confianza/duda en el metadata para que el articulador la refleje.
+        # Metacognición (HOT): sincronizar con el grafo real y reflexionar. Antes la
+        # confianza_global quedaba congelada en 0.5 porque 'creencias' estaba vacío;
+        # ahora se puebla desde las relaciones consolidadas (NOTA 0072).
         try:
+            self._sincronizar_metacognicion()
             reflexion = self.metacognicion.reflexionar()
             confianza_global = reflexion.get("confianza_global", 0.5)
             meta_duda = reflexion.get("incertidumbre", 0.0)
