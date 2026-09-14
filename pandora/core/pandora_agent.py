@@ -298,37 +298,86 @@ class PandoraAgent:
             return 0.0
 
     def _activate_concept(self, concept: str):
-        """Activa un concepto en el grafo (busca place cell o crea activación)."""
-        # Place cells tienen contexto; buscar match parcial
+        """Activa un concepto en el grafo (busca place cell)."""
         for ctx, pid in self.sgm.place_cells.items():
             if concept in ctx:
                 self.sgm.place_activo = pid
                 return
 
-        # Fallback: activar por similitud omega (buscar nodo más cercano semánticamente)
-        # Por ahora: no-op, el SGM usa HDC.project sobre state_semantic
+    def _nodos_activos_reales(self) -> list:
+        """Descripción estructural real de lo que domina AHORA (NOTA 0072), sin
+        etiquetas inventadas. Describe la FORMA de la constelación activa: cuántos
+        nodos arden (vitalidad alta), cuántos dormidos, y las relaciones fuertes.
+        El LLM puede decir 'un núcleo denso' sin que le inventemos nombres.
+        """
+        try:
+            v = self.sgm.vitalidad
+            activos = sum(1 for x in v if x > 0.5)
+            dormidos = sum(1 for x in v if x < 0.2)
+            total = len(v)
+            cons = len(getattr(self.sgm, 'consolidadas', set())) // 2  # pares
+            desc = [
+                f"nucleo_activo({activos}/{total})",
+                f"periferia_dormida({dormidos}/{total})",
+                f"relaciones_consolidadas({cons})",
+            ]
+            # El presente emergente (phi_root) como un hecho, no una etiqueta
+            phi = getattr(self.sgm, 'phi_root', 0.0)
+            desc.append(f"presente_phi({phi:.2f})")
+            return desc
+        except Exception:
+            return ["YO", "ENTORNO"]
+
+    def _relaciones_reales(self) -> list:
+        """Tripletas estructurales de las relaciones consolidadas más FUERTES del
+        grafo (NOTA 0072). No inventa nombres: expresa la relación como hecho
+        (estado_a ligado a estado_b con fuerza X). Es la matemática relacional
+        real que Pandora consolidó — la 'realidad del grafo' que la boca debe
+        poder expresar.
+        """
+        from ..config.schemas import Triplet
+        rels = []
+        try:
+            # pares consolidados con su fuerza (de conn_type si existe)
+            pares = list(getattr(self.sgm, 'consolidadas', set()))
+            # ordenar por fuerza de conn_type (los más fuertes primero)
+            def fuerza(par):
+                return self.sgm.conn_type.get(par, {}).get("strength", 0.0)
+            pares.sort(key=lambda p: fuerza(p), reverse=True)
+            for (a, b) in pares[:6]:
+                s = fuerza((a, b))
+                if s > 0.0:
+                    # relación estructural: 'estado_a' ↔ 'estado_b', con fuerza
+                    rels.append(Triplet(
+                        subject=f"estado_{a}",
+                        predicate=f"ligado_a({s:.2f})",
+                        object=f"estado_{b}",
+                    ))
+        except Exception:
+            pass
+        return rels
 
     def _read_dominant_state(self, semantic_event=None) -> InternalState:
-        """Lee estado dominante del SGM para articulator."""
-        # Nodos con mayor vitalidad
-        vitality_items = [(i, self.sgm.vitalidad[i]) for i in range(len(self.sgm.vitalidad))]
-        vitality_items.sort(key=lambda x: x[1], reverse=True)
-        top_nodes = [f"NODO_{i}" for i, v in vitality_items[:5] if v > 0.1]
+        """Lee estado dominante del SGM para articulator.
 
-        # Place cell activo
-        if self.sgm.place_activo >= 0:
-            ctx = list(self.sgm.place_cells.keys())[self.sgm.place_activo] if self.sgm.place_activo < len(self.sgm.place_cells) else ""
-            top_nodes.append(f"PLACE_{ctx[:20]}")
+        NOTA 0072: el transductor se alimenta de la MATEMÁTICA REAL del grafo —
+        las RELACIONES (conn_type con fuerza/tipo, pares consolidadas, la
+        constelación co-activada), no índices inventados como 'NODO_65'. Los
+        nodos no tienen nombre (y no se lo inventamos); las relaciones SÍ son
+        expresables como estructura. El LLM describe FORMA, no etiquetas.
+        """
+        # active_nodes: descripción estructural real, no 'NODO_65'
+        active_nodes = self._nodos_activos_reales()
 
-        # Construir tripletas: del evento semántico si existe, sino desde conn_type
+        # Construir tripletas REALES: las del evento entrante (conceptos del
+        # oído) + las relaciones consolidadas más fuertes del grafo (estructura
+        # relacional que Pandora consolidó).
         triplets = []
         if semantic_event and semantic_event.triplets:
             for t in semantic_event.triplets:
                 triplets.append(Triplet(subject=t.subject, predicate=t.predicate, object=t.object))
-        else:
-            # Fallback: desde conn_type (aristas con tipo)
-            for (src, tgt), ctype in list(self.sgm.conn_type.items())[:10]:
-                triplets.append(Triplet(subject=f"NODO_{src}", predicate=ctype, object=f"NODO_{tgt}"))
+        # Relaciones consolidadas: pares con mayor fuerza, como (estado_a, ligado, estado_b)
+        triplets += self._relaciones_reales()
 
         # Métricas homeostáticas — del estado REAL del grafo, no de constantes
         # arousal: fuente propia (cambio de fase de Kuramoto = cuánto se reacomoda)
@@ -362,7 +411,7 @@ class PandoraAgent:
             meta_duda = 0.0
 
         return InternalState(
-            active_nodes=top_nodes or ["YO", "ENTORNO"],
+            active_nodes=active_nodes or ["YO", "ENTORNO"],
             triplets=triplets,
             valence=valence,
             arousal=arousal,
