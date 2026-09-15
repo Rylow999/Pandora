@@ -307,7 +307,7 @@ a nivel de nodo: el omega (núcleo rígido, qué ES) se separa de la vivencia
 | `RegistroVivencia.resonar(idx, ...)` | vecinos "en fase" (misma vivencia) — el recuerdo salta la distancia: `P ∝ e^(-λ·d)` |
 | `FondoMemorial` | la memoria de los muertos: omega+vivencia de nodos muertos quedan como fondo |
 | `FondoMemorial.enterrar(omega, viv)` | registra un nodo muerto al fondo (acotado) |
-| `FondoMemorial.reclutar(...)` | recluta material del fondo (lo más "nuevo" primero) |
+| `FondoMemorial.reclutar(...)` | recluta material del fondo (lo más "nuevo" primero) — **cableado a la mitosis**: el hijo hereda 30% del muerto más lejano a lo heredado (`_engendrar_hijo`, NOTA 0073 p3) |
 | `FondoMemorial.envejecer()` | desvanece los muertos más viejos (olvido final) |
 | `firma_binaria(vector, n_bits)` | la "cuerda de bits": proyección aleatoria determinista (LSH) que comprime a {0,1} preservando similitud |
 | `distancia_hamming(a, b)` | distancia normalizada [0,1] entre dos cuerdas binarias |

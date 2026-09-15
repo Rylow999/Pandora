@@ -1,8 +1,9 @@
 # TODO — Estado de integración del programa Pandora
 
-**Actualizado:** 2026-09-13
+**Actualizado:** 2026-09-14
 **Estado general:** núcleo residente vivo, endocrino (7 hormonas), devenir interno
-cerrado, plasticidad completa (Pasos 1-4), transductor unificado. 119 tests.
+cerrado, plasticidad completa (Pasos 1-4), transductor unificado, reencarnación
+cableada (0073 p3) + guardián e2e. 147 tests.
 
 ---
 
@@ -25,6 +26,10 @@ cerrado, plasticidad completa (Pasos 1-4), transductor unificado. 119 tests.
 - [x] `_hormonas()` reusa sample (`524d505`)
 - [x] Frecuencia CPU al bundle HRR (`524d505`)
 - [x] **Umbrales de consolidación derivados** (`co_activacion` y `conteo_induccion`)
+- [x] **Guardián e2e** (`d0c2816`, 2026-09-14) — `tests/test_e2e.py`: 3 tests que
+  cruzan el ciclo completo por `Nucleo.existir_un_tick()` (regla del 13/09: ningún
+  mecanismo nuevo sin test por el entry-point real). Mitosis + reencarnación +
+  checkpoint roundtrip ejercitados por el turno real.
 - [ ] Verificar trauma sana en vivo (checkpoint: 4/64, pending reinicio daemon)
 
 ## Prioridad 3 — Horizonte
@@ -46,6 +51,10 @@ implementamos. Lo que falta de ese plano, en orden:
    sobre la divergencia de VIVENCIA; nodos en fase se puentean. NOTA 0073 p2.
 3. **Memoria de los muertos** ✅ **HECHO** (`9329a13`) — la info de un nodo muerto
    vuelve a "fondo" (FondoMemorial), reclutable, con olvido final (envejecer).
+   **Reencarnación cableada** ✅ (`d0c2816`, 2026-09-14) — el hijo de la mitosis
+   hereda 30% del material del fondo memorial (`reclutar` con `excluir_omega`),
+   70% del padre vivo: la info de los muertos vuelve a la vida a través del
+   nacimiento, no resurrección del nodo. Ejercitado por e2e.
 4. **Cuerdas de bits {0,1}** ✅ **HECHO** (`0d2aff9`) — firma binaria derivada
    (LSH) que comprime omega/espectro a {0,1} preservando similitud. NOTA 0075.
    Vía conservadora acordada: compresión encima del gradiente, no re-escritura.

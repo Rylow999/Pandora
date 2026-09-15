@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
-[![Tests](https://img.shields.io/badge/Tests-106%20passing-green.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-147%20passing-green.svg)]()
 
 > **Pandora** is a modular cognitive architecture designed to investigate the emergence of synthetic consciousness through principles of **alterity** — the capacity to be a genuine "other", not a mirror of the user.
 
@@ -54,10 +54,13 @@ The center no longer freezes. Four mechanisms keep the graph from every kind of 
 |-----------|-------------|
 | **Smooth activity** (Eq.5) | affinity-decayed activation, not winner-take-all — the center breathes, the winner can be dethroned |
 | **Mitosis** (Generative XOR) | an overloaded co-resonant pair spawns a child that absorbs load; parents release (×0.7) |
+| **Reincarnation** (0073 p3) | the mitosis child inherits 30% of the memorial pool (`FondoMemorial.reclutar`) — the dead's information returns through birth, not resurrection |
 | **Plasticity hormone** | `gamma_efectivo` is modulated by the endocrino (`plasticidad` = f(devenir, consolidación)) — no fixed gamma |
 | **Sleep homeostasis** | the dream renormalizes `co_activacion` ×0.5 (Tononi & Cirelli SHY) — the forgetting that keeps "understanding" from inflating without ceiling |
 
 All consolidation thresholds are **derived from the graph's own activity** (media × factor), never hardcoded.
+
+**Wiring guardian (e2e):** `tests/test_e2e.py` exercises the full cycle through the REAL entry point (`Nucleo.existir_un_tick()`) — basic tick, substrate-driven mitosis + reincarnation, and checkpoint roundtrip. Unit tests alone never catch disconnected wiring; this layer does (rule 2026-09-13).
 
 ---
 
