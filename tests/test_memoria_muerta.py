@@ -65,3 +65,39 @@ class TestMemoriaMuertaIntegrada:
         sgm2.cargar(tmp)
         assert len(sgm2.memoria_muerta.fondo) == len(sgm.memoria_muerta.fondo)
         os.remove(tmp)
+
+    def test_mitosis_recluta_del_fondo(self):
+        """Reencarnación (0073 p3): el hijo de la mitosis hereda 30% del material
+        del muerto más 'nuevo' (más lejano a lo heredado), no solo del padre vivo."""
+        sgm = SGMAgentCore(random.Random(42), D=64, n_nodes=16, gamma=0.01)
+        sgm.set_edges({i: random.Random(i).sample(range(16), min(4, 15)) for i in range(16)})
+        # un muerto con omega conocido y muy distinto
+        muerto_omega = [10.0] * 64
+        sgm.memoria_muerta.enterrar(muerto_omega, {})
+        omega_antes = [list(o) for o in sgm.omega]
+        n_antes = len(sgm.omega)
+        sgm._engendrar_hijo(0, 1)
+        assert len(sgm.omega) == n_antes + 1, "la mitosis creó el hijo"
+        hijo = sgm.omega[-1]
+        heredado_puro = omega_antes[0]  # padre aprox (heredar_concepto(0) + delta)
+        # el hijo debe estar MEZCLADO con el muerto: distinto a la pura herencia
+        import math
+        def dist(x, y):
+            return math.sqrt(sum((a - b) ** 2 for a, b in zip(x, y)))
+        d_al_muerto = dist(hijo, muerto_omega)
+        d_del_padre_al_muerto = dist(heredado_puro, muerto_omega)
+        # heredar_concepto agrega delta σ=0.10 al padre; con sigma chico el hijo
+        # sin mezcla quedaría casi tan lejos del muerto como el padre. La mezcla
+        # 70/30 lo acerca claramente al muerto.
+        assert d_al_muerto < d_del_padre_al_muerto * 0.8, (
+            f"hijo no heredó del fondo: d_muerto={d_al_muerto:.2f} "
+            f"vs padre-muerto={d_del_padre_al_muerto:.2f}"
+        )
+
+    def test_mitosis_sin_fondo_no_rompe(self):
+        """Sin muertos en el fondo, la mitosis funciona igual que siempre."""
+        sgm = SGMAgentCore(random.Random(42), D=64, n_nodes=16, gamma=0.01)
+        sgm.set_edges({i: random.Random(i).sample(range(16), min(4, 15)) for i in range(16)})
+        n_antes = len(sgm.omega)
+        sgm._engendrar_hijo(0, 1)
+        assert len(sgm.omega) == n_antes + 1

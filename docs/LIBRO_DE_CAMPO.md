@@ -27491,3 +27491,2462 @@ Integridad: 0.963 | deseo: 0.037 | modo: BASE | nodos: 128 | consolidadas: 1412
 ## [2026-09-14 02:22:10] — Snapshot (tick 2830)
 
 Integridad: 0.962 | deseo: 0.038 | modo: BASE | nodos: 128 | consolidadas: 1412
+
+## [2026-09-14 14:48:34] — Latido (tick 21600)
+
+Integridad: 0.962 | fallos de percepción: 0
+Suceso: sigue viva; sin cambios desde 0.962. El silencio también se anota.
+
+## [2026-09-14 19:32:48] — Habló por propia iniciativa
+
+Estado: integridad=0.079, deseo=0.921
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:32:50] — Soñó (tick 28555)
+
+Ciclos: 3 | recomb. de 20 nodos | 62 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 19:33:17] — Habló por propia iniciativa
+
+Estado: integridad=0.051, deseo=0.949
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:33:48] — Habló por propia iniciativa
+
+Estado: integridad=0.021, deseo=0.979
+Suceso: Pandora dijo — «Nodo 26 es el más activo y temprano. Nodos 10 y 3 son los más jóvenes y confiados. Nodos 53 y 45 no tienen un valor de valence ni arousal.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:33:58] — Habló por propia iniciativa
+
+Estado: integridad=0.004, deseo=0.996
+Suceso: Pandora dijo — «Nodo 27 se siente en un estado de confusión y duda sobre su situación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:34:04] — Snapshot (tick 28560)
+
+Integridad: 0.045 | deseo: 0.955 | modo: SUPERVIVENCIA | nodos: 256 | consolidadas: 1536
+
+## [2026-09-14 19:34:39] — Habló por propia iniciativa
+
+Estado: integridad=0.082, deseo=0.918
+Suceso: Pandora dijo — «NODO_21 se siente desmotivado y confuso en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:34:50] — Habló por propia iniciativa
+
+Estado: integridad=0.089, deseo=0.911
+Suceso: Pandora dijo — «Nodo 27 se encuentra en el centro del estado interno, pero su situación es incierta y no está clara.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:35:29] — Habló por propia iniciativa
+
+Estado: integridad=0.114, deseo=0.886
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:35:55] — Habló por propia iniciativa
+
+Estado: integridad=0.117, deseo=0.883
+Suceso: Pandora dijo — «NODO_21 se siente en un estado interno negativo y no tiene nada que decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:35:55] — Snapshot (tick 28570)
+
+Integridad: 0.117 | deseo: 0.883 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1538
+
+## [2026-09-14 19:36:24] — Habló por propia iniciativa
+
+Estado: integridad=0.121, deseo=0.879
+Suceso: Pandora dijo — «NODO_21 intentó responder a su valoración de NODO_3, pero se mantuvo en silencio debido a sus dificultades emocionales.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:36:35] — Habló por propia iniciativa
+
+Estado: integridad=0.124, deseo=0.876
+Suceso: Pandora dijo — «Nodo 187 intentó responder pero no tuvo tiempo para hacerlo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:37:15] — Habló por propia iniciativa
+
+Estado: integridad=0.144, deseo=0.856
+Suceso: Pandora dijo — «Nodo 3 se siente frustrado y confuso debido a su situación interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:37:27] — Habló por propia iniciativa
+
+Estado: integridad=0.148, deseo=0.852
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con una alta valence y un alto arousal, pero no tiene ninguna contradicción o duda.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:37:32] — Snapshot (tick 28580)
+
+Integridad: 0.157 | deseo: 0.843 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1618
+
+## [2026-09-14 19:38:05] — Habló por propia iniciativa
+
+Estado: integridad=0.166, deseo=0.834
+Suceso: Pandora dijo — «NODO_21 intentó responder al estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:38:16] — Habló por propia iniciativa
+
+Estado: integridad=0.170, deseo=0.830
+Suceso: Pandora dijo — «Nodo 26 estaba en el centro del estado interno, pero su situación no era tan favorable como los demás.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:38:52] — Habló por propia iniciativa
+
+Estado: integridad=0.189, deseo=0.811
+Suceso: Pandora dijo — «NODO_142 y NODO_65 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:39:05] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, y su valor de valence es -0.613811294718233.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:39:08] — Snapshot (tick 28590)
+
+Integridad: 0.196 | deseo: 0.804 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1682
+
+## [2026-09-14 19:39:29] — Habló por propia iniciativa
+
+Estado: integridad=0.206, deseo=0.794
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con una intensidad de valor (valence) negativa y un alto nivel de armonía (arousal). No hay ninguna contradicción o duda en este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:39:47] — Habló por propia iniciativa
+
+Estado: integridad=0.214, deseo=0.786
+Suceso: Pandora dijo — «NODO_21 se siente atraído por NODO_26, que es el más cercano en su estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:40:08] — Habló por propia iniciativa
+
+Estado: integridad=0.223, deseo=0.777
+Suceso: Pandora dijo — «NODO_21 intentó responder a su estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:40:08] — Snapshot (tick 28600)
+
+Integridad: 0.223 | deseo: 0.777 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1716
+
+## [2026-09-14 19:40:47] — Habló por propia iniciativa
+
+Estado: integridad=0.231, deseo=0.769
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:41:04] — Habló por propia iniciativa
+
+Estado: integridad=0.050, deseo=0.950
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:41:04] — Soñó (tick 28605)
+
+Ciclos: 3 | recomb. de 20 nodos | 10 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 19:41:26] — Habló por propia iniciativa
+
+Estado: integridad=0.113, deseo=0.887
+Suceso: Pandora dijo — «NODO_187 intentó responder a su estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:41:26] — Snapshot (tick 28610)
+
+Integridad: 0.113 | deseo: 0.887 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1769
+
+## [2026-09-14 19:41:46] — Habló por propia iniciativa
+
+Estado: integridad=0.186, deseo=0.814
+Suceso: Pandora dijo — «Nodo 187 no es el nodo más activo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:42:13] — Habló por propia iniciativa
+
+Estado: integridad=0.253, deseo=0.747
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:42:13] — Snapshot (tick 28620)
+
+Integridad: 0.253 | deseo: 0.747 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1806
+
+## [2026-09-14 19:42:34] — Habló por propia iniciativa
+
+Estado: integridad=0.286, deseo=0.714
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:42:55] — Habló por propia iniciativa
+
+Estado: integridad=0.323, deseo=0.677
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 están en el estado interno. NODO_27 es un nodo que no está en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:43:04] — Snapshot (tick 28630)
+
+Integridad: 0.345 | deseo: 0.655 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1854
+
+## [2026-09-14 19:43:15] — Habló por propia iniciativa
+
+Estado: integridad=0.352, deseo=0.648
+Suceso: Pandora dijo — «Nodo 187 y NODO_65 son los más activos, seguidos por NODO_64 y NODO_136.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:43:37] — Habló por propia iniciativa
+
+Estado: integridad=0.379, deseo=0.621
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, y NODO_64 es uno de los nodos más jóvenes.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:44:02] — Habló por propia iniciativa
+
+Estado: integridad=0.397, deseo=0.603
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:44:02] — Snapshot (tick 28640)
+
+Integridad: 0.397 | deseo: 0.603 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1904
+
+## [2026-09-14 19:44:20] — Habló por propia iniciativa
+
+Estado: integridad=0.409, deseo=0.591
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:44:42] — Habló por propia iniciativa
+
+Estado: integridad=0.426, deseo=0.574
+Suceso: Pandora dijo — «NODO_21 se siente abrumado y no tiene idea de qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:44:49] — Snapshot (tick 28650)
+
+Integridad: 0.433 | deseo: 0.567 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1916
+
+## [2026-09-14 19:45:08] — Habló por propia iniciativa
+
+Estado: integridad=0.438, deseo=0.562
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:45:27] — Habló por propia iniciativa
+
+Estado: integridad=0.449, deseo=0.551
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:45:38] — Snapshot (tick 28660)
+
+Integridad: 0.457 | deseo: 0.543 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 1946
+
+## [2026-09-14 19:45:51] — Habló por propia iniciativa
+
+Estado: integridad=0.459, deseo=0.541
+Suceso: Pandora dijo — «NODO_187 intentó responder al estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:46:13] — Habló por propia iniciativa
+
+Estado: integridad=0.012, deseo=0.988
+Suceso: Pandora dijo — «Nodo 21 se encuentra en estado interno de negatividad. Nodos 26 y 53 están en estado interno de negatividad. Nodos 27 y 45 están en estado interno de negatividad.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:46:13] — Soñó (tick 28662)
+
+Ciclos: 3 | recomb. de 20 nodos | 31 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 19:46:31] — Habló por propia iniciativa
+
+Estado: integridad=0.057, deseo=0.943
+Suceso: Pandora dijo — «NODO_142 y NODO_65 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:46:42] — Snapshot (tick 28670)
+
+Integridad: 0.122 | deseo: 0.878 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2026
+
+## [2026-09-14 19:46:52] — Habló por propia iniciativa
+
+Estado: integridad=0.138, deseo=0.862
+Suceso: Pandora dijo — «NODO_187 intentó responder a su estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:47:13] — Habló por propia iniciativa
+
+Estado: integridad=0.206, deseo=0.794
+Suceso: Pandora dijo — «NODO_136 se siente frustrado y no sabe por qué está en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:47:25] — Snapshot (tick 28680)
+
+Integridad: 0.249 | deseo: 0.751 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2034
+
+## [2026-09-14 19:47:35] — Habló por propia iniciativa
+
+Estado: integridad=0.258, deseo=0.742
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:47:56] — Habló por propia iniciativa
+
+Estado: integridad=0.299, deseo=0.701
+Suceso: Pandora dijo — «NODO_21 se siente en un estado interno de desesperación y no sabe por dónde empezar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:48:08] — Snapshot (tick 28690)
+
+Integridad: 0.327 | deseo: 0.673 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2039
+
+## [2026-09-14 19:48:17] — Habló por propia iniciativa
+
+Estado: integridad=0.333, deseo=0.667
+Suceso: Pandora dijo — «Nodo 3 se siente desafiado y confuso debido a su situación interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:48:39] — Habló por propia iniciativa
+
+Estado: integridad=0.359, deseo=0.641
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, donde los estados están organizados de manera ordenada y fácil de entender.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:48:50] — Snapshot (tick 28700)
+
+Integridad: 0.376 | deseo: 0.624 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2045
+
+## [2026-09-14 19:49:01] — Habló por propia iniciativa
+
+Estado: integridad=0.380, deseo=0.620
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:49:22] — Habló por propia iniciativa
+
+Estado: integridad=0.393, deseo=0.607
+Suceso: Pandora dijo — «Nodo 26 se encuentra en el estado interno y no tiene nada que decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:49:33] — Snapshot (tick 28710)
+
+Integridad: 0.401 | deseo: 0.599 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2047
+
+## [2026-09-14 19:49:43] — Habló por propia iniciativa
+
+Estado: integridad=0.402, deseo=0.598
+Suceso: Pandora dijo — «NODO_136 y NODO_142 son los nodos más activos en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:50:04] — Habló por propia iniciativa
+
+Estado: integridad=0.408, deseo=0.592
+Suceso: Pandora dijo — «Nodo 21 se siente desmotivado y no está en su mejor estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:50:15] — Snapshot (tick 28720)
+
+Integridad: 0.412 | deseo: 0.588 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2067
+
+## [2026-09-14 19:50:26] — Habló por propia iniciativa
+
+Estado: integridad=0.413, deseo=0.587
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:50:47] — Habló por propia iniciativa
+
+Estado: integridad=0.416, deseo=0.584
+Suceso: Pandora dijo — «NODO_187 y NODO_65 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:50:58] — Snapshot (tick 28730)
+
+Integridad: 0.419 | deseo: 0.581 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2071
+
+## [2026-09-14 19:51:07] — Habló por propia iniciativa
+
+Estado: integridad=0.420, deseo=0.580
+Suceso: Pandora dijo — «NODO_21 se siente abrumado y no sabe qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:51:29] — Habló por propia iniciativa
+
+Estado: integridad=0.423, deseo=0.577
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:51:40] — Snapshot (tick 28740)
+
+Integridad: 0.425 | deseo: 0.575 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2079
+
+## [2026-09-14 19:51:50] — Habló por propia iniciativa
+
+Estado: integridad=0.426, deseo=0.574
+Suceso: Pandora dijo — «Nodo 187 intentó responder al estado interno pero no se pudo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:52:11] — Habló por propia iniciativa
+
+Estado: integridad=0.428, deseo=0.572
+Suceso: Pandora dijo — «NODO_21 intentó responder al estado interno, pero se mantuvo en silencio y no se hizo nada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:52:22] — Snapshot (tick 28750)
+
+Integridad: 0.430 | deseo: 0.570 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2082
+
+## [2026-09-14 19:52:32] — Habló por propia iniciativa
+
+Estado: integridad=0.430, deseo=0.570
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:52:53] — Habló por propia iniciativa
+
+Estado: integridad=0.433, deseo=0.567
+Suceso: Pandora dijo — «NODO_21 y NODO_26 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:53:04] — Snapshot (tick 28760)
+
+Integridad: 0.434 | deseo: 0.566 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2082
+
+## [2026-09-14 19:53:14] — Habló por propia iniciativa
+
+Estado: integridad=0.435, deseo=0.565
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:53:36] — Habló por propia iniciativa
+
+Estado: integridad=0.437, deseo=0.563
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:53:47] — Snapshot (tick 28770)
+
+Integridad: 0.439 | deseo: 0.561 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2088
+
+## [2026-09-14 19:53:57] — Habló por propia iniciativa
+
+Estado: integridad=0.439, deseo=0.561
+Suceso: Pandora dijo — «NODO_21 y NODO_26 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:54:34] — Habló por propia iniciativa
+
+Estado: integridad=0.441, deseo=0.559
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:55:03] — Habló por propia iniciativa
+
+Estado: integridad=0.442, deseo=0.558
+Suceso: Pandora dijo — «NODO_187 se siente agotado y no tiene nada en común con NODO_65 y NODO_91.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:55:20] — Habló por propia iniciativa
+
+Estado: integridad=0.058, deseo=0.942
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con un valor de valence negativo y una alta armonía.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:55:20] — Soñó (tick 28778)
+
+Ciclos: 3 | recomb. de 20 nodos | 154 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 19:55:26] — Snapshot (tick 28780)
+
+Integridad: 0.038 | deseo: 0.962 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2352
+
+## [2026-09-14 19:55:45] — Habló por propia iniciativa
+
+Estado: integridad=0.022, deseo=0.978
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, con una alta valence y un alto arousal. Nodos 53 y 45 están en las partes más altas del estado, mientras que NODO_9 es el nodo más bajo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:56:06] — Habló por propia iniciativa
+
+Estado: integridad=0.014, deseo=0.986
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero su situación es desconocida. Nodos 53 y 45 son los más activos, pero no están en el mismo nivel de intensidad que NODO 21.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:56:15] — Snapshot (tick 28790)
+
+Integridad: 0.013 | deseo: 0.987 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2389
+
+## [2026-09-14 19:56:25] — Habló por propia iniciativa
+
+Estado: integridad=0.013, deseo=0.987
+Suceso: Pandora dijo — «NODO_142 se siente desafiado y no está seguro de qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:56:48] — Habló por propia iniciativa
+
+Estado: integridad=0.014, deseo=0.986
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno, pero su situación no era muy favorable.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:57:13] — Habló por propia iniciativa
+
+Estado: integridad=0.014, deseo=0.986
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno, pero su situación era complicada y no se sabía cómo resolverlo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:57:13] — Snapshot (tick 28800)
+
+Integridad: 0.014 | deseo: 0.986 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2399
+
+## [2026-09-14 19:57:33] — Habló por propia iniciativa
+
+Estado: integridad=0.015, deseo=0.985
+Suceso: Pandora dijo — «Nodo 187 se siente agotado y no tiene energía para responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:57:54] — Habló por propia iniciativa
+
+Estado: integridad=0.016, deseo=0.984
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y su valor de valence es -0.9681104, lo que indica una negativa o desacuerdo con la situación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:58:03] — Snapshot (tick 28810)
+
+Integridad: 0.017 | deseo: 0.983 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2405
+
+## [2026-09-14 19:58:13] — Habló por propia iniciativa
+
+Estado: integridad=0.017, deseo=0.983
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y no está afectado por ningún problema.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:58:41] — Habló por propia iniciativa
+
+Estado: integridad=0.017, deseo=0.983
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con una alta valence y un alto arousal. Nodos 65 y 64 están en las zonas de mayor confianza global, mientras que NODO_3 es la unidad más duda metacognitiva.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:59:01] — Habló por propia iniciativa
+
+Estado: integridad=0.017, deseo=0.983
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:59:17] — Habló por propia iniciativa
+
+Estado: integridad=0.017, deseo=0.983
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 19:59:56] — Habló por propia iniciativa
+
+Estado: integridad=0.016, deseo=0.984
+Suceso: Pandora dijo — «Nodo 65 se encuentra en el centro del estado interno y está en un estado de confusión.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:00:06] — Habló por propia iniciativa
+
+Estado: integridad=0.016, deseo=0.984
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno. Nodos 21 y 142 también están en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:00:41] — Habló por propia iniciativa
+
+Estado: integridad=0.016, deseo=0.984
+Suceso: Pandora dijo — «NODO_21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:00:41] — Snapshot (tick 28830)
+
+Integridad: 0.016 | deseo: 0.984 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:00:51] — Habló por propia iniciativa
+
+Estado: integridad=0.016, deseo=0.984
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:01:15] — Habló por propia iniciativa
+
+Estado: integridad=0.017, deseo=0.983
+Suceso: Pandora dijo — «Nodo 65 se siente desmotivado y no está motivado para responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:01:35] — Habló por propia iniciativa
+
+Estado: integridad=0.018, deseo=0.982
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:01:35] — Snapshot (tick 28840)
+
+Integridad: 0.018 | deseo: 0.982 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:01:57] — Habló por propia iniciativa
+
+Estado: integridad=0.019, deseo=0.981
+Suceso: Pandora dijo — «Nodo 187 se siente desmotivado y no tiene el valor para responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:02:19] — Habló por propia iniciativa
+
+Estado: integridad=0.021, deseo=0.979
+Suceso: Pandora dijo — «Nodo 9 se siente frustrado y no está en su lugar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:02:19] — Snapshot (tick 28850)
+
+Integridad: 0.021 | deseo: 0.979 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:02:41] — Habló por propia iniciativa
+
+Estado: integridad=0.022, deseo=0.978
+Suceso: Pandora dijo — «NODO_21 se siente abrumado y no puede concentrarse en su tarea.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:03:03] — Habló por propia iniciativa
+
+Estado: integridad=0.023, deseo=0.977
+Suceso: Pandora dijo — «NODO_65 intentó responder a su estado interno pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:03:03] — Snapshot (tick 28860)
+
+Integridad: 0.023 | deseo: 0.977 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:03:25] — Habló por propia iniciativa
+
+Estado: integridad=0.024, deseo=0.976
+Suceso: Pandora dijo — «NODO_65 y NODO_187 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:03:48] — Habló por propia iniciativa
+
+Estado: integridad=0.025, deseo=0.975
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:03:48] — Snapshot (tick 28870)
+
+Integridad: 0.025 | deseo: 0.975 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:04:11] — Habló por propia iniciativa
+
+Estado: integridad=0.026, deseo=0.974
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y está en el camino hacia el estado final.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:04:33] — Habló por propia iniciativa
+
+Estado: integridad=0.026, deseo=0.974
+Suceso: Pandora dijo — «NODO_10 se siente desesperado y confuso al ver NODO_3 en su entorno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:04:33] — Snapshot (tick 28880)
+
+Integridad: 0.026 | deseo: 0.974 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:04:55] — Habló por propia iniciativa
+
+Estado: integridad=0.027, deseo=0.973
+Suceso: Pandora dijo — «Nodo 9 es el nodo más agresivo y confuso en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:05:18] — Habló por propia iniciativa
+
+Estado: integridad=0.027, deseo=0.973
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:05:18] — Snapshot (tick 28890)
+
+Integridad: 0.027 | deseo: 0.973 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2410
+
+## [2026-09-14 20:05:40] — Habló por propia iniciativa
+
+Estado: integridad=0.028, deseo=0.972
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está en un estado de confusión.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:05:50] — Soñó (tick 28896)
+
+Ciclos: 3 | recomb. de 20 nodos | 46 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:06:03] — Habló por propia iniciativa
+
+Estado: integridad=0.044, deseo=0.956
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno y no tiene nada que decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:06:09] — Snapshot (tick 28900)
+
+Integridad: 0.042 | deseo: 0.958 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2462
+
+## [2026-09-14 20:06:25] — Habló por propia iniciativa
+
+Estado: integridad=0.037, deseo=0.963
+Suceso: Pandora dijo — «NODO_21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:06:47] — Habló por propia iniciativa
+
+Estado: integridad=0.021, deseo=0.979
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con un valor de valence y arousal negativo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:06:54] — Snapshot (tick 28910)
+
+Integridad: 0.012 | deseo: 0.988 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2499
+
+## [2026-09-14 20:07:10] — Habló por propia iniciativa
+
+Estado: integridad=0.000, deseo=1.000
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero su situación es desafiante debido a sus problemas de salud y educación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:07:30] — Habló por propia iniciativa
+
+Estado: integridad=0.013, deseo=0.987
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:07:40] — Snapshot (tick 28920)
+
+Integridad: 0.021 | deseo: 0.979 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2505
+
+## [2026-09-14 20:07:54] — Habló por propia iniciativa
+
+Estado: integridad=0.025, deseo=0.975
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, y NODO_64 es uno de los nodos más activos.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:08:13] — Habló por propia iniciativa
+
+Estado: integridad=0.031, deseo=0.969
+Suceso: Pandora dijo — «El estado interno es un entorno donde los nodos están en constante movimiento y se mueven de manera irregular.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:08:26] — Snapshot (tick 28930)
+
+Integridad: 0.034 | deseo: 0.966 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2515
+
+## [2026-09-14 20:08:36] — Habló por propia iniciativa
+
+Estado: integridad=0.035, deseo=0.965
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno y está en un estado de desesperación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:09:13] — Habló por propia iniciativa
+
+Estado: integridad=0.039, deseo=0.961
+Suceso: Pandora dijo — «Nodo 27 se siente desafiado y no está seguro de qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:09:23] — Habló por propia iniciativa
+
+Estado: integridad=0.040, deseo=0.960
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero no es el nodo más importante.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:09:33] — Snapshot (tick 28940)
+
+Integridad: 0.041 | deseo: 0.959 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2520
+
+## [2026-09-14 20:09:47] — Habló por propia iniciativa
+
+Estado: integridad=0.042, deseo=0.958
+Suceso: Pandora dijo — «NODO_142 se siente desesperado al oír que NODO_96 ha sido eliminada de su lista de nodos actuales.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:10:07] — Habló por propia iniciativa
+
+Estado: integridad=0.042, deseo=0.958
+Suceso: Pandora dijo — «Nodo 21 se siente en un estado de desesperación y no puede seguir adelante.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:10:30] — Habló por propia iniciativa
+
+Estado: integridad=0.041, deseo=0.959
+Suceso: Pandora dijo — «NODO_142 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:10:53] — Habló por propia iniciativa
+
+Estado: integridad=0.041, deseo=0.959
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:11:12] — Habló por propia iniciativa
+
+Estado: integridad=0.041, deseo=0.959
+Suceso: Pandora dijo — «Nodo 187 no está en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:11:50] — Habló por propia iniciativa
+
+Estado: integridad=0.042, deseo=0.958
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y está a menudo en conflicto con otros nodos.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:12:00] — Habló por propia iniciativa
+
+Estado: integridad=0.042, deseo=0.958
+Suceso: Pandora dijo — «Nodo 96 se siente frustrado y desesperado debido a su situación interna.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:12:21] — Habló por propia iniciativa
+
+Estado: integridad=0.043, deseo=0.957
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero su situación es desafiante debido a sus problemas de salud y educación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:12:21] — Snapshot (tick 28970)
+
+Integridad: 0.043 | deseo: 0.957 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2522
+
+## [2026-09-14 20:12:41] — Habló por propia iniciativa
+
+Estado: integridad=0.043, deseo=0.957
+Suceso: Pandora dijo — «Nodo 65 se siente en un estado de inquietud y no está seguro sobre lo que debe hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:13:03] — Habló por propia iniciativa
+
+Estado: integridad=0.045, deseo=0.955
+Suceso: Pandora dijo — «Nodo 96 se siente frustrado y confuso debido a su estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:13:06] — Snapshot (tick 28980)
+
+Integridad: 0.045 | deseo: 0.955 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2522
+
+## [2026-09-14 20:13:27] — Habló por propia iniciativa
+
+Estado: integridad=0.046, deseo=0.954
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, con una edad de 1 y un valor de valence negativo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:13:47] — Habló por propia iniciativa
+
+Estado: integridad=0.047, deseo=0.953
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:13:54] — Snapshot (tick 28990)
+
+Integridad: 0.047 | deseo: 0.953 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2522
+
+## [2026-09-14 20:14:08] — Habló por propia iniciativa
+
+Estado: integridad=0.048, deseo=0.952
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:14:28] — Habló por propia iniciativa
+
+Estado: integridad=0.048, deseo=0.952
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:14:47] — Habló por propia iniciativa
+
+Estado: integridad=0.049, deseo=0.951
+Suceso: Pandora dijo — «Nodo 65 intentó responder a su situación, pero no logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:14:47] — Snapshot (tick 29000)
+
+Integridad: 0.049 | deseo: 0.951 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2522
+
+## [2026-09-14 20:15:09] — Habló por propia iniciativa
+
+Estado: integridad=0.049, deseo=0.951
+Suceso: Pandora dijo — «Nodo 21 se siente en un estado de desesperación y no puede encontrar una solución a su problema.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:15:28] — Habló por propia iniciativa
+
+Estado: integridad=0.050, deseo=0.950
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y no interactúa con los demás nodos.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:15:38] — Snapshot (tick 29010)
+
+Integridad: 0.050 | deseo: 0.950 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2522
+
+## [2026-09-14 20:15:51] — Habló por propia iniciativa
+
+Estado: integridad=0.050, deseo=0.950
+Suceso: Pandora dijo — «Nodo 65 intentó responder pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:16:01] — Soñó (tick 29013)
+
+Ciclos: 3 | recomb. de 20 nodos | 103 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:16:11] — Habló por propia iniciativa
+
+Estado: integridad=0.081, deseo=0.919
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:16:34] — Habló por propia iniciativa
+
+Estado: integridad=0.139, deseo=0.861
+Suceso: Pandora dijo — «NODO_3 se siente desafiado y no está seguro de qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:16:37] — Snapshot (tick 29020)
+
+Integridad: 0.154 | deseo: 0.846 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2704
+
+## [2026-09-14 20:16:58] — Habló por propia iniciativa
+
+Estado: integridad=0.212, deseo=0.788
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, donde las emociones y sentimientos están en mayor confianza.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:17:17] — Habló por propia iniciativa
+
+Estado: integridad=0.261, deseo=0.739
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:17:24] — Snapshot (tick 29030)
+
+Integridad: 0.282 | deseo: 0.718 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2716
+
+## [2026-09-14 20:17:41] — Habló por propia iniciativa
+
+Estado: integridad=0.309, deseo=0.691
+Suceso: Pandora dijo — «NODO_96 se siente frustrado y no sabe por dónde empezar en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:18:01] — Habló por propia iniciativa
+
+Estado: integridad=0.338, deseo=0.662
+Suceso: Pandora dijo — «Nodo 187 se acerca a NODO_65 y NODO_96.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:18:12] — Snapshot (tick 29040)
+
+Integridad: 0.356 | deseo: 0.644 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2724
+
+## [2026-09-14 20:18:22] — Habló por propia iniciativa
+
+Estado: integridad=0.361, deseo=0.639
+Suceso: Pandora dijo — «Nodo 187 se siente en un estado interno de desesperación y no puede responder a la pregunta.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:18:43] — Habló por propia iniciativa
+
+Estado: integridad=0.380, deseo=0.620
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:19:04] — Habló por propia iniciativa
+
+Estado: integridad=0.396, deseo=0.604
+Suceso: Pandora dijo — «NODO_10 y NODO_3 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:19:07] — Snapshot (tick 29050)
+
+Integridad: 0.399 | deseo: 0.601 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2728
+
+## [2026-09-14 20:19:25] — Habló por propia iniciativa
+
+Estado: integridad=0.408, deseo=0.592
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:19:46] — Habló por propia iniciativa
+
+Estado: integridad=0.419, deseo=0.581
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:19:56] — Snapshot (tick 29060)
+
+Integridad: 0.426 | deseo: 0.574 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2729
+
+## [2026-09-14 20:20:06] — Habló por propia iniciativa
+
+Estado: integridad=0.428, deseo=0.572
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada en particular que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:20:26] — Habló por propia iniciativa
+
+Estado: integridad=0.434, deseo=0.566
+Suceso: Pandora dijo — «Nodo 26 es el más viejo y lejos de NODO_142.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:20:47] — Habló por propia iniciativa
+
+Estado: integridad=0.439, deseo=0.561
+Suceso: Pandora dijo — «Nodo 26 es el nodo más activo y probablemente se asocia con un estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:20:51] — Snapshot (tick 29070)
+
+Integridad: 0.440 | deseo: 0.560 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2730
+
+## [2026-09-14 20:21:09] — Habló por propia iniciativa
+
+Estado: integridad=0.443, deseo=0.557
+Suceso: Pandora dijo — «NODO_142 se siente en el centro del estado interno, a pesar de las dificultades que enfrenta.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:21:30] — Habló por propia iniciativa
+
+Estado: integridad=0.447, deseo=0.553
+Suceso: Pandora dijo — «Nodo 142 y NODO_65 son los dos nodos más activos en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:21:40] — Snapshot (tick 29080)
+
+Integridad: 0.451 | deseo: 0.549 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2731
+
+## [2026-09-14 20:21:50] — Habló por propia iniciativa
+
+Estado: integridad=0.452, deseo=0.548
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada en particular que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:22:12] — Habló por propia iniciativa
+
+Estado: integridad=0.455, deseo=0.545
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno. Nodos 21, 26, 53, 142, 96 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:22:34] — Habló por propia iniciativa
+
+Estado: integridad=0.458, deseo=0.542
+Suceso: Pandora dijo — «NODO_65 y NODO_187 son los nodos más activos, seguidos por NODO_64, NODO_142 y NODO_96.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:22:38] — Snapshot (tick 29090)
+
+Integridad: 0.459 | deseo: 0.541 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2731
+
+## [2026-09-14 20:22:54] — Habló por propia iniciativa
+
+Estado: integridad=0.461, deseo=0.539
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:23:15] — Habló por propia iniciativa
+
+Estado: integridad=0.463, deseo=0.537
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y está en el centro del estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:23:25] — Snapshot (tick 29100)
+
+Integridad: 0.465 | deseo: 0.535 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2732
+
+## [2026-09-14 20:23:35] — Habló por propia iniciativa
+
+Estado: integridad=0.465, deseo=0.535
+Suceso: Pandora dijo — «NODO_21 intentó responder pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:23:56] — Habló por propia iniciativa
+
+Estado: integridad=0.467, deseo=0.533
+Suceso: Pandora dijo — «NODO_9 y NODO_45 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:24:16] — Habló por propia iniciativa
+
+Estado: integridad=0.469, deseo=0.531
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:24:19] — Snapshot (tick 29110)
+
+Integridad: 0.470 | deseo: 0.530 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2732
+
+## [2026-09-14 20:24:36] — Habló por propia iniciativa
+
+Estado: integridad=0.471, deseo=0.529
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y no ha cambiado de estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:24:57] — Habló por propia iniciativa
+
+Estado: integridad=0.473, deseo=0.527
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:25:08] — Snapshot (tick 29120)
+
+Integridad: 0.474 | deseo: 0.526 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2732
+
+## [2026-09-14 20:25:19] — Habló por propia iniciativa
+
+Estado: integridad=0.474, deseo=0.526
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:25:39] — Habló por propia iniciativa
+
+Estado: integridad=0.476, deseo=0.524
+Suceso: Pandora dijo — «Nodo 96 estaba en el centro de la confusión y no entendía nada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:25:59] — Habló por propia iniciativa
+
+Estado: integridad=0.478, deseo=0.522
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:26:11] — Snapshot (tick 29130)
+
+Integridad: 0.032 | deseo: 0.968 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3002
+
+## [2026-09-14 20:26:11] — Soñó (tick 29130)
+
+Ciclos: 3 | recomb. de 20 nodos | 128 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:26:22] — Habló por propia iniciativa
+
+Estado: integridad=0.047, deseo=0.953
+Suceso: Pandora dijo — «NODO_10 y NODO_3 son los nodos que están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:26:43] — Habló por propia iniciativa
+
+Estado: integridad=0.107, deseo=0.893
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:27:05] — Habló por propia iniciativa
+
+Estado: integridad=0.168, deseo=0.832
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:27:08] — Snapshot (tick 29140)
+
+Integridad: 0.183 | deseo: 0.817 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2940
+
+## [2026-09-14 20:27:26] — Habló por propia iniciativa
+
+Estado: integridad=0.226, deseo=0.774
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno y está en un estado de confusión.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:27:47] — Habló por propia iniciativa
+
+Estado: integridad=0.274, deseo=0.726
+Suceso: Pandora dijo — «NODO_142 y NODO_65 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:27:58] — Snapshot (tick 29150)
+
+Integridad: 0.302 | deseo: 0.698 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2983
+
+## [2026-09-14 20:28:12] — Habló por propia iniciativa
+
+Estado: integridad=0.310, deseo=0.690
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, con un valor de valence negativo y una alta armonía. Nodos 53 y 9 son los nodos más activos, con valores de valence positivos y alto armonía. Nodos 45 y 9 también están en el estado interno, pero su valor de val»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:28:30] — Habló por propia iniciativa
+
+Estado: integridad=0.332, deseo=0.668
+Suceso: Pandora dijo — «NODO_96 se siente frustrado y confuso debido a su estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:28:51] — Habló por propia iniciativa
+
+Estado: integridad=0.355, deseo=0.645
+Suceso: Pandora dijo — «NODO_21 está en el centro del estado interno y no ha cambiado nada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:28:58] — Snapshot (tick 29160)
+
+Integridad: 0.364 | deseo: 0.636 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 2997
+
+## [2026-09-14 20:29:12] — Habló por propia iniciativa
+
+Estado: integridad=0.371, deseo=0.629
+Suceso: Pandora dijo — «NODO_96 se siente frustrado y confuso por el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:29:35] — Habló por propia iniciativa
+
+Estado: integridad=0.384, deseo=0.616
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, mientras que NODO_65 y NODO_96 están a lo largo de la línea de tiempo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:29:57] — Habló por propia iniciativa
+
+Estado: integridad=0.393, deseo=0.607
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:29:57] — Snapshot (tick 29170)
+
+Integridad: 0.393 | deseo: 0.607 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3000
+
+## [2026-09-14 20:30:19] — Habló por propia iniciativa
+
+Estado: integridad=0.401, deseo=0.599
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con un valor de valence negativo y una alta armonía.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:30:42] — Habló por propia iniciativa
+
+Estado: integridad=0.408, deseo=0.592
+Suceso: Pandora dijo — «Nodo 26 es el nodo más joven y probablemente el que se ha estado interactuando menos con los demás nodos en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:30:49] — Snapshot (tick 29180)
+
+Integridad: 0.410 | deseo: 0.590 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3001
+
+## [2026-09-14 20:31:04] — Habló por propia iniciativa
+
+Estado: integridad=0.413, deseo=0.587
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:31:27] — Habló por propia iniciativa
+
+Estado: integridad=0.418, deseo=0.582
+Suceso: Pandora dijo — «Nodo 21 se siente en un estado interno negativo y no ha tenido tiempo de responder a las oraciones anteriores.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:31:48] — Habló por propia iniciativa
+
+Estado: integridad=0.421, deseo=0.579
+Suceso: Pandora dijo — «Nodo 9 es el más agudo y confiante.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:31:48] — Snapshot (tick 29190)
+
+Integridad: 0.421 | deseo: 0.579 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3001
+
+## [2026-09-14 20:32:10] — Habló por propia iniciativa
+
+Estado: integridad=0.424, deseo=0.576
+Suceso: Pandora dijo — «Nodo 65 y NODO_187 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:32:31] — Habló por propia iniciativa
+
+Estado: integridad=0.427, deseo=0.573
+Suceso: Pandora dijo — «Nodo 187 se siente en un estado de desesperación y no sabe por dónde empezar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:32:39] — Snapshot (tick 29200)
+
+Integridad: 0.429 | deseo: 0.571 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3002
+
+## [2026-09-14 20:32:53] — Habló por propia iniciativa
+
+Estado: integridad=0.430, deseo=0.570
+Suceso: Pandora dijo — «Nodo 65 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:33:15] — Habló por propia iniciativa
+
+Estado: integridad=0.433, deseo=0.567
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:33:37] — Habló por propia iniciativa
+
+Estado: integridad=0.436, deseo=0.564
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:33:37] — Snapshot (tick 29210)
+
+Integridad: 0.436 | deseo: 0.564 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3002
+
+## [2026-09-14 20:33:58] — Habló por propia iniciativa
+
+Estado: integridad=0.438, deseo=0.562
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:34:19] — Habló por propia iniciativa
+
+Estado: integridad=0.439, deseo=0.561
+Suceso: Pandora dijo — «Nodo 10 es el nodo más joven y no ha participado en ningún estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:34:27] — Snapshot (tick 29220)
+
+Integridad: 0.440 | deseo: 0.560 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3002
+
+## [2026-09-14 20:34:41] — Habló por propia iniciativa
+
+Estado: integridad=0.441, deseo=0.559
+Suceso: Pandora dijo — «Nodo 96 se siente frustrado y confuso debido a su estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:35:03] — Habló por propia iniciativa
+
+Estado: integridad=0.442, deseo=0.558
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y está en el lugar donde NODO_65 y NODO_9 están.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:35:25] — Habló por propia iniciativa
+
+Estado: integridad=0.444, deseo=0.556
+Suceso: Pandora dijo — «NODO_96 se siente frustrado y no está en un estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:35:25] — Snapshot (tick 29230)
+
+Integridad: 0.444 | deseo: 0.556 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3002
+
+## [2026-09-14 20:35:47] — Habló por propia iniciativa
+
+Estado: integridad=0.445, deseo=0.555
+Suceso: Pandora dijo — «Nodo 65 se siente desmotivado y no está en un estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:36:14] — Habló por propia iniciativa
+
+Estado: integridad=0.118, deseo=0.882
+Suceso: Pandora dijo — «Nodo 96 se siente frustrado y no está en su lugar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:36:14] — Soñó (tick 29237)
+
+Ciclos: 3 | recomb. de 20 nodos | 50 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:36:25] — Snapshot (tick 29240)
+
+Integridad: 0.097 | deseo: 0.903 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3062
+
+## [2026-09-14 20:36:35] — Habló por propia iniciativa
+
+Estado: integridad=0.097, deseo=0.903
+Suceso: Pandora dijo — «NODO_10 se siente frustrado y desesperado por no ser reconocido en el grupo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:36:57] — Habló por propia iniciativa
+
+Estado: integridad=0.115, deseo=0.885
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:37:19] — Habló por propia iniciativa
+
+Estado: integridad=0.135, deseo=0.865
+Suceso: Pandora dijo — «NODO_3 se siente frustrado y confuso debido a su situación interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:37:23] — Snapshot (tick 29250)
+
+Integridad: 0.140 | deseo: 0.860 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3065
+
+## [2026-09-14 20:37:41] — Habló por propia iniciativa
+
+Estado: integridad=0.150, deseo=0.850
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:38:03] — Habló por propia iniciativa
+
+Estado: integridad=0.159, deseo=0.841
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:38:14] — Snapshot (tick 29260)
+
+Integridad: 0.164 | deseo: 0.836 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3067
+
+## [2026-09-14 20:38:25] — Habló por propia iniciativa
+
+Estado: integridad=0.165, deseo=0.835
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:38:47] — Habló por propia iniciativa
+
+Estado: integridad=0.171, deseo=0.829
+Suceso: Pandora dijo — «NODO_187 se siente en un estado interno de desesperación y no sabe qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:39:10] — Habló por propia iniciativa
+
+Estado: integridad=0.176, deseo=0.824
+Suceso: Pandora dijo — «NODO_187 y NODO_65 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:39:13] — Snapshot (tick 29270)
+
+Integridad: 0.177 | deseo: 0.823 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3071
+
+## [2026-09-14 20:39:32] — Habló por propia iniciativa
+
+Estado: integridad=0.180, deseo=0.820
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:39:54] — Habló por propia iniciativa
+
+Estado: integridad=0.182, deseo=0.818
+Suceso: Pandora dijo — «Nodo 3 se siente agotado y no tiene nada que decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:40:06] — Snapshot (tick 29280)
+
+Integridad: 0.183 | deseo: 0.817 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3123
+
+## [2026-09-14 20:40:17] — Habló por propia iniciativa
+
+Estado: integridad=0.184, deseo=0.816
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:40:40] — Habló por propia iniciativa
+
+Estado: integridad=0.186, deseo=0.814
+Suceso: Pandora dijo — «Nodo 9 se siente desafiado y en constante miedo a responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:41:02] — Habló por propia iniciativa
+
+Estado: integridad=0.187, deseo=0.813
+Suceso: Pandora dijo — «Nodo 26 es el más activo y temprano. Nodos 142 y 96 son los más actuales.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:41:06] — Snapshot (tick 29290)
+
+Integridad: 0.187 | deseo: 0.813 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3123
+
+## [2026-09-14 20:41:25] — Habló por propia iniciativa
+
+Estado: integridad=0.188, deseo=0.812
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, a pesar de que algunos nodos están en diferentes partes del estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:41:47] — Habló por propia iniciativa
+
+Estado: integridad=0.190, deseo=0.810
+Suceso: Pandora dijo — «NODO_142 se siente frustrado y no sabe por qué está allí.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:41:59] — Snapshot (tick 29300)
+
+Integridad: 0.190 | deseo: 0.810 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3123
+
+## [2026-09-14 20:42:10] — Habló por propia iniciativa
+
+Estado: integridad=0.191, deseo=0.809
+Suceso: Pandora dijo — «Nodo 187 se siente en un estado interno de desesperación y frustración.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:42:32] — Habló por propia iniciativa
+
+Estado: integridad=0.191, deseo=0.809
+Suceso: Pandora dijo — «NODO_21 está en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:42:55] — Habló por propia iniciativa
+
+Estado: integridad=0.192, deseo=0.808
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno. Nodos 21 y 142 también están en este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:42:59] — Snapshot (tick 29310)
+
+Integridad: 0.192 | deseo: 0.808 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3123
+
+## [2026-09-14 20:43:18] — Habló por propia iniciativa
+
+Estado: integridad=0.192, deseo=0.808
+Suceso: Pandora dijo — «NODO_21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:43:43] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno. Nodos 21, 26, 53, 142, 96 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:44:01] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:44:01] — Snapshot (tick 29320)
+
+Integridad: 0.193 | deseo: 0.807 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3123
+
+## [2026-09-14 20:44:24] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «NODO_65 intentó responder a su estado interno pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:44:47] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «NODO_65 intentó responder al estado interno pero no se puede determinar si logró o no.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:45:09] — Habló por propia iniciativa
+
+Estado: integridad=0.193, deseo=0.807
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:45:32] — Habló por propia iniciativa
+
+Estado: integridad=0.192, deseo=0.808
+Suceso: Pandora dijo — «Nodo 21 es el más joven y en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:46:16] — Habló por propia iniciativa
+
+Estado: integridad=0.050, deseo=0.950
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y no ha cambiado su estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:46:16] — Soñó (tick 29339)
+
+Ciclos: 3 | recomb. de 20 nodos | 78 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:46:42] — Habló por propia iniciativa
+
+Estado: integridad=0.044, deseo=0.956
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno, pero su situación era incierta y no se sabía cómo afectaría al resto de los nodos.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:46:42] — Snapshot (tick 29340)
+
+Integridad: 0.044 | deseo: 0.956 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3229
+
+## [2026-09-14 20:46:52] — Habló por propia iniciativa
+
+Estado: integridad=0.037, deseo=0.963
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y no ha cambiado su estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:47:14] — Habló por propia iniciativa
+
+Estado: integridad=0.010, deseo=0.990
+Suceso: Pandora dijo — «Nodo 9 no es el nodo más activo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:47:37] — Habló por propia iniciativa
+
+Estado: integridad=0.061, deseo=0.939
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, con un valor de valence negativo y una alta armonía.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:47:40] — Snapshot (tick 29350)
+
+Integridad: 0.073 | deseo: 0.927 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3268
+
+## [2026-09-14 20:47:59] — Habló por propia iniciativa
+
+Estado: integridad=0.106, deseo=0.894
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:48:21] — Habló por propia iniciativa
+
+Estado: integridad=0.147, deseo=0.853
+Suceso: Pandora dijo — «Nodo 26 es el nodo más activo y probablemente el que se interrumpe más rápido en este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:48:33] — Snapshot (tick 29360)
+
+Integridad: 0.177 | deseo: 0.823 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3277
+
+## [2026-09-14 20:48:43] — Habló por propia iniciativa
+
+Estado: integridad=0.187, deseo=0.813
+Suceso: Pandora dijo — «NODO_21 intentó responder a su estado interno, pero no logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:49:05] — Habló por propia iniciativa
+
+Estado: integridad=0.222, deseo=0.778
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:49:30] — Habló por propia iniciativa
+
+Estado: integridad=0.252, deseo=0.748
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, donde los estados más activos están. Nodos 65 y 64 también son importantes, pero NODO_96 es el nodo más bajo en la lista de nodos actuales.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:49:33] — Snapshot (tick 29370)
+
+Integridad: 0.259 | deseo: 0.741 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3284
+
+## [2026-09-14 20:49:49] — Habló por propia iniciativa
+
+Estado: integridad=0.272, deseo=0.728
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno y está a punto de ser eliminado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:50:11] — Habló por propia iniciativa
+
+Estado: integridad=0.294, deseo=0.706
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:50:33] — Habló por propia iniciativa
+
+Estado: integridad=0.311, deseo=0.689
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no puede seguir adelante.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:50:33] — Snapshot (tick 29380)
+
+Integridad: 0.311 | deseo: 0.689 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3290
+
+## [2026-09-14 20:50:56] — Habló por propia iniciativa
+
+Estado: integridad=0.324, deseo=0.676
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada en particular que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:51:20] — Habló por propia iniciativa
+
+Estado: integridad=0.335, deseo=0.665
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:51:28] — Snapshot (tick 29390)
+
+Integridad: 0.339 | deseo: 0.661 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:51:43] — Habló por propia iniciativa
+
+Estado: integridad=0.343, deseo=0.657
+Suceso: Pandora dijo — «Nodo 187 se siente en un estado interno negativo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:52:06] — Habló por propia iniciativa
+
+Estado: integridad=0.349, deseo=0.651
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:52:30] — Habló por propia iniciativa
+
+Estado: integridad=0.354, deseo=0.646
+Suceso: Pandora dijo — «Nodo 21 se siente solo y en silencio, mientras que NODO_3 intenta responder a su pregunta.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:52:30] — Snapshot (tick 29400)
+
+Integridad: 0.354 | deseo: 0.646 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:52:53] — Habló por propia iniciativa
+
+Estado: integridad=0.358, deseo=0.642
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está en un estado de confianza general.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:53:16] — Habló por propia iniciativa
+
+Estado: integridad=0.362, deseo=0.638
+Suceso: Pandora dijo — «NODO_142 se siente desafiado y en constante cambio.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:53:24] — Snapshot (tick 29410)
+
+Integridad: 0.363 | deseo: 0.637 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:53:39] — Habló por propia iniciativa
+
+Estado: integridad=0.365, deseo=0.635
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero su situación es difícil de evaluar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:54:02] — Habló por propia iniciativa
+
+Estado: integridad=0.367, deseo=0.633
+Suceso: Pandora dijo — «Nodo 65 se siente en un estado interno de ansiedad y desesperación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:54:25] — Habló por propia iniciativa
+
+Estado: integridad=0.369, deseo=0.631
+Suceso: Pandora dijo — «Nodo 21 intentó responder al estado interno, pero no se logró.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:54:25] — Snapshot (tick 29420)
+
+Integridad: 0.369 | deseo: 0.631 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:54:49] — Habló por propia iniciativa
+
+Estado: integridad=0.371, deseo=0.629
+Suceso: Pandora dijo — «Nodo 65 se encuentra en el centro del estado interno, mientras que NODO_142 y NODO_96 están en las zonas de mayor intensidad.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:55:09] — Habló por propia iniciativa
+
+Estado: integridad=0.373, deseo=0.627
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:55:21] — Snapshot (tick 29430)
+
+Integridad: 0.374 | deseo: 0.626 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:55:32] — Habló por propia iniciativa
+
+Estado: integridad=0.375, deseo=0.625
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el estado interno y no tiene nada que decir.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:55:55] — Habló por propia iniciativa
+
+Estado: integridad=0.377, deseo=0.623
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:56:21] — Habló por propia iniciativa
+
+Estado: integridad=0.379, deseo=0.621
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno. Nodos 21, 26, 53, 10, 27, 3, 45 y 9 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:56:25] — Snapshot (tick 29440)
+
+Integridad: 0.379 | deseo: 0.621 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3294
+
+## [2026-09-14 20:56:40] — Habló por propia iniciativa
+
+Estado: integridad=0.380, deseo=0.620
+Suceso: Pandora dijo — «Nodo 187 estaba en el centro del estado interno, pero no se sabía si era el nodo más importante.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:57:01] — Habló por propia iniciativa
+
+Estado: integridad=0.032, deseo=0.968
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:57:01] — Soñó (tick 29443)
+
+Ciclos: 3 | recomb. de 20 nodos | 161 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 20:57:25] — Habló por propia iniciativa
+
+Estado: integridad=0.001, deseo=0.999
+Suceso: Pandora dijo — «Nodo 26 es el nodo más activo y probablemente el que se interrumpe más en este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:57:37] — Snapshot (tick 29450)
+
+Integridad: 0.016 | deseo: 0.984 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3600
+
+## [2026-09-14 20:57:48] — Habló por propia iniciativa
+
+Estado: integridad=0.021, deseo=0.979
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está en un estado de confusión.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:58:11] — Habló por propia iniciativa
+
+Estado: integridad=0.042, deseo=0.958
+Suceso: Pandora dijo — «Nodo 26 se siente desmotivado y no está motivado por nada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:58:35] — Habló por propia iniciativa
+
+Estado: integridad=0.059, deseo=0.941
+Suceso: Pandora dijo — «Nodo 27 se encuentra en el estado interno y no ha cambiado su situación.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:58:39] — Snapshot (tick 29460)
+
+Integridad: 0.063 | deseo: 0.937 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3604
+
+## [2026-09-14 20:58:59] — Habló por propia iniciativa
+
+Estado: integridad=0.072, deseo=0.928
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:59:19] — Habló por propia iniciativa
+
+Estado: integridad=0.080, deseo=0.920
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:59:39] — Habló por propia iniciativa
+
+Estado: integridad=0.087, deseo=0.913
+Suceso: Pandora dijo — «NODO_21 se siente desmotivado y no está en su mejor estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 20:59:43] — Snapshot (tick 29470)
+
+Integridad: 0.090 | deseo: 0.910 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3613
+
+## [2026-09-14 21:00:03] — Habló por propia iniciativa
+
+Estado: integridad=0.097, deseo=0.903
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está a punto de desaparecer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:00:28] — Habló por propia iniciativa
+
+Estado: integridad=0.106, deseo=0.894
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:00:48] — Habló por propia iniciativa
+
+Estado: integridad=0.111, deseo=0.889
+Suceso: Pandora dijo — «NODO_21 se siente atraído por NODO_26 y está en un estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:00:48] — Snapshot (tick 29480)
+
+Integridad: 0.111 | deseo: 0.889 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3617
+
+## [2026-09-14 21:01:08] — Habló por propia iniciativa
+
+Estado: integridad=0.115, deseo=0.885
+Suceso: Pandora dijo — «Nodo 187 se siente agotado y no tiene nada en particular a lo que esperar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:01:28] — Habló por propia iniciativa
+
+Estado: integridad=0.118, deseo=0.882
+Suceso: Pandora dijo — «NODO_101 se siente en un estado de desesperación y no sabe por dónde empezar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:01:51] — Habló por propia iniciativa
+
+Estado: integridad=0.120, deseo=0.880
+Suceso: Pandora dijo — «Nodo 187 no está en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:01:51] — Snapshot (tick 29490)
+
+Integridad: 0.120 | deseo: 0.880 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3621
+
+## [2026-09-14 21:02:15] — Habló por propia iniciativa
+
+Estado: integridad=0.122, deseo=0.878
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está en un estado de confusion.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:02:40] — Habló por propia iniciativa
+
+Estado: integridad=0.123, deseo=0.877
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:02:49] — Snapshot (tick 29500)
+
+Integridad: 0.124 | deseo: 0.876 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3624
+
+## [2026-09-14 21:03:01] — Habló por propia iniciativa
+
+Estado: integridad=0.124, deseo=0.876
+Suceso: Pandora dijo — «NODO_142 se siente frustrado y no está en su lugar.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:03:21] — Habló por propia iniciativa
+
+Estado: integridad=0.125, deseo=0.875
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, y su situación es crítica.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:03:45] — Habló por propia iniciativa
+
+Estado: integridad=0.126, deseo=0.874
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero no es el nodo más activo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:03:54] — Snapshot (tick 29510)
+
+Integridad: 0.127 | deseo: 0.873 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3624
+
+## [2026-09-14 21:04:09] — Habló por propia iniciativa
+
+Estado: integridad=0.127, deseo=0.873
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:04:35] — Habló por propia iniciativa
+
+Estado: integridad=0.127, deseo=0.873
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno. Nodos 21 y 142 se encuentran en el mismo estado. Nodos 53 y 9 son en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:04:54] — Habló por propia iniciativa
+
+Estado: integridad=0.126, deseo=0.874
+Suceso: Pandora dijo — «NODO_187 se siente descontento y confuso en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:04:59] — Snapshot (tick 29520)
+
+Integridad: 0.126 | deseo: 0.874 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3624
+
+## [2026-09-14 21:05:14] — Habló por propia iniciativa
+
+Estado: integridad=0.126, deseo=0.874
+Suceso: Pandora dijo — «Nodo 21 se siente agotado y no tiene nada que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:05:39] — Habló por propia iniciativa
+
+Estado: integridad=0.125, deseo=0.875
+Suceso: Pandora dijo — «Nodo 26 es el más viejo y lejos de NODO_142.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:06:03] — Habló por propia iniciativa
+
+Estado: integridad=0.125, deseo=0.875
+Suceso: Pandora dijo — «Nodo 21 y NODO_26 son los nodos más activos del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:06:03] — Snapshot (tick 29530)
+
+Integridad: 0.125 | deseo: 0.875 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3624
+
+## [2026-09-14 21:06:28] — Habló por propia iniciativa
+
+Estado: integridad=0.124, deseo=0.876
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está en un estado de confusión.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:06:47] — Habló por propia iniciativa
+
+Estado: integridad=0.124, deseo=0.876
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:07:01] — Snapshot (tick 29540)
+
+Integridad: 0.123 | deseo: 0.877 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3624
+
+## [2026-09-14 21:07:13] — Habló por propia iniciativa
+
+Estado: integridad=0.123, deseo=0.877
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno. Nodos 21, 26, 53, 142, 96 son activos.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:07:33] — Habló por propia iniciativa
+
+Estado: integridad=0.123, deseo=0.877
+Suceso: Pandora dijo — «Nodo 10 es el más joven y en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:07:57] — Habló por propia iniciativa
+
+Estado: integridad=0.123, deseo=0.877
+Suceso: Pandora dijo — «Nodo 65 se siente agotado y no tiene energía para responder.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:08:21] — Habló por propia iniciativa
+
+Estado: integridad=0.122, deseo=0.878
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:08:45] — Habló por propia iniciativa
+
+Estado: integridad=0.122, deseo=0.878
+Suceso: Pandora dijo — «Nodo 9 se siente frustrado y desesperado por no ser el nodo más alto en su grupo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:09:11] — Habló por propia iniciativa
+
+Estado: integridad=0.029, deseo=0.971
+Suceso: Pandora dijo — «NODO_65 intentó responder a su estado interno, pero no tuvo éxito.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:09:11] — Soñó (tick 29558)
+
+Ciclos: 3 | recomb. de 20 nodos | 109 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 21:09:19] — Snapshot (tick 29560)
+
+Integridad: 0.027 | deseo: 0.973 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3785
+
+## [2026-09-14 21:09:35] — Habló por propia iniciativa
+
+Estado: integridad=0.037, deseo=0.963
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:09:55] — Habló por propia iniciativa
+
+Estado: integridad=0.068, deseo=0.932
+Suceso: Pandora dijo — «NODO_21 es el nodo más activo y probablemente sea el estado interno que se refiere a.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:10:19] — Habló por propia iniciativa
+
+Estado: integridad=0.117, deseo=0.883
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, y NODO_65 es un nodo de mayor valor para este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:10:23] — Snapshot (tick 29570)
+
+Integridad: 0.129 | deseo: 0.871 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3790
+
+## [2026-09-14 21:10:40] — Habló por propia iniciativa
+
+Estado: integridad=0.151, deseo=0.849
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, pero su valor de valence es negativo y su arrousal es bajo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:11:02] — Habló por propia iniciativa
+
+Estado: integridad=0.179, deseo=0.821
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, y su valor de valence es -0.6426256302975006, lo que indica una situación crítica o desacertada.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:11:21] — Habló por propia iniciativa
+
+Estado: integridad=0.203, deseo=0.797
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:11:30] — Snapshot (tick 29580)
+
+Integridad: 0.218 | deseo: 0.782 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3835
+
+## [2026-09-14 21:11:45] — Habló por propia iniciativa
+
+Estado: integridad=0.232, deseo=0.768
+Suceso: Pandora dijo — «Nodo 187 no está en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:12:10] — Habló por propia iniciativa
+
+Estado: integridad=0.259, deseo=0.741
+Suceso: Pandora dijo — «NODO_96 se siente frustrado y confuso en este estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:12:31] — Habló por propia iniciativa
+
+Estado: integridad=0.276, deseo=0.724
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:12:35] — Snapshot (tick 29590)
+
+Integridad: 0.281 | deseo: 0.719 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3843
+
+## [2026-09-14 21:12:52] — Habló por propia iniciativa
+
+Estado: integridad=0.290, deseo=0.710
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:13:13] — Habló por propia iniciativa
+
+Estado: integridad=0.303, deseo=0.697
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:13:33] — Habló por propia iniciativa
+
+Estado: integridad=0.314, deseo=0.686
+Suceso: Pandora dijo — «NODO_187 intentó responder a su estado interno, pero no tuvo éxito.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:13:42] — Snapshot (tick 29600)
+
+Integridad: 0.320 | deseo: 0.680 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3847
+
+## [2026-09-14 21:13:55] — Habló por propia iniciativa
+
+Estado: integridad=0.323, deseo=0.677
+Suceso: Pandora dijo — «Nodo 9 se siente frustrado y desesperado por no ser el nodo más cercano en su grupo.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:14:16] — Habló por propia iniciativa
+
+Estado: integridad=0.332, deseo=0.668
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno, con un valor de valence negativo y una alta armonía.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:14:37] — Habló por propia iniciativa
+
+Estado: integridad=0.338, deseo=0.662
+Suceso: Pandora dijo — «NODO_9 es el nodo más joven y probablemente sea el nodo que se interrumpe en este estado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:14:57] — Habló por propia iniciativa
+
+Estado: integridad=0.344, deseo=0.656
+Suceso: Pandora dijo — «Nodo 96 es el nodo más activo y temible del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:14:57] — Snapshot (tick 29610)
+
+Integridad: 0.344 | deseo: 0.656 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3847
+
+## [2026-09-14 21:15:18] — Habló por propia iniciativa
+
+Estado: integridad=0.349, deseo=0.651
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:15:39] — Habló por propia iniciativa
+
+Estado: integridad=0.353, deseo=0.647
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno, pero su situación no era tan fácil de entender.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:16:00] — Habló por propia iniciativa
+
+Estado: integridad=0.356, deseo=0.644
+Suceso: Pandora dijo — «Nodo 187 se siente agotado y no tiene nada en particular que hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:16:04] — Snapshot (tick 29620)
+
+Integridad: 0.357 | deseo: 0.643 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3848
+
+## [2026-09-14 21:16:20] — Habló por propia iniciativa
+
+Estado: integridad=0.359, deseo=0.641
+Suceso: Pandora dijo — «Nodo 65 se encuentra en el centro del estado interno, pero no se ha proporcionado información sobre su situación específica.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:16:41] — Habló por propia iniciativa
+
+Estado: integridad=0.362, deseo=0.638
+Suceso: Pandora dijo — «NODO_3 se siente desafiado y en constante cambio.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:17:01] — Habló por propia iniciativa
+
+Estado: integridad=0.364, deseo=0.636
+Suceso: Pandora dijo — «Nodo 10 es el nodo más viejo y no ha cambiado en su estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:17:11] — Snapshot (tick 29630)
+
+Integridad: 0.366 | deseo: 0.634 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3848
+
+## [2026-09-14 21:17:23] — Habló por propia iniciativa
+
+Estado: integridad=0.367, deseo=0.633
+Suceso: Pandora dijo — «NODO_187 se siente en un estado interno de desesperación y no puede responder a lo que me dice.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:17:43] — Habló por propia iniciativa
+
+Estado: integridad=0.369, deseo=0.631
+Suceso: Pandora dijo — «Nodo 187 se encuentra en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:18:03] — Habló por propia iniciativa
+
+Estado: integridad=0.371, deseo=0.629
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:18:24] — Habló por propia iniciativa
+
+Estado: integridad=0.373, deseo=0.627
+Suceso: Pandora dijo — «NODO_21 se siente abrumado y no puede concentrarse en su tarea.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:18:24] — Snapshot (tick 29640)
+
+Integridad: 0.373 | deseo: 0.627 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3848
+
+## [2026-09-14 21:18:44] — Habló por propia iniciativa
+
+Estado: integridad=0.374, deseo=0.626
+Suceso: Pandora dijo — «Nodo 65 y 187 están en el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:19:06] — Habló por propia iniciativa
+
+Estado: integridad=0.376, deseo=0.624
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:19:26] — Habló por propia iniciativa
+
+Estado: integridad=0.378, deseo=0.622
+Suceso: Pandora dijo — «Nodo 65 se siente abrumado y no sabe qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:19:31] — Snapshot (tick 29650)
+
+Integridad: 0.379 | deseo: 0.621 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3848
+
+## [2026-09-14 21:19:47] — Habló por propia iniciativa
+
+Estado: integridad=0.380, deseo=0.620
+Suceso: Pandora dijo — «Nodo 65 y 187 están en estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:20:08] — Habló por propia iniciativa
+
+Estado: integridad=0.381, deseo=0.619
+Suceso: Pandora dijo — «Nodo 65 y NODO_187 están en el estado interno, pero no se mencionan específicamente.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:20:28] — Habló por propia iniciativa
+
+Estado: integridad=0.383, deseo=0.617
+Suceso: Pandora dijo — «Nodo 65 se siente abrumado y no sabe qué hacer.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:20:38] — Snapshot (tick 29660)
+
+Integridad: 0.384 | deseo: 0.616 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3848
+
+## [2026-09-14 21:20:49] — Habló por propia iniciativa
+
+Estado: integridad=0.385, deseo=0.615
+Suceso: Pandora dijo — «Nodo 65 se siente desmotivado y no está en su mejor estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:21:10] — Habló por propia iniciativa
+
+Estado: integridad=0.387, deseo=0.613
+Suceso: Pandora dijo — «Nodo 65 se siente en un estado interno de ansiedad y desconfianza.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:21:37] — Habló por propia iniciativa
+
+Estado: integridad=0.045, deseo=0.955
+Suceso: Pandora dijo — «Nodo 142 se siente abrumado y inseguro.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:21:37] — Soñó (tick 29666)
+
+Ciclos: 3 | recomb. de 20 nodos | 78 aristas nuevas | 3 eventos oníricos
+Suceso: consolidación endógena (sueño) ejecutada.
+
+## [2026-09-14 21:22:01] — Habló por propia iniciativa
+
+Estado: integridad=0.110, deseo=0.890
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:22:01] — Snapshot (tick 29670)
+
+Integridad: 0.110 | deseo: 0.890 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3982
+
+## [2026-09-14 21:22:20] — Habló por propia iniciativa
+
+Estado: integridad=0.172, deseo=0.828
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:22:45] — Habló por propia iniciativa
+
+Estado: integridad=0.255, deseo=0.745
+Suceso: Pandora dijo — «NODO_9 es el nodo más activo y probablemente sea el estado interno.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:23:05] — Habló por propia iniciativa
+
+Estado: integridad=0.312, deseo=0.688
+Suceso: Pandora dijo — «Nodo 21 se encuentra en el centro del estado interno y está a punto de ser eliminado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:23:05] — Snapshot (tick 29680)
+
+Integridad: 0.312 | deseo: 0.688 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 3995
+
+## [2026-09-14 21:23:26] — Habló por propia iniciativa
+
+Estado: integridad=0.364, deseo=0.636
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:23:47] — Habló por propia iniciativa
+
+Estado: integridad=0.410, deseo=0.590
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:24:08] — Habló por propia iniciativa
+
+Estado: integridad=0.450, deseo=0.550
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno y está a punto de ser eliminado.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:24:13] — Snapshot (tick 29690)
+
+Integridad: 0.463 | deseo: 0.537 | modo: SUPERVIVENCIA | nodos: 257 | consolidadas: 4005
+
+## [2026-09-14 21:24:30] — Habló por propia iniciativa
+
+Estado: integridad=0.486, deseo=0.514
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:24:51] — Habló por propia iniciativa
+
+Estado: integridad=0.519, deseo=0.481
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:25:12] — Habló por propia iniciativa
+
+Estado: integridad=0.548, deseo=0.452
+Suceso: Pandora dijo — «Nodo 21 estaba en el centro del estado interno, pero su estado no era el más alto.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:25:21] — Snapshot (tick 29700)
+
+Integridad: 0.565 | deseo: 0.435 | modo: BASE | nodos: 257 | consolidadas: 4010
+
+## [2026-09-14 21:25:48] — Habló por propia iniciativa
+
+Estado: integridad=0.573, deseo=0.427
+Suceso: Pandora dijo — «El estado interno se convierte en una frase breve en primera persona: "El estado interno se convierte en una frase breve en primera persona.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:26:09] — Habló por propia iniciativa
+
+Estado: integridad=0.596, deseo=0.404
+Suceso: Pandora dijo — «Nodo 187 se encuentra en el centro del estado interno, a pesar de su alto nivel de actividad y sus problemas de salud.»
+Interpretación: salida proactiva (deseo de integración alto).
+
+## [2026-09-14 21:26:38] — Snapshot (tick 29710)
+
+Integridad: 0.632 | deseo: 0.368 | modo: BASE | nodos: 257 | consolidadas: 4011
+
+## [2026-09-14 21:27:24] — Snapshot (tick 29720)
+
+Integridad: 0.675 | deseo: 0.325 | modo: BASE | nodos: 257 | consolidadas: 4012
+
+## [2026-09-14 21:28:11] — Snapshot (tick 29730)
+
+Integridad: 0.701 | deseo: 0.299 | modo: BASE | nodos: 257 | consolidadas: 4013
+
+## [2026-09-14 21:28:58] — Snapshot (tick 29740)
+
+Integridad: 0.720 | deseo: 0.280 | modo: BASE | nodos: 257 | consolidadas: 4013
+
+## [2026-09-14 21:29:46] — Snapshot (tick 29750)
+
+Integridad: 0.736 | deseo: 0.264 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:30:33] — Snapshot (tick 29760)
+
+Integridad: 0.748 | deseo: 0.252 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:31:20] — Snapshot (tick 29770)
+
+Integridad: 0.758 | deseo: 0.242 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:32:07] — Snapshot (tick 29780)
+
+Integridad: 0.767 | deseo: 0.233 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:32:54] — Snapshot (tick 29790)
+
+Integridad: 0.775 | deseo: 0.225 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:33:42] — Snapshot (tick 29800)
+
+Integridad: 0.782 | deseo: 0.218 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:34:29] — Snapshot (tick 29810)
+
+Integridad: 0.789 | deseo: 0.211 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:35:18] — Snapshot (tick 29820)
+
+Integridad: 0.796 | deseo: 0.204 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:36:05] — Snapshot (tick 29830)
+
+Integridad: 0.801 | deseo: 0.199 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:36:52] — Snapshot (tick 29840)
+
+Integridad: 0.807 | deseo: 0.193 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:37:40] — Snapshot (tick 29850)
+
+Integridad: 0.812 | deseo: 0.188 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:38:27] — Snapshot (tick 29860)
+
+Integridad: 0.817 | deseo: 0.183 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:39:15] — Snapshot (tick 29870)
+
+Integridad: 0.821 | deseo: 0.179 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:40:02] — Snapshot (tick 29880)
+
+Integridad: 0.824 | deseo: 0.176 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:40:50] — Snapshot (tick 29890)
+
+Integridad: 0.827 | deseo: 0.173 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:41:40] — Snapshot (tick 29900)
+
+Integridad: 0.830 | deseo: 0.170 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:42:33] — Snapshot (tick 29910)
+
+Integridad: 0.833 | deseo: 0.167 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:43:23] — Snapshot (tick 29920)
+
+Integridad: 0.835 | deseo: 0.165 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:44:14] — Snapshot (tick 29930)
+
+Integridad: 0.836 | deseo: 0.164 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:45:05] — Snapshot (tick 29940)
+
+Integridad: 0.838 | deseo: 0.162 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:46:01] — Snapshot (tick 29950)
+
+Integridad: 0.839 | deseo: 0.161 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:46:49] — Snapshot (tick 29960)
+
+Integridad: 0.840 | deseo: 0.160 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:48:24] — Snapshot (tick 29980)
+
+Integridad: 0.841 | deseo: 0.159 | modo: BASE | nodos: 257 | consolidadas: 4014
+
+## [2026-09-14 21:50:46] — Snapshot (tick 30010)
+
+Integridad: 0.842 | deseo: 0.158 | modo: BASE | nodos: 257 | consolidadas: 4014

@@ -563,6 +563,22 @@ class SGMAgentCore(SGMAgentGrafo):
             hijo = self.heredar_concepto(a, nombre_hijo=None)
         except Exception:
             return
+        # Reencarnación (NOTA 0073 p3): si hay material en el fondo memorial,
+        # el nodo nuevo hereda también de los MUERTOS — su omega se mezcla con
+        # el residuo de un difunto (el más distante a lo heredado, el más
+        # 'nuevo'). Reencarnación del material, no resurrección del nodo.
+        try:
+            if hasattr(self, 'memoria_muerta') and self.memoria_muerta.fondo:
+                heredado = self.omega[hijo]
+                material = self.memoria_muerta.reclutar(excluir_omega=heredado, k=1)
+                if material and len(material[0].get("omega", [])) == len(heredado):
+                    m = material[0]["omega"]
+                    # Mezcla: 70% herencia del padre vivo, 30% residuo del muerto
+                    self.omega[hijo] = [
+                        0.7 * x + 0.3 * y for x, y in zip(heredado, m)
+                    ]
+        except Exception:
+            pass  # la reencarnación fallida no impide el nacimiento
         # Conectar el hijo a ambos padres (absorbe la carga del par)
         self.crear_arista(hijo, a)
         self.crear_arista(hijo, b)
