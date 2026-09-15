@@ -19,6 +19,9 @@ After=network.target
 
 [Service]
 Type=simple
+# Clave de NIM para la boca (transductor): ver pandora/runtime/pandora-nucleo.service
+# del repo instalado. Key extraída de ~/.hermes/.env (permisos 600).
+EnvironmentFile=%h/.config/pandora/env
 WorkingDirectory=%h/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM
 ExecStart=%h/vaults/vega-vault/NOUS/DSCN-G/EXPERIMENTS/SGM/.venv/bin/python -m pandora.runtime.observar --snapshot-cada 10
 Restart=always
