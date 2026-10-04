@@ -329,7 +329,6 @@ MIT License.
 
 **NOUS Research Program — The Pandora Research**
 - Principal Investigator: **Delorien**
-- Collaborator: Lautaro Emanuel Luconi
 - Location: Las Catitas, Mendoza, Argentina
 
 > *"We never give up, but we do it correctly"*
